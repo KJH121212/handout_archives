@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ZyMedBio R&D - Genetic Recombination & Transcription Analyzer</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600;700&family=Nanum+Pen+Script&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #0a4d68;
+            --accent: #0eb29a;
+            --accent-glow: rgba(14, 178, 154, 0.4);
+            --danger: #e11d48;
+            --danger-glow: rgba(225, 29, 72, 0.4);
+            --dark-bg: #070b12;
+            --panel-bg: #0f172a;
+            --whiteboard-bg: #f8fafc;
+            --chalk-blue: #1e40af;
+            --chalk-red: #991b1b;
+            --text-light: #f1f5f9;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        
+        body {
+            background-color: var(--dark-bg);
+            color: var(--text-light);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            min-height: 100vh;
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+
+        header h2 {
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 1.8rem;
+            color: #38bdf8;
+            letter-spacing: 2px;
+            text-shadow: 0 0 10px rgba(56, 189, 248, 0.3);
+        }
+
+        header p {
+            color: #94a3b8;
+            font-size: 0.85rem;
+            margin-top: 4px;
+        }
+
+        .main-layout {
+            max-width: 1250px;
+            width: 100%;
+            display: grid;
+            grid-template-columns: 1.15fr 1fr;
+            gap: 1.5rem;
+            align-items: stretch;
+        }
+
+        /* 1. 좌측: 실제 연구실 화이트보드 연출 */
+        .whiteboard-frame {
+            background: #cbd5e1;
+            padding: 12px;
+            border-radius: 8px;
+            box-shadow: inset 0 0 10px rgba(0,0,0,0.2), 0 15px 35px rgba(0,0,0,0.6);
+            display: flex;
+        }
+
+        .whiteboard {
+            background: var(--whiteboard-bg);
+            color: #1e293b;
+            border-radius: 4px;
+            padding: 1.5rem;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            position: relative;
+            box-shadow: inset 0 0 30px rgba(0,0,0,0.06);
+            overflow: hidden;
+        }
+
+        .board-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            border-bottom: 2px solid #94a3b8;
+            padding-bottom: 0.5rem;
+        }
+
+        .board-title {
+            font-family: 'Fira Code', monospace;
+            font-weight: 700;
+            color: var(--chalk-blue);
+            font-size: 1.1rem;
+        }
+
+        .board-meta {
+            font-family: 'Nanum Pen Script', cursive;
+            font-size: 1.2rem;
+            color: #64748b;
+        }
+
+        /* 수식 & 복잡한 DNA 염기식 블록 */
+        .equation-area {
+            background: rgba(15, 23, 42, 0.04);
+            border-left: 4px solid var(--chalk-blue);
+            padding: 0.8rem 1rem;
+            border-radius: 0 6px 6px 0;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.8rem;
+            line-height: 1.5;
+            color: #334155;
+        }
+
+        .complex-formula {
+            display: flex;
+            flex-direction: column;
+            gap: 0.4rem;
+            background: #fff;
+            border: 1px dashed #cbd5e1;
+            padding: 0.8rem;
+            border-radius: 6px;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.78rem;
+        }
+
+        .dna-strand {
+            letter-spacing: 2px;
+            color: #0369a1;
+            word-break: break-all;
+            background: #f0fdf4;
+            padding: 4px 6px;
+            border-radius: 4px;
+            border: 1px solid #bbf7d0;
+        }
+
+        .red-marker {
+            color: var(--chalk-red);
+            font-weight: bold;
+            font-family: 'Nanum Pen Script', cursive;
+            font-size: 1.3rem;
+            line-height: 1.3;
+        }
+
+        /* 2. 우측: 분석기 & 실시간 스펙트럼 패널 */
+        .analyzer-panel {
+            background: var(--panel-bg);
+            border: 1px solid #334155;
+            border-radius: 8px;
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1.2rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        .panel-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #334155;
+            padding-bottom: 0.8rem;
+        }
+
+        .panel-top h3 {
+            font-family: 'Share Tech Mono', monospace;
+            color: var(--accent);
+            font-size: 1.1rem;
+            letter-spacing: 1px;
+        }
+
+        .resonance-indicator {
+            font-size: 0.75rem;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-weight: 700;
+            font-family: monospace;
+        }
+
+        .res-unmatched { background: rgba(225, 29, 72, 0.15); color: #fb7185; border: 1px solid var(--danger); }
+        .res-matched { background: rgba(14, 178, 154, 0.2); color: #34d399; border: 1px solid var(--accent); animation: pulseGreen 1.5s infinite; }
+
+        @keyframes pulseGreen {
+            0%, 100% { box-shadow: 0 0 5px var(--accent-glow); }
+            50% { box-shadow: 0 0 15px var(--accent); }
+        }
+
+        /* 슬라이더 컨트롤러 */
+        .slider-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.4rem;
+            background: rgba(0, 0, 0, 0.25);
+            padding: 0.7rem 0.9rem;
+            border-radius: 6px;
+            border: 1px solid #1e293b;
+        }
+
+        .slider-label-row {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.82rem;
+            font-family: 'Fira Code', monospace;
+            color: #94a3b8;
+        }
+
+        .slider-val {
+            color: #38bdf8;
+            font-weight: 700;
+        }
+
+        input[type=range] {
+            width: 100%;
+            height: 6px;
+            background: #334155;
+            border-radius: 3px;
+            outline: none;
+            accent-color: var(--accent);
+            cursor: pointer;
+        }
+
+        /* 해독 화면 & 터미널 */
+        .decoder-terminal {
+            flex: 1;
+            background: #050811;
+            border: 1px solid #1e293b;
+            border-radius: 6px;
+            padding: 1rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+            font-family: 'Fira Code', monospace;
+            min-height: 240px;
+            position: relative;
+        }
+
+        .terminal-status {
+            font-size: 0.75rem;
+            color: #64748b;
+            display: flex;
+            justify-content: space-between;
+            border-bottom: 1px dashed #1e293b;
+            padding-bottom: 4px;
+        }
+
+        .terminal-content {
+            font-size: 0.84rem;
+            line-height: 1.6;
+            color: #94a3b8;
+            flex: 1;
+            overflow-y: auto;
+            max-height: 280px;
+        }
+
+        .decrypted-alert {
+            color: #34d399;
+            font-weight: bold;
+            border-left: 3px solid var(--accent);
+            padding-left: 8px;
+            margin-bottom: 8px;
+        }
+
+        .decrypted-body {
+            color: #e2e8f0;
+            background: rgba(14, 178, 154, 0.05);
+            border: 1px solid rgba(14, 178, 154, 0.2);
+            padding: 0.8rem;
+            border-radius: 4px;
+        }
+
+        .decrypted-body p {
+            margin-bottom: 0.6rem;
+        }
+
+        .decrypted-body strong {
+            color: #38bdf8;
+        }
+
+        /* 복사 버튼 */
+        .btn-copy {
+            background: rgba(14, 178, 154, 0.15);
+            color: var(--accent);
+            border: 1px solid var(--accent);
+            padding: 0.6rem 1rem;
+            border-radius: 4px;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.9rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn-copy:hover {
+            background: var(--accent);
+            color: #000;
+            box-shadow: 0 0 12px var(--accent-glow);
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h2>ZYMEDBIO R&D RECOMBINANT DNA DECODER</h2>
+        <p>동관 제퍼슨 아낙 연구실 화이트보드 화학공식 분석 및 전사(Transcription) 터미널</p>
+    </header>
+
+    <main class="main-layout">
+        
+        <div class="whiteboard-frame">
+            <div class="whiteboard">
+                <div class="board-header">
+                    <span class="board-title">PROJECT: ZY-019 / HYBRID TRANSCRIPTION MAP</span>
+                    <span class="board-meta">Lab-East: Jefferson Anak</span>
+                </div>
+
+                <div class="equation-area">
+                    <div style="font-weight: 700; color: #1e3a8a; margin-bottom: 4px;">[Primary Recombination Theorem]</div>
+                    <code>
+                        ΔG_splice = -RT·ln(K_eq) + ∑[Ψ_Mother · (H_base ⊗ F_fauna)]<br>
+                        k_trans = (k_B·T / h) · exp(-ΔG‡ / RT) · [Extract_X]^1.414
+                    </code>
+                </div>
+
+                <div class="complex-formula">
+                    <div style="font-size: 0.72rem; color: #64748b;">TARGET CODON STRAND [EXON 14-22]:</div>
+                    <div class="dna-strand">
+                        5'-ATG·CGT·<strong>ΨAG·ΩΩT·TGA·ΨΨA</strong>·GGT·CAC·<strong>ΞΞG·CTG·TAG</strong>-3'
+                    </div>
+                    <div style="font-size: 0.72rem; color: #64748b; margin-top: 4px;">REVERSE TRANSCRIPTION STABILITY:</div>
+                    <div style="color: #475569; font-size: 0.75rem;">
+                        • Human Baseline (46XY): <code>[α-Helix Balance: 40%]</code><br>
+                        • Fauna Isoform (Capra/Cervid): <code>[Hetero-Graft: 25%]</code><br>
+                        • Mother-Line Extract (Tertiary Vector): <code>[Catalytic Sat: 35%]</code>
+                    </div>
+                </div>
+
+                <div class="red-marker">
+                    * 주의: 정확한 촉매 공명비에 도달하지 못하면 염기 서열이 붕괴되어 데이터 판독 불가!
+                </div>
+
+                <div style="font-size: 0.8rem; color: #475569; font-family: monospace; border-top: 1px dashed #cbd5e1; padding-top: 6px;">
+                    ※ 저온(-4°C) 유지 시 세포 재생 유도 / 고온(37°C 이상) 방치 시 아메바동물(Amoebozoan) 급속 분열.
+                </div>
+            </div>
+        </div>
+
+        <div class="analyzer-panel">
+            <div class="panel-top">
+                <h3>RECOMBINANT SPECTRUM TUNER</h3>
+                <span class="resonance-indicator res-unmatched" id="resBadge">UNALIGNED (0%)</span>
+            </div>
+
+            <div class="slider-group">
+                <div class="slider-label-row">
+                    <span>1. 인간 기본 염기서열 (Human Base DNA)</span>
+                    <span class="slider-val" id="dispValHuman">50%</span>
+                </div>
+                <input type="range" id="sliderHuman" min="0" max="100" value="50" oninput="runAnalysis()">
+            </div>
+
+            <div class="slider-group">
+                <div class="slider-label-row">
+                    <span>2. 동물계 이종 형질 (Fauna Isoform Graft)</span>
+                    <span class="slider-val" id="dispValAnimal">20%</span>
+                </div>
+                <input type="range" id="sliderAnimal" min="0" max="100" value="20" oninput="runAnalysis()">
+            </div>
+
+            <div class="slider-group">
+                <div class="slider-label-row">
+                    <span>3. 미지의 어머니 혈통 추출물 (Vector Extract X)</span>
+                    <span class="slider-val" id="dispValBiocyte">30%</span>
+                </div>
+                <input type="range" id="sliderBiocyte" min="0" max="100" value="30" oninput="runAnalysis()">
+            </div>
+
+            <div class="decoder-terminal">
+                <div class="terminal-status">
+                    <span>STATUS: <span id="termStatusText">SPECTRAL SEARCHING...</span></span>
+                    <span id="codonMatch">CODON MATCH: 0%</span>
+                </div>
+
+                <div class="terminal-content" id="terminalOutput">
+                    <p style="color: #475569;">[SYSTEM READY] 화이트보드에 기록된 유전자 공명 공식의 정확한 비율(%)을 슬라이더로 맞추어 전사 공정을 동기화하십시오.</p>
+                </div>
+
+                <button class="btn-copy" id="btnCopy" onclick="copyDecryptedData()">
+                    📋 해독된 연구 보고서 텍스트 복사 (COPY TO CLIPBOARD)
+                </button>
+            </div>
+        </div>
+
+    </main>
+
+    <script>
+        // 목표 정확한 공명 수치 (화이트보드 메모에 적힌 값)
+        const TARGET = { human: 40, animal: 25, biocyte: 35 };
+
+        let isDecrypted = false;
+        let decryptedReportText = "";
+
+        function runAnalysis() {
+            const h = parseInt(document.getElementById('sliderHuman').value);
+            const a = parseInt(document.getElementById('sliderAnimal').value);
+            const b = parseInt(document.getElementById('sliderBiocyte').value);
+
+            document.getElementById('dispValHuman').innerText = h + "%";
+            document.getElementById('dispValAnimal').innerText = a + "%";
+            document.getElementById('dispValBiocyte').innerText = b + "%";
+
+            // 오차 거리 계산
+            const diff = Math.abs(h - TARGET.human) + Math.abs(a - TARGET.animal) + Math.abs(b - TARGET.biocyte);
+            const matchPct = Math.max(0, Math.min(100, Math.round(100 - (diff * 1.5))));
+
+            const resBadge = document.getElementById('resBadge');
+            const termStatusText = document.getElementById('termStatusText');
+            const codonMatch = document.getElementById('codonMatch');
+            const terminalOutput = document.getElementById('terminalOutput');
+            const btnCopy = document.getElementById('btnCopy');
+
+            codonMatch.innerText = `CODON MATCH: ${matchPct}%`;
+
+            // 정확히 맞췄을 때 (오차 합계 0일 때)
+            if (diff === 0) {
+                if (!isDecrypted) {
+                    isDecrypted = true;
+                    resBadge.className = "resonance-indicator res-matched";
+                    resBadge.innerText = "ALIGNED (100%)";
+                    termStatusText.innerText = "TRANSCRIPTION DECRYPTED [SUCCESS]";
+                    termStatusText.style.color = "#34d399";
+
+                    decryptedReportText = `[제퍼슨 아낙 연구실 DNA 전사 분석 최종 보고서]
+--------------------------------------------------
+■ 대상 물질: ZY-019 (자일락티스™ / 슈브 니구라스의 젖 가공물)
+■ 유전적 기전 분석:
+1. 본 제제는 단순 세포 치료제가 아니며, 숙주의 DNA 이중나선을 불안정화한 뒤 비인간 외계 유전 형질(어머니의 혈통)을 강제 전사함.
+2. 손상 부위 및 절단 사지 재생 시 인간의 골격/조직이 아닌 이종 동물계(사슴 뿔, 염소 발굽, 조류 부리/깃털 등)의 기관이 발현되는 '사티로스 변이'를 촉발함.
+3. [온도 제어 취약점]: 저온 냉각 시에는 인간의 지성을 유지한 채 하급 사티로스로 서서히 변이하나, 고온 가열 시 지성적 단세포 군체인 '삼차 바이오사이트(아메바동물)'로 변질되어 체내 침투 시 급격한 이성 붕괴와 상급 괴물화를 유발함.
+--------------------------------------------------
+* 데이터 검증: 과학(생물학/의학/약학) 분석 완료.`;
+
+                    terminalOutput.innerHTML = `
+                        <div class="decrypted-alert">✓ 염기서열 전사 결합 성공 (TRANSCRIPTION COMPLETE)</div>
+                        <div class="decrypted-body">
+                            <p><strong>[공식 해독 결과: 자일락티스 유전 변이 기전]</strong></p>
+                            <p>• <strong>외계 유전 형질 강제 주입:</strong> 본 약물은 세포 재생을 촉진하는 대신, 숙주의 세포 수준에서 타 동물군 조직 및 미지의 '어머니(슈브 니구라스)' 혈통 인자를 강제 융합시킵니다.</p>
+                            <p>• <strong>사티로스화(반인반수):</strong> 절단 부위 재생 시 인간의 피부나 골격이 아닌 <em>동물의 발굽, 뿔, 갈고리, 깃털</em> 형태로 재성형되는 비가역적 돌연변이가 확인되었습니다.</p>
+                            <p>• <strong>온도 반응 기전:</strong> 젖을 차갑게 식히면 약효가 둔화된 '자일락티스'가 되지만, 가열할 경우 반(半)지성체 슬라임인 '삼차 바이오사이트(아메바동물)'가 형성되어 숙주 침투 시 급격한 광기 변이를 촉발합니다.</p>
+                        </div>
+                    `;
+                    btnCopy.style.display = "flex";
+                }
+            } else {
+                isDecrypted = false;
+                resBadge.className = "resonance-indicator res-unmatched";
+                resBadge.innerText = `UNALIGNED (${matchPct}%)`;
+                termStatusText.innerText = "SPECTRAL MISMATCH";
+                termStatusText.style.color = "#64748b";
+                btnCopy.style.display = "none";
+
+                if (matchPct > 70) {
+                    terminalOutput.innerHTML = `<p style="color:#38bdf8;">[신호 감지] 공명 주파수가 근접하고 있습니다... (염기 결합 일치율: ${matchPct}%)</p><p style="font-size:0.75rem; color:#64748b;">슬라이더의 오차를 미세 조정하십시오.</p>`;
+                } else {
+                    terminalOutput.innerHTML = `<p style="color:#475569;">[SYSTEM READY] 화이트보드에 기록된 유전자 공명 공식의 정확한 비율(%)을 슬라이더로 맞추어 전사 공정을 동기화하십시오.</p>`;
+                }
+            }
+        }
+
+        function copyDecryptedData() {
+            if (!decryptedReportText) return;
+            navigator.clipboard.writeText(decryptedReportText).then(() => {
+                const btn = document.getElementById('btnCopy');
+                const originalText = btn.innerText;
+                btn.innerText = "✓ 클립보드에 복사 완료!";
+                btn.style.backgroundColor = "#0eb29a";
+                btn.style.color = "#000";
+                setTimeout(() => {
+                    btn.innerText = originalText;
+                    btn.style.backgroundColor = "rgba(14, 178, 154, 0.15)";
+                    btn.style.color = "var(--accent)";
+                }, 2000);
+            }).catch(err => {
+                alert("복사 실패: " + err);
+            });
+        }
+
+        // 초기 실행
+        runAnalysis();
+    </script>
+</body>
+</html>

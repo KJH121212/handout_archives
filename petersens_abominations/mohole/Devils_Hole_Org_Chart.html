@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>데빌스 홀 조직도 (Devil's Hole Platform Org Chart)</title>
+  <style>
+    :root {
+      --bg-gradient-top: #0a192f;
+      --bg-gradient-mid: #172a45;
+      --bg-gradient-bottom: #0d1b2a;
+      
+      --color-gov: #1e3a8a;
+      --color-exec: #1e40af;
+      --color-drill: #c2410c;
+      --color-nuclear: #065f46;
+      --color-security: #374151;
+      --color-ops: #854d0e;
+      --color-support: #991b1b;
+      
+      --text-main: #f8fafc;
+      --text-sub: #cbd5e1;
+      --text-muted: #94a3b8;
+      --line-color: #38bdf8;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background: #0b132b;
+      font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
+      padding: 30px 15px;
+      color: var(--text-main);
+      display: flex;
+      justify-content: center;
+    }
+
+    .org-container {
+      width: 100%;
+      max-width: 1200px;
+      background: radial-gradient(circle at 50% 10%, #1e3a8a 0%, #0f172a 60%, #020617 100%);
+      border: 1px solid #334155;
+      border-radius: 8px;
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
+      padding: 35px 25px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* 배경 장식 */
+    .org-container::before {
+      content: "";
+      position: absolute;
+      top: -50%;
+      right: -20%;
+      width: 600px;
+      height: 600px;
+      background: linear-gradient(135deg, rgba(56, 189, 248, 0.08), transparent 70%);
+      transform: rotate(35deg);
+      pointer-events: none;
+    }
+
+    /* 헤더 */
+    .org-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      border-bottom: 2px solid rgba(56, 189, 248, 0.3);
+      padding-bottom: 18px;
+      margin-bottom: 30px;
+    }
+
+    .gov-logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .gov-crest {
+      font-size: 24px;
+      line-height: 1;
+    }
+
+    .gov-title {
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      line-height: 1.2;
+      border-left: 2px solid #64748b;
+      padding-left: 10px;
+      color: #e2e8f0;
+    }
+
+    .doc-meta {
+      text-align: right;
+    }
+
+    .doc-meta h1 {
+      font-size: 20px;
+      color: #38bdf8;
+      font-weight: 800;
+      letter-spacing: 1px;
+    }
+
+    .doc-meta p {
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+
+    /* 계층 트리 공통 */
+    .chart-level {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      position: relative;
+      margin-bottom: 25px;
+    }
+
+    /* 노드 카드 스타일 */
+    .node-card {
+      background: rgba(15, 23, 42, 0.85);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 6px;
+      padding: 12px 16px;
+      text-align: center;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+      transition: all 0.2s ease;
+    }
+
+    .node-card:hover {
+      border-color: #38bdf8;
+      box-shadow: 0 0 15px rgba(56, 189, 248, 0.3);
+    }
+
+    .node-role {
+      font-size: 11px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 5px;
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 3px;
+    }
+
+    .node-name {
+      font-size: 13.5px;
+      font-weight: 700;
+      color: #fff;
+    }
+
+    .node-name-en {
+      font-size: 11px;
+      font-weight: 400;
+      color: var(--text-muted);
+      display: block;
+      margin-top: 1px;
+    }
+
+    .personnel-list {
+      list-style: none;
+      font-size: 12px;
+      line-height: 1.6;
+      text-align: left;
+      margin-top: 8px;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      padding-top: 8px;
+    }
+
+    .personnel-list li {
+      display: flex;
+      justify-content: space-between;
+      color: var(--text-sub);
+    }
+
+    .personnel-list .en {
+      color: var(--text-muted);
+      font-size: 11px;
+      margin-left: 8px;
+    }
+
+    /* 부서별 컬러 배정 */
+    .dept-gov .node-role { background: #1e3a8a; color: #93c5fd; }
+    .dept-gov { border-top: 3px solid #60a5fa; }
+
+    .dept-exec .node-role { background: #1d4ed8; color: #bfdbfe; }
+    .dept-exec { border-top: 3px solid #3b82f6; }
+
+    .dept-drill .node-role { background: #9a3412; color: #fdba74; }
+    .dept-drill { border-top: 3px solid #f97316; }
+
+    .dept-nuclear .node-role { background: #065f46; color: #6ee7b7; }
+    .dept-nuclear { border-top: 3px solid #10b981; }
+
+    .dept-security .node-role { background: #374151; color: #d1d5db; }
+    .dept-security { border-top: 3px solid #9ca3af; }
+
+    .dept-ops .node-role { background: #78350f; color: #fde047; }
+    .dept-ops { border-top: 3px solid #eab308; }
+
+    .dept-support .node-role { background: #881337; color: #fbcfe8; }
+    .dept-support { border-top: 3px solid #f43f5e; }
+
+    /* 4대 부서 4열 그리드 레이아웃 */
+    .branch-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      margin-top: 20px;
+    }
+
+    .branch-column {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .sub-group-title {
+      font-size: 11px;
+      font-weight: bold;
+      color: #94a3b8;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      padding-bottom: 4px;
+      margin-top: 4px;
+      margin-bottom: 2px;
+    }
+
+    /* 푸터 */
+    .org-footer {
+      margin-top: 35px;
+      padding-top: 15px;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      display: flex;
+      justify-content: space-between;
+      font-size: 11px;
+      color: #64748b;
+    }
+
+    @media (max-width: 992px) {
+      .branch-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 600px) {
+      .branch-grid {
+        grid-template-columns: 1fr;
+      }
+      .org-header {
+        flex-direction: column;
+        gap: 10px;
+      }
+      .doc-meta {
+        text-align: left;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="org-container">
+    <!-- 헤더 -->
+    <header class="org-header">
+      <div class="gov-logo">
+        <div class="gov-crest">👑</div>
+        <div class="gov-title">
+          Infrastructure<br>and Projects<br>Authority
+        </div>
+      </div>
+      <div class="doc-meta">
+        <h1>데빌스 홀 조직도 (Devil’s Hole Org Chart)</h1>
+        <p>외부 실사 감사팀 전용 (Prepared for the external auditing team)</p>
+        <p style="color: #64748b; font-size: 10.5px; margin-top: 3px;">
+          인프라 인도 임시 책임자: 알리스테어 에드워즈(Alistair Edwards)
+        </p>
+      </div>
+    </header>
+
+    <!-- 계층 1: 정부 부처 장관 -->
+    <div class="chart-level">
+      <div class="node-card dept-gov" style="min-width: 380px;">
+        <div class="node-role">비즈니스·에너지·산업전략부 장관 (Secretary of State for BEIS)</div>
+        <div class="node-name">제럴드 와인스텝 의원</div>
+        <span class="node-name-en">The Rt Hon Gerald Winestep MP</span>
+      </div>
+    </div>
+
+    <!-- 계층 2: 총괄 지휘부 (프로젝트 리드 & 총괄 매니저) -->
+    <div class="chart-level">
+      <div class="node-card dept-exec" style="width: 300px;">
+        <div class="node-role">프로젝트 총괄 책임자 (Project Lead)</div>
+        <div class="node-name">사이먼 로일롯 박사</div>
+        <span class="node-name-en">Dr. Simon Roylott</span>
+      </div>
+      <div class="node-card dept-exec" style="width: 300px;">
+        <div class="node-role">플랫폼 총괄 관리자 (Project Manager)</div>
+        <div class="node-name">피어스 골드만</div>
+        <span class="node-name-en">Piers Goldman</span>
+      </div>
+    </div>
+
+    <!-- 계층 3: 4대 현장 본부 그리드 -->
+    <div class="branch-grid">
+      
+      <!-- 1열: 해양 운영 및 시추 라인 -->
+      <div class="branch-column">
+        <div class="node-card dept-drill">
+          <div class="node-role">해양 운영 엔지니어 (Offshore Operations)</div>
+          <div class="node-name">제리 스크리븐스</div>
+          <span class="node-name-en">Jerry Scrivens</span>
+        </div>
+
+        <div class="node-card dept-drill">
+          <div class="node-role">중앙 제어실 (Control Room Operators)</div>
+          <ul class="personnel-list">
+            <li><span>제프 스몰스</span><span class="en">Jeff Smalls</span></li>
+            <li><span>루실 샤키</span><span class="en">Lucille Sharkey</span></li>
+            <li><span>피오나 맥크레이그</span><span class="en">Fiona McCraig</span></li>
+            <li><span>핀바 드러먼드</span><span class="en">Finbar Drummond</span></li>
+          </ul>
+        </div>
+
+        <div class="node-card dept-drill">
+          <div class="node-role">생산 공정 기술팀 (Production Technicians)</div>
+          <ul class="personnel-list">
+            <li><span>루이스 더피</span><span class="en">Lewis Duffy</span></li>
+            <li><span>빌 그리어</span><span class="en">Bill Greer</span></li>
+            <li><span>미치 로건</span><span class="en">Mitch Logan</span></li>
+            <li><span>스티브 크레시</span><span class="en">Steve Cressey</span></li>
+          </ul>
+        </div>
+
+        <div class="node-card dept-drill">
+          <div class="node-role">시추 작업팀 (Drill Crew)</div>
+          
+          <div class="sub-group-title">수석 시추사 (Driller)</div>
+          <ul class="personnel-list" style="margin-top: 0;">
+            <li><span>밥 맥크럼</span><span class="en">Bob MacCrum</span></li>
+          </ul>
+
+          <div class="sub-group-title">이수 엔지니어 (Mud Engineer)</div>
+          <ul class="personnel-list" style="margin-top: 0;">
+            <li><span>피트 시드</span><span class="en">Pete Shead</span></li>
+          </ul>
+
+          <div class="sub-group-title">유정탑 기술자 (Derrickhands)</div>
+          <ul class="personnel-list" style="margin-top: 0;">
+            <li><span>로이 베이츠</span><span class="en">Roy Bates</span></li>
+            <li><span>얀 안데르손</span><span class="en">Yan Anderson</span></li>
+            <li><span>바바라 컹크</span><span class="en">Barbara Cunk</span></li>
+          </ul>
+
+          <div class="sub-group-title">시추 인부 (Roughnecks)</div>
+          <ul class="personnel-list" style="margin-top: 0;">
+            <li><span>플로라 맥레이</span><span class="en">Flora Macrae</span></li>
+            <li><span>앵거스 맥냅</span><span class="en">Angus McNab</span></li>
+            <li><span>짐 리드</span><span class="en">Jim Reid</span></li>
+            <li><span>도널드 스튜어트</span><span class="en">Donald Stewart</span></li>
+            <li><span>타이론 클리버</span><span class="en">Tyrone Cleaver</span></li>
+            <li><span>라이오넬 스콧</span><span class="en">Lionel Scott</span></li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- 2열: 원자력 엔지니어링 라인 -->
+      <div class="branch-column">
+        <div class="node-card dept-nuclear">
+          <div class="node-role">원자로 운영 엔지니어 (Nuclear Operations)</div>
+          <div class="node-name">레이첼 켄트 박사</div>
+          <span class="node-name-en">Dr. Rachel Kent</span>
+        </div>
+
+        <div class="node-card dept-nuclear">
+          <div class="node-role">원자로 제어팀 (Reactor Control)</div>
+          <ul class="personnel-list">
+            <li><span>드니스 라치</span><span class="en">Denise Latch</span></li>
+            <li><span>세리스 존스</span><span class="en">Cerys Jones</span></li>
+            <li><span>미아 맥두걸</span><span class="en">Mea MacDougal</span></li>
+          </ul>
+        </div>
+
+        <div class="node-card dept-nuclear">
+          <div class="node-role">냉각 계통 기술팀 (Coolant Technicians)</div>
+          <ul class="personnel-list">
+            <li><span>비제이 레자</span><span class="en">Vijay Reza</span></li>
+            <li><span>톰 마틴</span><span class="en">Tom Martin</span></li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- 3열: 사설 무장 보안팀 (Fortudo) -->
+      <div class="branch-column">
+        <div class="node-card dept-security">
+          <div class="node-role">보안팀장 (Head of Security)</div>
+          <div class="node-name">데이비드 스탈</div>
+          <span class="node-name-en">David Stahl</span>
+        </div>
+
+        <div class="node-card dept-security">
+          <div class="node-role">보안 조장 (Section Leaders)</div>
+          <ul class="personnel-list">
+            <li><span>잭 데네스</span><span class="en">Jack Denes</span></li>
+            <li><span>칼 푹스</span><span class="en">Cal Fuchs</span></li>
+          </ul>
+        </div>
+
+        <div class="node-card dept-security">
+          <div class="node-role">보안 대원 (Security)</div>
+          <ul class="personnel-list">
+            <li><span>나이젤 고든</span><span class="en">Nigel Gordon</span></li>
+            <li><span>그렉 베닝스</span><span class="en">Greg Bennings</span></li>
+            <li><span>밴스 노리스</span><span class="en">Vance Norris</span></li>
+            <li><span>렘 스트로드</span><span class="en">Lem Strode</span></li>
+            <li><span>테디 도일</span><span class="en">Teddy Doyle</span></li>
+            <li><span>개리 헌트</span><span class="en">Gary Hunt</span></li>
+            <li><span>켄 루미스</span><span class="en">Ken Loomis</span></li>
+            <li><span>버드 알베스</span><span class="en">Budd Alves</span></li>
+          </ul>
+          <div style="font-size: 10px; color: #94a3b8; text-align: right; margin-top: 4px;">*감사팀 전담 경호 배속</div>
+        </div>
+      </div>
+
+      <!-- 4열: 운영 지원 및 기지 유지 관리 라인 -->
+      <div class="branch-column">
+        <div class="node-card dept-ops">
+          <div class="node-role">운영 지원 팀장 (Operations Team Leader)</div>
+          <div class="node-name">앤지 유세프</div>
+          <span class="node-name-en">Angie Yousef</span>
+        </div>
+
+        <div class="node-card dept-ops">
+          <div class="node-role">운영 코디네이터 (Operations Coordinator)</div>
+          <div class="node-name">미셸 테니슨</div>
+          <span class="node-name-en">Michel Tennyson</span>
+        </div>
+
+        <!-- 지원 파트별 개별 카드 -->
+        <div class="node-card dept-support">
+          <div class="node-role">헬리콥터 조종사 (Helicopter Pilot)</div>
+          <div class="node-name">보리스 쿡</div>
+          <span class="node-name-en">Boris Cooke</span>
+        </div>
+
+        <div class="node-card dept-support">
+          <div class="node-role">소나 및 무전 통신사 (Sonar & Radio)</div>
+          <div class="node-name">게이브 맥크레디</div>
+          <span class="node-name-en">Gabe Macready</span>
+        </div>
+
+        <div class="node-card dept-ops">
+          <div class="node-role">자동화 시스템 전문가 (Automation Systems)</div>
+          <div class="node-name">해리 도슨</div>
+          <span class="node-name-en">Harry Dawson</span>
+        </div>
+
+        <div class="node-card dept-ops">
+          <div class="node-role">유지 보수팀 (Maintenance Crew)</div>
+          <ul class="personnel-list">
+            <li><span>해리 슬로컴</span><span class="en">Harry Slocum</span></li>
+            <li><span>빌리 워터스</span><span class="en">Billy Waters</span></li>
+          </ul>
+        </div>
+
+        <div class="node-card dept-ops">
+          <div class="node-role">크레인 기사 (Crane Operator)</div>
+          <div class="node-name">리처드 코퍼</div>
+          <span class="node-name-en">Richard Copper</span>
+        </div>
+
+        <div class="node-card dept-support">
+          <div class="node-role">의무관 (Paramedic)</div>
+          <div class="node-name">토니 피어슨</div>
+          <span class="node-name-en">Tony Pearson</span>
+        </div>
+
+        <div class="node-card dept-support">
+          <div class="node-role">보급 및 매점 관리 (Stores Keeper)</div>
+          <div class="node-name">테건 필딩</div>
+          <span class="node-name-en">Tegan Fielding</span>
+        </div>
+
+        <div class="node-card dept-support">
+          <div class="node-role">조리팀 (Catering Crew)</div>
+          <ul class="personnel-list">
+            <li><span>패트릭 머피</span><span class="en">Patrick Murphy</span></li>
+            <li><span>시머스 오클레어</span><span class="en">Seamus O'Clare</span></li>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- 푸터 -->
+    <footer class="org-footer">
+      <div>Home of the Project Delivery Function (영국 정부 프로젝트 인도 본부)</div>
+      <div>CONFIDENTIAL - FOR AUTHORIZED AUDIT USE ONLY</div>
+    </footer>
+  </div>
+
+</body>
+</html>

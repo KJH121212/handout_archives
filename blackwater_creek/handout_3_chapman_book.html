@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>블랙워터 핸드아웃 3 - 북동부의 인디언 부족들</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <!-- 고서 활자체 및 학자의 손글씨 폰트 -->
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;800&family=IM+Fell+English:ital@0;1&family=Nanum+Myeongjo:wght@400;700&family=Nanum+Pen+Script&family=Caveat:wght@600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-dark: #0d0a08;
+      --book-leather: #24140e;
+      --paper: #f4eedb;
+      --paper-burn: #e0d0b0;
+      --ink: #211c18;
+      --faded-print: #3a322c;
+      --scholar-red: #8b1e16;
+      --highlight: rgba(180, 80, 40, 0.22);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-dark);
+      background-image: 
+        radial-gradient(circle at 50% 40%, rgba(36, 20, 14, 0.85) 0%, rgba(6, 4, 3, 0.98) 100%),
+        repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.3) 3px);
+      color: var(--ink);
+      font-family: 'IM Fell English', 'Nanum Myeongjo', serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 30px 15px;
+      overflow-x: hidden;
+    }
+
+    /* 상단 조작 버튼 툴바 */
+    .controls {
+      margin-bottom: 25px;
+      display: flex;
+      gap: 12px;
+      z-index: 10;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .btn {
+      background: #1f1610;
+      color: #cfbc9f;
+      border: 1px solid #4a3423;
+      padding: 8px 16px;
+      font-family: inherit;
+      font-size: 0.9rem;
+      cursor: pointer;
+      border-radius: 4px;
+      transition: all 0.2s ease;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.5);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .btn:hover {
+      background: #362316;
+      color: #faeed9;
+      border-color: #8c5d39;
+      transform: translateY(-1px);
+    }
+
+    .btn.active {
+      background: #5e2617;
+      color: #fff;
+      border-color: #ba4a2e;
+    }
+
+    /* 펼쳐진 고서 컨테이너 */
+    .book-wrapper {
+      width: 100%;
+      max-width: 780px;
+      background: var(--book-leather);
+      padding: 16px;
+      border-radius: 6px;
+      box-shadow: 
+        0 25px 60px rgba(0,0,0,0.9),
+        inset 0 0 20px rgba(0,0,0,0.8);
+      position: relative;
+    }
+
+    /* 책 페이지 */
+    .book-page {
+      background: var(--paper);
+      background-image: 
+        linear-gradient(to right, rgba(0,0,0,0.18) 0%, transparent 8%, transparent 92%, rgba(0,0,0,0.15) 100%),
+        radial-gradient(ellipse at center, transparent 60%, rgba(130, 95, 55, 0.2) 100%);
+      border: 1px solid #baa17d;
+      box-shadow: inset 0 0 40px rgba(100, 70, 35, 0.25);
+      padding: 55px 65px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* 찢어지고 더럽혀진 야영지 흔적 */
+    .dirt-stain {
+      position: absolute;
+      top: -30px;
+      right: -30px;
+      width: 180px;
+      height: 180px;
+      background: radial-gradient(circle, rgba(60, 40, 15, 0.25) 0%, transparent 65%);
+      pointer-events: none;
+    }
+
+    .water-damage {
+      position: absolute;
+      bottom: -40px;
+      left: 15%;
+      width: 260px;
+      height: 120px;
+      background: radial-gradient(ellipse, rgba(80, 50, 20, 0.2) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    /* 책 머리말 및 제목 */
+    .book-header {
+      text-align: center;
+      border-bottom: 2px solid #856a4e;
+      padding-bottom: 15px;
+      margin-bottom: 28px;
+    }
+
+    .book-title {
+      font-family: 'Cinzel', serif;
+      font-size: 1.15rem;
+      letter-spacing: 3px;
+      color: #3b281d;
+      text-transform: uppercase;
+    }
+
+    .book-author {
+      font-size: 0.85rem;
+      color: #6e553f;
+      font-style: italic;
+      margin-top: 4px;
+      letter-spacing: 1px;
+    }
+
+    .page-number {
+      position: absolute;
+      top: 25px;
+      right: 35px;
+      font-size: 0.85rem;
+      color: #7d654c;
+      font-style: italic;
+    }
+
+    .archive-note {
+      position: absolute;
+      top: 25px;
+      left: 35px;
+      font-size: 0.75rem;
+      color: #947a5c;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+
+    /* 본문 */
+    .page-body {
+      font-size: 1.08rem;
+      line-height: 1.85;
+      color: var(--ink);
+      text-align: justify;
+    }
+
+    .drop-cap {
+      float: left;
+      font-family: 'Cinzel', serif;
+      font-size: 3.2rem;
+      line-height: 0.8;
+      padding-top: 4px;
+      padding-right: 10px;
+      color: #4a2d1a;
+      font-weight: 800;
+    }
+
+    .page-body p {
+      margin-bottom: 20px;
+      text-indent: 1.4em;
+    }
+
+    .page-body p:first-of-type {
+      text-indent: 0;
+    }
+
+    /* 로즈 교수의 붉은 펜 여백 메모 (Marginalia) */
+    .margin-note {
+      position: absolute;
+      font-family: 'Nanum Pen Script', 'Caveat', cursive;
+      color: var(--scholar-red);
+      font-size: 1.35rem;
+      line-height: 1.15;
+      pointer-events: none;
+      filter: drop-shadow(0 0 1px rgba(139, 30, 22, 0.2));
+      opacity: 0.95;
+    }
+
+    .note-top-right {
+      top: 100px;
+      right: 35px;
+      transform: rotate(6deg);
+      max-width: 170px;
+      border-left: 2px solid var(--scholar-red);
+      padding-left: 8px;
+    }
+
+    .note-bottom-left {
+      bottom: 45px;
+      left: 45px;
+      transform: rotate(-4deg);
+      max-width: 250px;
+      border-bottom: 2px solid var(--scholar-red);
+      padding-bottom: 4px;
+    }
+
+    /* 단서 하이라이트 */
+    .clue {
+      transition: background 0.3s ease, border-bottom 0.3s ease;
+    }
+
+    .highlight-active .clue {
+      background-color: var(--highlight);
+      border-bottom: 1px dashed #9e3621;
+      cursor: help;
+    }
+
+    /* 돋보기 확대 모드 */
+    .enlarged .page-body {
+      font-size: 1.25rem;
+      line-height: 2.0;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- 제어 툴바 -->
+  <div class="controls">
+    <button class="btn" id="zoomBtn" onclick="toggleZoom()">🔍 글자 확대 / 축소</button>
+    <button class="btn" id="langBtn" onclick="toggleLang()">📜 원문(English) 보기</button>
+    <button class="btn" id="clueBtn" onclick="toggleClues()">💡 수호자 단서 해설</button>
+    <button class="btn" id="marginBtn" onclick="toggleMargins()">✏️ 로즈의 손메모 토글</button>
+  </div>
+
+  <div class="book-wrapper">
+    <div class="book-page" id="bookPage">
+      <div class="dirt-stain"></div>
+      <div class="water-damage"></div>
+
+      <div class="archive-note">The Roades Camp Site / Handout #3</div>
+      <div class="page-number">pp. 142-143</div>
+
+      <div class="book-header">
+        <div class="book-title">Indian Tribes of the Northeast</div>
+        <div class="book-author">by Nathaniel Chapman (Boston, 1889)</div>
+      </div>
+
+      <!-- 로즈 교수의 필기 주석 -->
+      <div class="margin-note note-top-right" id="marginNote1">
+        “케이드가 이들을 모두 태워 죽였다고? 과연 정말로 죽었을까?”
+      </div>
+
+      <div class="margin-note note-bottom-left" id="marginNote2">
+        “불사의 장로들... 동굴 안에 영원히 산다. 케이즈 레스트의 진실이 여기에 있다!”
+      </div>
+
+      <div class="page-body" id="pageContent">
+        <p>
+          <span class="drop-cap">미</span>스카토닉 계곡의 모든 부족 중 가장 신비롭고 두려운 존재는 백인 정착민들에게 <span class="clue" title="[신화 단서] '검은 흙의 자손들'은 슈브 니구라스를 숭배하며 '어머니의 선물'을 받아 변이된 고대 부족입니다.">'검은 흙의 자손들'로 알려진 시카이옥(Sicaiook) 부족</span>이었다. 그들은 식민지 시대 이후로 목격되지 않았으나 그들에 관한 이야기는 여전히 민담 속에 살아있다. 시카이옥에 관한 이야기 중 일부는 의심할 여지 없이 사실에 기반을 두고 있겠지만, 상당수는 시간의 흐름에 따라 윤색되었거나 원주민의 미신으로 오염되었을 것이다.
+        </p>
+        <p>
+          부족이 습격을 감행하여 포로를 잡은 뒤 <span class="clue" title="[신화 단서: 인신공양] 대지의 자궁에 포로를 제물로 바쳐 살덩이에 흡수시켰던 행위입니다. 스프라우스턴이 호킨스 과부에게 행한 것과 동일합니다.">자신들의 위대한 정령에게 제물로 바쳤다는 주장</span>은 대단히 그럴듯하다. 인디언 부족들 사이에서 인신공양은 드문 일이지만, 시카이옥의 사악한 평판과 전해지는 타락성은 모든 주변 부족들로부터 배척당한 원인이었으며 이러한 살인 이야기는 그 맥락의 일부를 이룬다.
+        </p>
+        <p>
+          그들의 잔혹함과 피에 굶주림은 또한 <span class="clue" title="[규칙 단서: 치유와 불사] '어머니의 선물' 1~2단계의 효과(경미한 부상 즉시 치유, 잃어버린 사지 재생)로 인해 필멸의 무기로는 쉽게 죽지 않았던 진실을 보여줍니다.">전사들이 전장에서 결코 죽지 않으며 모든 필멸의 무기에 면역이라는 평판</span>의 가장 유력한 뿌리이기도 하다. 전설이 순전한 허구로 변하는 지점은 부족이 신성한 동굴 밖에서는 결코 모습을 드러내지 않는 <span class="clue" title="[존재 단서: 변이된 장로들] 선물 6~7단계에 도달해 인간성을 완전히 잃고 동굴과 융합된 장로들입니다. 케이드가 보고 경악했던 존재들입니다.">불사의 장로 평의회</span>에 의해 통치되었다는 세부 사항이다. 장로들은 위대한 마법과 치유의 은사를 지닌 지혜롭고 끔찍한 존재로 회자되었다. 부족이 <span class="clue" title="[변이 징후] 선물 후반부에 나타나는 벌레 같은 흰 성장물과 촉수, 기괴한 유기적 연결성을 의미합니다.">"뱀과 들판의 벌레들의 형제"</span>로 묘사된 것 또한 기괴하기 짝이 없다.
+        </p>
+        <p>
+          부족의 소멸을 설명하는 이야기나 전설은 남아있지 않으나, 가장 가능성 있는 설명은 그들이 이웃 부족이나 식민지 정착민들에 의해 절멸되었거나 문명화된 영향력에 노출되어 계곡의 더 큰 부족들로 수용 및 흡수되었다는 것이다.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let isEnlarged = false;
+    let isEnglish = false;
+    let showClues = false;
+    let showMargins = true;
+
+    const bookPage = document.getElementById('bookPage');
+    const pageContent = document.getElementById('pageContent');
+    const zoomBtn = document.getElementById('zoomBtn');
+    const langBtn = document.getElementById('langBtn');
+    const clueBtn = document.getElementById('clueBtn');
+    const marginBtn = document.getElementById('marginBtn');
+    const margin1 = document.getElementById('marginNote1');
+    const margin2 = document.getElementById('marginNote2');
+
+    const korHTML = `
+      <p>
+        <span class="drop-cap">미</span>스카토닉 계곡의 모든 부족 중 가장 신비롭고 두려운 존재는 백인 정착민들에게 <span class="clue" title="[신화 단서] '검은 흙의 자손들'은 슈브 니구라스를 숭배하며 '어머니의 선물'을 받아 변이된 고대 부족입니다.">'검은 흙의 자손들'로 알려진 시카이옥(Sicaiook) 부족</span>이었다. 그들은 식민지 시대 이후로 목격되지 않았으나 그들에 관한 이야기는 여전히 민담 속에 살아있다. 시카이옥에 관한 이야기 중 일부는 의심할 여지 없이 사실에 기반을 두고 있겠지만, 상당수는 시간의 흐름에 따라 윤색되었거나 원주민의 미신으로 오염되었을 것이다.
+      </p>
+      <p>
+        부족이 습격을 감행하여 포로를 잡은 뒤 <span class="clue" title="[신화 단서: 인신공양] 대지의 자궁에 포로를 제물로 바쳐 살덩이에 흡수시켰던 행위입니다. 스프라우스턴이 호킨스 과부에게 행한 것과 동일합니다.">자신들의 위대한 정령에게 제물로 바쳤다는 주장</span>은 대단히 그럴듯하다. 인디언 부족들 사이에서 인신공양은 드문 일이지만, 시카이옥의 사악한 평판과 전해지는 타락성은 모든 주변 부족들로부터 배척당한 원인이었으며 이러한 살인 이야기는 그 맥락의 일부를 이룬다.
+      </p>
+      <p>
+        그들의 잔혹함과 피에 굶주림은 또한 <span class="clue" title="[규칙 단서: 치유와 불사] '어머니의 선물' 1~2단계의 효과(경미한 부상 즉시 치유, 잃어버린 사지 재생)로 인해 필멸의 무기로는 쉽게 죽지 않았던 진실을 보여줍니다.">전사들이 전장에서 결코 죽지 않으며 모든 필멸의 무기에 면역이라는 평판</span>의 가장 유력한 뿌리이기도 하다. 전설이 순전한 허구로 변하는 지점은 부족이 신성한 동굴 밖에서는 결코 모습을 드러내지 않는 <span class="clue" title="[존재 단서: 변이된 장로들] 선물 6~7단계에 도달해 인간성을 완전히 잃고 동굴과 융합된 장로들입니다. 케이드가 보고 경악했던 존재들입니다.">불사의 장로 평의회</span>에 의해 통치되었다는 세부 사항이다. 장로들은 위대한 마법과 치유의 은사를 지닌 지혜롭고 끔찍한 존재로 회자되었다. 부족이 <span class="clue" title="[변이 징후] 선물 후반부에 나타나는 벌레 같은 흰 성장물과 촉수, 기괴한 유기적 연결성을 의미합니다.">"뱀과 들판의 벌레들의 형제"</span>로 묘사된 것 또한 기괴하기 짝이 없다.
+      </p>
+      <p>
+        부족의 소멸을 설명하는 이야기나 전설은 남아있지 않으나, 가장 가능성 있는 설명은 그들이 이웃 부족이나 식민지 정착민들에 의해 절멸되었거나 문명화된 영향력에 노출되어 계곡의 더 큰 부족들로 수용 및 흡수되었다는 것이다.
+      </p>
+    `;
+
+    const engHTML = `
+      <p>
+        <span class="drop-cap">O</span>f all the tribes of the Miskatonic Valley, the most secretive and feared were <span class="clue" title="[Mythos Clue] The Sicaiook worshipped Shub-Niggurath and carried the Mother's Gift.">the Sicaiook, known to white settlers as "the Children of the Black Soil."</span> They have not been seen since colonial times, yet stories of them persist in folklore. While some tales are undoubtedly grounded in truth, much has been embellished over the passage of time or corrupted by native superstition.
+      </p>
+      <p>
+        Claims that the tribe staged raids to capture prisoners and <span class="clue" title="[Sacrifice Clue] Sacrificing mortals to the Earth's Womb to be devoured by the living biomass.">sacrifice them to their great spirit</span> are plausible enough. Human sacrifice was rare among Indian tribes, yet the wicked reputation and reported depravity of the Sicaiook led to their ostracization by surrounding tribes.
+      </p>
+      <p>
+        Their savagery is also the most probable root of the reputation that <span class="clue" title="[Mechanic Clue] Rapid limb regeneration and physical resilience provided by the Mother's Gift.">their warriors never died in battle and were immune to mortal weapons.</span> Where legend turns to pure fabrication is in the detail that the tribe was governed by an <span class="clue" title="[Elder Clue] Corrupted tribal elders fused within the cave system at Stage 6-7 corruption.">immortal council of elders</span> who never showed themselves outside a sacred cave. These elders were whispered to be creatures of great magic and healing gifts. Equally bizarre were descriptions of the tribe as <span class="clue" title="[Mutation Clue] Symbiotic connection to insects, worms, and the flora/fauna under the Mother's influence.">"brothers to snakes and worms of the field."</span>
+      </p>
+      <p>
+        No stories or legends survive to account for the tribe's disappearance, though the most likely explanation is that they were exterminated by neighboring tribes or early colonists, or absorbed into larger regional groups.
+      </p>
+    `;
+
+    function toggleZoom() {
+      isEnlarged = !isEnlarged;
+      if (isEnlarged) {
+        bookPage.classList.add('enlarged');
+        zoomBtn.innerText = "🔍 기본 크기로 축소";
+      } else {
+        bookPage.classList.remove('enlarged');
+        zoomBtn.innerText = "🔍 글자 확대 / 축소";
+      }
+    }
+
+    function toggleLang() {
+      isEnglish = !isEnglish;
+      if (isEnglish) {
+        pageContent.innerHTML = engHTML;
+        langBtn.innerText = "📜 번역문(한국어) 보기";
+        margin1.innerText = '"Cade burned them all? Did they truly perish?"';
+        margin2.innerText = '"Immortal elders... living forever inside the cave. The truth of Cade’s Rest is here!"';
+      } else {
+        pageContent.innerHTML = korHTML;
+        langBtn.innerText = "📜 원문(English) 보기";
+        margin1.innerText = '“케이드가 이들을 모두 태워 죽였다고? 과연 정말로 죽었을까?”';
+        margin2.innerText = '“불사의 장로들... 동굴 안에 영원히 산다. 케이즈 레스트의 진실이 여기에 있다!”';
+      }
+    }
+
+    function toggleClues() {
+      showClues = !showClues;
+      if (showClues) {
+        document.body.classList.add('highlight-active');
+        clueBtn.classList.add('active');
+        clueBtn.innerText = "💡 수호자 단서 숨기기";
+      } else {
+        document.body.classList.remove('highlight-active');
+        clueBtn.classList.remove('active');
+        clueBtn.innerText = "💡 수호자 단서 해설";
+      }
+    }
+
+    function toggleMargins() {
+      showMargins = !showMargins;
+      margin1.style.display = showMargins ? 'block' : 'none';
+      margin2.style.display = showMargins ? 'block' : 'none';
+      marginBtn.classList.toggle('active', showMargins);
+    }
+  </script>
+</body>
+</html>

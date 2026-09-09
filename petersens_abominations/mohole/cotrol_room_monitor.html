@@ -1,0 +1,137 @@
+<meta charset="UTF-8">
+<div class="handout-container" style="max-width: 760px; margin: 20px auto; font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, sans-serif; color: #00ffcc; box-shadow: 0 4px 15px rgba(0,0,0,0.3); border-radius: 4px; overflow: hidden; border: 2px solid #7f1d1d; background: #03050a;">
+  
+  <!-- 모니터 헤더 바 -->
+  <div style="background: #0f172a; padding: 10px 15px; border-bottom: 1px solid #7f1d1d; display: flex; justify-content: space-between; align-items: center; font-size: 12px; font-family: 'Courier New', Courier, monospace;">
+    <span style="color: #f87171; font-weight: bold;">[DEVIL'S HOLE RIG - CENTRAL CONTROL MONITOR]</span>
+    <span style="background: #991b1b; color: #fff; padding: 2px 6px; border-radius: 2px; font-size: 10px; animation: blink 0.8s infinite;">SYSTEM WARNING</span>
+  </div>
+
+  <!-- 모니터 본문 그리드 -->
+  <div style="padding: 20px; display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; position: relative; font-family: 'Courier New', Courier, monospace;">
+    
+    <!-- CRT 스캔라인 효과 오버레이 -->
+    <div style="content: ' '; display: block; position: absolute; top: 0; left: 0; bottom: 0; right: 0; background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06)); z-index: 10; background-size: 100% 3px, 3px 100%; pointer-events: none;"></div>
+
+    <!-- 패널 1: 시추 현황 (Jittering 효과 적용) -->
+    <div style="background: rgba(20, 10, 15, 0.85); border: 1px solid #7f1d1d; border-radius: 4px; padding: 12px; display: flex; flex-direction: column; justify-content: space-between;">
+      <div style="font-size: 13px; font-weight: bold; color: #f87171; border-bottom: 1px solid #7f1d1d; padding-bottom: 4px; margin-bottom: 8px; display: flex; justify-content: space-between;">
+        <span>[DRILLING STATUS]</span>
+        <span style="font-size: 9px; background: #991b1b; color: #fff; padding: 1px 4px; animation: blink 1s infinite;">HEAVY</span>
+      </div>
+      <div style="font-size: 12px; line-height: 1.4;">
+        DEPTH: <strong>26,400 FT</strong> (MOHO)<br>
+        TORQUE: <span style="color: #ef4444; font-weight: bold; animation: text-jitter 0.2s infinite;">115% (UNSTABLE)</span><br>
+      </div>
+      <!-- 붉은색 경계선이 포함된 프로그레스 바 컨테이너 -->
+      <div style="width: 100%; background: #2a0808; height: 12px; border: 1px solid #ef4444; margin-top: 8px; position: relative;">
+        <!-- 한계선 (85% 지점) -->
+        <div style="position: absolute; top: 0; bottom: 0; left: 85%; width: 3px; background: #fff; z-index: 2; box-shadow: 0 0 6px #ef4444;"></div>
+        <!-- 불규칙하게 떨리는(Jittering) 진행 바 -->
+        <div style="height: 100%; background: linear-gradient(90deg, #b91c1c 70%, #ef4444 100%); animation: bar-jitter 0.5s infinite steps(4, end);"></div>
+      </div>
+      <div style="font-size: 10px; color: #ef4444; text-align: right; margin-top: 2px; font-weight: bold;">▲ DANGER THRESHOLD (85%)</div>
+      <div style="font-size: 11px; color: #fca5a5; background: rgba(153, 27, 27, 0.3); border-left: 2px solid #ef4444; padding: 4px; margin-top: 6px;">
+        👁️ 수치가 붉은색 경계선을 넘어 한계에 도달해 있습니다.
+      </div>
+    </div>
+
+    <!-- 패널 2: 원자로 및 전력 -->
+    <div style="background: rgba(20, 10, 15, 0.85); border: 1px solid #7f1d1d; border-radius: 4px; padding: 12px; display: flex; flex-direction: column; justify-content: space-between;">
+      <div style="font-size: 13px; font-weight: bold; color: #f87171; border-bottom: 1px solid #7f1d1d; padding-bottom: 4px; margin-bottom: 8px; display: flex; justify-content: space-between;">
+        <span>[POWER & REACTOR]</span>
+        <span style="font-size: 9px; background: #991b1b; color: #fff; padding: 1px 4px; animation: blink 0.8s infinite;">WARNING</span>
+      </div>
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; font-size: 11px; text-align: center;">
+        <div style="border: 1px dashed #7f1d1d; padding: 6px; background: rgba(153, 27, 27, 0.1);">
+          OUTPUT<div style="font-size: 15px; font-weight: bold; color: #f87171; margin-top: 2px; animation: text-pulse 1s infinite;">135%</div>
+        </div>
+        <div style="border: 1px dashed #b45309; padding: 6px; background: rgba(180, 83, 9, 0.1);">
+          COOLANT<div style="font-size: 13px; font-weight: bold; color: #f59e0b; margin-top: 2px;">FAULT</div>
+        </div>
+      </div>
+      <div style="font-size: 11px; color: #fca5a5; background: rgba(153, 27, 27, 0.3); border-left: 2px solid #ef4444; padding: 4px; margin-top: 6px;">
+        👁️ 원자로 출력 초과 및 냉각 계통 경고등 점멸 중.
+      </div>
+    </div>
+
+    <!-- 패널 3: 기상 및 소나 레이더 -->
+    <div style="background: rgba(20, 10, 15, 0.85); border: 1px solid #7f1d1d; border-radius: 4px; padding: 12px; display: flex; flex-direction: column; justify-content: space-between;">
+      <div style="font-size: 13px; font-weight: bold; color: #f87171; border-bottom: 1px solid #7f1d1d; padding-bottom: 4px; margin-bottom: 8px; display: flex; justify-content: space-between;">
+        <span>[WEATHER & SONAR]</span>
+        <span style="font-size: 9px; background: #991b1b; color: #fff; padding: 1px 4px; animation: blink 0.8s infinite;">STORM</span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 10px;">
+        <div style="width: 70px; height: 70px; border: 1px solid #ef4444; border-radius: 50%; position: relative; background: radial-gradient(circle, #3a0808 0%, #0f0202 100%); overflow: hidden; flex-shrink: 0;">
+          <div style="position: absolute; top: 50%; left: 50%; width: 35px; height: 35px; background: linear-gradient(45deg, rgba(239, 68, 68, 0.8) 0%, transparent 70%); transform-origin: 0 0; animation: sweep 2s linear infinite;"></div>
+        </div>
+        <div style="font-size: 10.5px; line-height: 1.3;">
+          RADAR: 폭풍 전선 직전 접근<br>
+          SONAR: 데빌스 홀 참호 (750 FT)<br>
+          WAVE: 14M 거친 파도
+        </div>
+      </div>
+      <div style="font-size: 11px; color: #fca5a5; background: rgba(153, 27, 27, 0.3); border-left: 2px solid #ef4444; padding: 4px; margin-top: 6px;">
+        👁️ 레이더 화면에 거대한 폭풍우가 플랫폼을 덮치는 중.
+      </div>
+    </div>
+
+    <!-- 패널 4: 가스 처리 및 계측 -->
+    <div style="background: rgba(20, 10, 15, 0.85); border: 1px solid #7f1d1d; border-radius: 4px; padding: 12px; display: flex; flex-direction: column; justify-content: space-between;">
+      <div style="font-size: 13px; font-weight: bold; color: #f87171; border-bottom: 1px solid #7f1d1d; padding-bottom: 4px; margin-bottom: 8px; display: flex; justify-content: space-between;">
+        <span>[GAS METERING]</span>
+        <span style="font-size: 9px; background: #b45309; color: #fff; padding: 1px 4px;">ACTIVE</span>
+      </div>
+      <div style="font-size: 11px; margin-bottom: 4px;">
+        HARVEST: 상부 포켓 가스 채굴 (순도 96%)
+      </div>
+      <div style="height: 35px; display: flex; align-items: flex-end; gap: 3px; border-bottom: 1px solid #374151; border-left: 1px solid #374151; padding: 2px;">
+        <div style="flex: 1; background: #f87171; height: 50%; animation: wave 1.2s infinite alternate;"></div>
+        <div style="flex: 1; background: #f87171; height: 70%; animation: wave 1.2s 0.2s infinite alternate;"></div>
+        <div style="flex: 1; background: #f87171; height: 40%; animation: wave 1.2s 0.4s infinite alternate;"></div>
+        <div style="flex: 1; background: #f87171; height: 90%; animation: wave 1.2s 0.1s infinite alternate;"></div>
+        <div style="flex: 1; background: #f87171; height: 60%; animation: wave 1.2s 0.5s infinite alternate;"></div>
+      </div>
+      <div style="font-size: 11px; color: #fca5a5; background: rgba(153, 27, 27, 0.3); border-left: 2px solid #ef4444; padding: 4px; margin-top: 6px;">
+        👁️ 정제 라인의 압력 바가 불규칙하게 요동치는 중.
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<style>
+  @keyframes blink {
+    0% { opacity: 1; }
+    50% { opacity: 0.3; }
+    100% { opacity: 1; }
+  }
+  @keyframes text-pulse {
+    0% { opacity: 0.7; }
+    50% { opacity: 1; text-shadow: 0 0 8px rgba(239, 68, 68, 0.6); }
+    100% { opacity: 0.7; }
+  }
+  @keyframes text-jitter {
+    0% { transform: translateY(0); }
+    25% { transform: translateY(-1px); }
+    50% { transform: translateY(1px); }
+    75% { transform: translateY(-0.5px); }
+    100% { transform: translateY(0); }
+  }
+  @keyframes bar-jitter {
+    0% { width: 85%; }
+    20% { width: 88%; }
+    40% { width: 84%; }
+    60% { width: 87%; }
+    80% { width: 84.5%; }
+    100% { width: 86%; }
+  }
+  @keyframes sweep {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+  @keyframes wave {
+    0% { height: 20%; }
+    100% { height: 95%; }
+  }
+</style>

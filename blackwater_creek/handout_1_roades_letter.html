@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>미스카토닉 대학 보관 문서 - 핸드아웃 1</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <!-- 빈티지 필기체 및 세리프 폰트 -->
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600&family=IM+Fell+English:ital@0;1&family=Nanum+Myeongjo:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-dark: #12100e;
+      --paper-base: #f3eed9;
+      --paper-shadow: rgba(0, 0, 0, 0.45);
+      --ink: #1f1b18;
+      --faded-ink: #3b322a;
+      --accent-red: #6d1b1b;
+      --highlight: rgba(184, 134, 11, 0.28);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-dark);
+      background-image: 
+        radial-gradient(circle at center, rgba(30, 26, 22, 0.8) 0%, rgba(10, 8, 7, 0.98) 100%),
+        repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0, 0, 0, 0.15) 3px);
+      color: var(--ink);
+      font-family: 'IM Fell English', 'Nanum Myeongjo', serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 30px 15px;
+      overflow-x: hidden;
+    }
+
+    /* 툴바 / 제어판 */
+    .controls {
+      margin-bottom: 25px;
+      display: flex;
+      gap: 12px;
+      z-index: 10;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .btn {
+      background: #25201b;
+      color: #c9b99a;
+      border: 1px solid #4a3e35;
+      padding: 8px 16px;
+      font-family: inherit;
+      font-size: 0.9rem;
+      cursor: pointer;
+      border-radius: 4px;
+      transition: all 0.2s ease;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .btn:hover {
+      background: #362e26;
+      color: #ede2cd;
+      border-color: #8c735d;
+      transform: translateY(-1px);
+    }
+
+    .btn.active {
+      background: #503d2e;
+      color: #fff;
+      border-color: #c29b6f;
+    }
+
+    /* 봉투 컨테이너 */
+    .envelope-container {
+      width: 100%;
+      max-width: 680px;
+      perspective: 1000px;
+      position: relative;
+    }
+
+    /* 봉투 닫힌 상태 카드 */
+    .envelope {
+      width: 100%;
+      height: 380px;
+      background: #dfd2b5;
+      border: 1px solid #bda887;
+      border-radius: 6px;
+      box-shadow: 0 15px 35px var(--paper-shadow), inset 0 0 60px rgba(117, 85, 43, 0.2);
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 35px 45px;
+      transition: transform 0.4s ease, opacity 0.4s ease;
+    }
+
+    .envelope:hover {
+      transform: translateY(-4px);
+    }
+
+    .envelope.opened {
+      display: none;
+    }
+
+    .postmark {
+      position: absolute;
+      top: 30px;
+      right: 40px;
+      width: 110px;
+      height: 110px;
+      border: 2px dashed #6b4c3b;
+      border-radius: 50%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.75rem;
+      color: #5c3e2e;
+      text-transform: uppercase;
+      transform: rotate(12deg);
+      opacity: 0.85;
+      pointer-events: none;
+      line-height: 1.2;
+      text-align: center;
+    }
+
+    .stamp {
+      position: absolute;
+      top: 25px;
+      right: 35px;
+      width: 65px;
+      height: 75px;
+      border: 2px solid #552;
+      background: #9c4141;
+      color: #f7e6d2;
+      font-size: 0.65rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 1px 1px 4px rgba(0,0,0,0.3);
+      transform: rotate(3deg);
+    }
+
+    .envelope-addressee {
+      margin-top: 80px;
+      font-family: 'Caveat', cursive;
+      font-size: 1.85rem;
+      color: #27211d;
+      line-height: 1.35;
+      padding-left: 20px;
+    }
+
+    .click-hint {
+      align-self: center;
+      font-size: 0.85rem;
+      color: #7a634e;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      animation: pulse 2s infinite ease-in-out;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 0.4; }
+      50% { opacity: 1; }
+    }
+
+    /* 열린 편지 본체 */
+    .letter-sheet {
+      width: 100%;
+      max-width: 680px;
+      background: var(--paper-base);
+      background-image: 
+        radial-gradient(ellipse at top left, rgba(255,255,255,0.4) 0%, transparent 60%),
+        radial-gradient(ellipse at bottom right, rgba(94, 63, 30, 0.18) 0%, transparent 70%);
+      padding: 60px 65px;
+      box-shadow: 0 15px 40px rgba(0,0,0,0.6), inset 0 0 80px rgba(110, 78, 40, 0.15);
+      border: 1px solid #c4b08f;
+      position: relative;
+      display: none;
+      animation: unfold 0.6s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
+    }
+
+    .letter-sheet.show {
+      display: block;
+    }
+
+    @keyframes unfold {
+      from {
+        opacity: 0;
+        transform: scale(0.92) translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+      }
+    }
+
+    /* 종이 오염/빈티지 디테일 */
+    .stain-corner {
+      position: absolute;
+      bottom: -15px;
+      right: -15px;
+      width: 140px;
+      height: 140px;
+      background: radial-gradient(circle, rgba(74, 49, 23, 0.25) 0%, transparent 65%);
+      pointer-events: none;
+      border-radius: 50%;
+    }
+
+    /* 편지 헤더 */
+    .letter-header {
+      border-bottom: 1px solid #7c6853;
+      padding-bottom: 12px;
+      margin-bottom: 28px;
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.85rem;
+      color: #554434;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .letter-meta {
+      text-align: right;
+      font-style: italic;
+      font-size: 1rem;
+      color: var(--faded-ink);
+      line-height: 1.4;
+      margin-bottom: 24px;
+    }
+
+    /* 편지 텍스트 */
+    .salutation {
+      font-size: 1.25rem;
+      margin-bottom: 18px;
+      font-weight: bold;
+    }
+
+    .letter-body {
+      font-size: 1.08rem;
+      line-height: 1.75;
+      color: var(--ink);
+      text-align: justify;
+    }
+
+    .letter-body p {
+      margin-bottom: 18px;
+      text-indent: 1.5em;
+    }
+
+    .sign-off {
+      margin-top: 35px;
+      text-align: right;
+      font-family: 'Caveat', cursive;
+      font-size: 2.1rem;
+      color: #1a1614;
+      line-height: 1.1;
+    }
+
+    .sign-off span {
+      display: block;
+      font-family: 'IM Fell English', serif;
+      font-size: 0.95rem;
+      font-style: italic;
+      color: #63503f;
+      margin-bottom: 4px;
+    }
+
+    /* 단서 하이라이트 토글 효과 */
+    .clue {
+      transition: background 0.3s ease, border-bottom 0.3s ease;
+    }
+
+    .highlight-active .clue {
+      background-color: var(--highlight);
+      border-bottom: 1px dashed #a07817;
+      cursor: help;
+    }
+
+    /* 번역문 / 원문 스타일 교체 */
+    .font-handwriting {
+      font-family: 'Caveat', cursive;
+      font-size: 1.45rem;
+      line-height: 1.45;
+    }
+
+    /* 워터마크 / 하단 아카이브 표기 */
+    .archive-tag {
+      position: absolute;
+      top: 15px;
+      left: 20px;
+      font-size: 0.7rem;
+      letter-spacing: 1px;
+      color: #9c8469;
+      text-transform: uppercase;
+      border: 1px solid #d4c2a5;
+      padding: 2px 6px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- 제어 툴바 -->
+  <div class="controls">
+    <button class="btn" id="toggleOpenBtn" onclick="toggleEnvelope()">✉️ 봉투 열기 / 접기</button>
+    <button class="btn" id="langBtn" onclick="toggleLang()">📜 원문(English) 보기</button>
+    <button class="btn" id="clueBtn" onclick="toggleClues()">🔍 수호자 단서 강조</button>
+  </div>
+
+  <div class="envelope-container">
+    
+    <!-- 닫힌 봉투 -->
+    <div class="envelope" id="envelopeCard" onclick="openLetter()">
+      <div class="stamp">
+        <span>U.S.</span>
+        <strong>2¢</strong>
+        <span>POSTAGE</span>
+      </div>
+      <div class="postmark">
+        DUMWICH CO.<br>
+        JUN 23<br>
+        1928<br>
+        MASS.
+      </div>
+      <div class="envelope-addressee">
+        To: Professor Ernest McTavish<br>
+        Chair of Archaeology Department<br>
+        Miskatonic University, Arkham, Mass.
+      </div>
+      <div class="click-hint">[ 봉투를 클릭하여 개봉하십시오 ]</div>
+    </div>
+
+    <!-- 편지 본문 -->
+    <div class="letter-sheet" id="letterSheet">
+      <div class="archive-tag">Miskatonic Univ. Dept. of Archaeology / Exhibit #1</div>
+      <div class="stain-corner"></div>
+
+      <div class="letter-header">
+        <span>Confidential & Personal</span>
+        <span>Via Baxter's General Store</span>
+      </div>
+
+      <div class="letter-meta">
+        백스터 잡화점 경유,<br>
+        던위치 카운티, 블랙워터 크릭<br>
+        <strong>1928년 6월 22일</strong>
+      </div>
+
+      <div class="salutation">친애하는 맥태비시에게,</div>
+
+      <div class="letter-body" id="letterContent">
+        <p>
+          대학 복귀 계획이 불가피하게 지연되었음을 알리게 되어 매우 유감스럽네. <span class="clue" title="[단서: 거짓 보고] 실제로는 대지의 자궁을 발견하고 애비게일이 융합되었으나 이를 은폐하기 위해 거짓말을 하고 있습니다.">이전에 논의했듯이 발굴 현장은 소득이 없었으나,</span> 이곳을 완전히 정리하기 전에 처리해야 할 사소한 작업이 아직 남아 있네. 늦어도 8월 말까지는 아컴으로 돌아갈 수 있을 것으로 예상하네. 이번 일정 연장으로 불편을 끼쳐 다시 한번 깊이 사과하네.
+        </p>
+        <p>
+          <span class="clue" title="[단서: 조사대 방해 차단] 추가 인원이 파견되어 성스러운 장소(동굴)를 침범하거나 애비게일의 상태를 발견하는 것을 막으려 합니다.">혹시라도 현장 팀원 중 일부를 다시 이곳으로 보낼 생각을 하고 있다면, 절대로 그러지 말 것을 강력히 권고하네.</span> 자네도 전에 들었겠지만, <span class="clue" title="[단서: 카모디 형제] 데미안 카모디와 그의 무장 패거리들을 지칭합니다.">현지 농부 중 한 명이 우리의 존재를 몹시 불쾌해하고 있으며 거친 패거리들을 거느리고 있는 듯하네.</span> 현장 팀이 애비게일과 나뿐일 때는 크게 거슬리지 않는 수준이겠지만, 인원이 늘어나면 자극이 될까 우려스럽네.
+        </p>
+        <p>
+          애비게일이 안부를 전하며, 우리 둘 다 어서 아컴으로 돌아가 자네 및 메리와 함께 브리지 게임의 밤을 보내기를 고대하고 있네. 정말 미안하네.
+        </p>
+      </div>
+
+      <div class="sign-off">
+        <span>자네의 친구,</span>
+        Henry Roades
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    let isOpened = false;
+    let isEnglish = false;
+    let showClues = false;
+
+    const envelope = document.getElementById('envelopeCard');
+    const letter = document.getElementById('letterSheet');
+    const letterContent = document.getElementById('letterContent');
+    const langBtn = document.getElementById('langBtn');
+    const clueBtn = document.getElementById('clueBtn');
+    const toggleOpenBtn = document.getElementById('toggleOpenBtn');
+
+    const korText = `
+      <p>
+        대학 복귀 계획이 불가피하게 지연되었음을 알리게 되어 매우 유감스럽네. <span class="clue" title="[단서: 은폐] 발굴 소득이 없다고 둘러대며 조사를 독점하려 합니다.">이전에 논의했듯이 발굴 현장은 소득이 없었으나,</span> 이곳을 완전히 정리하기 전에 처리해야 할 사소한 작업이 아직 남아 있네. 늦어도 8월 말까지는 아컴으로 돌아갈 수 있을 것으로 예상하네. 이번 일정 연장으로 불편을 끼쳐드려 다시 한번 깊이 사과하네.
+      </p>
+      <p>
+        <span class="clue" title="[단서: 접근 차단] 다른 인원이 동굴의 비밀을 캐는 것을 원치 않습니다.">혹시라도 현장 팀원 중 일부를 다시 이곳으로 보낼 생각을 하고 있다면, 절대로 그러지 말 것을 강력히 권고하네.</span> 자네도 전에 들었겠지만, <span class="clue" title="[단서: 카모디 형제] 무장 인부를 거느린 카모디 일가를 의미합니다.">현지 농부 중 한 명이 우리의 존재를 몹시 불쾌해하고 있으며 거친 패거리들을 거느리고 있는 듯하네.</span> 현장 팀이 애비게일과 나뿐일 때는 크게 거슬리지 않는 수준이겠지만, 인원이 늘어나면 자극이 될까 우려스럽네.
+      </p>
+      <p>
+        애비게일이 안부를 전하며, 우리 둘 다 어서 아컴으로 돌아가 자네 및 메리와 함께 브리지 게임의 밤을 보내기를 고대하고 있네. 정말 미안하네.
+      </p>
+    `;
+
+    const engText = `
+      <p>
+        I am very sorry to inform you that my plans for returning to the university have been unavoidably delayed. <span class="clue" title="[Clue: Deception] Roades falsely claims the site was fruitless to monopolize the cave.">As previously discussed, the dig was fruitless,</span> but there remains some minor work to be concluded before I can pack up here. I expect to be back in Arkham by the end of August at the latest. My deepest apologies for the inconvenience.
+      </p>
+      <p>
+        <span class="clue" title="[Clue: Deterrent] He is fiercely desperate to keep other scholars away from the Earth's Womb.">If you were thinking of sending some of the team back to the site, I strongly advise against it.</span> As you may remember me mentioning, <span class="clue" title="[Clue: Carmody Gang] Refers to Damien Carmody and his armed bootleggers.">one of the local farmers has taken a distinct dislike to our presence and seems to have fallen in with a rough crowd.</span> While this is not an issue when it is just Abigail and myself, a larger group might provoke trouble.
+      </p>
+      <p>
+        Abigail sends her regards, and we both look forward to our return and our evening of bridge with you and Mary. My apologies once again.
+      </p>
+    `;
+
+    function openLetter() {
+      envelope.classList.add('opened');
+      letter.classList.add('show');
+      isOpened = true;
+      toggleOpenBtn.innerText = "✉️ 편지 다시 접기";
+    }
+
+    function toggleEnvelope() {
+      if (isOpened) {
+        envelope.classList.remove('opened');
+        letter.classList.remove('show');
+        isOpened = false;
+        toggleOpenBtn.innerText = "✉️ 편지 개봉하기";
+      } else {
+        openLetter();
+      }
+    }
+
+    function toggleLang() {
+      isEnglish = !isEnglish;
+      if (isEnglish) {
+        letterContent.innerHTML = engText;
+        langBtn.innerText = "📜 번역문(한국어) 보기";
+        letterContent.classList.add('font-handwriting');
+      } else {
+        letterContent.innerHTML = korText;
+        langBtn.innerText = "📜 원문(English) 보기";
+        letterContent.classList.remove('font-handwriting');
+      }
+    }
+
+    function toggleClues() {
+      showClues = !showClues;
+      if (showClues) {
+        document.body.classList.add('highlight-active');
+        clueBtn.classList.add('active');
+        clueBtn.innerText = "🔍 수호자 단서 숨기기";
+      } else {
+        document.body.classList.remove('highlight-active');
+        clueBtn.classList.remove('active');
+        clueBtn.innerText = "🔍 수호자 단서 강조";
+      }
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>블랙워터 핸드아웃 5 - 로즈 교수의 현장 수첩</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <!-- 필기체 및 모눈종이용 빈티지 서체 -->
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Nanum+Pen+Script&family=Special+Elite&family=Nanum+Myeongjo:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-dark: #0a0807;
+      --leather: #21150e;
+      --leather-edge: #150d09;
+      --paper: #ece4cb;
+      --grid-line: rgba(140, 120, 90, 0.22);
+      --ink: #1f1b18;
+      --mad-ink: #521612;
+      --faded-red: #7d1c14;
+      --black-bile: #131410;
+      --highlight: rgba(180, 50, 30, 0.25);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-dark);
+      background-image: 
+        radial-gradient(circle at 50% 40%, rgba(30, 20, 15, 0.9) 0%, rgba(5, 4, 3, 0.99) 100%),
+        repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.3) 3px);
+      color: var(--ink);
+      font-family: 'Nanum Pen Script', 'Caveat', cursive;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 30px 15px;
+      overflow-x: hidden;
+    }
+
+    /* 상단 조작 툴바 */
+    .controls {
+      margin-bottom: 25px;
+      display: flex;
+      gap: 12px;
+      z-index: 10;
+      flex-wrap: wrap;
+      justify-content: center;
+      font-family: 'Special Elite', 'Nanum Myeongjo', serif;
+    }
+
+    .btn {
+      background: #1c140f;
+      color: #cfbc9f;
+      border: 1px solid #4a3525;
+      padding: 8px 16px;
+      font-family: inherit;
+      font-size: 0.9rem;
+      cursor: pointer;
+      border-radius: 4px;
+      transition: all 0.2s ease;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.5);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .btn:hover {
+      background: #332115;
+      color: #f7ebd7;
+      border-color: #8c5b36;
+      transform: translateY(-1px);
+    }
+
+    .btn.active {
+      background: #5e2216;
+      color: #fff;
+      border-color: #ba4732;
+    }
+
+    /* 가죽 커버 바인더 프레임 */
+    .notebook-cover {
+      width: 100%;
+      max-width: 740px;
+      background: var(--leather);
+      padding: 16px;
+      border-radius: 8px;
+      box-shadow: 
+        0 25px 65px rgba(0,0,0,0.95),
+        inset 0 0 30px var(--leather-edge);
+      position: relative;
+      border: 2px solid #3d2719;
+    }
+
+    /* 수첩 왼쪽 링 바인더 / 묶음 끈 느낌 */
+    .binder-spine {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 28px;
+      width: 4px;
+      background: repeating-linear-gradient(to bottom, #4a3424 0px, #4a3424 20px, #1a100a 20px, #1a100a 40px);
+      box-shadow: 2px 0 5px rgba(0,0,0,0.6);
+      z-index: 3;
+    }
+
+    /* 모눈종이 속지 */
+    .notebook-page {
+      background: var(--paper);
+      /* 모눈종이 그리드 */
+      background-image: 
+        linear-gradient(var(--grid-line) 1px, transparent 1px),
+        linear-gradient(90deg, var(--grid-line) 1px, transparent 1px),
+        radial-gradient(ellipse at center, transparent 65%, rgba(120, 85, 45, 0.22) 100%);
+      background-size: 24px 24px, 24px 24px, 100% 100%;
+      border: 1px solid #b8a07c;
+      box-shadow: inset 0 0 45px rgba(90, 60, 30, 0.25);
+      padding: 45px 45px 50px 65px; /* 바인더 여백 확보 */
+      position: relative;
+      overflow: hidden;
+      border-radius: 4px;
+    }
+
+    /* 검은 고름 / 축축한 얼룩 오버레이 */
+    .bile-stain {
+      position: absolute;
+      top: -30px;
+      right: -25px;
+      width: 170px;
+      height: 160px;
+      background: radial-gradient(circle, rgba(20, 25, 15, 0.4) 0%, rgba(30, 35, 20, 0.15) 50%, transparent 70%);
+      border-radius: 50%;
+      pointer-events: none;
+    }
+
+    .corner-stain {
+      position: absolute;
+      bottom: -40px;
+      left: 10%;
+      width: 220px;
+      height: 120px;
+      background: radial-gradient(ellipse, rgba(70, 30, 20, 0.25) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    /* 수첩 태그 헤더 */
+    .page-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 2px dashed #9c8365;
+      padding-bottom: 10px;
+      margin-bottom: 25px;
+      font-family: 'Special Elite', monospace;
+      font-size: 0.85rem;
+      color: #69523c;
+    }
+
+    /* 일지 엔트리 항목 */
+    .entry {
+      margin-bottom: 24px;
+      line-height: 1.55;
+      font-size: 1.55rem;
+      position: relative;
+    }
+
+    .entry-date {
+      font-family: 'Special Elite', monospace;
+      font-size: 0.95rem;
+      color: #5c432d;
+      background: rgba(220, 205, 175, 0.6);
+      padding: 2px 8px;
+      border-radius: 3px;
+      display: inline-block;
+      margin-bottom: 6px;
+      border: 1px solid #b8a280;
+    }
+
+    /* 후반부로 갈수록 커지고 일그러지는 글씨 */
+    .madness-1 {
+      color: var(--ink);
+    }
+
+    .madness-2 {
+      color: var(--mad-ink);
+      font-size: 1.7rem;
+    }
+
+    .madness-3 {
+      color: var(--faded-red);
+      font-size: 1.85rem;
+      font-weight: bold;
+      letter-spacing: 0.5px;
+    }
+
+    /* 약도 지도 박스 */
+    .map-box {
+      margin: 20px 0;
+      padding: 16px;
+      background: #fdfaf0;
+      border: 1.5px dashed #7a5f45;
+      border-radius: 4px;
+      box-shadow: 2px 3px 10px rgba(0,0,0,0.15);
+      position: relative;
+    }
+
+    .map-title {
+      font-family: 'Special Elite', monospace;
+      font-size: 0.9rem;
+      color: #4a3625;
+      margin-bottom: 10px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .map-sketch {
+      width: 100%;
+      height: 190px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #faf4e3;
+      border: 1px solid #d4c2a1;
+    }
+
+    /* 단서 하이라이트 */
+    .clue {
+      transition: background 0.3s ease, border-bottom 0.3s ease;
+    }
+
+    .highlight-active .clue {
+      background-color: var(--highlight);
+      border-bottom: 1.5px dashed #8f2316;
+      cursor: help;
+    }
+
+    /* 돋보기 모드 */
+    .enlarged .entry {
+      font-size: 1.8rem;
+    }
+    .enlarged .madness-3 {
+      font-size: 2.1rem;
+    }
+
+    /* 영어 원문 폰트 보정 */
+    .font-eng {
+      font-family: 'Caveat', cursive;
+      font-size: 1.6rem;
+      line-height: 1.35;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- 제어 툴바 -->
+  <div class="controls">
+    <button class="btn" id="zoomBtn" onclick="toggleZoom()">🔍 글자 확대 / 축소</button>
+    <button class="btn" id="langBtn" onclick="toggleLang()">📜 원문(English) 보기</button>
+    <button class="btn" id="clueBtn" onclick="toggleClues()">💡 수호자 단서 해설</button>
+  </div>
+
+  <div class="notebook-cover">
+    <div class="binder-spine"></div>
+
+    <div class="notebook-page" id="notebookPage">
+      <div class="bile-stain"></div>
+      <div class="corner-stain"></div>
+
+      <div class="page-header">
+        <span>FIELD NOTES — H. ROADES, PH.D.</span>
+        <span>RECOVERED: CARMODY ROOT CELLAR</span>
+      </div>
+
+      <div id="journalContent">
+        <!-- 6월 14일경: 약도 및 발굴 -->
+        <div class="entry madness-1">
+          <div class="entry-date">[6월 14일]</div>
+          <p>
+            언덕 위 숲 북쪽 절벽에 <span class="clue" title="[핵심 위치] 댐에서 북쪽으로 1마일 남짓 거슬러 올라간 절벽 면에 위치한 시카이옥의 고대 성지입니다.">숨겨진 동굴의 입구</span>를 마침내 확인했다. 케이드가 묻어버린 그곳이다. 학생들에게는 알리지 않았다.
+          </p>
+
+          <!-- 약도 스케치 -->
+          <div class="map-box">
+            <div class="map-title">
+              <span>[약도] 언덕 위 동굴로 향하는 길</span>
+              <span>NORTH ⬆</span>
+            </div>
+            <div class="map-sketch">
+              <!-- 손그림 스타일 약도 SVG -->
+              <svg viewBox="0 0 540 170" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+                <!-- 개울 줄기 -->
+                <path d="M 270,15 Q 260,60 280,95 T 260,165" fill="none" stroke="#688094" stroke-width="6" stroke-dasharray="2,2" />
+                <path d="M 270,15 Q 260,60 280,95 T 260,165" fill="none" stroke="#2c4252" stroke-width="2" />
+                
+                <!-- 댐 -->
+                <rect x="240" y="110" width="45" height="10" fill="#8c6239" stroke="#422912" stroke-width="1.5" />
+                <text x="185" y="120" font-family="'Special Elite', monospace" font-size="12" fill="#523924">Dam (댐)</text>
+
+                <!-- 동굴 절벽 -->
+                <path d="M 230,25 Q 270,5 310,25" fill="none" stroke="#332215" stroke-width="3" />
+                <circle cx="270" cy="20" r="9" fill="#17120e" />
+                <text x="290" y="24" font-family="'Nanum Pen Script', cursive" font-size="20" font-weight="bold" fill="#8a1c14">★ CAVE (동굴)</text>
+
+                <!-- 옥수수밭/카모디 농장 표시 -->
+                <rect x="330" y="80" width="90" height="50" fill="none" stroke="#8a7343" stroke-width="1" stroke-dasharray="4,4" />
+                <text x="340" y="105" font-family="'Special Elite', monospace" font-size="11" fill="#705b31">Carmody Farm</text>
+
+                <!-- 로즈 야영지 -->
+                <polygon points="170,80 180,65 190,80" fill="#a89274" stroke="#473824" />
+                <text x="120" y="75" font-family="'Special Elite', monospace" font-size="11" fill="#523924">Camp Site</text>
+
+                <!-- 지형 설명 손글씨 -->
+                <text x="30" y="155" font-family="'Nanum Pen Script', cursive" font-size="18" fill="#3b2b1d">← 개울을 거슬러 북쪽으로 올라갈 것</text>
+              </svg>
+            </div>
+          </div>
+        </div>
+
+        <!-- 6월 18일: 스프라우스턴과의 대화 -->
+        <div class="entry madness-1">
+          <div class="entry-date">[6월 18일]</div>
+          <p>
+            <span class="clue" title="[스프라우스턴의 동기] 설교자 스프라우스턴 역시 동굴의 존재를 알고 숭배하지만, 로즈를 경쟁자로 여기며 의심하고 있습니다.">마을의 스프라우스턴 보안관과 이야기를 나눴다.</span> 그는 동굴이 성스러운 장소라고 믿고 있다. 하지만 그자의 눈빛이 마음에 걸린다... 결코 믿을 수 없는 인간이다.
+          </p>
+        </div>
+
+        <!-- 6월 21일: 사고와 융합 -->
+        <div class="entry madness-2">
+          <div class="entry-date">[6월 21일]</div>
+          <p>
+            애비게일이... 내 사랑하는 애비게일이 동굴 안쪽 웅덩이로 떨어졌다. 바위벽이 꿈틀거리더니 그녀를 삼켜버렸다. 아니, 그녀는 갇힌 게 아니다. <span class="clue" title="[참극의 진실] 애비게일 로즈는 슈브 니구라스의 파편(대지의 자궁)과 완전히 융합되어 거대한 살덩이의 핵이 되었습니다.">그녀 자신이 그곳의 주인이 되었다.</span>
+          </p>
+        </div>
+
+        <!-- 6월 25일: 생명의 물 -->
+        <div class="entry madness-3">
+          <div class="entry-date">[6월 25일]</div>
+          <p>
+            개울이 다시 흐르기 시작했다. 250년 만에! 그것은 그냥 물이 아니다. <span class="clue" title="[오염의 근원] 새로 흐르기 시작한 개울물은 융합된 애비게일에게서 흘러나오는 슈브 니구라스의 양수(살점과 체액)입니다.">애비게일의 몸에서 뿜어져 나오는 생명의 물이다.</span> 그녀가 모든 것을 다시 살려내고 있다.
+          </p>
+        </div>
+
+        <!-- 7월 초: 어머니의 목소리 -->
+        <div class="entry madness-3" style="color: #630c06;">
+          <div class="entry-date" style="background: rgba(160, 40, 30, 0.2); border-color: #8f2316;">[마지막 기록 - 날짜 불명]</div>
+          <p>
+            <span class="clue" title="[완전한 광기] 로즈는 아내와 여신을 구분하지 못하고 애비게일을 자신의 '어머니'라 부르며 머릿속 환청에 굴복했습니다.">어머니의 목소리가 멈추지 않는다. 내 아내... 내 어머니 애비게일...</span> 그분이 머릿속에서 밤낮으로 울부짖고 계신다. 너무나 두렵지만, 동시에 형언할 수 없는 평온이 차오른다. 그녀에게 돌아가야 해.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let isEnlarged = false;
+    let isEnglish = false;
+    let showClues = false;
+
+    const page = document.getElementById('notebookPage');
+    const journalContent = document.getElementById('journalContent');
+    const zoomBtn = document.getElementById('zoomBtn');
+    const langBtn = document.getElementById('langBtn');
+    const clueBtn = document.getElementById('clueBtn');
+
+    const korHTML = `
+      <div class="entry madness-1">
+        <div class="entry-date">[6월 14일]</div>
+        <p>
+          언덕 위 숲 북쪽 절벽에 <span class="clue" title="[핵심 위치] 댐에서 북쪽으로 1마일 남짓 거슬러 올라간 절벽 면에 위치한 시카이옥의 고대 성지입니다.">숨겨진 동굴의 입구</span>를 마침내 확인했다. 케이드가 묻어버린 그곳이다. 학생들에게는 알리지 않았다.
+        </p>
+        <div class="map-box">
+          <div class="map-title">
+            <span>[약도] 언덕 위 동굴로 향하는 길</span>
+            <span>NORTH ⬆</span>
+          </div>
+          <div class="map-sketch">
+            <svg viewBox="0 0 540 170" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+              <path d="M 270,15 Q 260,60 280,95 T 260,165" fill="none" stroke="#688094" stroke-width="6" stroke-dasharray="2,2" />
+              <path d="M 270,15 Q 260,60 280,95 T 260,165" fill="none" stroke="#2c4252" stroke-width="2" />
+              <rect x="240" y="110" width="45" height="10" fill="#8c6239" stroke="#422912" stroke-width="1.5" />
+              <text x="185" y="120" font-family="'Special Elite', monospace" font-size="12" fill="#523924">Dam (댐)</text>
+              <path d="M 230,25 Q 270,5 310,25" fill="none" stroke="#332215" stroke-width="3" />
+              <circle cx="270" cy="20" r="9" fill="#17120e" />
+              <text x="290" y="24" font-family="'Nanum Pen Script', cursive" font-size="20" font-weight="bold" fill="#8a1c14">★ CAVE (동굴)</text>
+              <rect x="330" y="80" width="90" height="50" fill="none" stroke="#8a7343" stroke-width="1" stroke-dasharray="4,4" />
+              <text x="340" y="105" font-family="'Special Elite', monospace" font-size="11" fill="#705b31">Carmody Farm</text>
+              <polygon points="170,80 180,65 190,80" fill="#a89274" stroke="#473824" />
+              <text x="120" y="75" font-family="'Special Elite', monospace" font-size="11" fill="#523924">Camp Site</text>
+              <text x="30" y="155" font-family="'Nanum Pen Script', cursive" font-size="18" fill="#3b2b1d">← 개울을 거슬러 북쪽으로 올라갈 것</text>
+            </svg>
+          </div>
+        </div>
+      </div>
+      <div class="entry madness-1">
+        <div class="entry-date">[6월 18일]</div>
+        <p>
+          <span class="clue" title="[스프라우스턴의 동기] 설교자 스프라우스턴 역시 동굴의 존재를 알고 숭배하지만, 로즈를 경쟁자로 여기며 의심하고 있습니다.">마을의 스프라우스턴 보안관과 이야기를 나눴다.</span> 그는 동굴이 성스러운 장소라고 믿고 있다. 하지만 그자의 눈빛이 마음에 걸린다... 결코 믿을 수 없는 인간이다.
+        </p>
+      </div>
+      <div class="entry madness-2">
+        <div class="entry-date">[6월 21일]</div>
+        <p>
+          애비게일이... 내 사랑하는 애비게일이 동굴 안쪽 웅덩이로 떨어졌다. 바위벽이 꿈틀거리더니 그녀를 삼켜버렸다. 아니, 그녀는 갇힌 게 아니다. <span class="clue" title="[참극의 진실] 애비게일 로즈는 슈브 니구라스의 파편(대지의 자궁)과 완전히 융합되어 거대한 살덩이의 핵이 되었습니다.">그녀 자신이 그곳의 주인이 되었다.</span>
+        </p>
+      </div>
+      <div class="entry madness-3">
+        <div class="entry-date">[6월 25일]</div>
+        <p>
+          개울이 다시 흐르기 시작했다. 250년 만에! 그것은 그냥 물이 아니다. <span class="clue" title="[오염의 근원] 새로 흐르기 시작한 개울물은 융합된 애비게일에게서 흘러나오는 슈브 니구라스의 양수(살점과 체액)입니다.">애비게일의 몸에서 뿜어져 나오는 생명의 물이다.</span> 그녀가 모든 것을 다시 살려내고 있다.
+        </p>
+      </div>
+      <div class="entry madness-3" style="color: #630c06;">
+        <div class="entry-date" style="background: rgba(160, 40, 30, 0.2); border-color: #8f2316;">[마지막 기록 - 날짜 불명]</div>
+        <p>
+          <span class="clue" title="[완전한 광기] 로즈는 아내와 여신을 구분하지 못하고 애비게일을 자신의 '어머니'라 부르며 머릿속 환청에 굴복했습니다.">어머니의 목소리가 멈추지 않는다. 내 아내... 내 어머니 애비게일...</span> 그분이 머릿속에서 밤낮으로 울부짖고 계신다. 너무나 두렵지만, 동시에 형언할 수 없는 평온이 차오른다. 그녀에게 돌아가야 해.
+        </p>
+      </div>
+    `;
+
+    const engHTML = `
+      <div class="entry madness-1 font-eng">
+        <div class="entry-date">[June 14]</div>
+        <p>
+          Finally confirmed <span class="clue" title="[Core Location] The sacred cave is located on the cliff face roughly a mile north of the dam.">the entrance to the concealed cave</span> on the cliff north of the woods. The very sanctuary Cade buried. I have kept this entirely from the students.
+        </p>
+        <div class="map-box">
+          <div class="map-title">
+            <span>[SKETCH] Path to the Cave on the Hill</span>
+            <span>NORTH ⬆</span>
+          </div>
+          <div class="map-sketch">
+            <svg viewBox="0 0 540 170" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+              <path d="M 270,15 Q 260,60 280,95 T 260,165" fill="none" stroke="#688094" stroke-width="6" stroke-dasharray="2,2" />
+              <path d="M 270,15 Q 260,60 280,95 T 260,165" fill="none" stroke="#2c4252" stroke-width="2" />
+              <rect x="240" y="110" width="45" height="10" fill="#8c6239" stroke="#422912" stroke-width="1.5" />
+              <text x="195" y="120" font-family="'Special Elite', monospace" font-size="12" fill="#523924">Dam</text>
+              <path d="M 230,25 Q 270,5 310,25" fill="none" stroke="#332215" stroke-width="3" />
+              <circle cx="270" cy="20" r="9" fill="#17120e" />
+              <text x="290" y="24" font-family="'Caveat', cursive" font-size="20" font-weight="bold" fill="#8a1c14">★ CAVE</text>
+              <rect x="330" y="80" width="90" height="50" fill="none" stroke="#8a7343" stroke-width="1" stroke-dasharray="4,4" />
+              <text x="340" y="105" font-family="'Special Elite', monospace" font-size="11" fill="#705b31">Carmody Farm</text>
+              <polygon points="170,80 180,65 190,80" fill="#a89274" stroke="#473824" />
+              <text x="120" y="75" font-family="'Special Elite', monospace" font-size="11" fill="#523924">Camp Site</text>
+              <text x="30" y="155" font-family="'Caveat', cursive" font-size="18" fill="#3b2b1d">← Follow creek north upstream</text>
+            </svg>
+          </div>
+        </div>
+      </div>
+      <div class="entry madness-1 font-eng">
+        <div class="entry-date">[June 18]</div>
+        <p>
+          <span class="clue" title="[Sprouston's Motive] Sprouston worships the cave but views Roades as a rival for the Mother's blessing.">Spoke with Sprouston, the village preacher.</span> He too believes the cavern to be holy ground. Yet I do not trust his motives... a treacherous man.
+        </p>
+      </div>
+      <div class="entry madness-2 font-eng">
+        <div class="entry-date">[June 21]</div>
+        <p>
+          Abigail... my sweet Abigail fell into the pool within the deep chamber. The stone walls writhed and embraced her. No, she is not trapped. <span class="clue" title="[Horrific Metamorphosis] Abigail has fused directly into the Earth's Womb, becoming its living avatar.">She has become one with it. She reigns there now.</span>
+        </p>
+      </div>
+      <div class="entry madness-3 font-eng">
+        <div class="entry-date">[June 25]</div>
+        <p>
+          The creek flows once more, after two and a half centuries! It is no ordinary stream. <span class="clue" title="[The Origin] The flowing water is amniotic fluid from Shub-Niggurath issuing forth from Abigail's body.">It is the Water of Life pouring from Abigail’s womb.</span> She quickens everything it touches!
+        </p>
+      </div>
+      <div class="entry madness-3 font-eng" style="color: #630c06;">
+        <div class="entry-date" style="background: rgba(160, 40, 30, 0.2); border-color: #8f2316;">[Undated - Final Scrawl]</div>
+        <p>
+          <span class="clue" title="[Complete Madness] Roades' identity is shattered; he now addresses Abigail as Mother, trapped in euphoric horror.">Mother’s voice will not cease. My wife... my Mother Abigail...</span> She weeps and calls to me inside my mind. It terrifies me, yet it brings divine peace. I must return to her.
+        </p>
+      </div>
+    `;
+
+    function toggleZoom() {
+      isEnlarged = !isEnlarged;
+      if (isEnlarged) {
+        page.classList.add('enlarged');
+        zoomBtn.innerText = "🔍 기본 크기로 축소";
+      } else {
+        page.classList.remove('enlarged');
+        zoomBtn.innerText = "🔍 글자 확대 / 축소";
+      }
+    }
+
+    function toggleLang() {
+      isEnglish = !isEnglish;
+      if (isEnglish) {
+        journalContent.innerHTML = engHTML;
+        langBtn.innerText = "📜 번역문(한국어) 보기";
+      } else {
+        journalContent.innerHTML = korHTML;
+        langBtn.innerText = "📜 원문(English) 보기";
+      }
+    }
+
+    function toggleClues() {
+      showClues = !showClues;
+      if (showClues) {
+        document.body.classList.add('highlight-active');
+        clueBtn.classList.add('active');
+        clueBtn.innerText = "💡 수호자 단서 숨기기";
+      } else {
+        document.body.classList.remove('highlight-active');
+        clueBtn.classList.remove('active');
+        clueBtn.innerText = "💡 수호자 단서 해설";
+      }
+    }
+  </script>
+</body>
+</html>

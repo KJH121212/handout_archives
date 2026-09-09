@@ -1,0 +1,870 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>크툴루의 부름 7판: 만병통치약 (Panacea) - 탐사자 선택</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Noto+Serif+KR:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-color: #0d1117;
+      --card-bg: #161b22;
+      --border-color: #30363d;
+      --text-main: #c9d1d9;
+      --text-muted: #8b949e;
+      --accent-gold: #d29922;
+      --accent-crimson: #f85149;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-color);
+      color: var(--text-main);
+      font-family: 'Noto Serif KR', serif;
+      line-height: 1.6;
+      padding: 2.5rem 1rem;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 3rem;
+    }
+
+    header h1 {
+      font-family: 'Cinzel', serif;
+      font-size: 2.5rem;
+      color: var(--accent-gold);
+      letter-spacing: 2px;
+      margin-bottom: 0.5rem;
+      text-shadow: 0 0 12px rgba(210, 153, 34, 0.3);
+    }
+
+    header p {
+      color: var(--text-muted);
+      font-size: 1.1rem;
+    }
+
+    .character-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 1.8rem;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .character-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s;
+      cursor: pointer;
+    }
+
+    .character-card:hover {
+      transform: translateY(-5px);
+      border-color: var(--accent-gold);
+      box-shadow: 0 8px 20px rgba(210, 153, 34, 0.2);
+    }
+
+    .card-img-wrap {
+      width: 100%;
+      height: 280px;
+      background: #090d13;
+      border-bottom: 1px solid var(--border-color);
+      overflow: hidden;
+    }
+
+    .card-img-wrap img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: top center;
+      transition: transform 0.3s ease;
+    }
+
+    .character-card:hover .card-img-wrap img {
+      transform: scale(1.03);
+    }
+
+    .card-content {
+      padding: 1.2rem 1.4rem 1.4rem 1.4rem;
+      display: flex;
+      flex-direction: column;
+      flex-grow: 1;
+      justify-content: space-between;
+    }
+
+    .card-header {
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 0.6rem;
+      margin-bottom: 0.8rem;
+    }
+
+    .card-header h2 {
+      font-size: 1.25rem;
+      color: #f0f6fc;
+      margin-bottom: 0.2rem;
+    }
+
+    .card-header .job-tag {
+      font-size: 0.9rem;
+      color: var(--accent-gold);
+      font-weight: 600;
+    }
+
+    .card-body p {
+      font-size: 0.95rem;
+      color: var(--text-main);
+      margin-bottom: 1.2rem;
+      word-break: keep-all;
+    }
+
+    .btn-detail {
+      align-self: flex-start;
+      padding: 0.5rem 1rem;
+      background: transparent;
+      border: 1px solid var(--accent-gold);
+      color: var(--accent-gold);
+      font-family: inherit;
+      font-size: 0.85rem;
+      font-weight: 600;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background 0.2s, color 0.2s;
+    }
+
+    .character-card:hover .btn-detail {
+      background: var(--accent-gold);
+      color: #0d1117;
+    }
+
+    /* 모달 레이아웃 */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(0, 0, 0, 0.85);
+      z-index: 1000;
+      justify-content: center;
+      align-items: center;
+      padding: 1rem;
+    }
+
+    .modal-content {
+      background: var(--card-bg);
+      border: 1px solid var(--accent-gold);
+      border-radius: 8px;
+      width: 100%;
+      max-width: 900px;
+      max-height: 90vh;
+      overflow-y: auto;
+      padding: 2rem;
+      position: relative;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.9);
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 1rem;
+      right: 1.5rem;
+      font-size: 1.8rem;
+      background: none;
+      border: none;
+      color: var(--text-muted);
+      cursor: pointer;
+    }
+
+    .modal-close:hover {
+      color: var(--accent-crimson);
+    }
+
+    .modal-header-layout {
+      display: flex;
+      gap: 1.5rem;
+      margin-bottom: 1.5rem;
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 1.5rem;
+    }
+
+    .modal-img-wrap {
+      width: 130px;
+      height: 170px;
+      flex-shrink: 0;
+      border-radius: 6px;
+      overflow: hidden;
+      border: 1px solid var(--border-color);
+      background: #090d13;
+    }
+
+    .modal-img-wrap img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: top center;
+    }
+
+    .modal-info-wrap {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .modal-title {
+      font-size: 1.6rem;
+      color: var(--accent-gold);
+      margin-bottom: 0.3rem;
+    }
+
+    .modal-subtitle {
+      font-size: 1rem;
+      color: var(--text-muted);
+    }
+
+    /* 테이블 스타일 (능력치 및 기능 표) */
+    .stat-table, .skill-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 1.5rem;
+    }
+
+    .stat-table th, .stat-table td,
+    .skill-table th, .skill-table td {
+      border: 1px solid var(--border-color);
+      padding: 0.45rem 0.6rem;
+      text-align: center;
+      font-size: 0.85rem;
+    }
+
+    .stat-table th, .skill-table th {
+      background: #21262d;
+      color: var(--accent-gold);
+      font-weight: 600;
+    }
+
+    .skill-table td.skill-name {
+      text-align: left;
+      font-weight: 600;
+      color: #f0f6fc;
+      background: #11151c;
+      width: 30%;
+    }
+
+    .skill-table td.skill-val {
+      color: var(--text-main);
+      width: 20%;
+    }
+
+    .bonus-note {
+      font-size: 0.85rem;
+      color: var(--accent-gold);
+      margin-top: -1rem;
+      margin-bottom: 1.5rem;
+      padding-left: 0.2rem;
+    }
+
+    .section-title {
+      font-size: 1.1rem;
+      color: #f0f6fc;
+      margin: 1.4rem 0 0.6rem 0;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .section-title::before {
+      content: "";
+      display: inline-block;
+      width: 4px;
+      height: 1rem;
+      background: var(--accent-gold);
+    }
+
+    .combat-box, .backstory-box {
+      font-size: 0.95rem;
+      background: #0d1117;
+      border: 1px solid var(--border-color);
+      padding: 1rem;
+      border-radius: 4px;
+      line-height: 1.7;
+      margin-bottom: 1.2rem;
+    }
+
+    .backstory-box ul {
+      margin-top: 0.5rem;
+      margin-bottom: 0.5rem;
+      padding-left: 1.5rem;
+    }
+
+    .backstory-box li {
+      margin-bottom: 0.3rem;
+    }
+
+    /* 비밀 배경 경고 상자 및 열람 버튼 */
+    .secret-warning-box {
+      background: rgba(210, 153, 34, 0.08);
+      border: 1px solid var(--accent-gold);
+      border-radius: 6px;
+      padding: 1.4rem 1.2rem;
+      margin: 1.8rem 0 1.2rem 0;
+      text-align: center;
+    }
+
+    .secret-warning-title {
+      color: var(--accent-gold);
+      font-size: 1.05rem;
+      font-weight: 700;
+      margin-bottom: 0.6rem;
+    }
+
+    .secret-warning-desc {
+      color: var(--text-main);
+      font-size: 0.9rem;
+      line-height: 1.6;
+      margin-bottom: 1.2rem;
+      word-break: keep-all;
+    }
+
+    .btn-reveal-secret {
+      background: #161b22;
+      border: 1px solid var(--accent-gold);
+      color: var(--accent-gold);
+      padding: 0.6rem 1.4rem;
+      font-family: inherit;
+      font-size: 0.95rem;
+      font-weight: 700;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .btn-reveal-secret:hover {
+      background: var(--accent-gold);
+      color: #0d1117;
+      box-shadow: 0 0 10px rgba(210, 153, 34, 0.4);
+    }
+
+    /* 인물 관계 및 호버 툴팁 이미지 */
+    .relations-list {
+      list-style-type: none;
+      font-size: 0.92rem;
+      background: #0d1117;
+      border: 1px solid var(--border-color);
+      padding: 1rem 1.2rem;
+      border-radius: 4px;
+    }
+
+    .relations-list li {
+      margin-bottom: 0.8rem;
+      padding-left: 1.2rem;
+      position: relative;
+      line-height: 1.6;
+    }
+
+    .relations-list li:last-child {
+      margin-bottom: 0;
+    }
+
+    .relations-list li::before {
+      content: "•";
+      color: var(--accent-gold);
+      position: absolute;
+      left: 0;
+    }
+
+    .person-hover {
+      color: var(--accent-gold);
+      font-weight: 700;
+      text-decoration: underline;
+      text-decoration-style: dotted;
+      cursor: pointer;
+      position: relative;
+      display: inline-block;
+    }
+
+    /* 툴팁 이미지 팝업 박스 */
+    .person-hover .tooltip-card {
+      visibility: hidden;
+      opacity: 0;
+      width: 140px;
+      background: #161b22;
+      border: 1px solid var(--accent-gold);
+      border-radius: 6px;
+      position: absolute;
+      bottom: 125%;
+      left: 50%;
+      transform: translateX(-50%);
+      padding: 5px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.9);
+      z-index: 100;
+      transition: opacity 0.2s ease, visibility 0.2s ease;
+      pointer-events: none;
+      text-align: center;
+    }
+
+    .person-hover .tooltip-card img {
+      width: 100%;
+      height: 140px;
+      object-fit: cover;
+      object-position: top center;
+      border-radius: 4px;
+      display: block;
+    }
+
+    .person-hover .tooltip-card .tooltip-name {
+      font-size: 0.75rem;
+      color: #f0f6fc;
+      margin-top: 4px;
+      font-weight: 600;
+    }
+
+    /* 말풍선 꼬리 */
+    .person-hover .tooltip-card::after {
+      content: "";
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      margin-left: -6px;
+      border-width: 6px;
+      border-style: solid;
+      border-color: var(--accent-gold) transparent transparent transparent;
+    }
+
+    .person-hover:hover .tooltip-card {
+      visibility: visible;
+      opacity: 1;
+    }
+
+    @media (max-width: 600px) {
+      .modal-header-layout {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+      }
+      .modal-img-wrap {
+        width: 140px;
+        height: 180px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>만병통치약 (PANACEA)</h1>
+    <p>크툴루의 부름 7판 : 기적의 치료제 뒤편에 숨겨진 진실</p>
+  </header>
+
+  <main class="character-grid">
+    <div class="character-card" onclick="openModal('wade')">
+      <div class="card-img-wrap">
+        <img src="./image/wade.webp" alt="웨이드 보틀러" onerror="this.src='https://via.placeholder.com/300x400/161b22/d29922?text=웨이드'">
+      </div>
+      <div class="card-content">
+        <div class="card-header">
+          <h2>웨이드 보틀러</h2>
+          <span class="job-tag">54세 / 보안 컨설턴트</span>
+        </div>
+        <div class="card-body">
+          <p>보안 컨설턴트. 3주 전에 자이메드바이오로부터 "위험하고 불만을 품은 전직 직원"으로 여겨지는 한 인물을 감시해 달라는 의뢰를 받았습니다. 그는 해당 인물을 "추가 심문"을 위해 회사 시설로 데려오라는 명령을 받았습니다. 보틀러는 타깃을 지켜보고 기회가 된다면 자이메드바이오 사무실로 함께 가자고 설득하기 위해 척 오글의 파티에 무단으로 참석할 계획입니다.</p>
+        </div>
+        <button class="btn-detail">상세 시트 및 배경 이야기 보기</button>
+      </div>
+    </div>
+
+    <div class="character-card" onclick="openModal('marina')">
+      <div class="card-img-wrap">
+        <img src="./image/marina.webp" alt="마리나 콜가" onerror="this.src='https://via.placeholder.com/300x400/161b22/d29922?text=마리나'">
+      </div>
+      <div class="card-content">
+        <div class="card-header">
+          <h2>마리나 콜가</h2>
+          <span class="job-tag">29세 / 변호사</span>
+        </div>
+        <div class="card-body">
+          <p>변호사. 자이메드 바이오 회사의 "테스트 프로그램" 참여를 거부했다가 한 달 전에 해고 당했습니다. 콜가는 자이메드바이오로부터 부당한 대우를 받았다고 느끼며 의구심이 커져 가고 있습니다. 척 오글은 이웃이며, 콜가는 그가 회사의 임상 시험 참가자 중 한 명이었다는 사실을 알고 있습니다(자이메드바이오 재직 당시 그의 서류를 처리했기 때문입니다). 콜가는 약물 임상 시험에 대해 알아낼 것이 있는지 확인하고자 스스로 파티에 찾아갈 계획입니다.</p>
+        </div>
+        <button class="btn-detail">상세 시트 및 배경 이야기 보기</button>
+      </div>
+    </div>
+
+    <div class="character-card" onclick="openModal('mary')">
+      <div class="card-img-wrap">
+        <img src="./image/mary.webp" alt="메리 풀러" onerror="this.src='https://via.placeholder.com/300x400/161b22/d29922?text=메리'">
+      </div>
+      <div class="card-content">
+        <div class="card-header">
+          <h2>메리 풀러</h2>
+          <span class="job-tag">44세 / 간호사</span>
+        </div>
+        <div class="card-body">
+          <p>공인 간호사이자 척 오글의 사촌. 풀러는 오글이 성인 발병 당뇨병으로 심하게 앓아왔다는 사실을 알고 있습니다. 자이메드바이오의 실험적 치료에도 불구하고, 이번 파티가 척이 죽기 전 작별 인사를 나누는 자리라고 믿고 있습니다. 풀러는 지인의 소개로 알게 된 한 사람을 데이트 상대로 삼아 파티에 함께 동행합니다.</p>
+        </div>
+        <button class="btn-detail">상세 시트 및 배경 이야기 보기</button>
+      </div>
+    </div>
+
+    <div class="character-card" onclick="openModal('gus')">
+      <div class="card-img-wrap">
+        <img src="./image/gus.webp" alt="거스 필립스" onerror="this.src='https://via.placeholder.com/300x400/161b22/d29922?text=거스'">
+      </div>
+      <div class="card-content">
+        <div class="card-header">
+          <h2>거스 필립스</h2>
+          <span class="job-tag">42세 / 경찰관</span>
+        </div>
+        <div class="card-body">
+          <p>경찰관. 최근 자이메드바이오 주차장에서 발생한 폭행 사건을 조사하던 중, 말기 췌장암에서 기적적으로 완치되어 복귀한 서장에 의해 사건이 강제 종결되고 내근직으로 밀려났습니다. 자이메드바이오에 강한 의구심을 품은 필립스는, 그곳에서 치료를 받은 적이 있다는 환자의 파티 소식을 듣고 지인을 통해 알게 된 여성의 데이트 상대 자격으로 파티에 잠입합니다.</p>
+        </div>
+        <button class="btn-detail">상세 시트 및 배경 이야기 보기</button>
+      </div>
+    </div>
+
+    <div class="character-card" onclick="openModal('belinda')">
+      <div class="card-img-wrap">
+        <img src="./image/belinda.webp" alt="벨린다 노리치" onerror="this.src='https://via.placeholder.com/300x400/161b22/d29922?text=벨린다'">
+      </div>
+      <div class="card-content">
+        <div class="card-header">
+          <h2>벨린다 노리치</h2>
+          <span class="job-tag">42세 / 의사</span>
+        </div>
+        <div class="card-body">
+          <p>겸상 적혈구 빈혈증(SCD) 연구에 종사하는 의사. 자신의 불치병 환자가 자이메드바이오의 치료를 받고 완치되었다며 나타나자 의학적 의구심을 품게 되었습니다. 근무하는 병원의 한 동료를 통해 척 오글의 치료와 파티 소식을 전해 들은 노리치는, 치료의 실체를 파헤치기 위해 파티에 무단으로 참석하기로 결정했습니다.</p>
+        </div>
+        <button class="btn-detail">상세 시트 및 배경 이야기 보기</button>
+      </div>
+    </div>
+
+    <div class="character-card" onclick="openModal('elliott')">
+      <div class="card-img-wrap">
+        <img src="./image/elliott.webp" alt="엘리엇 클로슨" onerror="this.src='https://via.placeholder.com/300x400/161b22/d29922?text=엘리엇'">
+      </div>
+      <div class="card-content">
+        <div class="card-header">
+          <h2>엘리엇 클로슨</h2>
+          <span class="job-tag">32세 / 저널리스트</span>
+        </div>
+        <div class="card-body">
+          <p>자이메드바이오를 조사하는 저널리스트. 에이즈로 투병하던 편집장이 그곳에서 치료를 받고 완전히 완치되어 돌아와 조사를 중단하라고 명령하자 깊은 의구심을 품게 됩니다. 취재 중 알게 되었던 환자 척 오글의 파티 초대장을 받은 클로슨은, 편집장의 지시를 거스르지 않으면서 진상을 캐내기 위해 파티에 참석합니다.</p>
+        </div>
+        <button class="btn-detail">상세 시트 및 배경 이야기 보기</button>
+      </div>
+    </div>
+  </main>
+
+  <div class="modal-overlay" id="charModal" onclick="closeModal(event)">
+    <div class="modal-content" onclick="event.stopPropagation()">
+      <button class="modal-close" onclick="closeModalDirect()">&times;</button>
+      
+      <div class="modal-header-layout">
+        <div class="modal-img-wrap">
+          <img id="m-img" src="" alt="캐릭터 이미지">
+        </div>
+        <div class="modal-info-wrap">
+          <h2 class="modal-title" id="m-name">캐릭터 이름</h2>
+          <div class="modal-subtitle" id="m-sub">나이 / 직업</div>
+        </div>
+      </div>
+
+      <div class="section-title">능력치</div>
+      <table class="stat-table" id="m-stats"></table>
+
+      <div class="section-title">전투</div>
+      <div class="combat-box" id="m-combat"></div>
+
+      <div class="section-title">주요 기능</div>
+      <table class="skill-table" id="m-skills"></table>
+      <div class="bonus-note">* 보너스: 플레이어가 원하는 기능에 40포인트를 자유롭게 배분하십시오.</div>
+
+      <div class="secret-warning-box" id="secretWarningBox">
+        <div class="secret-warning-title">⚠️ 주의: 플레이어 비밀 정보 및 스포일러 포함</div>
+        <div class="secret-warning-desc">
+          이 항목에는 해당 탐사자의 <strong>비공개 개인 배경과 다른 탐사자/NPC와의 비밀 관계</strong>가 포함되어 있습니다.<br>
+          본인의 캐릭터가 아니거나 수호자(GM)의 안내가 없는 상태에서 열람할 경우, 플레이의 재미와 추리 요소가 반감될 수 있습니다. 본인 캐릭터의 배경만 열람하시는 것을 추천 드립니다.
+        </div>
+        <button class="btn-reveal-secret" onclick="revealSecretInfo()">👁️ 비밀 배경 및 관계 확인하기</button>
+      </div>
+
+      <div id="secretDetailsArea" style="display: none;">
+        <div class="section-title">개인 배경 이야기</div>
+        <div class="backstory-box" id="m-backstory"></div>
+
+        <div class="section-title">주요 인물 관계 (이름에 커서를 올리면 사진이 표시됩니다)</div>
+        <ul class="relations-list" id="m-people"></ul>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // 인물별 프로필 썸네일 태그 생성 함수
+    function createHoverTag(name, imgPath, role) {
+      return `<span class="person-hover">
+                ${name} (${role})
+                <span class="tooltip-card">
+                  <img src="${imgPath}" alt="${name}" onerror="this.src='https://via.placeholder.com/140x140/21262d/d29922?text=${encodeURIComponent(name)}'">
+                  <div class="tooltip-name">${name}</div>
+                </span>
+              </span>`;
+    }
+
+    const characterData = {
+      wade: {
+        name: "웨이드 보틀러",
+        sub: "54세 | 보안 컨설턴트",
+        img: "./image/wade.webp",
+        stats: [
+          ["근력", "80", "건강", "65", "크기", "55", "민첩성", "70"],
+          ["외모", "75", "지능", "85", "정신력", "70", "교육", "80"],
+          ["이성", "70", "체력", "12", "피해 보너스", "+1D4", "체구", "1"],
+          ["이동력", "7", "마력", "14", "행운", "45", "-", "-"]
+        ],
+        combat: "• <strong>전투 (근접전)</strong>: 50% (25/10), 피해 1D3+1D4<br>• <strong>.38 자동권총</strong>: 60% (30/12), 피해 1D10<br>• <strong>.30-06 소총</strong>: 50% (25/10), 피해 2D6+4<br>• <strong>회피</strong>: 40% (20/8)",
+        skills: [
+          ["오르기", "60% (30/12)", "컴퓨터 사용", "50% (25/10)"],
+          ["신용 등급", "25% (12/5)", "교섭", "40% (20/8)"],
+          ["응급처치", "45% (22/9)", "위협", "45% (22/9)"],
+          ["도약", "50% (25/10)", "도서관 이용", "45% (22/9)"],
+          ["듣기", "40% (20/8)", "열쇠공", "40% (20/8)"],
+          ["기계 수리", "35% (17/7)", "심리학", "45% (22/9)"],
+          ["관찰력", "45% (22/9)", "은밀행동", "40% (20/8)"],
+          ["수영", "50% (25/10)", "던지기", "40% (20/8)"]
+        ],
+        backstory: `당신은 부사관(Non-Commissioned Officer)으로 총 30년 동안 육군에서 복무했습니다. 전역 후, 정식 사설탐정 면허를 취득할 기회를 놓쳤기 때문에 스스로를 "보안 컨설턴트"라 칭하며 점차 민간 조사 분야로 발을 들였습니다. 당신의 어머니는 몇 년 전에 뇌졸중을 앓으신 후 현재 요양원에 계시며, 당신은 정기적으로 그곳을 방문하고 있습니다.<br><br>3주 전, 자이메드바이오(ZyMedBio)라는 제약 회사가 마리나 콜가(Marina Kolga)라는 "위험하고 불만을 품은 전직 직원"을 감시해 달라는 요청과 함께 23,000달러의 제안을 내걸고 당신을 고용했습니다. 콜가를 감시한 결과, 그녀가 조용한 삶을 살고 있다는 것을 금방 알게 되었습니다. 그녀의 컴퓨터를 해킹해 보았으나(보안이 전혀 없었습니다), 그녀가 로맨틱 코미디를 좋아하고 포르노를 보지 않으며 적극적으로 구직 활동을 하고 있다는 사실 외에는 찾아낸 것이 없었습니다. 당신은 조사 결과를 자이메드바이오에 보냈고, 며칠 전 그들은 당신에게 "밤에 그녀를 심문을 위해 데려오라"고 요구했습니다. 대체 뭣 하는 짓이란 말인가? 그건 보안 컨설턴트가 하는 일이 아닙니다. 그들은 콜가를 자이메드바이오로 데려와야만 남은 돈을 받을 수 있다고 말했습니다—지금까지 당신이 받은 돈은 2,750달러뿐입니다. 당신은 자이메드바이오의 의도를 의심하고 있습니다. 불법적인 폭력은 당신이 아직 넘을 준비가 되지 않은 선입니다.<br><br>조사 과정에서 당신은 콜가가 그녀의 사촌인 척 오글(Chuck Ogle)이 주최하는 파티에 참석한다는 사실을 알아냈습니다. 당신의 계획은 파티에 무단으로 침입하여 콜가를 관찰한 뒤, 궁극적으로 그녀를 설득해 자이메드바이오 사무실까지 동행하게 만들지 결정하는 것입니다. 만약 콜가를 설득해 함께 갈 수 있다면, 자이메드바이오에 도착했을 때 급여를 요구할 수 있으며 심문 과정 동안 그녀와 함께 머물며 안전을 보장해 줄 수도 있습니다.`,
+        people: [
+          `${createHoverTag("마리나 콜가", "./image/marina.webp", "PC")}: 자이메드바이오가 감시하라고 당신에게 맡긴 젊은 변호사. 그녀는 (다 자라 멀리 떠나간) 당신의 딸을 떠올리게 합니다.`,
+          `${createHoverTag("거스 필립스", "./image/gus.webp", "PC")}: 경찰서를 방문할 때 몇 번 마주친 적이 있는 내근 경찰. 그는 한 여성과 함께 파티에 와 있습니다. 아는 사이라기보다는 이름만 겨우 아는 정도입니다. 그가 당신의 이름을 알고 있는지는 확실치 않습니다.`,
+          `${createHoverTag("척 오글", "./image/chuck.webp", "악역/NPC")}: 파티를 주최하는 남자.`,
+          `${createHoverTag("짐 코나티", "./image/conaty.webp", "NPC")}: 당신의 자이메드바이오 담당 연락책. 그는 50대의 마른 체격이며, 처음 악수를 했을 때 마치 남성성을 과시하려는 듯 억지로 힘을 주어 당신의 손을 으스러뜨리려 했던 그런 부류의 인간입니다. 구제불능의 찌질이 같으니라고.`,
+          `${createHoverTag("블랑슈 유르카", "./image/yurka.webp", "NPC")}: 코나티의 개인 비서. 당신이 받은 이메일과 전화 통화의 대부분은 그녀로부터 온 것입니다. 그녀를 직접 대면한 적은 없습니다.`
+        ]
+      },
+      marina: {
+        name: "마리나 콜가",
+        sub: "29세 | 변호사",
+        img: "./image/marina.webp",
+        stats: [
+          ["근력", "45", "건강", "90", "크기", "60", "민첩성", "55"],
+          ["외모", "65", "지능", "65", "정신력", "65", "교육", "65"],
+          ["이성", "65", "체력", "15", "피해 보너스", "0", "체구", "0"],
+          ["이동력", "7", "마력", "13", "행운", "45", "-", "-"]
+        ],
+        combat: "• <strong>전투 (근접전)</strong>: 25% (12/5), 피해 1D3<br>• <strong>회피</strong>: 35% (17/7)",
+        skills: [
+          ["신용 등급", "28% (14/5)", "교섭", "50% (25/10)"],
+          ["역사", "35% (17/7)", "법률", "85% (42/17)"],
+          ["도서관 이용", "40% (20/8)", "듣기", "35% (17/7)"],
+          ["설득", "60% (30/12)", "심리학", "40% (20/8)"],
+          ["과학 (생물학)", "40% (20/8)", "관찰력", "45% (22/9)"],
+          ["은밀행동", "40% (20/8)", "수영", "55% (27/11)"],
+          ["던지기", "45% (22/9)", "-", "-"]
+        ],
+        backstory: `할머니께서 치매를 앓고 계시며, 어머니 역시 치매 초기 증상을 보이기 시작한다고 생각합니다. 당신은 기억을 잃는 악몽을 꾸며 조발성 치매를 앓게 될까 두려워합니다.<br><br>6개월 전, 당신은 로스쿨을 갓 졸업한 무직 상태였습니다. 느닷없이 자이메드바이오(ZyMedBio)라는 의료 연구 기업에서 연락이 와서 표준적인 기업 복리후생이 포함된 고소득 일자리를 제안했습니다. 거절할 수가 없었습니다. 당신은 외부 로펌과의 회사 연락책 역할을 맡을 것이라 예상했으나, 놀랍게도 회사의 모든 법률 업무를 전담하게 될 것이라는 사실을 알게 되었습니다. 하지만 현실은 작은 부속 사무실에서 서류 정리나 끄적이는 것이 전부였습니다. 아주 사소한 법률 업무였고 급여는 좋았지만 너무 지루해서 회사를 그만둘 생각까지 했습니다. 다른 회사 직원들을 만나거나 대화할 기회는 거의 없었고 친구도 사귀지 못했습니다.<br><br>한 달 전, 회사는 "테스트 프로그램에 자발적으로 참여해야 한다"는 내용의 메모를 보냈습니다. 부사장인 코나티(Conaty) 씨에게 어떻게 자발적 참여가 강제될 수 있는지 묻자, 그는 자발적인 부분은 어떤 테스트 프로그램을 고를지 선택하는 것뿐이라고 대답했습니다. 도저히 믿을 수 없었던 당신은 그 어떤 "자발적" 의료 실험에도 신청하는 것을 거부했습니다.<br><br>다음 날 출근하자, 출입 카드가 작동하지 않았고 당신의 짐은 문 앞 상자에 담겨 있었습니다. 보안 요원이 다가와 3개월치 급여가 담긴 수표를 건네며 떠나달라고 요구했습니다. 당신은 해고당한 것입니다.<br><br>거리 아래쪽에 사는 찰스 오글(Charles Ogle)이라는 남자는 자이메드바이오의 환자였습니다—당신이 그의 서류를 직접 처리했기 때문에 이 사실을 알고 있습니다. 오늘 밤, 그의 집에서 불빛과 음악이 새어 나오고 거리에 차들이 가득한 것이 보입니다. 그가 파티를 열고 있는 것이 분명합니다. 이번이 파티에 무단으로 침입할 기회입니다. 당신에게는 핑계가 있습니다. 당신은 그의 이웃이자, 그가 치료받을 당시 자이메드바이오에서 일했던 사람이기 때문입니다. 무슨 일이 벌어지고 있었는지 알아낼 수 있는 절호의 찬스입니다; 어쩌면 오글이 당신에게 어떤 정보를 줄 수 있지 않을까요?`,
+        people: [
+          `${createHoverTag("짐 코나티", "./image/conaty.webp", "NPC")}: 자이메드바이오에서 근무할 당시의 전직 상사이자, 회사의 모든 비과학적 업무를 총괄하는 부사장. 그는 매일 2마일씩 달리는 것에 집착하는, 짜증 날 정도로 건강을 뽐내는 노년 남성 중 한 명이었습니다. 그는 자전거 여행을 다녀온 이야기를 끊임없이 자랑했습니다. 그의 사무실과 건물의 연구 구역을 몰래 뒤져볼 기회만 있었더라면, 이 테스트 프로그램들이 과연 무엇에 관한 것인지 정확히 알아낼 수 있었을 텐데요.`,
+          `${createHoverTag("블랑슈 유르카", "./image/yurka.webp", "NPC")}: 상사의 개인 비서. 주로 그녀와 소통했습니다. 그녀는 새를 닮았고 동작이 빠른 중년 여성입니다.`,
+          `${createHoverTag("척 오글", "./image/chuck.webp", "NPC")}: 당신의 거리에 살고 있으며 자이메드바이오에서 실험적 치료를 받았습니다. 자이메드바이오에서 도대체 무슨 일이 벌어지고 있는지 알아내기 위해 그의 파티에 무단으로 쳐들어갈 계획입니다.`
+        ]
+      },
+      mary: {
+        name: "메리 풀러",
+        sub: "44세 | 간호사",
+        img: "./image/mary.webp",
+        stats: [
+          ["근력", "55", "건강", "75", "크기", "50", "민첩성", "75"],
+          ["외모", "55", "지능", "80", "정신력", "60", "교육", "75"],
+          ["이성", "60", "체력", "12", "피해 보너스", "0", "체구", "0"],
+          ["이동력", "8", "마력", "12", "행운", "45", "-", "-"]
+        ],
+        combat: "• <strong>전투 (근접전)</strong>: 35% (17/7), 피해 1D3<br>• <strong>회피</strong>: 35% (17/7)",
+        skills: [
+          ["매력", "45% (22/9)", "오르기", "25% (12/5)"],
+          ["컴퓨터 사용", "70% (35/14)", "신용 등급", "22% (11/4)"],
+          ["응급처치", "80% (40/16)", "도약", "30% (15/6)"],
+          ["도서관 이용", "25% (12/5)", "듣기", "40% (20/8)"],
+          ["의학", "35% (17/7)", "정신분석", "30% (15/6)"],
+          ["심리학", "40% (20/8)", "과학 (생물학)", "50% (25/10)"],
+          ["과학 (약학)", "40% (20/8)", "관찰력", "30% (15/6)"],
+          ["은밀행동", "30% (15/6)", "던지기", "30% (15/6)"]
+        ],
+        backstory: `당신은 시내 병원에서 일하는 성실한 간호사입니다. 두 번 결혼했었지만, 약 3년 전에 이혼하여 현재는 싱글입니다. 당신의 가장 친한 친구는 역시 이혼 경험이 있는 시시 리처즈(Sissy Richards)입니다.<br><br>당신에게는 성인 발병 당뇨병을 심하게 앓아 온 사촌 척 오글(Chuck Ogle)이 있습니다. 척은 시력이 점점 나빠졌고, 8개월 전에는 무릎 아래로 양쪽 다리를 절단해야 했습니다. 몇 주 전, 그는 종적을 감추었습니다. 고모의 말씀에 따르면 그가 자이메드바이오(ZyMedBio)라는 제약 회사에서 "치료를 받고" 있다고 했습니다.<br><br>지난주, 느닷없이 척으로부터 전화가 와서 그가 주최하는 파티에 초대받았습니다. 그는 자세한 정보를 주지 않았습니다—당신은 이 파티가 척이 죽기 전에 친구들과 가족들에게 작별 인사를 고하는 방식이 아닐까 두렵습니다. 그럼에도 불구하고 당신은 참석하기로 결정했습니다. 가장 친한 친구의 남동생이자 경찰관인 거스 필립스(Gus Phillips)가 어쩐 일인지 이 파티에 관심을 보였고(어쩌면 당신에게 관심이 있는 것일지도 모릅니다?), 그래서 당신의 데이트 상대 자격으로 함께 가기로 했습니다.`,
+        people: [
+          `${createHoverTag("거스 필립스", "./image/gus.webp", "PC")}: 시시 리처즈의 남동생이자 경찰관. 당신이 파티에 간다는 소식을 듣고 자기도 함께 갈 수 있는지 물어왔습니다.`,
+          `${createHoverTag("벨린다 노리치 박사", "./image/belinda.webp", "PC")}: 당신이 근무하는 병원의 의사 중 한 명이자, 이번 파티에 참석하는 인물. 당신이 그녀와 직접 일할 일은 자주 없습니다(당신은 응급실 간호사이고 그녀는 만성 질환 환자들을 담당합니다).`,
+          `${createHoverTag("척 오글", "./image/chuck.webp", "NPC")}: 당신의 사촌. 심하게 앓고 난 뒤 자이메드바이오에서 치료를 받았습니다. 이제 파티를 열고 있는데, 부디 그의 죽음을 알리는 자리가 아니기를 바라고 있습니다.`,
+          `${createHoverTag("시시 리처즈", "./image/sissy.webp", "NPC")}: 당신의 가장 친한 친구. 15년의 결혼 생활 끝에 이혼하면서 재산 분할로 두둑한 합의금을 챙겨 경제적으로 여유롭습니다. 심심풀이로 작은 꽃집을 운영하고 있습니다.`
+        ]
+      },
+      gus: {
+        name: "거스 필립스",
+        sub: "42세 | 경찰관",
+        img: "./image/gus.webp",
+        stats: [
+          ["근력", "70", "건강", "60", "크기", "65", "민첩성", "55"],
+          ["외모", "45", "지능", "70", "정신력", "70", "교육", "70"],
+          ["이성", "70", "체력", "12", "피해 보너스", "+1D4", "체구", "1"],
+          ["이동력", "7", "마력", "14", "행운", "45", "-", "-"]
+        ],
+        combat: "• <strong>전투 (근접전)</strong>: 45% (22/9), 피해 1D3+1D4<br>• <strong>.38 자동권총</strong>: 50% (25/10), 피해 1D10<br>• <strong>회피</strong>: 35% (17/7)",
+        skills: [
+          ["신용 등급", "32% (16/6)", "자동차 운전", "50% (25/10)"],
+          ["교섭", "40% (20/8)", "응급처치", "30% (15/6)"],
+          ["위협", "45% (22/9)", "법률", "40% (20/8)"],
+          ["듣기", "45% (22/9)", "기계 수리", "40% (20/8)"],
+          ["항법", "40% (20/8)", "설득", "40% (20/8)"],
+          ["심리학", "40% (20/8)", "관찰력", "30% (15/6)"],
+          ["은밀행동", "40% (20/8)", "수영", "30% (15/6)"],
+          ["던지기", "40% (20/8)", "-", "-"]
+        ],
+        backstory: `당신은 20년 차 베테랑 경찰관입니다. 상관인 도슨(Dawson) 서장이 특별히 마음에 드는 사람은 아니지만, 최근 말기 암으로 은퇴를 발표했을 때 그 누구에게도 그런 불행을 바란 적은 없었습니다. 그는 병가 휴직을 떠났고 임시 서장이 임명되었습니다.<br><br>최근, 당신은 의료 연구 기업인 자이메드바이오(ZyMedBio)의 주차장에서 발생한 폭행 사건을 조사하고 있었습니다. 앤드루 루시오(Andrew Lucio)라는 남자가 끔찍하게 뜯겨 나간 상태였습니다. 그의 상처는 개나 코요테에게 물린 것을 시사했지만, 동시에 칼에 베인 것처럼 깊게 베인 상처도 입고 있었습니다. 그 남자는 헛소리를 늘어놓았고 병원 측은 아무도 그와 대화할 수 없다고 말했습니다. 당신은 자이메드바이오로 찾아가 보안 책임자인 웨슬리 라이스(Wesley Rice)와 대화 나누었습니다. 그는 보안 경비원이 밤 10시 30분경 루시오를 발견해 구급차를 불렀다고 확인해 주었습니다. 보안 카메라도 비추지 않는 사각지대에서 일어난 일이라 경비원은 사건을 목격하지 못했습니다. 당신은 루시오가 회복하여 무슨 일이 일어났는지 설명해 줄 수 있기를 기다리며 일단 조사를 뒤로 미뤄두었습니다.<br><br>지난주, 도슨 서장이 느닷없이 복귀했습니다. 그는 암이 완치되어 다시 현업에 복귀했다고 말했습니다. 4기 췌장암에서 완치된 사람의 이야기 따위는 들어본 적도 없습니다! 당신이 그와 이야기를 나누자 그는 자이메드바이오에서 치료를 받았다고 말했지만 구체적인 내용은 함구했습니다. 그러더니 그는 당신의 파트너를 갱 전담반으로 발령 내고 당신을 내근직으로 좌천시켰습니다. 그는 자이메드바이오 조사를 완전히 종결시켜 버렸습니다. 뭔가 수상합니다.<br><br>누나를 방문했을 때, 누나의 가장 친한 친구인 메리 풀러(Mary Fuller)가 자이메드바이오의 어떤 치료 프로그램에 참여했던 사촌 척의 파티에 갈 것이라고 언급했습니다. (도슨 서장의 눈을 피해) 회사에 대해 조금 더 알아낼 수 있는 기회가 될지도 모른다고 생각한 당신은 메리에게 파티에 동행해도 되겠냐고 물었습니다. 그녀가 수락하여 당신은 그녀의 데이트 상대 자격으로 파티에 참석하게 되었습니다.`,
+        people: [
+          `${createHoverTag("메리 풀러", "./image/mary.webp", "PC")}: 누나의 친구이자 전문 간호사. 이번 파티를 주최하는 척 오글의 사촌이기도 합니다. 그녀가 당신을 이성으로 생각하는지는 모르겠지만 척의 파티에 데이트로 동행하는 것을 허락해 주었습니다.`,
+          `${createHoverTag("엘리엇 클로슨", "./image/elliott.webp", "PC")}: 과거에 몇 번 부딪친 적이 있는 신문 기자. 그는 일 처리를 잘하며 경찰을 위험하게 적대시하지 않습니다.`,
+          `${createHoverTag("웨이드 보틀러", "./image/wade.webp", "PC")}: 무면허 조사관. 무면허 조사관이라는 꼬리표를 떼려고 경찰서에 몇 번 나타난 적이 있어서 알고 있습니다. 그가 여기서 뭘 하고 있는 걸까요?`,
+          `${createHoverTag("시시 리처즈", "./image/sissy.webp", "NPC")}: 당신의 누나. 이혼했으며 작은 꽃집을 운영하고 있습니다.`,
+          `${createHoverTag("척 오글", "./image/chuck.webp", "NPC")}: 메리 풀러의 사촌. 위독한 상태였으나 치료를 받기 위해 자이메드바이오에 갔었습니다. 이제 파티를 열고 있습니다. 당신은 그에게서 자이메드바이오에 대한 정보를 캐내고 싶어 합니다.`,
+          `${createHoverTag("도슨 서장", "./image/dawson.webp", "NPC")}: 당신의 상사. 말기 췌장암을 앓고 자이메드바이오에서 치료를 받았습니다. 이제 완치되었다고 주장하고 있습니다. 그는 의심스러운 행동을 보이고 있지만 감히 공식적인 조치를 취하지 못하고 있습니다.`
+        ]
+      },
+      belinda: {
+        name: "벨린다 노리치",
+        sub: "42세 | 의사",
+        img: "./image/belinda.webp",
+        stats: [
+          ["근력", "45", "건강", "40", "크기", "55", "민첩성", "70"],
+          ["외모", "75", "지능", "70", "정신력", "70", "교육", "90"],
+          ["이성", "70", "체력", "9", "피해 보너스", "0", "체구", "0"],
+          ["이동력", "7", "마력", "14", "행운", "45", "-", "-"]
+        ],
+        combat: "• <strong>전투 (근접전)</strong>: 25% (12/5), 피해 1D3<br>• <strong>회피</strong>: 35% (17/7)",
+        skills: [
+          ["매력", "40% (20/8)", "신용 등급", "36% (18/7)"],
+          ["응급처치", "65% (32/13)", "법률", "25% (12/5)"],
+          ["도서관 이용", "35% (17/7)", "듣기", "35% (17/7)"],
+          ["의학", "75% (37/15)", "설득", "40% (20/8)"],
+          ["심리학", "40% (20/8)", "과학 (생물학)", "45% (22/9)"],
+          ["과학 (화학)", "55% (27/11)", "과학 (약학)", "50% (25/10)"],
+          ["관찰력", "45% (22/9)", "은밀행동", "30% (15/6)"],
+          ["던지기", "30% (15/6)", "-", "-"]
+        ],
+        backstory: `당신은 대형 병원에서 근무하는 의사입니다. 이상주의적이지만, 스스로는 세상에 대해 현실적인 시각을 가지고 있다고 자부합니다. 당신은 겸상 적혈구 빈혈증(SCD) 연구에 관여하고 있습니다. 사람들의 삶을 개선하고 의료 혜택을 제공하고 싶어 합니다.<br><br>최근, 당신의 SCD 환자 중 한 명이 무료 치료 프로토콜을 받기 위해 자이메드바이오(ZyMedBio)에 갈 것이라고 말했습니다. SCD는 영구적이며 특별한 치료법이 없습니다; 따라서 당신은 큰 흥미를 느꼈습니다. 치료를 마치고 돌아온 환자는 자신이 "완치되었다"고 말했습니다. 검진을 받으러 오라고 요청했으나 그는 끝내 오지 않았습니다. 비서에게 시켜 몇 번이나 전화를 걸어보게 했고, 그는 별일 없이 잘 지내고 있는 것 같았습니다. 지속적인 약물 복용 요법조차 필요 없다고 했는데, 이는 놀랍고 당신의 상식으로는 불가능한 일입니다.<br><br>자이메드바이오 측과 직접 이 문제를 논의하려다 실패한 당신은 의구심을 품고 그 치료법에 대해 더 자세히 알고 싶어 합니다. 병원의 간호사인 메리 풀러가 그녀의 사촌(척 오글)이 자이메드바이오에서 비슷한 치료를 받았다고 언급했습니다. 마침 오글이 파티를 열 예정이며, 당신은 자이메드바이오와 그 치료법에 대한 세부 사항을 수집할 수 있기를 바라며 이 파티에 참석하기로 결정했습니다.`,
+        people: [
+          `${createHoverTag("메리 풀러", "./image/mary.webp", "PC")}: 당신이 일하는 병원의 간호사. 다행히도 그녀는 이번 파티를 주최하는 척 오글이라는 남자의 사촌이기도 합니다.`,
+          `${createHoverTag("척 오글", "./image/chuck.webp", "NPC")}: 위독한 상태였으며 치료를 위해 자이메드바이오에 갔다는 말을 들었습니다. 이제 그는 파티를 열고 있고, 당신은 그 파티에 무단으로 참석했습니다. 그의 치료법과 자이메드바이오에 대한 정보를 그에게서 캐내고 싶어 합니다.`
+        ]
+      },
+      elliott: {
+        name: "엘리엇 클로슨",
+        sub: "32세 | 저널리스트",
+        img: "./image/elliott.webp",
+        stats: [
+          ["근력", "60", "건강", "75", "크기", "80", "민첩성", "55"],
+          ["외모", "70", "지능", "65", "정신력", "70", "교육", "85"],
+          ["이성", "70", "체력", "15", "피해 보너스", "+1D4", "체구", "1"],
+          ["이동력", "7", "마력", "14", "행운", "45", "-", "-"]
+        ],
+        combat: "• <strong>전투 (근접전)</strong>: 35% (17/7), 피해 1D3+1D4<br>• <strong>회피</strong>: 35% (17/7)",
+        skills: [
+          ["예술/공예 (사진)", "60% (30/12)", "컴퓨터 사용", "60% (30/12)"],
+          ["신용 등급", "26% (13/5)", "전자기기", "45% (22/9)"],
+          ["교섭", "65% (32/13)", "도약", "40% (20/8)"],
+          ["도서관 이용", "55% (27/11)", "듣기", "30% (15/6)"],
+          ["열쇠공", "20% (10/4)", "설득", "65% (32/13)"],
+          ["심리학", "50% (25/10)", "관찰력", "40% (20/8)"],
+          ["은밀행동", "35% (17/7)", "던지기", "35% (17/7)"]
+        ],
+        backstory: `당신은 신문사의 탐사보도 기자입니다. 당신은 몇 년 전에 문을 연 비밀스러운 의료 연구 기업인 자이메드바이오(ZyMedBio)를 조사해 왔습니다. 처음에는 기삿거리가 될 만한 내용이 있는지 확인해 보려는 가벼운 마음으로 조사를 시작했으나, 다음과 같은 사실들을 알게 되었습니다.<br>
+        <ul>
+          <li>정부와 맺은 계약이 전혀 없으며 민간 소유입니다.</li>
+          <li>도시 내에 건물 전체를 소유하고 있고 100명이 넘는 직원을 고용하고 있음에도 불구하고, 판매 중인 제품이 없고 명확한 수입원이 없습니다.</li>
+          <li>연구 조사와 실험 절차를 위해 끊임없이 사람들을 물색하고 있습니다.</li>
+        </ul>
+        이 모든 것이 당신에게는 꽤 이상하게 느껴졌고, 이 기이한 기업에 대해 더 많은 정보를 파헤치고 싶어 맹렬히 파고들었습니다. 하지만 당신은 난관에 부딪혀 멈춰 서고 말았습니다.<br><br>
+        당신의 편집장인 앤서니 캘리슨(Anthony Callison)은 수년 동안 HIV 양성 환자였으며 최근 상태가 에이즈(AIDS)로 악화되었습니다. 자이메드바이오에 대한 당신의 조사를 바탕으로, 캘리슨은 자이메드바이오에 찾아가 그들의 치료법 중 하나를 신청하기로 결정했습니다. 그는 그곳에 있는 동안 내부를 정찰해 보겠다고 말했습니다. 그는 약 3주 동안 자리를 비웠습니다. 돌아왔을 때, 그는 자신의 병이 완전히 관해 상태에 이르렀으며 최근 검사에서는 혈액에서 HIV 항체조차 찾아볼 수 없게 되었다고 발표했습니다. 도대체 어떻게 그런 일이 가능하단 말입니까? 그는 또한 자이메드바이오에는 아무런 비밀도 없으며 회사의 조사를 당장 중단하라는 점을 단호하게 명백히 밝혔습니다. 맙소사!<br><br>
+        당황스럽고, 걱정스러우며, 이제는 엄청난 의구심을 품게 된 당신은 지난주에 척 오글(Chuck Ogle)로부터 파티 초대장을 받았습니다. 그는 이전에 당신이 전화로 인터뷰했던 자이메드바이오 환자 중 한 명이었습니다. 척은 심각한 당뇨병을 앓았고 몇 달 전에 양쪽 발을 절단했습니다. 당신은 그가 자이메드바이오에서 치료를 받았다는 것을 알고 있으므로, 이번 파티에 참석하는 것은 조사를 중단하라는 캘리슨의 지시를 어기지 않으면서 척에게 자이메드바이오에 대해 다시 캐물을 수 있는 좋은 기회가 될 수 있습니다.`,
+        people: [
+          `${createHoverTag("거스 필립스", "./image/gus.webp", "PC")}: 파티에서 그를 보게 되어 조금 놀랐습니다. 필립스는 경찰관이며, 친구는 아니지만 취재 일을 통해 알게 된 지인입니다. 경찰까지 관심을 가지고 있다면 이 자이메드바이오 건은 당신이 생각했던 것보다 훨씬 더 큰 무언가가 숨겨져 있는지도 모릅니다.`,
+          `${createHoverTag("척 오글", "./image/chuck.webp", "NPC")}: 그가 자이메드바이오에서 치료를 받기 직전, 전화 인터뷰를 진행했을 당시 그는 심하게 앓고 있었습니다.`,
+          `${createHoverTag("앤서니 캘리슨", "./image/callison.webp", "NPC")}: 당신의 편집장. 한때 에이즈로 죽어가고 있었으나 지금은 관해 상태입니다. 그는 자이메드바이오에서 치료를 받았으며, 이제 당신이 회사를 더 이상 조사하지 못하도록 막고 있습니다.`
+        ]
+      }
+    };
+
+    function openModal(charKey) {
+      const data = characterData[charKey];
+      if (!data) return;
+
+      document.getElementById('m-img').src = data.img;
+      document.getElementById('m-name').innerText = data.name;
+      document.getElementById('m-sub').innerText = data.sub;
+
+      // 능력치 테이블 생성
+      let statHtml = "";
+      data.stats.forEach(row => {
+        statHtml += "<tr>";
+        for (let i = 0; i < row.length; i += 2) {
+          statHtml += `<th>${row[i]}</th><td>${row[i+1]}</td>`;
+        }
+        statHtml += "</tr>";
+      });
+      document.getElementById('m-stats').innerHTML = statHtml;
+
+      document.getElementById('m-combat').innerHTML = data.combat;
+
+      // 주요 기능 2열 테이블 생성
+      let skillHtml = "<tr><th>기능명</th><th>성공률 (보통/어려움/극단)</th><th>기능명</th><th>성공률 (보통/어려움/극단)</th></tr>";
+      data.skills.forEach(row => {
+        skillHtml += "<tr>";
+        skillHtml += `<td class="skill-name">${row[0]}</td><td class="skill-val">${row[1]}</td>`;
+        skillHtml += `<td class="skill-name">${row[2]}</td><td class="skill-val">${row[3]}</td>`;
+        skillHtml += "</tr>";
+      });
+      document.getElementById('m-skills').innerHTML = skillHtml;
+
+      // 비밀 데이터 세팅
+      document.getElementById('m-backstory').innerHTML = data.backstory;
+
+      let peopleHtml = "";
+      data.people.forEach(p => {
+        peopleHtml += `<li>${p}</li>`;
+      });
+      document.getElementById('m-people').innerHTML = peopleHtml;
+
+      // 모달을 열 때마다 비밀 영역 숨김 및 경고창 표시로 초기화
+      document.getElementById('secretWarningBox').style.display = 'block';
+      document.getElementById('secretDetailsArea').style.display = 'none';
+
+      document.getElementById('charModal').style.display = 'flex';
+    }
+
+    // 비밀 정보 열람 토글 함수
+    function revealSecretInfo() {
+      document.getElementById('secretWarningBox').style.display = 'none';
+      document.getElementById('secretDetailsArea').style.display = 'block';
+    }
+
+    function closeModal(e) {
+      if (e.target.id === 'charModal') {
+        document.getElementById('charModal').style.display = 'none';
+      }
+    }
+
+    function closeModalDirect() {
+      document.getElementById('charModal').style.display = 'none';
+    }
+  </script>
+</body>
+</html>

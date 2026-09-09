@@ -1,0 +1,947 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>크툴루의 부름 7판: 모홀 (The Mohole Project) - 탐사자 선택</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Noto+Serif+KR:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-color: #0d1117;
+      --card-bg: #161b22;
+      --border-color: #30363d;
+      --text-main: #c9d1d9;
+      --text-muted: #8b949e;
+      --accent-gold: #d29922;
+      --accent-crimson: #f85149;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-color);
+      color: var(--text-main);
+      font-family: 'Noto Serif KR', serif;
+      line-height: 1.6;
+      padding: 2.5rem 1rem;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 3rem;
+    }
+
+    header h1 {
+      font-family: 'Cinzel', serif;
+      font-size: 2.5rem;
+      color: var(--accent-gold);
+      letter-spacing: 2px;
+      margin-bottom: 0.5rem;
+      text-shadow: 0 0 12px rgba(210, 153, 34, 0.3);
+    }
+
+    header p {
+      color: var(--text-muted);
+      font-size: 1.1rem;
+    }
+
+    .character-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 1.8rem;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .character-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s;
+      cursor: pointer;
+    }
+
+    .character-card:hover {
+      transform: translateY(-5px);
+      border-color: var(--accent-gold);
+      box-shadow: 0 8px 20px rgba(210, 153, 34, 0.2);
+    }
+
+    .card-img-wrap {
+      width: 100%;
+      height: 280px;
+      background: #090d13;
+      border-bottom: 1px solid var(--border-color);
+      overflow: hidden;
+    }
+
+    .card-img-wrap img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: top center;
+      transition: transform 0.3s ease;
+    }
+
+    .character-card:hover .card-img-wrap img {
+      transform: scale(1.03);
+    }
+
+    .card-content {
+      padding: 1.2rem 1.4rem 1.4rem 1.4rem;
+      display: flex;
+      flex-direction: column;
+      flex-grow: 1;
+      justify-content: space-between;
+    }
+
+    .card-header {
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 0.6rem;
+      margin-bottom: 0.8rem;
+    }
+
+    .card-header h2 {
+      font-size: 1.25rem;
+      color: #f0f6fc;
+      margin-bottom: 0.2rem;
+    }
+
+    .card-header .job-tag {
+      font-size: 0.9rem;
+      color: var(--accent-gold);
+      font-weight: 600;
+    }
+
+    .card-body p {
+      font-size: 0.95rem;
+      color: var(--text-main);
+      margin-bottom: 1.2rem;
+      word-break: keep-all;
+    }
+
+    .btn-detail {
+      align-self: flex-start;
+      padding: 0.5rem 1rem;
+      background: transparent;
+      border: 1px solid var(--accent-gold);
+      color: var(--accent-gold);
+      font-family: inherit;
+      font-size: 0.85rem;
+      font-weight: 600;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background 0.2s, color 0.2s;
+    }
+
+    .character-card:hover .btn-detail {
+      background: var(--accent-gold);
+      color: #0d1117;
+    }
+
+    /* 모달 레이아웃 */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(0, 0, 0, 0.85);
+      z-index: 1000;
+      justify-content: center;
+      align-items: center;
+      padding: 1rem;
+    }
+
+    .modal-content {
+      background: var(--card-bg);
+      border: 1px solid var(--accent-gold);
+      border-radius: 8px;
+      width: 100%;
+      max-width: 900px;
+      max-height: 90vh;
+      overflow-y: auto;
+      padding: 2rem;
+      position: relative;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.9);
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 1rem;
+      right: 1.5rem;
+      font-size: 1.8rem;
+      background: none;
+      border: none;
+      color: var(--text-muted);
+      cursor: pointer;
+    }
+
+    .modal-close:hover {
+      color: var(--accent-crimson);
+    }
+
+    .modal-header-layout {
+      display: flex;
+      gap: 1.5rem;
+      margin-bottom: 1.5rem;
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 1.5rem;
+    }
+
+    .modal-img-wrap {
+      width: 130px;
+      height: 170px;
+      flex-shrink: 0;
+      border-radius: 6px;
+      overflow: hidden;
+      border: 1px solid var(--border-color);
+      background: #090d13;
+    }
+
+    .modal-img-wrap img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: top center;
+    }
+
+    .modal-info-wrap {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .modal-title {
+      font-size: 1.6rem;
+      color: var(--accent-gold);
+      margin-bottom: 0.3rem;
+    }
+
+    .modal-subtitle {
+      font-size: 1rem;
+      color: var(--text-muted);
+    }
+
+    /* 테이블 스타일 */
+    .stat-table, .skill-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 1.5rem;
+    }
+
+    .stat-table th, .stat-table td,
+    .skill-table th, .skill-table td {
+      border: 1px solid var(--border-color);
+      padding: 0.45rem 0.6rem;
+      text-align: center;
+      font-size: 0.85rem;
+    }
+
+    .stat-table th, .skill-table th {
+      background: #21262d;
+      color: var(--accent-gold);
+      font-weight: 600;
+    }
+
+    .skill-table td.skill-name {
+      text-align: left;
+      font-weight: 600;
+      color: #f0f6fc;
+      background: #11151c;
+      width: 30%;
+    }
+
+    .skill-table td.skill-val {
+      color: var(--text-main);
+      width: 20%;
+    }
+
+    .bonus-note {
+      font-size: 0.85rem;
+      color: var(--accent-gold);
+      margin-top: -1rem;
+      margin-bottom: 1.5rem;
+      padding-left: 0.2rem;
+    }
+
+    .section-title {
+      font-size: 1.1rem;
+      color: #f0f6fc;
+      margin: 1.4rem 0 0.6rem 0;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .section-title::before {
+      content: "";
+      display: inline-block;
+      width: 4px;
+      height: 1rem;
+      background: var(--accent-gold);
+    }
+
+    .combat-box, .backstory-box {
+      font-size: 0.95rem;
+      background: #0d1117;
+      border: 1px solid var(--border-color);
+      padding: 1rem;
+      border-radius: 4px;
+      line-height: 1.7;
+      margin-bottom: 1.2rem;
+    }
+
+    .backstory-box ul {
+      margin-top: 0.5rem;
+      margin-bottom: 0.5rem;
+      padding-left: 1.5rem;
+    }
+
+    .backstory-box li {
+      margin-bottom: 0.3rem;
+    }
+
+    /* 비밀 배경 경고 상자 및 열람 버튼 */
+    .secret-warning-box {
+      background: rgba(210, 153, 34, 0.08);
+      border: 1px solid var(--accent-gold);
+      border-radius: 6px;
+      padding: 1.4rem 1.2rem;
+      margin: 1.8rem 0 1.2rem 0;
+      text-align: center;
+    }
+
+    .secret-warning-title {
+      color: var(--accent-gold);
+      font-size: 1.05rem;
+      font-weight: 700;
+      margin-bottom: 0.6rem;
+    }
+
+    .secret-warning-desc {
+      color: var(--text-main);
+      font-size: 0.9rem;
+      line-height: 1.6;
+      margin-bottom: 1.2rem;
+      word-break: keep-all;
+    }
+
+    .btn-reveal-secret {
+      background: #161b22;
+      border: 1px solid var(--accent-gold);
+      color: var(--accent-gold);
+      padding: 0.6rem 1.4rem;
+      font-family: inherit;
+      font-size: 0.95rem;
+      font-weight: 700;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .btn-reveal-secret:hover {
+      background: var(--accent-gold);
+      color: #0d1117;
+      box-shadow: 0 0 10px rgba(210, 153, 34, 0.4);
+    }
+
+    /* 인물 관계 및 호버 툴팁 이미지 */
+    .relations-list {
+      list-style-type: none;
+      font-size: 0.92rem;
+      background: #0d1117;
+      border: 1px solid var(--border-color);
+      padding: 1rem 1.2rem;
+      border-radius: 4px;
+    }
+
+    .relations-list li {
+      margin-bottom: 0.8rem;
+      padding-left: 1.2rem;
+      position: relative;
+      line-height: 1.6;
+    }
+
+    .relations-list li:last-child {
+      margin-bottom: 0;
+    }
+
+    .relations-list li::before {
+      content: "•";
+      color: var(--accent-gold);
+      position: absolute;
+      left: 0;
+    }
+
+    .person-hover {
+      color: var(--accent-gold);
+      font-weight: 700;
+      text-decoration: underline;
+      text-decoration-style: dotted;
+      cursor: pointer;
+      position: relative;
+      display: inline-block;
+    }
+
+    .person-hover .tooltip-card {
+      visibility: hidden;
+      opacity: 0;
+      width: 140px;
+      background: #161b22;
+      border: 1px solid var(--accent-gold);
+      border-radius: 6px;
+      position: absolute;
+      bottom: 125%;
+      left: 50%;
+      transform: translateX(-50%);
+      padding: 5px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.9);
+      z-index: 100;
+      transition: opacity 0.2s ease, visibility 0.2s ease;
+      pointer-events: none;
+      text-align: center;
+    }
+
+    .person-hover .tooltip-card img {
+      width: 100%;
+      height: 140px;
+      object-fit: cover;
+      object-position: top center;
+      border-radius: 4px;
+      display: block;
+    }
+
+    .person-hover .tooltip-card .tooltip-name {
+      font-size: 0.75rem;
+      color: #f0f6fc;
+      margin-top: 4px;
+      font-weight: 600;
+    }
+
+    .person-hover .tooltip-card::after {
+      content: "";
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      margin-left: -6px;
+      border-width: 6px;
+      border-style: solid;
+      border-color: var(--accent-gold) transparent transparent transparent;
+    }
+
+    .person-hover:hover .tooltip-card {
+      visibility: visible;
+      opacity: 1;
+    }
+
+    @media (max-width: 600px) {
+      .modal-header-layout {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+      }
+      .modal-img-wrap {
+        width: 140px;
+        height: 180px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>모홀 프로젝트 (THE MOHOLE PROJECT)</h1>
+    <p>크툴루의 부름 7판 : 북해 해상 시추 플랫폼과 심해의 비밀</p>
+  </header>
+
+  <main class="character-grid">
+    <div class="character-card" onclick="openModal('jessica')">
+      <div class="card-img-wrap">
+        <img src="./image/jessica.webp" alt="제시카 앤더슨" onerror="this.src='https://via.placeholder.com/300x400/161b22/d29922?text=Jessica'">
+      </div>
+      <div class="card-content">
+        <div class="card-header">
+          <h2>제시카 앤더슨</h2>
+          <span class="job-tag">48세 / 지구화학자 & 팀 리더</span>
+        </div>
+        <div class="card-body">
+          <p>지구화학자이자 이번 외부 감사팀의 총괄 리더. 북해 데빌스 홀 플랫폼에 구축된 실험적 지각 시추 프로젝트 '너갈(Nergal)'의 예산, 안전성, 성공 가능성을 감사하러 파견되었습니다. 과학은 무한한 미래를 열어주지만 정치적 간섭으로부터 철저히 독립되어야 한다고 믿습니다.</p>
+        </div>
+        <button class="btn-detail">상세 시트 및 배경 이야기 보기</button>
+      </div>
+    </div>
+
+    <div class="character-card" onclick="openModal('phillip')">
+      <div class="card-img-wrap">
+        <img src="./image/phillip.webp" alt="필립 스완" onerror="this.src='https://via.placeholder.com/300x400/161b22/d29922?text=Phillip'">
+      </div>
+      <div class="card-content">
+        <div class="card-header">
+          <h2>필립 스완</h2>
+          <span class="job-tag">52세 / 핵물리학자</span>
+        </div>
+        <div class="card-body">
+          <p>핵물리학자. 시추 드릴을 미지의 심도까지 작동시키기 위해 로일럿 박사가 플랫폼에 설치한 원자로 설비의 안전과 기술적 타당성을 검증하는 임무를 맡았습니다. 모험심이 강하고 사교적이며, 인류의 모든 문제에 대한 궁극적인 해답은 과학에 있다고 굳게 믿고 있습니다.</p>
+        </div>
+        <button class="btn-detail">상세 시트 및 배경 이야기 보기</button>
+      </div>
+    </div>
+
+    <div class="character-card" onclick="openModal('terry')">
+      <div class="card-img-wrap">
+        <img src="./image/terry.webp" alt="테리 더글러스" onerror="this.src='https://via.placeholder.com/300x400/161b22/d29922?text=Terry'">
+      </div>
+      <div class="card-content">
+        <div class="card-header">
+          <h2>테리 더글러스</h2>
+          <span class="job-tag">45세 / 해양학자</span>
+        </div>
+        <div class="card-body">
+          <p>해양학자. 해양 환경 조사 및 잠수 전문 지식을 보유한 현장형 전문가입니다. 쾌활하고 과감하게 위험을 감수하는 성향이지만, 마음 깊은 곳에서는 무분별한 개발을 일삼는 인류가 지구 환경에 재앙과도 같은 존재라고 생각합니다.</p>
+        </div>
+        <button class="btn-detail">상세 시트 및 배경 이야기 보기</button>
+      </div>
+    </div>
+
+    <div class="character-card" onclick="openModal('trisha')">
+      <div class="card-img-wrap">
+        <img src="./image/trisha.webp" alt="트리샤 히키" onerror="this.src='https://via.placeholder.com/300x400/161b22/d29922?text=Trisha'">
+      </div>
+      <div class="card-content">
+        <div class="card-header">
+          <h2>트리샤 히키</h2>
+          <span class="job-tag">42세 / 인사 컨설턴트</span>
+        </div>
+        <div class="card-body">
+          <p>인사 관리 및 조직 진단 컨설턴트. 고립된 해상 플랫폼 내 연구 인력들의 근무 환경과 지휘 체계의 적절성을 감사하는 역할을 맡았습니다. 지배적이고 집요한 성격이며, 모든 인간은 원하는 바를 얻기 위해 활용할 수 있는 비밀을 품고 있다고 생각합니다.</p>
+        </div>
+        <button class="btn-detail">상세 시트 및 배경 이야기 보기</button>
+      </div>
+    </div>
+
+    <div class="character-card" onclick="openModal('victor')">
+      <div class="card-img-wrap">
+        <img src="./image/victor.webp" alt="빅터 만" onerror="this.src='https://via.placeholder.com/300x400/161b22/d29922?text=Victor'">
+      </div>
+      <div class="card-content">
+        <div class="card-header">
+          <h2>빅터 만</h2>
+          <span class="job-tag">49세 / 시스템 & 공정 엔지니어</span>
+        </div>
+        <div class="card-body">
+          <p>시스템 및 가공 공정 엔지니어. 중장비와 기계, 가스 정제 플랜트 설비 운용의 기술적 결함을 점검합니다. 겉보기에는 느긋하고 농담을 던지는 익살꾼이지만, 불의와 약자를 괴롭히는 행위를 극도로 혐오하는 확고한 정의관을 지니고 있습니다.</p>
+        </div>
+        <button class="btn-detail">상세 시트 및 배경 이야기 보기</button>
+      </div>
+    </div>
+
+    <div class="character-card" onclick="openModal('clarice')">
+      <div class="card-img-wrap">
+        <img src="./image/clarice.webp" alt="클라리스 윌리엄스" onerror="this.src='https://via.placeholder.com/300x400/161b22/d29922?text=Clarice'">
+      </div>
+      <div class="card-content">
+        <div class="card-header">
+          <h2>클라리스 윌리엄스</h2>
+          <span class="job-tag">36세 / 영국 하원의원</span>
+        </div>
+        <div class="card-body">
+          <p>영국 하원의원(MP). 천문학적인 정부 재정이 투입된 너갈 프로젝트의 정치적·재정적 정당성을 감사하기 위해 감사팀에 합류했습니다. 민첩하고 교활하며, 상황을 완벽히 이해하지 못해도 아는 척 넘기면서 자신의 정치적 입지를 확장할 기회를 항상 노립니다.</p>
+        </div>
+        <button class="btn-detail">상세 시트 및 배경 이야기 보기</button>
+      </div>
+    </div>
+  </main>
+
+  <div class="modal-overlay" id="charModal" onclick="closeModal(event)">
+    <div class="modal-content" onclick="event.stopPropagation()">
+      <button class="modal-close" onclick="closeModalDirect()">&times;</button>
+      
+      <div class="modal-header-layout">
+        <div class="modal-img-wrap">
+          <img id="m-img" src="" alt="캐릭터 이미지">
+        </div>
+        <div class="modal-info-wrap">
+          <h2 class="modal-title" id="m-name">캐릭터 이름</h2>
+          <div class="modal-subtitle" id="m-sub">나이 / 직업</div>
+        </div>
+      </div>
+
+      <div class="section-title">능력치</div>
+      <table class="stat-table" id="m-stats"></table>
+
+      <div class="section-title">전투</div>
+      <div class="combat-box" id="m-combat"></div>
+
+      <div class="section-title">주요 기능</div>
+      <table class="skill-table" id="m-skills"></table>
+      <div class="bonus-note">* 보너스: 플레이어가 원하는 기능에 30포인트를 자유롭게 배분하십시오.</div>
+
+      <div class="secret-warning-box" id="secretWarningBox">
+        <div class="secret-warning-title">⚠️ 주의: 플레이어 비밀 정보 및 배경 설정 포함</div>
+        <div class="secret-warning-desc">
+          이 항목에는 해당 탐사자의 <strong>개인 외모 묘사, 성격 특성, 사상/신념 및 팀원 관계</strong>가 포함되어 있습니다.<br>
+          원활한 플레이와 몰입을 위해 본인이 선택한 캐릭터의 내용만 열람하시는 것을 권장합니다.
+        </div>
+        <button class="btn-reveal-secret" onclick="revealSecretInfo()">👁️ 개인 배경 및 세부 설정 확인하기</button>
+      </div>
+
+      <div id="secretDetailsArea" style="display: none;">
+        <div class="section-title">임무 배경 및 인물 묘사</div>
+        <div class="backstory-box" id="m-backstory"></div>
+
+        <div class="section-title">외부 감사팀 및 주요 관계 인물 (이름에 커서를 올리면 사진이 표시됩니다)</div>
+        <ul class="relations-list" id="m-people"></ul>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function createHoverTag(name, imgPath, role) {
+      return `<span class="person-hover">
+                ${name} (${role})
+                <span class="tooltip-card">
+                  <img src="${imgPath}" alt="${name}" onerror="this.src='https://via.placeholder.com/140x140/21262d/d29922?text=${encodeURIComponent(name)}'">
+                  <div class="tooltip-name">${name}</div>
+                </span>
+              </span>`;
+    }
+
+    const commonMissionBackstory = `<strong>너갈 프로젝트 (Project Nergal)</strong>는 북해의 폐쇄된 석유 시추 플랫폼을 기반으로 지구의 지각을 관통하기 위해 설계된 전례 없는 실험적 시추 프로젝트입니다. 프로젝트의 주된 목표는 총책임자인 사이먼 로일럿(Simon Roylott) 박사가 발견한 새로운 미지의 에너지원인 <strong>"로일럿 가스(Rolot gas)"</strong>를 심해 지각에서 채취하고 정제하는 것입니다.<br><br>
+    이 프로젝트는 천문학적인 규모로 확장되었으며, 비즈니스·에너지·산업전략부 장관 제럴드 와인스텝(Gerald Winestep)의 전폭적인 지지와 막대한 정부 예산 지원을 받고 있습니다. 로일럿 박사는 드릴을 미지의 깊이까지 작동시키기 위해 플랫폼에 원자로까지 증설했습니다. 프로젝트의 행정 총괄 책임자는 관료 출신의 피어스 골드먼(Piers Goldman)으로, 모든 비과학적 행정 및 물류를 총괄하고 있습니다.<br><br>
+    당신과 전문가 팀은 이 프로젝트가 예산 대비 가치가 있는지, 안전한지, 임무를 완수할 가능성이 있는지를 감사하기 위해 <strong>데빌스 홀 플랫폼(Devil's Hole Platform)</strong>으로 파견되었습니다. 귀하의 감사 보고서는 프로젝트를 전면 폐쇄하거나 추가 투자를 최종 승인하는 결정적 근거가 될 것입니다. 감사팀은 플랫폼의 모든 구역에 제한 없이 접근할 수 있는 절대적 권한을 보장받았습니다.`;
+
+    const characterData = {
+      jessica: {
+        name: "제시카 앤더슨 (Jessica Anderson)",
+        sub: "48세 | 과학자 (지구화학) & 외부 감사팀 팀 리더",
+        img: "./image/jessica.webp",
+        stats: [
+          ["근력 (STR)", "55", "건강 (CON)", "45", "크기 (SIZ)", "65", "민첩성 (DEX)", "60"],
+          ["외모 (APP)", "60", "지능 (INT)", "80", "정신력 (POW)", "75", "교육 (EDU)", "90"],
+          ["이성 (SAN)", "75", "체력 (HP)", "11", "피해 보너스 (DB)", "0", "체구 (Build)", "0"],
+          ["이동력 (Move)", "6", "마력 (MP)", "15", "행운 (Luck)", "45", "-", "-"]
+        ],
+        combat: "• <strong>근접전 (격투)</strong>: 25% (12/5), 피해 1D3<br>• <strong>회피</strong>: 30% (15/6)",
+        skills: [
+          ["오르기", "20% (10/4)", "재력 (신용 등급)", "44% (22/9)"],
+          ["사격 (권총)", "20% (10/4)", "사격 (소총/산탄총)", "25% (12/5)"],
+          ["응급처치", "30% (15/6)", "위협", "65% (32/13)"],
+          ["도약", "20% (10/4)", "외국어 (라틴어)", "30% (15/6)"],
+          ["모국어 (영어)", "90% (45/18)", "자료조사", "70% (35/14)"],
+          ["듣기", "20% (10/4)", "기계 수리", "10% (5/2)"],
+          ["자연", "70% (35/14)", "설득", "40% (20/8)"],
+          ["심리학", "20% (10/4)", "과학 (화학)", "70% (35/14)"],
+          ["과학 (지질학)", "80% (40/16)", "과학 (수학)", "60% (30/12)"],
+          ["관찰력", "65% (32/13)", "은밀행동", "20% (10/4)"],
+          ["수영", "20% (10/4)", "던지기", "20% (10/4)"]
+        ],
+        backstory: `${commonMissionBackstory}<br><br>
+        <strong>[개인 프로필]</strong>
+        <ul>
+          <li><strong>외모 묘사:</strong> 호리호리한 체구, 희끗희끗해진 머리카락, 각진 얼굴선과 다소 엄격하고 위엄 있는 표정을 띠고 있습니다.</li>
+          <li><strong>성격 특성:</strong> 지적 호기심이 매우 강하며, 주도권을 쥐고 남을 지휘하려는 경향(Bossy)이 있습니다.</li>
+          <li><strong>사상/신념:</strong> 과학은 인류에게 무한한 미래를 열어줄 열쇠이지만, 추악한 정치적 이해관계와 간섭으로부터 철저히 독립되어 순수하게 유지되어야 한다.</li>
+        </ul>`,
+        people: [
+          `<strong>본인:</strong> 팀 리더이자 수석 지구화학자`,
+          `${createHoverTag("필립 스완", "./image/phillip.webp", "PC")}: 핵물리학자. 플랫폼에 증설된 원자로 설비의 핵심 분석을 담당하는 동료 과학자입니다.`,
+          `${createHoverTag("테리 더글러스", "./image/terry.webp", "PC")}: 해양학자. 해양 조건과 수중 생태 데이터를 분석합니다.`,
+          `${createHoverTag("트리샤 히키", "./image/trisha.webp", "PC")}: 인사 컨설턴트. 연구원들의 인사 및 심리적 적합성을 조사합니다.`,
+          `${createHoverTag("빅터 만", "./image/victor.webp", "PC")}: 시스템 및 공정 엔지니어. 거대 드릴과 정제 설비의 기계 시스템을 점검합니다.`,
+          `${createHoverTag("클라리스 윌리엄스", "./image/clarice.webp", "PC")}: 영국 하원의원(MP). 프로젝트 감사의 정치·재정 측면을 맡고 있습니다.`,
+          `${createHoverTag("사이먼 로일럿 박사", "./image/roylott.webp", "NPC")}: 너갈 프로젝트의 총책임자이자 로일럿 가스의 발견자.`,
+          `${createHoverTag("피어스 골드먼", "./image/goldman.webp", "NPC")}: 플랫폼의 행정과 물류를 총괄하는 관료 출신 총괄 디렉터.`,
+          `${createHoverTag("제럴드 와인스텝", "./image/winestep.webp", "NPC")}: 프로젝트에 막대한 국가 예산을 밀어준 비즈니스·에너지부 장관.`
+        ]
+      },
+      phillip: {
+        name: "필립 스완 (Phillip Swann)",
+        sub: "52세 | 과학자 (핵물리학자)",
+        img: "./image/phillip.webp",
+        stats: [
+          ["근력 (STR)", "50", "건강 (CON)", "70", "크기 (SIZ)", "65", "민첩성 (DEX)", "65"],
+          ["외모 (APP)", "55", "지능 (INT)", "75", "정신력 (POW)", "60", "교육 (EDU)", "85"],
+          ["이성 (SAN)", "60", "체력 (HP)", "13", "피해 보너스 (DB)", "0", "체구 (Build)", "0"],
+          ["이동력 (Move)", "6", "마력 (MP)", "12", "행운 (Luck)", "50", "-", "-"]
+        ],
+        combat: "• <strong>근접전 (격투)</strong>: 25% (12/5), 피해 1D3<br>• <strong>회피</strong>: 32% (16/6)",
+        skills: [
+          ["매혹", "45% (22/9)", "오르기", "30% (15/6)"],
+          ["컴퓨터 사용", "45% (22/9)", "재력 (신용 등급)", "40% (20/8)"],
+          ["전기 수리", "30% (15/6)", "사격 (권총)", "20% (10/4)"],
+          ["사격 (소총/산탄총)", "25% (12/5)", "응급처치", "30% (15/6)"],
+          ["도약", "20% (10/4)", "외국어 (라틴어)", "20% (10/4)"],
+          ["모국어 (영어)", "85% (42/17)", "자료조사", "40% (20/8)"],
+          ["듣기", "25% (12/5)", "기계 수리", "30% (15/6)"],
+          ["자연", "30% (15/6)", "설득", "40% (20/8)"],
+          ["심리학", "15% (7/3)", "과학 (공학)", "50% (25/10)"],
+          ["과학 (수학)", "60% (30/12)", "과학 (물리학)", "70% (35/14)"],
+          ["관찰력", "60% (30/12)", "은밀행동", "40% (20/8)"],
+          ["수영", "20% (10/4)", "던지기", "20% (10/4)"]
+        ],
+        backstory: `${commonMissionBackstory}<br><br>
+        <strong>[개인 프로필]</strong>
+        <ul>
+          <li><strong>외모 묘사:</strong> 마르고 근육질인 체격, 희끗희끗한 머리칼에 지적인 안경을 착용하고 있습니다.</li>
+          <li><strong>성격 특성:</strong> 미지의 영역에 도전하는 모험심이 강하며, 누구와도 잘 어울리는 사교적인 성격입니다.</li>
+          <li><strong>사상/신념:</strong> 과학이야말로 인류가 직면한 모든 위기와 고난을 해결해 줄 수 있는 유일한 열쇠다.</li>
+        </ul>`,
+        people: [
+          `<strong>본인:</strong> 핵물리학 전문 감사위원`,
+          `${createHoverTag("제시카 앤더슨", "./image/jessica.webp", "PC")}: 지구화학자이자 감사팀의 총괄 리더. 원칙에 철저한 인물입니다.`,
+          `${createHoverTag("테리 더글러스", "./image/terry.webp", "PC")}: 해양학자. 거친 해상 현장에 밝은 조사관입니다.`,
+          `${createHoverTag("트리샤 히키", "./image/trisha.webp", "PC")}: 인사 컨설턴트. 플랫폼 인력의 조직 체계를 검토합니다.`,
+          `${createHoverTag("빅터 만", "./image/victor.webp", "PC")}: 시스템 및 공정 엔지니어. 원자로와 연결된 동력 전달 계통을 함께 살필 수 있는 기술자입니다.`,
+          `${createHoverTag("클라리스 윌리엄스", "./image/clarice.webp", "PC")}: 하원의원. 프로젝트의 대외 예산과 정부 승인을 좌우할 인물입니다.`,
+          `${createHoverTag("사이먼 로일럿 박사", "./image/roylott.webp", "NPC")}: 너갈 프로젝트의 책임자. 원자로까지 설치해 지각 관통을 시도하고 있습니다.`,
+          `${createHoverTag("피어스 골드먼", "./image/goldman.webp", "NPC")}: 프로젝트의 행정 디렉터.`,
+          `${createHoverTag("제럴드 와인스텝", "./image/winestep.webp", "NPC")}: 정부 자금을 전폭적으로 지원한 에너지부 장관.`
+        ]
+      },
+      terry: {
+        name: "테리 더글러스 (Terry Douglas)",
+        sub: "45세 | 해양학자",
+        img: "./image/terry.webp",
+        stats: [
+          ["근력 (STR)", "65", "건강 (CON)", "60", "크기 (SIZ)", "70", "민첩성 (DEX)", "60"],
+          ["외모 (APP)", "50", "지능 (INT)", "70", "정신력 (POW)", "60", "교육 (EDU)", "80"],
+          ["이성 (SAN)", "60", "체력 (HP)", "13", "피해 보너스 (DB)", "+1D4", "체구 (Build)", "1"],
+          ["이동력 (Move)", "6", "마력 (MP)", "12", "행운 (Luck)", "55", "-", "-"]
+        ],
+        combat: "• <strong>근접전 (격투)</strong>: 25% (12/5), 피해 1D3+1D4<br>• <strong>회피</strong>: 32% (16/6)",
+        skills: [
+          ["오르기", "40% (20/8)", "컴퓨터 사용", "15% (7/3)"],
+          ["재력 (신용 등급)", "35% (17/7)", "잠수", "40% (20/8)"],
+          ["말재주", "35% (17/7)", "사격 (권총)", "20% (10/4)"],
+          ["사격 (소총/산탄총)", "25% (12/5)", "응급처치", "30% (15/6)"],
+          ["도약", "20% (10/4)", "모국어 (영어)", "80% (40/16)"],
+          ["자료조사", "30% (16/6)", "듣기", "25% (12/5)"],
+          ["자연", "70% (35/14)", "심리학", "15% (7/3)"],
+          ["과학 (생물학)", "70% (35/14)", "과학 (식물학)", "60% (30/12)"],
+          ["과학 (화학)", "60% (30/12)", "관찰력", "45% (22/9)"],
+          ["은밀행동", "40% (20/8)", "수영", "50% (25/10)"],
+          ["던지기", "20% (10/4)", "-", "-"]
+        ],
+        backstory: `${commonMissionBackstory}<br><br>
+        <strong>[개인 프로필]</strong>
+        <ul>
+          <li><strong>외모 묘사:</strong> 다부지고 떡 벌어진 가슴, 짧게 자른 머리에 서글서글한 둥근 얼굴을 지녔습니다.</li>
+          <li><strong>성격 특성:</strong> 위험한 상황에서도 과감하게 도전하는 타입이며, 매사에 쾌활하고 낙천적입니다.</li>
+          <li><strong>사상/신념:</strong> 인류의 역사와 무분별한 개발은 지구 행성 입장에서 오직 나쁜 소식(재앙)에 불과했다.</li>
+        </ul>`,
+        people: [
+          `<strong>본인:</strong> 해양 및 심해 환경 담당 감사위원`,
+          `${createHoverTag("제시카 앤더슨", "./image/jessica.webp", "PC")}: 지구화학자 & 팀 리더. 지질 분석과 감사의 총괄 지휘를 맡고 있습니다.`,
+          `${createHoverTag("필립 스완", "./image/phillip.webp", "PC")}: 핵물리학자. 시추 설비의 동력원과 물리학적 구조를 조사합니다.`,
+          `${createHoverTag("트리샤 히키", "./image/trisha.webp", "PC")}: 인사 컨설턴트. 플랫폼 승조원과 연구원들의 상태를 감사합니다.`,
+          `${createHoverTag("빅터 만", "./image/victor.webp", "PC")}: 시스템 및 공정 엔지니어. 해상 플랜트의 설비 작동을 전담합니다.`,
+          `${createHoverTag("클라리스 윌리엄스", "./image/clarice.webp", "PC")}: 하원의원. 정치적 영향력을 가진 인물입니다.`,
+          `${createHoverTag("사이먼 로일럿 박사", "./image/roylott.webp", "NPC")}: 너갈 프로젝트의 책임자.`,
+          `${createHoverTag("피어스 골드먼", "./image/goldman.webp", "NPC")}: 플랫폼의 행정 디렉터.`
+        ]
+      },
+      trisha: {
+        name: "트리샤 히키 (Trisha Hickey)",
+        sub: "42세 | 인사 컨설턴트",
+        img: "./image/trisha.webp",
+        stats: [
+          ["근력 (STR)", "65", "건강 (CON)", "70", "크기 (SIZ)", "55", "민첩성 (DEX)", "60"],
+          ["외모 (APP)", "65", "지능 (INT)", "80", "정신력 (POW)", "50", "교육 (EDU)", "70"],
+          ["이성 (SAN)", "50", "체력 (HP)", "12", "피해 보너스 (DB)", "0", "체구 (Build)", "0"],
+          ["이동력 (Move)", "7", "마력 (MP)", "10", "행운 (Luck)", "60", "-", "-"]
+        ],
+        combat: "• <strong>근접전 (격투)</strong>: 45% (22/9), 피해 1D3<br>• <strong>회피</strong>: 30% (15/6)",
+        skills: [
+          ["회계", "25% (12/5)", "매혹", "50% (25/10)"],
+          ["오르기", "30% (15/6)", "재력 (신용 등급)", "45% (22/9)"],
+          ["말재주", "40% (20/8)", "사격 (권총)", "20% (10/4)"],
+          ["사격 (소총/산탄총)", "25% (12/5)", "응급처치", "50% (25/10)"],
+          ["위협", "50% (25/10)", "도약", "30% (15/6)"],
+          ["모국어 (영어)", "70% (35/14)", "외국어 (네덜란드어)", "20% (10/4)"],
+          ["법률", "35% (17/7)", "자료조사", "40% (20/8)"],
+          ["듣기", "50% (25/10)", "심리학", "60% (30/12)"],
+          ["관찰력", "60% (30/12)", "은밀행동", "50% (25/10)"],
+          ["수영", "30% (15/6)", "던지기", "30% (15/6)"]
+        ],
+        backstory: `${commonMissionBackstory}<br><br>
+        <strong>[개인 프로필]</strong>
+        <ul>
+          <li><strong>외모 묘사:</strong> 평균적인 키, 단정하고 날카로운 비즈니스 수트 차림에 깔끔한 단발 흑발(Bob cut)을 하고 있습니다.</li>
+          <li><strong>성격 특성:</strong> 상대를 휘어잡으려는 지배적인 성향(Domineering)이며, 한 가지 목표에 매몰되는 터널 비전(Tunnel vision) 기질이 있습니다.</li>
+          <li><strong>사상/신념:</strong> 세상 모든 인간은 약점이자 비밀을 품고 있으며, 이는 내가 원하는 것을 쟁취하기 위한 훌륭한 도구가 된다.</li>
+        </ul>`,
+        people: [
+          `<strong>본인:</strong> 인사 및 조직 관리 감사위원`,
+          `${createHoverTag("제시카 앤더슨", "./image/jessica.webp", "PC")}: 지구화학자 & 팀 리더. 지시하기 좋아하는 깐깐한 팀장입니다.`,
+          `${createHoverTag("필립 스완", "./image/phillip.webp", "PC")}: 핵물리학자. 사교적이지만 원자로 설비의 핵심 키를 쥔 인물입니다.`,
+          `${createHoverTag("테리 더글러스", "./image/terry.webp", "PC")}: 해양학자. 거침없는 행동파입니다.`,
+          `${createHoverTag("빅터 만", "./image/victor.webp", "PC")}: 시스템 및 공정 엔지니어. 기술 인력들의 작업 환경을 점검할 파트너입니다.`,
+          `${createHoverTag("클라리스 윌리엄스", "./image/clarice.webp", "PC")}: 하원의원. 정치권의 생리를 잘 알고 서로 속내를 잴 수 있는 상대입니다.`,
+          `${createHoverTag("피어스 골드먼", "./image/goldman.webp", "NPC")}: 인사 및 행정을 총괄하는 디렉터. 히키의 주된 감사 및 정보 수집 대상입니다.`,
+          `${createHoverTag("사이먼 로일럿 박사", "./image/roylott.webp", "NPC")}: 너갈 프로젝트의 책임자.`
+        ]
+      },
+      victor: {
+        name: "빅터 만 (Victor Mann)",
+        sub: "49세 | 시스템 & 공정 엔지니어",
+        img: "./image/victor.webp",
+        stats: [
+          ["근력 (STR)", "80", "건강 (CON)", "70", "크기 (SIZ)", "65", "민첩성 (DEX)", "50"],
+          ["외모 (APP)", "55", "지능 (INT)", "70", "정신력 (POW)", "55", "교육 (EDU)", "85"],
+          ["이성 (SAN)", "55", "체력 (HP)", "13", "피해 보너스 (DB)", "+1D4", "체구 (Build)", "1"],
+          ["이동력 (Move)", "6", "마력 (MP)", "11", "행운 (Luck)", "55", "-", "-"]
+        ],
+        combat: "• <strong>근접전 (격투)</strong>: 55% (27/11), 피해 1D3+1D4<br>• <strong>회피</strong>: 35% (17/7)",
+        skills: [
+          ["매혹", "15% (7/3)", "오르기", "20% (10/4)"],
+          ["재력 (신용 등급)", "40% (20/8)", "전기 수리", "65% (32/13)"],
+          ["전자기기", "40% (20/8)", "사격 (권총)", "45% (22/9)"],
+          ["사격 (소총/산탄총)", "45% (22/9)", "응급처치", "30% (15/6)"],
+          ["위협", "15% (7/3)", "도약", "20% (10/4)"],
+          ["모국어 (영어)", "85% (42/17)", "법률", "30% (15/6)"],
+          ["자료조사", "40% (20/8)", "듣기", "20% (10/4)"],
+          ["기계 수리", "75% (37/15)", "중장비 조종", "40% (20/8)"],
+          ["설득", "25% (12/5)", "심리학", "10% (5/2)"],
+          ["과학 (공학)", "70% (35/14)", "과학 (수학)", "55% (27/11)"],
+          ["관찰력", "25% (12/5)", "은밀행동", "20% (10/4)"],
+          ["수영", "30% (15/6)", "던지기", "20% (10/4)"]
+        ],
+        backstory: `${commonMissionBackstory}<br><br>
+        <strong>[개인 프로필]</strong>
+        <ul>
+          <li><strong>외모 묘사:</strong> 키는 다소 작고 통통하지만, 넓고 단단한 어깨에 짧은 스포츠형 머리(Crew cut)를 하고 있습니다.</li>
+          <li><strong>성격 특성:</strong> 느긋하고 태평하며, 썰렁하거나 익살맞은 농담을 던져 분위기를 풀기를 즐깁니다.</li>
+          <li><strong>사상/신념:</strong> 사회적 불의와 힘없는 자를 괴롭히는 거만한 악당들을 극도로 혐오한다.</li>
+        </ul>`,
+        people: [
+          `<strong>본인:</strong> 시스템 및 플랜트 공정 설비 엔지니어`,
+          `${createHoverTag("제시카 앤더슨", "./image/jessica.webp", "PC")}: 지구화학자 & 팀 리더.`,
+          `${createHoverTag("필립 스완", "./image/phillip.webp", "PC")}: 핵물리학자. 원자로 관련 설비의 기술적 사안을 함께 검토할 동료입니다.`,
+          `${createHoverTag("테리 더글러스", "./image/terry.webp", "PC")}: 해양학자.`,
+          `${createHoverTag("트리샤 히키", "./image/trisha.webp", "PC")}: 인사 컨설턴트.`,
+          `${createHoverTag("클라리스 윌리엄스", "./image/clarice.webp", "PC")}: 하원의원.`,
+          `${createHoverTag("사이먼 로일럿 박사", "./image/roylott.webp", "NPC")}: 너갈 프로젝트의 책임자. 거대 시추 드릴을 무리하게 밀어붙이고 있습니다.`,
+          `${createHoverTag("피어스 골드먼", "./image/goldman.webp", "NPC")}: 프로젝트의 행정 디렉터.`
+        ]
+      },
+      clarice: {
+        name: "클라리스 윌리엄스 (Clarice Williams)",
+        sub: "36세 | 영국 하원의원 (Member of Parliament)",
+        img: "./image/clarice.webp",
+        stats: [
+          ["근력 (STR)", "80", "건강 (CON)", "65", "크기 (SIZ)", "45", "민첩성 (DEX)", "80"],
+          ["외모 (APP)", "70", "지능 (INT)", "65", "정신력 (POW)", "50", "교육 (EDU)", "60"],
+          ["이성 (SAN)", "50", "체력 (HP)", "11", "피해 보너스 (DB)", "+1D4", "체구 (Build)", "1"],
+          ["이동력 (Move)", "8", "마력 (MP)", "10", "행운 (Luck)", "60", "-", "-"]
+        ],
+        combat: "• <strong>근접전 (격투)</strong>: 35% (17/7), 피해 1D3+1D4<br>• <strong>회피</strong>: 40% (20/8)",
+        skills: [
+          ["매혹", "55% (27/11)", "오르기", "40% (20/8)"],
+          ["재력 (신용 등급)", "40% (20/8)", "말재주", "50% (25/10)"],
+          ["사격 (권총)", "20% (10/4)", "사격 (소총/산탄총)", "25% (12/5)"],
+          ["응급처치", "40% (20/8)", "역사", "25% (12/5)"],
+          ["위협", "40% (20/8)", "도약", "40% (20/8)"],
+          ["모국어 (영어)", "60% (30/12)", "법률", "15% (7/3)"],
+          ["자료조사", "40% (20/8)", "듣기", "40% (20/8)"],
+          ["설득", "30% (15/6)", "심리학", "45% (22/9)"],
+          ["손재주", "40% (20/8)", "관찰력", "40% (20/8)"],
+          ["은밀행동", "40% (20/8)", "수영", "30% (15/6)"],
+          ["던지기", "20% (10/4)", "-", "-"]
+        ],
+        backstory: `${commonMissionBackstory}<br><br>
+        <strong>[개인 프로필]</strong>
+        <ul>
+          <li><strong>외모 묘사:</strong> 아담하지만 운동으로 단련된 날렵한 체형, 오뚝하고 눈에 띄는 코와 긴 금발 머리를 지녔습니다.</li>
+          <li><strong>성격 특성:</strong> 전문 과학 지식을 잘 이해하지 못하면서도 완벽히 파악한 척 연기하며, 상황 판단이 교활하고 기민합니다.</li>
+          <li><strong>사상/신념:</strong> 어떤 위기와 격변 속에서도 자신의 정치적 영향력과 입지를 끌어올릴 수 있는 틈새와 각도를 찾아라.</li>
+        </ul>`,
+        people: [
+          `<strong>본인:</strong> 영국 의회 하원의원 (외부 감사단 대표 정무위원)`,
+          `${createHoverTag("제시카 앤더슨", "./image/jessica.webp", "PC")}: 지구화학자 & 팀 리더. 원칙주의자 과학자입니다.`,
+          `${createHoverTag("필립 스완", "./image/phillip.webp", "PC")}: 핵물리학자.`,
+          `${createHoverTag("테리 더글러스", "./image/terry.webp", "PC")}: 해양학자.`,
+          `${createHoverTag("트리샤 히키", "./image/trisha.webp", "PC")}: 인사 컨설턴트. 권력 구조와 비밀에 민감한 인물입니다.`,
+          `${createHoverTag("빅터 만", "./image/victor.webp", "PC")}: 시스템 및 공정 엔지니어.`,
+          `${createHoverTag("제럴드 와인스텝", "./image/winestep.webp", "NPC")}: 이 프로젝트를 강력히 후원한 정부 장관. 클라리스의 정치적 행보와 직결되어 있습니다.`,
+          `${createHoverTag("피어스 골드먼", "./image/goldman.webp", "NPC")}: 관료 출신의 플랫폼 총괄 디렉터.`,
+          `${createHoverTag("사이먼 로일럿 박사", "./image/roylott.webp", "NPC")}: 너갈 프로젝트의 책임자.`
+        ]
+      }
+    };
+
+    function openModal(charKey) {
+      const data = characterData[charKey];
+      if (!data) return;
+
+      document.getElementById('m-img').src = data.img;
+      document.getElementById('m-name').innerText = data.name;
+      document.getElementById('m-sub').innerText = data.sub;
+
+      let statHtml = "";
+      data.stats.forEach(row => {
+        statHtml += "<tr>";
+        for (let i = 0; i < row.length; i += 2) {
+          statHtml += `<th>${row[i]}</th><td>${row[i+1]}</td>`;
+        }
+        statHtml += "</tr>";
+      });
+      document.getElementById('m-stats').innerHTML = statHtml;
+
+      document.getElementById('m-combat').innerHTML = data.combat;
+
+      let skillHtml = "<tr><th>기능명</th><th>성공률 (보통/어려움/극단)</th><th>기능명</th><th>성공률 (보통/어려움/극단)</th></tr>";
+      data.skills.forEach(row => {
+        skillHtml += "<tr>";
+        skillHtml += `<td class="skill-name">${row[0]}</td><td class="skill-val">${row[1]}</td>`;
+        if (row[2] && row[2] !== "-") {
+          skillHtml += `<td class="skill-name">${row[2]}</td><td class="skill-val">${row[3]}</td>`;
+        } else {
+          skillHtml += `<td class="skill-name">-</td><td class="skill-val">-</td>`;
+        }
+        skillHtml += "</tr>";
+      });
+      document.getElementById('m-skills').innerHTML = skillHtml;
+
+      document.getElementById('m-backstory').innerHTML = data.backstory;
+
+      let peopleHtml = "";
+      data.people.forEach(p => {
+        peopleHtml += `<li>${p}</li>`;
+      });
+      document.getElementById('m-people').innerHTML = peopleHtml;
+
+      document.getElementById('secretWarningBox').style.display = 'block';
+      document.getElementById('secretDetailsArea').style.display = 'none';
+
+      document.getElementById('charModal').style.display = 'flex';
+    }
+
+    function revealSecretInfo() {
+      document.getElementById('secretWarningBox').style.display = 'none';
+      document.getElementById('secretDetailsArea').style.display = 'block';
+    }
+
+    function closeModal(e) {
+      if (e.target.id === 'charModal') {
+        document.getElementById('charModal').style.display = 'none';
+      }
+    }
+
+    function closeModalDirect() {
+      document.getElementById('charModal').style.display = 'none';
+    }
+  </script>
+</body>
+</html>

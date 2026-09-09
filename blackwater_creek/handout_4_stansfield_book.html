@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>블랙워터 핸드아웃 4 - 구 매사추세츠의 신화와 전설</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <!-- 고서 활자체 및 필기 주석용 폰트 -->
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=IM+Fell+English:ital@0;1&family=Nanum+Myeongjo:wght@400;700&family=Nanum+Pen+Script&family=Caveat:wght@600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-dark: #0b0907;
+      --book-cover: #1c1815;
+      --paper: #f1ebd8;
+      --paper-burn: #dfd0b2;
+      --ink: #1f1a17;
+      --faded-ink: #3b322a;
+      --highlight: rgba(190, 110, 40, 0.22);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-dark);
+      background-image: 
+        radial-gradient(circle at 50% 35%, rgba(35, 25, 18, 0.85) 0%, rgba(6, 4, 3, 0.98) 100%),
+        repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.35) 3px);
+      color: var(--ink);
+      font-family: 'IM Fell English', 'Nanum Myeongjo', serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 30px 15px;
+      overflow-x: hidden;
+    }
+
+    /* 상단 조작 툴바 */
+    .controls {
+      margin-bottom: 25px;
+      display: flex;
+      gap: 12px;
+      z-index: 10;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .btn {
+      background: #1e1712;
+      color: #cfbc9f;
+      border: 1px solid #4a3726;
+      padding: 8px 16px;
+      font-family: inherit;
+      font-size: 0.9rem;
+      cursor: pointer;
+      border-radius: 4px;
+      transition: all 0.2s ease;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.5);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .btn:hover {
+      background: #362518;
+      color: #faeed9;
+      border-color: #8c5e39;
+      transform: translateY(-1px);
+    }
+
+    .btn.active {
+      background: #5e2617;
+      color: #fff;
+      border-color: #ba4a2e;
+    }
+
+    /* 고서 래퍼 (하드커버 느낌) */
+    .book-wrapper {
+      width: 100%;
+      max-width: 780px;
+      background: var(--book-cover);
+      padding: 16px;
+      border-radius: 6px;
+      box-shadow: 
+        0 25px 60px rgba(0,0,0,0.95),
+        inset 0 0 25px rgba(0,0,0,0.85);
+      position: relative;
+    }
+
+    /* 책 페이지 */
+    .book-page {
+      background: var(--paper);
+      background-image: 
+        linear-gradient(to right, rgba(0,0,0,0.18) 0%, transparent 6%, transparent 94%, rgba(0,0,0,0.12) 100%),
+        radial-gradient(ellipse at center, transparent 65%, rgba(130, 95, 55, 0.2) 100%);
+      border: 1px solid #baa17d;
+      box-shadow: inset 0 0 45px rgba(100, 70, 35, 0.22);
+      padding: 55px 65px;
+      position: relative;
+      overflow: visible; /* 메모가 테두리 살짝 걸쳐도 잘리지 않도록 변경 */
+    }
+
+    /* 야영지 비바람/흙 얼룩 */
+    .weather-stain {
+      position: absolute;
+      top: -30px;
+      left: -20px;
+      width: 200px;
+      height: 180px;
+      background: radial-gradient(ellipse, rgba(70, 45, 20, 0.22) 0%, transparent 65%);
+      pointer-events: none;
+    }
+
+    .tear-mark {
+      position: absolute;
+      bottom: -35px;
+      right: 10%;
+      width: 220px;
+      height: 100px;
+      background: radial-gradient(ellipse, rgba(80, 50, 25, 0.18) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    /* 헤더 및 출판 정보 */
+    .book-header {
+      text-align: center;
+      border-bottom: 2px solid #856a4e;
+      padding-bottom: 14px;
+      margin-bottom: 26px;
+    }
+
+    .book-title {
+      font-family: 'Cinzel', serif;
+      font-size: 1.15rem;
+      letter-spacing: 2.5px;
+      color: #3b281d;
+      text-transform: uppercase;
+    }
+
+    .book-author {
+      font-size: 0.85rem;
+      color: #6e553f;
+      font-style: italic;
+      margin-top: 4px;
+      letter-spacing: 1px;
+    }
+
+    .page-number {
+      position: absolute;
+      top: 25px;
+      right: 35px;
+      font-size: 0.85rem;
+      color: #7d654c;
+      font-style: italic;
+    }
+
+    .archive-note {
+      position: absolute;
+      top: 25px;
+      left: 35px;
+      font-size: 0.75rem;
+      color: #947a5c;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+
+    /* 본문 */
+    .page-body {
+      font-size: 1.08rem;
+      line-height: 1.85;
+      color: var(--ink);
+      text-align: justify;
+    }
+
+    .drop-cap {
+      float: left;
+      font-family: 'Cinzel', serif;
+      font-size: 3.1rem;
+      line-height: 0.82;
+      padding-top: 4px;
+      padding-right: 10px;
+      color: #4a2d1a;
+      font-weight: 700;
+    }
+
+    .page-body p {
+      margin-bottom: 20px;
+      text-indent: 1.4em;
+    }
+
+    .page-body p:first-of-type {
+      text-indent: 0;
+    }
+
+    .underlined {
+      border-bottom: 1.5px solid #6b523e;
+      padding-bottom: 1px;
+    }
+
+    /* --- [개선된 손메모 스타일: 가독성을 위한 패치/스티커 배경 적용] --- */
+    .margin-note {
+      position: absolute;
+      font-family: 'Nanum Pen Script', 'Caveat', cursive;
+      line-height: 1.25;
+      padding: 10px 14px;
+      border-radius: 3px;
+      box-shadow: 2px 4px 12px rgba(0, 0, 0, 0.35), inset 0 0 10px rgba(0, 0, 0, 0.04);
+      z-index: 5;
+      transition: opacity 0.3s ease, transform 0.2s ease;
+      cursor: default;
+    }
+
+    .margin-note:hover {
+      transform: scale(1.03) !important;
+      z-index: 8;
+    }
+
+    /* 상단 우측 메모: 연필 메모 패치 */
+    .note-right {
+      top: 105px;
+      right: -15px; /* 페이지 테두리에 살짝 걸쳐 자연스럽게 */
+      transform: rotate(4deg);
+      max-width: 220px;
+      background: #fdf5d6; /* 낡은 메모지 노란빛 */
+      border: 1px solid #d4c292;
+      border-left: 4px solid #856a4e;
+      color: #2b221a;
+      font-size: 1.35rem;
+    }
+
+    /* 하단 메모: 붉은 잉크 광기 메모 패치 */
+    .note-bottom {
+      bottom: 25px;
+      left: 35px;
+      transform: rotate(-2.5deg);
+      max-width: 380px;
+      background: #fcf1ea; /* 살짝 붉은 기가 도는 양피지 쪽지 */
+      border: 1px dashed #b84f46;
+      border-left: 4px solid #941e17;
+      color: #7a120b;
+      font-size: 1.45rem;
+      font-weight: bold;
+    }
+
+    /* 단서 해설 하이라이트 */
+    .clue {
+      transition: background 0.3s ease, border-bottom 0.3s ease;
+    }
+
+    .highlight-active .clue {
+      background-color: var(--highlight);
+      border-bottom: 1px dashed #9e3621;
+      cursor: help;
+    }
+
+    /* 돋보기 모드 */
+    .enlarged .page-body {
+      font-size: 1.25rem;
+      line-height: 2.0;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- 제어 툴바 -->
+  <div class="controls">
+    <button class="btn" id="zoomBtn" onclick="toggleZoom()">🔍 본문 확대 / 축소</button>
+    <button class="btn" id="langBtn" onclick="toggleLang()">📜 원문(English) 보기</button>
+    <button class="btn" id="clueBtn" onclick="toggleClues()">💡 수호자 단서 해설</button>
+    <button class="btn active" id="marginBtn" onclick="toggleMargins()">✏️ 로즈의 손메모 [표시중]</button>
+  </div>
+
+  <div class="book-wrapper">
+    <div class="book-page" id="bookPage">
+      <div class="weather-stain"></div>
+      <div class="tear-mark"></div>
+
+      <div class="archive-note">The Roades Camp Site / Handout #4</div>
+      <div class="page-number">pp. 88-89</div>
+
+      <div class="book-header">
+        <div class="book-title">Myths and Legends of Old Massachusetts</div>
+        <div class="book-author">by Oliver Stansfield (Boston, 1911)</div>
+      </div>
+
+      <!-- 로즈 교수의 메모 (패치 배경 적용됨) -->
+      <div class="margin-note note-right" id="marginNote1">
+        “케이드가 다시 목격되었다... 보스턴에서 쫓겨난 이유가 바로 그것 때문이었다!”
+      </div>
+
+      <div class="margin-note note-bottom" id="marginNote2">
+        “사소한 이야기라고? 스탠스필드는 장님이다. 땅속에 여전히 살아 숨쉬고 있단 말이다!”
+      </div>
+
+      <div class="page-body" id="pageContent">
+        <p>
+          <span class="drop-cap">미</span>스카토닉 계곡의 덜 사악하고 의심할 여지 없이 덜 불가사의한 미스터리 중 하나는 <span class="clue" title="[지명 단서: 블랙워터 크릭의 전신] 1660년 청교도 박해를 피해 온 퀘이커 교도들이 세운 정착지. 지금의 발굴 현장 및 마을 부지입니다.">케이즈 레스트(Cade’s Rest)로 알려진 정착지의 운명</span>이다. 역사적 기록에 따르면 1660년 보스턴 커먼에서 메리 다이어(Mary Dyer)가 교수형을 당한 후, 한 무리의 퀘이커교도들이 청교도들의 박해를 피해 보스턴을 떠났다. 이 무리는 재단사 에제키엘 케이드(Ezekiel Cade)가 이끌었으며 10여 가구가 포함되어 있었다. 몇 달간의 이동 끝에 그들은 훗날 던위치가 될 장소에서 멀지 않은 미스카토닉 강변에 정착했다.
+        </p>
+        <p>
+          이 시점 이후의 기록은 빈약하지만, 민간 전승에 따르면 케이드와 그의 추종자들이 <span class="clue" title="[연결 단서] 핸드아웃 3에 등장한 슈브 니구라스 숭배 부족 '시카이옥'입니다.">'검은 흙의 사람들'로 알려진 지역 인디언 부족과 접촉한 후</span> 정착지가 번성했다고 전해진다.
+        </p>
+        <p>
+          이야기가 전설로 변하는 대목은 정착지의 종말이다. 어떤 이야기에서는 <span class="clue" title="[역사의 왜곡 1] 케이드가 화약으로 동굴을 무너뜨려 시카이옥 부족을 매장한 사건이 왜곡되어 구전된 것입니다.">땅이 갈라져 정착민들을 통째로 삼켰다</span>고 한다. 다른 이야기에서는 그들이 악마 그 자체에게 채여 갔다고 전한다. 보다 평범한 세부 사항조차 모순되는데, 어떤 기록은 <span class="underlined">현장에서 텅 빈 집들이 발견되었다</span>고 하고 다른 기록은 건물조차 사라졌다고 한다.
+        </p>
+        <p>
+          몇 년 후 <span class="clue" title="[핵심 진실: 불사의 케이드] 케이드 역시 '어머니의 선물'에 노출되어 나병 환자처럼 변했고, 결국 보스턴에서 쫓겨나 미스카토닉 오지로 돌아왔습니다. 수백 년이 지난 지금도 살아있을지 모릅니다.">케이드가 보스턴에서 목격되었다는 언급</span>이 있는 것으로 보아, 가장 유력한 설명은 정착민들이 자신들의 사생활을 지키기 위해 실종 소문을 스스로 퍼뜨리며 단순히 다시 이주했다는 것이다. 혹은 그들이 검은 흙 부족과 갈등을 빚어 살해당했을 수도 있다. <span class="clue" title="[아이러니] 학자는 미신으로 치부했으나, 로즈는 이것이 실화임을 확신하고 발굴을 감행했습니다.">진실이 무엇이든 이 전설은 기껏해야 사소한 이야기에 불과하다.</span>
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let isEnlarged = false;
+    let isEnglish = false;
+    let showClues = false;
+    let showMargins = true;
+
+    const bookPage = document.getElementById('bookPage');
+    const pageContent = document.getElementById('pageContent');
+    const zoomBtn = document.getElementById('zoomBtn');
+    const langBtn = document.getElementById('langBtn');
+    const clueBtn = document.getElementById('clueBtn');
+    const marginBtn = document.getElementById('marginBtn');
+    const margin1 = document.getElementById('marginNote1');
+    const margin2 = document.getElementById('marginNote2');
+
+    const korHTML = `
+      <p>
+        <span class="drop-cap">미</span>스카토닉 계곡의 덜 사악하고 의심할 여지 없이 덜 불가사의한 미스터리 중 하나는 <span class="clue" title="[지명 단서: 블랙워터 크릭의 전신] 1660년 청교도 박해를 피해 온 퀘이커 교도들이 세운 정착지. 지금의 발굴 현장 및 마을 부지입니다.">케이즈 레스트(Cade’s Rest)로 알려진 정착지의 운명</span>이다. 역사적 기록에 따르면 1660년 보스턴 커먼에서 메리 다이어(Mary Dyer)가 교수형을 당한 후, 한 무리의 퀘이커교도들이 청교도들의 박해를 피해 보스턴을 떠났다. 이 무리는 재단사 에제키엘 케이드(Ezekiel Cade)가 이끌었으며 10여 가구가 포함되어 있었다. 몇 달간의 이동 끝에 그들은 훗날 던위치가 될 장소에서 멀지 않은 미스카토닉 강변에 정착했다.
+      </p>
+      <p>
+        이 시점 이후의 기록은 빈약하지만, 민간 전승에 따르면 케이드와 그의 추종자들이 <span class="clue" title="[연결 단서] 핸드아웃 3에 등장한 슈브 니구라스 숭배 부족 '시카이옥'입니다.">'검은 흙의 사람들'로 알려진 지역 인디언 부족과 접촉한 후</span> 정착지가 번성했다고 전해진다.
+      </p>
+      <p>
+        이야기가 전설로 변하는 대목은 정착지의 종말이다. 어떤 이야기에서는 <span class="clue" title="[역사의 왜곡 1] 케이드가 화약으로 동굴을 무너뜨려 시카이옥 부족을 매장한 사건이 왜곡되어 구전된 것입니다.">땅이 갈라져 정착민들을 통째로 삼켰다</span>고 한다. 다른 이야기에서는 그들이 악마 그 자체에게 채여 갔다고 전한다. 보다 평범한 세부 사항조차 모순되는데, 어떤 기록은 <span class="underlined">현장에서 텅 빈 집들이 발견되었다</span>고 하고 다른 기록은 건물조차 사라졌다고 한다.
+      </p>
+      <p>
+        몇 년 후 <span class="clue" title="[핵심 진실: 불사의 케이드] 케이드 역시 '어머니의 선물'에 노출되어 나병 환자처럼 변했고, 결국 보스턴에서 쫓겨나 미스카토닉 오지로 돌아왔습니다. 수백 년이 지난 지금도 살아있을지 모릅니다.">케이드가 보스턴에서 목격되었다는 언급</span>이 있는 것으로 보아, 가장 유력한 설명은 정착민들이 자신들의 사생활을 지키기 위해 실종 소문을 스스로 퍼뜨리며 단순히 다시 이주했다는 것이다. 혹은 그들이 검은 흙 부족과 갈등을 빚어 살해당했을 수도 있다. <span class="clue" title="[아이러니] 학자는 미신으로 치부했으나, 로즈는 이것이 실화임을 확신하고 발굴을 감행했습니다.">진실이 무엇이든 이 전설은 기껏해야 사소한 이야기에 불과하다.</span>
+      </p>
+    `;
+
+    const engHTML = `
+      <p>
+        <span class="drop-cap">O</span>ne of the less sinister and undoubtedly less enigmatic mysteries of the Miskatonic Valley is the fate of the settlement known as <span class="clue" title="[Site Clue: Predecessor to Blackwater Creek] The Quaker settlement founded in 1660, situated where the village and dig site now stand.">Cade’s Rest</span>. Historical records show that following the hanging of Mary Dyer on Boston Common in 1660, a band of Quakers fled Boston to escape Puritan persecution. Led by tailor Ezekiel Cade, the group comprised roughly a dozen families. After wandering for months, they settled along the Miskatonic River near what would later become Dunwich.
+      </p>
+      <p>
+        Records after this point are sparse, though folklore tells that the colony prospered after Cade and his followers <span class="clue" title="[Cross-reference] The Sicaiook tribe from Handout #3.">made contact with a local Indian tribe known as "the People of the Black Soil."</span>
+      </p>
+      <p>
+        Where folklore shifts into myth is in the settlement’s sudden demise. Some tales recount that <span class="clue" title="[Distorted Truth 1] A mythologized memory of Cade blasting the cave with gunpowder to collapse it.">the earth opened and swallowed the settlers whole</span>; others claim they were snatched away by the Devil himself. Mundane accounts contradict one another: some note that <span class="underlined">empty dwellings were found abandoned</span>, while others claim not a single timber remained.
+      </p>
+      <p>
+        A passing mention that <span class="clue" title="[Core Truth: Cade's Immortality] Cade contracted the Mother's Gift, was shunned as a leper in Boston, and returned to the valley—potentially still walking the earth.">Cade was sighted in Boston some years later</span> suggests the most likely explanation: the settlers simply relocated, propagating rumors of disappearance to guard their solitude. Or perhaps they were massacred in a dispute with the Black Soil tribe. <span class="clue" title="[Tragic Irony] Dismissed as trivial folklore by historians, yet it led Roades straight to the living horror.">Whatever the truth, the legend remains of minor interest at best.</span>
+      </p>
+    `;
+
+    function toggleZoom() {
+      isEnlarged = !isEnlarged;
+      if (isEnlarged) {
+        bookPage.classList.add('enlarged');
+        zoomBtn.innerText = "🔍 기본 크기로 축소";
+      } else {
+        bookPage.classList.remove('enlarged');
+        zoomBtn.innerText = "🔍 본문 확대 / 축소";
+      }
+    }
+
+    function toggleLang() {
+      isEnglish = !isEnglish;
+      if (isEnglish) {
+        pageContent.innerHTML = engHTML;
+        langBtn.innerText = "📜 번역문(한국어) 보기";
+        margin1.innerText = '"Cade sighted again... That was why he was cast out of Boston!"';
+        margin2.innerText = '"Minor interest? Stansfield is blind. It lives and breathes beneath the hills!"';
+      } else {
+        pageContent.innerHTML = korHTML;
+        langBtn.innerText = "📜 원문(English) 보기";
+        margin1.innerText = '“케이드가 다시 목격되었다... 보스턴에서 쫓겨난 이유가 바로 그것 때문이었다!”';
+        margin2.innerText = '“사소한 이야기라고? 스탠스필드는 장님이다. 땅속에 여전히 살아 숨쉬고 있단 말이다!”';
+      }
+    }
+
+    function toggleClues() {
+      showClues = !showClues;
+      if (showClues) {
+        document.body.classList.add('highlight-active');
+        clueBtn.classList.add('active');
+        clueBtn.innerText = "💡 수호자 단서 숨기기";
+      } else {
+        document.body.classList.remove('highlight-active');
+        clueBtn.classList.remove('active');
+        clueBtn.innerText = "💡 수호자 단서 해설";
+      }
+    }
+
+    function toggleMargins() {
+      showMargins = !showMargins;
+      margin1.style.display = showMargins ? 'block' : 'none';
+      margin2.style.display = showMargins ? 'block' : 'none';
+      marginBtn.classList.toggle('active', showMargins);
+      marginBtn.innerText = showMargins ? "✏️ 로즈의 손메모 [표시중]" : "✏️ 로즈의 손메모 [숨김]";
+    }
+  </script>
+</body>
+</html>

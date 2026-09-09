@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>블랙워터 핸드아웃 6 - 케이즈 레스트의 숨겨진 역사</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <!-- 고서체, 세리프, 타자기 및 명조 폰트 -->
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800&family=IM+Fell+English:ital@0;1&family=Special+Elite&family=Nanum+Myeongjo:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-dark: #0a0807;
+      --paper: #f0e9d2;
+      --paper-burn: #d8c6a0;
+      --ink: #1f1a16;
+      --faded-ink: #47392d;
+      --seal-red: #821c14;
+      --highlight: rgba(180, 50, 20, 0.22);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-dark);
+      background-image: 
+        radial-gradient(circle at 50% 35%, rgba(35, 22, 16, 0.9) 0%, rgba(5, 4, 3, 0.99) 100%),
+        repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.35) 3px);
+      color: var(--ink);
+      font-family: 'IM Fell English', 'Nanum Myeongjo', serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 30px 15px;
+      overflow-x: hidden;
+    }
+
+    /* 상단 조작 툴바 */
+    .controls {
+      margin-bottom: 25px;
+      display: flex;
+      gap: 12px;
+      z-index: 10;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .btn {
+      background: #1e150f;
+      color: #cfbc9f;
+      border: 1px solid #4a3424;
+      padding: 8px 16px;
+      font-family: inherit;
+      font-size: 0.9rem;
+      cursor: pointer;
+      border-radius: 4px;
+      transition: all 0.2s ease;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.5);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .btn:hover {
+      background: #362215;
+      color: #faeed9;
+      border-color: #8c5b36;
+      transform: translateY(-1px);
+    }
+
+    .btn.active {
+      background: #5e2216;
+      color: #fff;
+      border-color: #ba4732;
+    }
+
+    /* 문서 컨테이너 */
+    .doc-wrapper {
+      width: 100%;
+      max-width: 780px;
+      background: #1a120c;
+      padding: 16px;
+      border-radius: 6px;
+      box-shadow: 0 25px 65px rgba(0,0,0,0.95);
+      position: relative;
+    }
+
+    /* 고문서 종이 시트 */
+    .document-page {
+      background: var(--paper);
+      background-image: 
+        linear-gradient(to right, rgba(0,0,0,0.15) 0%, transparent 6%, transparent 94%, rgba(0,0,0,0.12) 100%),
+        radial-gradient(ellipse at center, transparent 65%, rgba(130, 95, 50, 0.25) 100%);
+      border: 1px solid #baa17d;
+      box-shadow: inset 0 0 50px rgba(100, 70, 35, 0.25);
+      padding: 60px 70px;
+      position: relative;
+      overflow: hidden;
+      transition: background 0.3s ease;
+    }
+
+    /* 미스카토닉 도서관 밀봉 왁스 스탬프 */
+    .seal-wax {
+      position: absolute;
+      top: 30px;
+      right: 35px;
+      width: 80px;
+      height: 80px;
+      background: radial-gradient(circle at 35% 35%, #9e2a20 10%, #63100a 80%, #380804 100%);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #f7d5cc;
+      box-shadow: 2px 4px 10px rgba(0,0,0,0.5), inset 1px 1px 3px rgba(255,255,255,0.3);
+      border: 2px dashed rgba(255,255,255,0.2);
+      transform: rotate(8deg);
+      text-align: center;
+      font-size: 0.65rem;
+      font-family: 'Cinzel', serif;
+      letter-spacing: 1px;
+      line-height: 1.1;
+      pointer-events: none;
+    }
+
+    /* 문서 상단 태그 */
+    .archive-header {
+      border-bottom: 2px solid #826649;
+      padding-bottom: 15px;
+      margin-bottom: 28px;
+      text-align: center;
+    }
+
+    .archive-id {
+      font-family: 'Special Elite', monospace;
+      font-size: 0.8rem;
+      color: #7d6349;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+
+    .doc-title {
+      font-family: 'Cinzel', serif;
+      font-size: 1.35rem;
+      color: #3b2518;
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+      font-weight: 700;
+    }
+
+    /* 본문 */
+    .doc-body {
+      font-size: 1.08rem;
+      line-height: 1.85;
+      color: var(--ink);
+      text-align: justify;
+    }
+
+    .drop-cap {
+      float: left;
+      font-family: 'Cinzel', serif;
+      font-size: 3.2rem;
+      line-height: 0.8;
+      padding-top: 4px;
+      padding-right: 10px;
+      color: #4a2d1a;
+      font-weight: 800;
+    }
+
+    .doc-body p {
+      margin-bottom: 18px;
+      text-indent: 1.4em;
+    }
+
+    .doc-body p:first-of-type {
+      text-indent: 0;
+    }
+
+    /* 백스터 구술 전언 스타일 오버레이 */
+    .baxter-mode {
+      background: #fdfaf0 !important;
+    }
+
+    .baxter-dialogue-banner {
+      display: none;
+      background: #2b1f17;
+      color: #e8d9c2;
+      padding: 10px 16px;
+      margin-bottom: 20px;
+      border-radius: 4px;
+      font-size: 0.9rem;
+      font-family: 'Special Elite', monospace;
+      border-left: 5px solid #a65829;
+    }
+
+    /* 단서 하이라이트 */
+    .clue {
+      transition: background 0.3s ease, border-bottom 0.3s ease;
+    }
+
+    .highlight-active .clue {
+      background-color: var(--highlight);
+      border-bottom: 1.5px dashed #9e3621;
+      cursor: help;
+    }
+
+    /* 돋보기 모드 */
+    .enlarged .doc-body {
+      font-size: 1.25rem;
+      line-height: 2.0;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- 상단 툴바 -->
+  <div class="controls">
+    <button class="btn" id="modeBtn" onclick="toggleMode()">🎙️ 획득 경로: [도서관 문서]</button>
+    <button class="btn" id="zoomBtn" onclick="toggleZoom()">🔍 본문 확대 / 축소</button>
+    <button class="btn" id="langBtn" onclick="toggleLang()">📜 원문(English) 보기</button>
+    <button class="btn" id="clueBtn" onclick="toggleClues()">💡 수호자 신화 진실 해설</button>
+  </div>
+
+  <div class="doc-wrapper">
+    <div class="document-page" id="docPage">
+      <div class="seal-wax" id="sealWax">
+        MISKATONIC<br>
+        ARCHIVES<br>
+        RESTRICTED
+      </div>
+
+      <!-- 백스터 구술 모드 시 나타나는 배너 -->
+      <div class="baxter-dialogue-banner" id="baxterBanner">
+        너새니얼 백스터의 쉰 목소리: "그 교수 양반도 내게 묻더군. 케이즈 레스트에 관한 진짜 옛이야기를... 내 증조부 때부터 내려오던 진실은 이렇소."
+      </div>
+
+      <div class="archive-header">
+        <div class="archive-id" id="headerTag">Miskatonic Special Collections — Cade’s Rest Dossier</div>
+        <div class="doc-title" id="docTitle">케이즈 레스트의 진실과 몰락의 역사</div>
+      </div>
+
+      <div class="doc-body" id="docContent">
+        <p>
+          <span class="drop-cap">1</span>660년, 청교도들의 종교적 박해를 피해 가족과 함께 보스턴을 탈출한 재단사 <span class="clue" title="[정착지의 시초] 퀘이커 교도 무리를 이끌고 미스카토닉 계곡 오지에 정착한 인물입니다.">에제키엘 케이드(Ezekiel Cade)</span>는 던위치 북서쪽 구릉 지대에 '케이즈 레스트' 정착지를 일구었다. 그들은 두 달여 만에 이웃 부족들로부터 배척당하던 <span class="clue" title="[시카이옥 부족] '검은 흙의 자손들'로, 동굴 속 슈브 니구라스의 파편(대지의 자궁)을 섬기며 변이되어 배척당한 부족입니다.">원주민 시카이옥(Sicaiook, 검은 흙 부족)</span>과 접촉하여 우호적으로 교역을 시작했다.
+        </p>
+        <p>
+          비극은 케이드의 아들 대니얼이 사냥 중 수사슴의 뿔에 찔려 치명상을 입으면서 시작되었다. 시카이옥 부족은 우정의 보답으로 소년을 자신들의 <span class="clue" title="[신성한 동굴 = 대지의 자궁] 현재 장소 9로 이어지는 개울의 발원지이자 괴물들을 잉태하는 근원지입니다.">신성한 동굴</span>로 데려가 치료해 주었다. 그러나 돌아온 대니얼은 더 이상 이전의 소년이 아니었다. 상처는 나았으나 악마를 보았다며 미쳐 날뛰었고 흉포하게 폭력성을 드러냈다.
+        </p>
+        <p>
+          케이드가 부족에게 분노하여 따져 묻자, 그들은 그를 동굴로 인도하여 자신들을 다스리는 <span class="clue" title="[불사의 장로들] '어머니의 선물' 후반부(6~7단계)에 도달하여 형체를 잃고 촉수와 살덩이로 변해버린 지도자들입니다.">'불사의 장로들'</span>을 보여주었다. 그들은 '어머니'의 손길을 받아 인간 이상이자 인간 이하인 끔찍한 괴물로 변해 있었다. 그 광경을 목격한 케이드는 공포에 질려 비명을 지르며 정착지를 버리고 도망쳤다.
+        </p>
+        <p>
+          몇 달 후, 케이드는 보스턴에서 사설 무장 용병들과 화약통을 싣고 돌아왔다. 평화주의적이던 퀘이커 교도들의 경악 속에서, <span class="clue" title="[동굴 폭파와 학살] 케이드는 화약으로 동굴 입구를 무너뜨려 시카이옥 부족을 생매장하고, 발굴 현장(장소 6)에서 자신의 옛 정착민들마저 오염되었다며 몰살했습니다.">그는 화약으로 동굴을 무너뜨려 시카이옥 부족을 몰살</span>시켰으며, 자신의 옛 추종자들마저 모두 더럽혀졌다고 믿고 용병들에게 명령하여 남김없이 도살하였다.
+        </p>
+        <p>
+          하지만 참극을 마친 케이드 본인 역시 벗어날 수 없었다. <span class="clue" title="[에제키엘 케이드의 운명] 케이드 자신도 '어머니의 선물'에 오염되어 살점이 썩고 불사가 되었습니다. 나병 환자로 몰려 보스턴에서 쫓겨난 뒤 이 계곡 오지로 숨어들었으며, 지금도 살아남아 이 땅을 배회하고 있을 수 있습니다.">시간이 흐르며 '어머니의 선물'이 그에게도 발현</span>되었고, 나병 환자라는 낙인이 찍혀 보스턴에서 다시 쫓겨났다. 케이드는 결국 미스카토닉 계곡의 음산한 오지로 되돌아갔으며, 그 이후로 그의 모습을 다시 본 사람은 없었다.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let isEnlarged = false;
+    let isEnglish = false;
+    let showClues = false;
+    let isBaxterMode = false;
+
+    const docPage = document.getElementById('docPage');
+    const docContent = document.getElementById('docContent');
+    const headerTag = document.getElementById('headerTag');
+    const docTitle = document.getElementById('docTitle');
+    const baxterBanner = document.getElementById('baxterBanner');
+    const sealWax = document.getElementById('sealWax');
+    
+    const modeBtn = document.getElementById('modeBtn');
+    const zoomBtn = document.getElementById('zoomBtn');
+    const langBtn = document.getElementById('langBtn');
+    const clueBtn = document.getElementById('clueBtn');
+
+    const korDocHTML = `
+      <p>
+        <span class="drop-cap">1</span>660년, 청교도들의 종교적 박해를 피해 가족과 함께 보스턴을 탈출한 재단사 <span class="clue" title="[정착지의 시초] 퀘이커 교도 무리를 이끌고 미스카토닉 계곡 오지에 정착한 인물입니다.">에제키엘 케이드(Ezekiel Cade)</span>는 던위치 북서쪽 구릉 지대에 '케이즈 레스트' 정착지를 일구었다. 그들은 두 달여 만에 이웃 부족들로부터 배척당하던 <span class="clue" title="[시카이옥 부족] '검은 흙의 자손들'로, 동굴 속 슈브 니구라스의 파편(대지의 자궁)을 섬기며 변이되어 배척당한 부족입니다.">원주민 시카이옥(Sicaiook, 검은 흙 부족)</span>과 접촉하여 우호적으로 교역을 시작했다.
+      </p>
+      <p>
+        비극은 케이드의 아들 대니얼이 사냥 중 수사슴의 뿔에 찔려 치명상을 입으면서 시작되었다. 시카이옥 부족은 우정의 보답으로 소년을 자신들의 <span class="clue" title="[신성한 동굴 = 대지의 자궁] 현재 장소 9로 이어지는 개울의 발원지이자 괴물들을 잉태하는 근원지입니다.">신성한 동굴</span>로 데려가 치료해 주었다. 그러나 돌아온 대니얼은 더 이상 이전의 소년이 아니었다. 상처는 나았으나 악마를 보았다며 미쳐 날뛰었고 흉포하게 폭력성을 드러냈다.
+      </p>
+      <p>
+        케이드가 부족에게 분노하여 따져 묻자, 그들은 그를 동굴로 인도하여 자신들을 다스리는 <span class="clue" title="[불사의 장로들] '어머니의 선물' 후반부(6~7단계)에 도달하여 형체를 잃고 촉수와 살덩이로 변해버린 지도자들입니다.">'불사의 장로들'</span>을 보여주었다. 그들은 '어머니'의 손길을 받아 인간 이상이자 인간 이하인 끔찍한 괴물로 변해 있었다. 그 광경을 목격한 케이드는 공포에 질려 비명을 지르며 정착지를 버리고 도망쳤다.
+      </p>
+      <p>
+        몇 달 후, 케이드는 보스턴에서 사설 무장 용병들과 화약통을 싣고 돌아왔다. 평화주의적이던 퀘이커 교도들의 경악 속에서, <span class="clue" title="[동굴 폭파와 학살] 케이드는 화약으로 동굴 입구를 무너뜨려 시카이옥 부족을 생매장하고, 발굴 현장(장소 6)에서 자신의 옛 정착민들마저 오염되었다며 몰살했습니다.">그는 화약으로 동굴을 무너뜨려 시카이옥 부족을 몰살</span>시켰으며, 자신의 옛 추종자들마저 모두 더럽혀졌다고 믿고 용병들에게 명령하여 남김없이 도살하였다.
+      </p>
+      <p>
+        하지만 참극을 마친 케이드 본인 역시 벗어날 수 없었다. <span class="clue" title="[에제키엘 케이드의 운명] 케이드 자신도 '어머니의 선물'에 오염되어 살점이 썩고 불사가 되었습니다. 나병 환자로 몰려 보스턴에서 쫓겨난 뒤 이 계곡 오지로 숨어들었으며, 지금도 살아남아 이 땅을 배회하고 있을 수 있습니다.">시간이 흐르며 '어머니의 선물'이 그에게도 발현</span>되었고, 나병 환자라는 낙인이 찍혀 보스턴에서 다시 쫓겨났다. 케이드는 결국 미스카토닉 계곡의 음산한 오지로 되돌아갔으며, 그 이후로 그의 모습을 다시 본 사람은 없었다.
+      </p>
+    `;
+
+    const engDocHTML = `
+      <p>
+        <span class="drop-cap">I</span>n 1660, escaping Puritan persecution in Boston, tailor <span class="clue" title="[Settlement Origin] Led a small band of Quaker families into the Miskatonic wilderness.">Ezekiel Cade</span> founded the settlement of Cade’s Rest in the rugged hill country near Dunwich. After two months of peace, they encountered <span class="clue" title="[The Sicaiook] The 'Black Soil' tribe who worshipped the Earth's Womb and became corrupted mutants.">the Sicaiook ('the People of the Black Soil')</span>, a pariah tribe shunned by surrounding natives, and established peaceful commerce.
+      </p>
+      <p>
+        Tragedy struck when Cade's son, Daniel, was gored by a stag on a hunt. In gratitude for trade, the Sicaiook carried the dying boy into their <span class="clue" title="[Sacred Cave = Earth's Womb] The living subterranean source of Blackwater Creek and Shub-Niggurath's avatar.">sacred cave</span> to heal him. Daniel returned whole, yet profoundly twisted—violently deranged and raving that he had looked upon the Devil.
+      </p>
+      <p>
+        When Cade confronted the tribe, they brought him into the cave to behold their <span class="clue" title="[The Immortal Elders] Cult elders at Stage 6-7 corruption, mutated into unhuman flesh and tentacles.">council of elders</span>. All had been touched by 'the Mother', deformed into things far more and far less than human. Cade fled screaming into the wilderness.
+      </p>
+      <p>
+        Months later, Cade returned with boats laden with gunpowder and hired sellswords. To the horror of his pacifist Quaker flock, <span class="clue" title="[Cave Burial & Massacre] Cade collapsed the cave mouth with gunpowder and slaughtered his own colony at what is now the Dig Site.">he collapsed the cavern entrance with explosives, entombing the Sicaiook,</span> and commanded his mercenaries to butcher his entire congregation, believing them all irrevocably tainted.
+      </p>
+      <p>
+        Returning to Boston, Cade discovered <span class="clue" title="[Fate of Ezekiel Cade] Stricken by the Mother's Gift himself, gaining horrifying longevity; he was cast out as a leper and may still haunt the valley today.">the Mother's Gift had claimed him as well</span>. Shunned as a leper, he was banished and retreated into the untamed hills of the Miskatonic Valley, never to be seen by civilized men again.
+      </p>
+    `;
+
+    function toggleMode() {
+      isBaxterMode = !isBaxterMode;
+      if (isBaxterMode) {
+        modeBtn.innerText = "🎙️ 획득 경로: [백스터 구술]";
+        headerTag.innerText = "Baxter's General Store — Oral Folklore of Cade's Rest";
+        docTitle.innerText = "너새니얼 백스터가 들려준 케이즈 레스트의 참극";
+        baxterBanner.style.display = "block";
+        sealWax.style.display = "none";
+        docPage.classList.add('baxter-mode');
+      } else {
+        modeBtn.innerText = "🎙️ 획득 경로: [도서관 문서]";
+        headerTag.innerText = "Miskatonic Special Collections — Cade’s Rest Dossier";
+        docTitle.innerText = "케이즈 레스트의 진실과 몰락의 역사";
+        baxterBanner.style.display = "none";
+        sealWax.style.display = "flex";
+        docPage.classList.remove('baxter-mode');
+      }
+    }
+
+    function toggleZoom() {
+      isEnlarged = !isEnlarged;
+      if (isEnlarged) {
+        docPage.classList.add('enlarged');
+        zoomBtn.innerText = "🔍 기본 크기로 축소";
+      } else {
+        docPage.classList.remove('enlarged');
+        zoomBtn.innerText = "🔍 본문 확대 / 축소";
+      }
+    }
+
+    function toggleLang() {
+      isEnglish = !isEnglish;
+      if (isEnglish) {
+        docContent.innerHTML = engDocHTML;
+        langBtn.innerText = "📜 번역문(한국어) 보기";
+      } else {
+        docContent.innerHTML = korDocHTML;
+        langBtn.innerText = "📜 원문(English) 보기";
+      }
+    }
+
+    function toggleClues() {
+      showClues = !showClues;
+      if (showClues) {
+        document.body.classList.add('highlight-active');
+        clueBtn.classList.add('active');
+        clueBtn.innerText = "💡 수호자 신화 해설 숨기기";
+      } else {
+        document.body.classList.remove('highlight-active');
+        clueBtn.classList.remove('active');
+        clueBtn.innerText = "💡 수호자 신화 진실 해설";
+      }
+    }
+  </script>
+</body>
+</html>

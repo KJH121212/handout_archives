@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>블랙워터 핸드아웃 2 - 구겨진 쪽지</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <!-- 광기 어린 필기체와 빈티지 폰트 -->
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@700&family=Nanum+Pen+Script&family=IM+Fell+English:ital@0;1&family=Nanum+Myeongjo:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-dark: #0f0d0b;
+      --paper-color: #ebdcb9;
+      --ink: #2b1f1d;
+      --mad-ink: #541712;
+      --crease-shadow: rgba(60, 40, 20, 0.45);
+      --highlight: rgba(168, 45, 30, 0.22);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-dark);
+      background-image: 
+        radial-gradient(circle at 50% 50%, rgba(35, 25, 18, 0.9) 0%, rgba(8, 6, 5, 0.98) 100%),
+        repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.2) 3px);
+      color: var(--ink);
+      font-family: 'IM Fell English', 'Nanum Myeongjo', serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 30px 15px;
+      overflow-x: hidden;
+    }
+
+    /* 상단 조작 툴바 */
+    .controls {
+      margin-bottom: 25px;
+      display: flex;
+      gap: 12px;
+      z-index: 10;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .btn {
+      background: #251e18;
+      color: #d1be9e;
+      border: 1px solid #4a3b2e;
+      padding: 8px 16px;
+      font-family: inherit;
+      font-size: 0.9rem;
+      cursor: pointer;
+      border-radius: 4px;
+      transition: all 0.2s ease;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.4);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .btn:hover {
+      background: #382c22;
+      color: #f7e8ce;
+      border-color: #947250;
+      transform: translateY(-1px);
+    }
+
+    .btn.active {
+      background: #542721;
+      color: #fff;
+      border-color: #ba473a;
+    }
+
+    /* 구겨진 종이 공 (초기 상태) */
+    .crumbled-ball {
+      width: 170px;
+      height: 160px;
+      background: #c7b28a;
+      background-image: 
+        radial-gradient(circle at 35% 35%, #ebdcb9 10%, #ab956b 70%, #57442a 100%);
+      border-radius: 48% 52% 58% 42% / 44% 56% 44% 56%;
+      box-shadow: 
+        0 15px 35px rgba(0,0,0,0.85),
+        inset 5px 5px 20px rgba(255,255,255,0.25),
+        inset -10px -10px 25px rgba(35,20,10,0.6);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      font-size: 0.85rem;
+      color: #3b2a1a;
+      font-style: italic;
+      padding: 20px;
+      transition: transform 0.3s ease, filter 0.3s ease;
+      position: relative;
+      animation: gentle-wobble 4s infinite ease-in-out;
+    }
+
+    .crumbled-ball:hover {
+      transform: scale(1.05) rotate(4deg);
+      filter: brightness(1.1);
+    }
+
+    @keyframes gentle-wobble {
+      0%, 100% { transform: rotate(0deg); }
+      50% { transform: rotate(-3deg) translateY(-4px); }
+    }
+
+    .crumbled-ball.hidden {
+      display: none;
+    }
+
+    /* 펼쳐진 편지 본체 */
+    .paper-sheet {
+      width: 100%;
+      max-width: 650px;
+      background: var(--paper-color);
+      /* 찢어지고 구겨진 질감 시뮬레이션 */
+      background-image: 
+        linear-gradient(135deg, rgba(80,50,20,0.12) 0%, transparent 40%, rgba(40,25,10,0.2) 100%),
+        repeating-linear-gradient(45deg, transparent, transparent 15px, rgba(0,0,0,0.03) 16px, rgba(0,0,0,0.03) 18px),
+        radial-gradient(circle at 80% 20%, rgba(94, 25, 18, 0.08) 0%, transparent 50%);
+      padding: 55px 50px;
+      box-shadow: 
+        0 20px 45px rgba(0,0,0,0.7),
+        inset 0 0 100px rgba(100, 70, 35, 0.25);
+      border: 1px dashed #a8916d;
+      border-radius: 4px;
+      position: relative;
+      display: none;
+      transform-origin: center center;
+      animation: unroll 0.65s cubic-bezier(0.19, 1, 0.22, 1) forwards;
+    }
+
+    .paper-sheet.show {
+      display: block;
+    }
+
+    @keyframes unroll {
+      0% {
+        opacity: 0;
+        transform: scale(0.3) rotate(-15deg);
+        filter: blur(4px);
+      }
+      70% {
+        transform: scale(1.03) rotate(1deg);
+      }
+      100% {
+        opacity: 1;
+        transform: scale(1) rotate(0deg);
+        filter: blur(0);
+      }
+    }
+
+    /* 구김선 효과 오버레이 */
+    .creases {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background: 
+        linear-gradient(35deg, transparent 48%, var(--crease-shadow) 49.5%, transparent 51%),
+        linear-gradient(-50deg, transparent 38%, var(--crease-shadow) 39.5%, transparent 41%),
+        linear-gradient(110deg, transparent 65%, var(--crease-shadow) 66.5%, transparent 68%);
+      opacity: 0.35;
+    }
+
+    .stain-blood {
+      position: absolute;
+      top: 15px;
+      right: 25px;
+      width: 80px;
+      height: 70px;
+      background: radial-gradient(ellipse, rgba(90, 20, 15, 0.25) 0%, transparent 65%);
+      border-radius: 50%;
+      pointer-events: none;
+    }
+
+    .meta-tag {
+      font-size: 0.75rem;
+      color: #7d654a;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      margin-bottom: 20px;
+      border-bottom: 1px dashed #b8a07c;
+      padding-bottom: 6px;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .date {
+      font-style: italic;
+      font-size: 1.15rem;
+      color: #3b281f;
+      margin-bottom: 15px;
+      text-align: right;
+    }
+
+    .salutation {
+      font-size: 1.3rem;
+      font-weight: bold;
+      margin-bottom: 18px;
+      color: #2b1c15;
+    }
+
+    /* 필적 및 본문 */
+    .letter-body {
+      font-size: 1.1rem;
+      line-height: 1.8;
+      color: var(--ink);
+      text-align: justify;
+    }
+
+    .letter-body p {
+      margin-bottom: 16px;
+      text-indent: 1.2em;
+    }
+
+    /* 뒤로 갈수록 불안정해지는 글씨체 */
+    .unstable {
+      font-family: 'Nanum Pen Script', 'Caveat', cursive;
+      font-size: 1.45rem;
+      line-height: 1.4;
+      color: var(--mad-ink);
+      letter-spacing: 0.5px;
+    }
+
+    .frenzy {
+      font-size: 1.65rem;
+      font-weight: bold;
+      color: #630e06;
+      text-shadow: 0 0 1px rgba(120, 20, 10, 0.3);
+    }
+
+    /* 단서 하이라이트 */
+    .clue {
+      transition: background 0.3s ease, border-bottom 0.3s ease;
+    }
+
+    .highlight-active .clue {
+      background-color: var(--highlight);
+      border-bottom: 1px dashed #872317;
+      cursor: help;
+    }
+
+    .font-eng {
+      font-family: 'Caveat', cursive;
+      font-size: 1.55rem;
+      line-height: 1.35;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- 제어 툴바 -->
+  <div class="controls">
+    <button class="btn" id="toggleBallBtn" onclick="togglePaper()">📜 종이 펴기 / 구기기</button>
+    <button class="btn" id="langBtn" onclick="toggleLang()">🌐 원문(English) 보기</button>
+    <button class="btn" id="clueBtn" onclick="toggleClues()">🔍 수호자 단서 강조</button>
+  </div>
+
+  <!-- 구겨진 종이 뭉치 (초기 상태) -->
+  <div class="crumbled-ball" id="crumbledBall" onclick="unfoldPaper()">
+    <span>[ 구겨져 침실 협탁 뒤에 떨어진 쪽지 ]<br><small>클릭하여 펼치기</small></span>
+  </div>
+
+  <!-- 펼쳐진 쪽지 -->
+  <div class="paper-sheet" id="paperSheet">
+    <div class="creases"></div>
+    <div class="stain-blood"></div>
+
+    <div class="meta-tag">
+      <span>Recovered: Jarvey Farm, 2nd Floor</span>
+      <span>Unsent Draft</span>
+    </div>
+
+    <div class="date">1926년 6월 13일</div>
+    <div class="salutation">친애하는 맥태비시에게,</div>
+
+    <div class="letter-body" id="noteContent">
+      <p>
+        어디서부터 시작해야 할지 모르겠네. <span class="clue" title="[단서: 식민지 역사 증명] 케이즈 레스트의 실제 유적을 확인했음을 뜻합니다.">내 의심이 맞았던 것 같네. 블랙워터 크릭은 정말로 옛 케이즈 레스트의 터 위에 세워졌네.</span> 초기 식민지 정착지의 모든 징후를 보여주는 유물들과 유해를 발견했네.
+      </p>
+      <p>
+        하지만 여기에는 훨씬 더 많은 것이 있네. 내가 생각했던 것보다 훨씬 더 많은 것이...
+      </p>
+      <p class="unstable">
+        <span class="clue" title="[단서: 대지의 고동/슈브 니구라스의 텔레파시] 동굴 속 여신이 어머니의 목소리로 부르는 유혹을 듣기 시작했습니다.">가끔 어머니의 목소리가 들리네. 난 그녀의 목소리를 아네. 어머니는 돌아가셨지만 목소리가 들려.</span>
+      </p>
+      <p class="unstable">
+        <span class="clue" title="[단서: 에제키엘 케이드의 학살과 봉인] 1660년 케이드가 시카이옥 부족을 몰살하고 폭파해 묻어버렸던 그 동굴을 가리킵니다.">동굴은 단순한 신화가 아니었네. 케이드는 그곳을 묻어버리려 했지만 그녀는 거기에 있고 결코 죽지 않았어.</span>
+      </p>
+      <p class="unstable frenzy">
+        <span class="clue" title="[단서: 다이너마이트 폭파 예고] 백스터 잡화점에서 주문한 다이너마이트로 동굴을 개방할 계획입니다(이틀 뒤 6월 15일 실행).">다이너마이트를 좀 구했으니 이 빌어먹을 폭풍이 끝나는 대로 동굴을 열 생각일세.</span> 바람 소리마저 그녀의 목소리처럼 들리는군.
+      </p>
+      <p class="unstable frenzy" style="text-align: right; margin-top: 25px;">
+        어머니는 내가 필요해. 난 그녀를 풀어주어야만 하네.<br>
+        <span style="font-size: 1.8rem;">신이여 절 용서하소서.</span>
+      </p>
+    </div>
+  </div>
+
+  <script>
+    let isUnfolded = false;
+    let isEnglish = false;
+    let showClues = false;
+
+    const ball = document.getElementById('crumbledBall');
+    const paper = document.getElementById('paperSheet');
+    const noteContent = document.getElementById('noteContent');
+    const langBtn = document.getElementById('langBtn');
+    const clueBtn = document.getElementById('clueBtn');
+    const toggleBallBtn = document.getElementById('toggleBallBtn');
+
+    const korHTML = `
+      <p>
+        어디서부터 시작해야 할지 모르겠네. <span class="clue" title="[단서: 식민지 역사 증명] 케이즈 레스트의 실제 유적을 확인했음을 뜻합니다.">내 의심이 맞았던 것 같네. 블랙워터 크릭은 정말로 옛 케이즈 레스트의 터 위에 세워졌네.</span> 초기 식민지 정착지의 모든 징후를 보여주는 유물들과 유해를 발견했네.
+      </p>
+      <p>
+        하지만 여기에는 훨씬 더 많은 것이 있네. 내가 생각했던 것보다 훨씬 더 많은 것이...
+      </p>
+      <p class="unstable">
+        <span class="clue" title="[단서: 대지의 고동/슈브 니구라스의 텔레파시] 동굴 속 여신이 어머니의 목소리로 부르는 유혹을 듣기 시작했습니다.">가끔 어머니의 목소리가 들리네. 난 그녀의 목소리를 아네. 어머니는 돌아가셨지만 목소리가 들려.</span>
+      </p>
+      <p class="unstable">
+        <span class="clue" title="[단서: 에제키엘 케이드의 학살과 봉인] 1660년 케이드가 시카이옥 부족을 몰살하고 폭파해 묻어버렸던 그 동굴을 가리킵니다.">동굴은 단순한 신화가 아니었네. 케이드는 그곳을 묻어버리려 했지만 그녀는 거기에 있고 결코 죽지 않았어.</span>
+      </p>
+      <p class="unstable frenzy">
+        <span class="clue" title="[단서: 다이너마이트 폭파 예고] 백스터 잡화점에서 주문한 다이너마이트로 동굴을 개방할 계획입니다(이틀 뒤 6월 15일 실행).">다이너마이트를 좀 구했으니 이 빌어먹을 폭풍이 끝나는 대로 동굴을 열 생각일세.</span> 바람 소리마저 그녀의 목소리처럼 들리는군.
+      </p>
+      <p class="unstable frenzy" style="text-align: right; margin-top: 25px;">
+        어머니는 내가 필요해. 난 그녀를 풀어주어야만 하네.<br>
+        <span style="font-size: 1.8rem;">신이여 절 용서하소서.</span>
+      </p>
+    `;
+
+    const engHTML = `
+      <p>
+        I don't know where to begin. <span class="clue" title="[Clue: Historic Validation] Confirms Blackwater Creek was indeed built upon Cade's Rest.">It seems my suspicions were correct. Blackwater Creek was indeed founded on the site of Cade’s Rest.</span> I have uncovered artifacts and remains displaying all the signs of an early colonial settlement.
+      </p>
+      <p>
+        Yet there is so much more here. Far more than I ever anticipated...
+      </p>
+      <p class="unstable font-eng">
+        <span class="clue" title="[Clue: Psychic Call of the Mother] Roades begins hearing the entity calling him in his deceased mother's voice.">At times I hear Mother’s voice. I know her voice. She passed years ago, yet I hear her still.</span>
+      </p>
+      <p class="unstable font-eng">
+        <span class="clue" title="[Clue: The Sealed Cave] The sacred cave Cade blew up and buried back in 1660.">The cave was no myth. Cade sought to bury it, but she remains, undying.</span>
+      </p>
+      <p class="unstable frenzy font-eng">
+        <span class="clue" title="[Clue: Dynamite Foreshadowing] Roades procured explosives to blast open the sealed entrance.">I have procured dynamite and intend to open the cave as soon as this blasted storm relents.</span> Even the wind screams with her voice.
+      </p>
+      <p class="unstable frenzy font-eng" style="text-align: right; margin-top: 25px;">
+        Mother needs me. I must set her free.<br>
+        <span style="font-size: 2.1rem;">God forgive me.</span>
+      </p>
+    `;
+
+    function unfoldPaper() {
+      ball.classList.add('hidden');
+      paper.classList.add('show');
+      isUnfolded = true;
+      toggleBallBtn.innerText = "📜 종이 다시 구기기";
+    }
+
+    function togglePaper() {
+      if (isUnfolded) {
+        ball.classList.remove('hidden');
+        paper.classList.remove('show');
+        isUnfolded = false;
+        toggleBallBtn.innerText = "📜 종이 펴기";
+      } else {
+        unfoldPaper();
+      }
+    }
+
+    function toggleLang() {
+      isEnglish = !isEnglish;
+      if (isEnglish) {
+        noteContent.innerHTML = engHTML;
+        langBtn.innerText = "🌐 번역문(한국어) 보기";
+      } else {
+        noteContent.innerHTML = korHTML;
+        langBtn.innerText = "🌐 원문(English) 보기";
+      }
+    }
+
+    function toggleClues() {
+      showClues = !showClues;
+      if (showClues) {
+        document.body.classList.add('highlight-active');
+        clueBtn.classList.add('active');
+        clueBtn.innerText = "🔍 수호자 단서 숨기기";
+      } else {
+        document.body.classList.remove('highlight-active');
+        clueBtn.classList.remove('active');
+        clueBtn.innerText = "🔍 수호자 단서 강조";
+      }
+    }
+  </script>
+</body>
+</html>

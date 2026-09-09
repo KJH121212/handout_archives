@@ -1,0 +1,5 @@
+__pycache__/
+*.pyc
+start_server.sh
+convert_to_webp.py
+.DS_Store

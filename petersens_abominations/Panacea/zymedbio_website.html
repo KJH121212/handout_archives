@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ZyMedBio Corporation | 현대 의학의 기적, 인류 건강의 미래</title>
+    <style>
+        :root {
+            --primary: #0a4d68;
+            --primary-dark: #052c3d;
+            --primary-light: #088395;
+            --accent: #0eb29a;
+            --bg-light: #f4f7f9;
+            --text-main: #2c3e50;
+            --text-muted: #64748b;
+            --card-border: #e2e8f0;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-light);
+            color: var(--text-main);
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Top Bar */
+        .top-nav {
+            background: #ffffff;
+            border-bottom: 1px solid var(--card-border);
+            padding: 0.8rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.03);
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            cursor: pointer;
+        }
+
+        .logo-symbol {
+            width: 38px;
+            height: 38px;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 800;
+            font-size: 20px;
+            letter-spacing: -1px;
+        }
+
+        .logo-text h1 {
+            font-size: 1.35rem;
+            color: var(--primary-dark);
+            font-weight: 800;
+            letter-spacing: 0.5px;
+        }
+
+        .logo-text p {
+            font-size: 0.72rem;
+            color: var(--text-muted);
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        /* Tab Navigation Links */
+        .nav-links {
+            display: flex;
+            gap: 0.5rem;
+            list-style: none;
+        }
+
+        .nav-tab-btn {
+            background: transparent;
+            border: none;
+            padding: 0.6rem 1.1rem;
+            border-radius: 6px;
+            color: var(--text-main);
+            font-weight: 600;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .nav-tab-btn:hover {
+            color: var(--primary-light);
+            background: rgba(8, 131, 149, 0.08);
+        }
+
+        .nav-tab-btn.active {
+            color: #ffffff;
+            background: var(--primary);
+        }
+
+        /* Hero Banner */
+        .hero {
+            background: linear-gradient(rgba(5, 44, 61, 0.85), rgba(10, 77, 104, 0.9)), url('https://images.unsplash.com/photo-1579684385127-1ef15d508118?auto=format&fit=crop&w=1600&q=80') center/cover no-repeat;
+            color: white;
+            padding: 3.5rem 2rem;
+            text-align: center;
+        }
+
+        .hero-content {
+            max-width: 850px;
+            margin: 0 auto;
+        }
+
+        .badge-established {
+            display: inline-block;
+            background: rgba(14, 178, 154, 0.25);
+            border: 1px solid var(--accent);
+            color: #5eead4;
+            padding: 4px 14px;
+            border-radius: 20px;
+            font-size: 0.82rem;
+            font-weight: 600;
+            margin-bottom: 0.8rem;
+            letter-spacing: 0.5px;
+        }
+
+        .hero h2 {
+            font-size: 2.1rem;
+            font-weight: 800;
+            margin-bottom: 0.6rem;
+            letter-spacing: -0.5px;
+        }
+
+        .hero p {
+            font-size: 1.05rem;
+            opacity: 0.9;
+        }
+
+        /* Main Container */
+        .container {
+            max-width: 1100px;
+            margin: 2.5rem auto;
+            padding: 0 1.5rem;
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 2.5rem;
+            flex: 1;
+            width: 100%;
+        }
+
+        /* Tab Content Switching */
+        .tab-panel {
+            display: none;
+            animation: fadeIn 0.3s ease-in-out;
+        }
+
+        .tab-panel.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(6px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Card Elements */
+        .card {
+            background: white;
+            border-radius: 12px;
+            border: 1px solid var(--card-border);
+            padding: 2rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.02);
+        }
+
+        .card-header {
+            border-bottom: 2px solid var(--bg-light);
+            padding-bottom: 1rem;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .card-header h3 {
+            font-size: 1.3rem;
+            color: var(--primary-dark);
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .card-header .tag {
+            background: #e0f2fe;
+            color: #0369a1;
+            font-size: 0.75rem;
+            font-weight: 700;
+            padding: 4px 10px;
+            border-radius: 6px;
+        }
+
+        /* Zylactis Info Box */
+        .zylactis-box {
+            background: linear-gradient(135deg, #f0fdfa, #e0f2fe);
+            border: 1px solid #99f6e4;
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .zylactis-box h4 {
+            color: #0f766e;
+            font-size: 1.15rem;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .info-list {
+            list-style: none;
+            margin-top: 1rem;
+        }
+
+        .info-list li {
+            position: relative;
+            padding-left: 1.5rem;
+            margin-bottom: 0.8rem;
+            font-size: 0.95rem;
+            color: #334155;
+        }
+
+        .info-list li::before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: var(--accent);
+            font-weight: bold;
+        }
+
+        /* Notice / Info Boxes */
+        .status-box {
+            background: #f8fafc;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-top: 1.2rem;
+        }
+
+        .status-box.highlight {
+            border-left: 4px solid var(--accent);
+            background: #ffffff;
+        }
+
+        .status-box h5 {
+            color: var(--primary-dark);
+            font-size: 1rem;
+            margin-bottom: 0.6rem;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .status-box p {
+            font-size: 0.9rem;
+            color: #475569;
+            line-height: 1.6;
+        }
+
+        /* Sidebar Info */
+        .sidebar .card {
+            padding: 1.5rem;
+        }
+
+        .overview-item {
+            margin-bottom: 1.2rem;
+            padding-bottom: 1.2rem;
+            border-bottom: 1px dashed var(--card-border);
+        }
+
+        .overview-item:last-child {
+            margin-bottom: 0;
+            padding-bottom: 0;
+            border-bottom: none;
+        }
+
+        .overview-item span.label {
+            display: block;
+            font-size: 0.78rem;
+            font-weight: 700;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 3px;
+        }
+
+        .overview-item span.value {
+            font-size: 0.92rem;
+            font-weight: 600;
+            color: var(--text-main);
+        }
+
+        /* Footer */
+        footer {
+            background: var(--primary-dark);
+            color: #94a3b8;
+            padding: 2.5rem 2rem;
+            font-size: 0.82rem;
+            border-top: 3px solid var(--accent);
+            margin-top: auto;
+        }
+
+        .footer-content {
+            max-width: 1100px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+        }
+
+        .footer-legal p {
+            margin-bottom: 0.4rem;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header Navigation with Tabs -->
+    <header class="top-nav">
+        <div class="logo-container" onclick="switchTab('about')">
+            <div class="logo-symbol">Z</div>
+            <div class="logo-text">
+                <h1>ZyMedBio</h1>
+                <p>Innovative Bio-Therapeutics</p>
+            </div>
+        </div>
+        <nav>
+            <ul class="nav-links">
+                <li><button class="nav-tab-btn active" id="tab-btn-about" onclick="switchTab('about')">회사 소개</button></li>
+                <li><button class="nav-tab-btn" id="tab-btn-research" onclick="switchTab('research')">연구 및 개발</button></li>
+                <li><button class="nav-tab-btn" id="tab-btn-zylactis" onclick="switchTab('zylactis')">자일락티스 (임상시험)</button></li>
+                <li><button class="nav-tab-btn" id="tab-btn-careers" onclick="switchTab('careers')">인재 채용</button></li>
+                <li><button class="nav-tab-btn" id="tab-btn-contact" onclick="switchTab('contact')">오시는 길 & 문의</button></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <div class="badge-established">ESTABLISHED 3 YEARS AGO • PRIVATELY HELD</div>
+            <h2>인류의 난치병 극복을 향한 위대한 도약</h2>
+            <p>자이메드바이오 주식회사(ZyMedBio Corp)는 생명공학과 재생의학의 융합을 통해 인류의 건강한 삶과 치유의 새로운 지평을 열어갑니다.</p>
+        </div>
+    </section>
+
+    <!-- Main Container -->
+    <main class="container">
+        
+        <!-- Left: Tab Content Panels -->
+        <div class="main-content">
+            
+            <!-- TAB 1: 회사 소개 -->
+            <div id="tab-about" class="tab-panel active">
+                <section class="card">
+                    <div class="card-header">
+                        <h3>기업 개요 (Corporate Profile)</h3>
+                        <span class="tag">개인 소유 기업</span>
+                    </div>
+                    <p style="margin-bottom: 1rem; font-size: 0.95rem; color: #475569;">
+                        자이메드바이오 주식회사는 3년 전 최첨단 생체 의약품 및 재생 치료 연구개발을 목적으로 설립된 신생 민간 제약 바이오 기업입니다.
+                    </p>
+                    <p style="margin-bottom: 1.2rem; font-size: 0.95rem; color: #475569;">
+                        당사는 신속하고 자율적인 연구 혁신을 위해 정부 기관과의 계약 없이, 창립자 가문의 자체 자본과 과학적 통찰을 바탕으로 독립적으로 운영되고 있습니다. 행정, 전문 환자 상담, 첨단 연구개발 시설이 유기적으로 통합된 단독 사옥을 보유하여 신약 개발의 모든 프로세스를 신속하게 처리합니다.
+                    </p>
+                    
+                    <div class="status-box highlight">
+                        <h5>창립자 및 경영진 소개</h5>
+                        <p>
+                            • <strong>율리시스 아낙 (Ulysses Anak)</strong> — 최고경영자 (CEO)<br>
+                            • <strong>제퍼슨 아낙 (Jefferson Anak)</strong> — 연구 책임자 (Head of Research)<br>
+                            <small style="color: var(--text-muted);">* 유럽 출신으로 미국 시민권을 취득한 아낙 가문의 개인 소유 기업입니다.</small>
+                        </p>
+                    </div>
+                </section>
+            </div>
+
+            <!-- TAB 2: 연구 및 개발 -->
+            <div id="tab-research" class="tab-panel">
+                <section class="card">
+                    <div class="card-header">
+                        <h3>연구 및 개발 (R&D Overview)</h3>
+                        <span class="tag">생체 재생 연구</span>
+                    </div>
+                    <p style="margin-bottom: 1rem; font-size: 0.95rem; color: #475569;">
+                        자이메드바이오 연구소는 생체 세포의 자연 치유 메커니즘을 규명하고, 손상된 인체 조직과 신경을 세포 수준에서 재구성하는 첨단 생체 제제 개발에 집중하고 있습니다.
+                    </p>
+                    
+                    <div class="status-box">
+                        <h5>핵심 연구 분야</h5>
+                        <ul class="info-list" style="margin-top: 0.5rem;">
+                            <li><strong>세포 활성화 바이오 제제 연구:</strong> 난치성 질환 치료를 위한 유기 화합물 및 복합 생체 단백질 추출 공정</li>
+                            <li><strong>자가 조직 재생 프로토콜:</strong> 신체 결손 및 말기 합병증 환자를 위한 맞춤형 세포 복원</li>
+                            <li><strong>유효성 및 안전성 평가:</strong> 엄격한 내부 모니터링을 통한 임상 데이터 분석</li>
+                        </ul>
+                    </div>
+                </section>
+            </div>
+
+            <!-- TAB 3: 자일락티스 (임상시험) - 입력폼 제거 및 안내 전용 -->
+            <div id="tab-zylactis" class="tab-panel">
+                <section class="card">
+                    <div class="card-header">
+                        <h3>신약 파이프라인: 자일락티스 (Zylactis™)</h3>
+                        <span class="tag">Phase 2 진행 중</span>
+                    </div>
+                    
+                    <div class="zylactis-box">
+                        <h4>기적의 재생 치료 물질: 자일락티스™</h4>
+                        <p style="font-size: 0.92rem; color: #115e59; line-height: 1.5;">
+                            자이메드바이오 독자 개발 복합 바이오 제제로서 세포 수준의 자연 회복력을 극대화하여 기존 의학이 도달하지 못한 난치성 질환의 완전 관해 및 조직 재생을 목표로 합니다.
+                        </p>
+                        <ul class="info-list">
+                            <li><strong>연구 단계:</strong> 미국 식품의약국(FDA) 가이드라인에 따른 제2상(Phase 2) 유효성 평가 시험 진행 중</li>
+                            <li><strong>주요 대상 질환:</strong> 말기 당뇨 합병증, 겸상 적혈구 빈혈증(SCD), 만성 면역 결핍 질환, 악성 종양, 중증 신경 손상 등</li>
+                            <li><strong>특별 지원:</strong> 선발된 적격 피험자 전액 무상 치료 및 전문 전담 의료진의 1:1 집중 케어 제공</li>
+                        </ul>
+                    </div>
+
+                    <div class="status-box highlight">
+                        <h5>📋 임상시험 연구 대상자 선발 및 지원 절차 안내</h5>
+                        <p style="margin-bottom: 0.6rem;">
+                            현재 <strong>자일락티스 제2상 임상시험</strong>은 지역 의료기관 추천 및 사전 선별된 지원자를 대상으로 상시 상담이 진행 중입니다.
+                        </p>
+                        <p style="font-size: 0.88rem; color: #475569;">
+                            • <strong>대상자 선발:</strong> 최근 지역 신문 및 옥외 빌보드 공고를 통해 지속적으로 연구 대상자 모집 및 심사를 진행하고 있습니다.<br>
+                            • <strong>상담 및 심사:</strong> 연구 심사위원회의 서류 검토 후, 적격 대상자로 분류된 분들께는 전담 코디네이터가 1~4일 이내로 개별 유선 연락을 드립니다.<br>
+                            • <strong>내원 안내:</strong> 사전 배정된 상담 일정 없이 방문하시는 경우 보안 규정상 사옥 및 연구 구역 진입이 불가합니다.
+                        </p>
+                    </div>
+
+                    <div class="status-box" style="margin-top: 1rem; background: #fffbeb; border-color: #fde68a;">
+                        <p style="font-size: 0.85rem; color: #92400e;">
+                            * 자격 요건에 완벽히 부합하지 않는 기저 질환자분들도 연구 심사위원회의 재량에 따라 특별 프로토콜 대상자로 선발될 수 있습니다.
+                        </p>
+                    </div>
+                </section>
+            </div>
+
+            <!-- TAB 4: 인재 채용 -->
+            <div id="tab-careers" class="tab-panel">
+                <section class="card">
+                    <div class="card-header">
+                        <h3>인재 채용 (Careers)</h3>
+                        <span class="tag">채용 공고</span>
+                    </div>
+                    <div class="status-box" style="text-align: center; padding: 2.5rem 1.5rem;">
+                        <p style="font-size: 1.05rem; color: var(--primary-dark); font-weight: 700; margin-bottom: 0.5rem;">
+                            현재 공식적으로 접수 중인 웹 공개 채용 공고가 없습니다.
+                        </p>
+                        <p style="font-size: 0.88rem; color: var(--text-muted); line-height: 1.6;">
+                            당사는 연구 시설 보안 및 행정 운영의 특수성을 고려하여, 지역 신문 광고 및 지정 경로를 통해 비서, 사무 행정직, 사옥 특수 보안 인력을 수시로 충원하고 있습니다.
+                        </p>
+                    </div>
+                </section>
+            </div>
+
+            <!-- TAB 5: 오시는 길 & 문의 -->
+            <div id="tab-contact" class="tab-panel">
+                <section class="card">
+                    <div class="card-header">
+                        <h3>소재지 및 보안 안내 (Location & Access)</h3>
+                        <span class="tag">보안 구역</span>
+                    </div>
+                    <div class="status-box">
+                        <h5>사옥 위치</h5>
+                        <p style="margin-bottom: 0.8rem;">
+                            • <strong>위치:</strong> 2차선 고속도로 인근 경공업 단지 외곽 단독 사옥 (통합 연구개발 및 행정 센터)<br>
+                            • <strong>구성:</strong> 행정 구역(서관), 연구 개발 및 치료 구역(동관), 중앙 리셉션
+                        </p>
+                    </div>
+                    <div class="status-box highlight" style="margin-top: 1rem;">
+                        <h5>사옥 보안 및 방문 안내</h5>
+                        <p style="font-size: 0.88rem;">
+                            자이메드바이오 사옥은 엄격한 보안 프로토콜에 따라 운영되고 있습니다. 정문 보안 데스크에서 사전 예약 확인 후 입장이 가능하며, 일반인의 사옥 투어 및 연구실 무단 출입은 엄격히 금지됩니다.
+                        </p>
+                    </div>
+                </section>
+            </div>
+
+        </div>
+
+        <!-- Right: Sidebar Information -->
+        <aside class="sidebar">
+            
+            <!-- Quick Facts Card -->
+            <div class="card">
+                <h4 style="color: var(--primary-dark); margin-bottom: 1rem; font-size: 1.05rem;">회사 기본 정보</h4>
+                
+                <div class="overview-item">
+                    <span class="label">설립</span>
+                    <span class="value">3년 전 (신생 민간 제약사)</span>
+                </div>
+
+                <div class="overview-item">
+                    <span class="label">소유 구조 및 경영진</span>
+                    <span class="value">아낙 형제 (제퍼슨 & 율리시스 아낙) 개인 소유<br><small style="color:var(--text-muted); font-weight:normal;">(유럽 출신 / 미국 시민권 보유)</small></span>
+                </div>
+
+                <div class="overview-item">
+                    <span class="label">임직원 수</span>
+                    <span class="value">약 80명 (최근 집계 기준)</span>
+                </div>
+
+                <div class="overview-item">
+                    <span class="label">소재지</span>
+                    <span class="value">2차선 고속도로 인근 경공업 단지 외곽 단독 사옥<br><small style="color:var(--text-muted); font-weight:normal;">(행정·환자상담·연구개발 일체형)</small></span>
+                </div>
+
+                <div class="overview-item">
+                    <span class="label">정부 계약</span>
+                    <span class="value">정부 계약 없음 (순수 민간 자본)</span>
+                </div>
+
+                <div class="overview-item">
+                    <span class="label">주요 연구</span>
+                    <span class="value">자일락티스 (Zylactis™) 제2상 임상</span>
+                </div>
+            </div>
+
+            <!-- Public Notice Card -->
+            <div class="card" style="border-left: 4px solid var(--accent);">
+                <h4 style="color: var(--primary-dark); margin-bottom: 0.8rem; font-size: 1rem;">📢 환자 상담실 안내</h4>
+                <p style="font-size: 0.85rem; color: #475569; line-height: 1.5;">
+                    사전 예약되지 않은 일반 방문객의 연구 구역 출입 및 사옥 투어는 전면 엄격히 제한됩니다. 임상 시험 대상자로 선정되신 분께는 담당 코디네이터가 개별 유선 연락을 드립니다.
+                </p>
+            </div>
+
+        </aside>
+
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-legal">
+                <p><strong>ZyMedBio Corporation</strong> | 자이메드바이오 주식회사</p>
+                <p>본사 및 연구소: 2차선 고속도로 인근 경공업단지 외곽 자이메드바이오 복합연구사옥</p>
+                <p>소유주: 율리시스 아낙 (CEO) & 제퍼슨 아낙 (연구 책임자)</p>
+                <p style="margin-top: 0.8rem; opacity: 0.7;">© ZyMedBio Corp. All rights reserved. 본 웹사이트의 모든 연구 데이터는 비밀 유지 조항 및 사적 재산권에 의해 보호받습니다.</p>
+            </div>
+            <div style="text-align: right;">
+                <span style="font-size: 0.75rem; background: rgba(255,255,255,0.1); padding: 4px 8px; border-radius: 4px;">SECURE EXTERNAL PORTAL v2.5</span>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Tab Switching Script -->
+    <script>
+        function switchTab(tabId) {
+            // Hide all tab panels
+            const panels = document.querySelectorAll('.tab-panel');
+            panels.forEach(panel => panel.classList.remove('active'));
+
+            // Deactivate all buttons
+            const buttons = document.querySelectorAll('.nav-tab-btn');
+            buttons.forEach(btn => btn.classList.remove('active'));
+
+            // Activate target tab & button
+            const targetPanel = document.getElementById('tab-' + tabId);
+            const targetBtn = document.getElementById('tab-btn-' + tabId);
+
+            if (targetPanel) {
+                targetPanel.classList.add('active');
+            }
+            if (targetBtn) {
+                targetBtn.classList.add('active');
+            }
+        }
+    </script>
+</body>
+</html>

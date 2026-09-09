@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>네르갈 프로젝트 타당성 보고서 (NER-2015-EXP-088)</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      background-color: #1a1c23;
+      font-family: 'Segoe UI', 'Malgun Gothic', 'Apple SD Gothic Neo', sans-serif;
+      display: flex;
+      justify-content: center;
+      padding: 40px 20px;
+      color: #2b2b2b;
+    }
+    .document-page {
+      background: #fdfdfc;
+      width: 100%;
+      max-width: 800px;
+      padding: 50px 60px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+      border: 1px solid #d1d5db;
+      position: relative;
+      line-height: 1.6;
+    }
+    /* 상단/하단 대외비 띠 */
+    .classification-banner {
+      text-align: center;
+      font-family: 'Courier New', Courier, monospace;
+      font-size: 13px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      color: #b91c1c;
+      border-top: 2px solid #b91c1c;
+      border-bottom: 2px solid #b91c1c;
+      padding: 4px 0;
+      margin-bottom: 30px;
+    }
+    .classification-footer {
+      text-align: center;
+      font-family: 'Courier New', Courier, monospace;
+      font-size: 13px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      color: #b91c1c;
+      border-top: 2px solid #b91c1c;
+      border-bottom: 2px solid #b91c1c;
+      padding: 4px 0;
+      margin-top: 35px;
+    }
+    /* 문서 메타데이터 테이블 */
+    .meta-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 25px;
+      font-size: 13px;
+    }
+    .meta-table td {
+      padding: 6px 10px;
+      border-bottom: 1px solid #e5e7eb;
+    }
+    .meta-table .label {
+      width: 18%;
+      font-weight: bold;
+      background-color: #f3f4f6;
+      color: #374151;
+    }
+    /* 승인 스탬프 */
+    .stamp-box {
+      position: absolute;
+      top: 140px;
+      right: 60px;
+      border: 3px dashed #b91c1c;
+      color: #b91c1c;
+      font-family: 'Courier New', Courier, monospace;
+      font-weight: 900;
+      font-size: 18px;
+      padding: 8px 16px;
+      text-align: center;
+      transform: rotate(-12deg);
+      pointer-events: none;
+      opacity: 0.85;
+      line-height: 1.2;
+    }
+    .stamp-box .stamp-sub {
+      font-size: 11px;
+      letter-spacing: 1px;
+    }
+    /* 타이틀 */
+    h1.doc-title {
+      font-size: 20px;
+      font-weight: 800;
+      color: #111827;
+      text-align: center;
+      margin-bottom: 25px;
+      padding-bottom: 12px;
+      border-bottom: 2px solid #111827;
+      letter-spacing: -0.5px;
+    }
+    /* 섹션 스타일 */
+    .section {
+      margin-bottom: 22px;
+    }
+    .section-title {
+      font-size: 14.5px;
+      font-weight: 700;
+      color: #1f2937;
+      border-left: 4px solid #3b82f6;
+      padding-left: 8px;
+      margin-bottom: 8px;
+      background: #f8fafc;
+      padding-top: 2px;
+      padding-bottom: 2px;
+    }
+    .section-content {
+      font-size: 13px;
+      color: #374151;
+      padding-left: 12px;
+    }
+    .section-content ul {
+      margin-left: 16px;
+      margin-top: 4px;
+    }
+    .section-content li {
+      margin-bottom: 4px;
+    }
+    /* 로일롯 인용구 박스 */
+    .quote-box {
+      background: #f9fafb;
+      border-left: 4px solid #4b5563;
+      padding: 14px 18px;
+      font-style: italic;
+      font-size: 13px;
+      color: #1f2937;
+      margin: 20px 0;
+      line-height: 1.6;
+    }
+    .quote-author {
+      display: block;
+      text-align: right;
+      font-style: normal;
+      font-weight: 700;
+      font-size: 12.5px;
+      margin-top: 6px;
+      color: #374151;
+    }
+    /* 최종 승인 박스 */
+    .decision-box {
+      border: 1.5px solid #10b981;
+      background-color: #ecfdf5;
+      padding: 12px 16px;
+      border-radius: 4px;
+      font-size: 13px;
+      margin-top: 20px;
+    }
+    .decision-title {
+      font-weight: 800;
+      color: #065f46;
+      margin-bottom: 4px;
+    }
+    .decision-content {
+      color: #047857;
+      font-size: 12.5px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="document-page">
+    
+    <!-- 승인 스탬프 -->
+    <div class="stamp-box">
+      APPROVED<br>
+      <span class="stamp-sub">BEIS / 2015-05</span>
+    </div>
+
+    <!-- 상단 대외비 헤더 -->
+    <div class="classification-banner">
+      CONFIDENTIAL // COMMERCIAL-IN-CONFIDENCE // UK GOV BEIS-IPA
+    </div>
+
+    <!-- 문서 메타 정보 -->
+    <table class="meta-table">
+      <tr>
+        <td class="label">문서 번호</td>
+        <td>NER-2015-EXP-088</td>
+        <td class="label">작성 일자</td>
+        <td>2015년 4월 17일</td>
+      </tr>
+      <tr>
+        <td class="label">발신 부서</td>
+        <td colspan="3">네르갈 프로젝트 총괄 책임자 아서 로일롯 박사 (Dr. Arthur Roylott)</td>
+      </tr>
+      <tr>
+        <td class="label">수신 기관</td>
+        <td colspan="3">영국 기업에너지산업전략부(BEIS) 차관실 및 인프라프로젝트청(IPA) 심의위원회</td>
+      </tr>
+      <tr>
+        <td class="label">보안 등급</td>
+        <td colspan="3"><span style="color: #b91c1c; font-weight: bold;">대외비</span></td>
+      </tr>
+    </table>
+
+    <!-- 타이틀 -->
+    <h1 class="doc-title">프로젝트 네르갈: 심부 지각 시추 및 신규 에너지원 채굴 타당성 보고서</h1>
+
+    <!-- 본문 섹션 1 -->
+    <div class="section">
+      <div class="section-title">1. 추진 배경 및 사업 개요</div>
+      <div class="section-content">
+        <ul>
+          <li><strong>프로젝트 명칭:</strong> 네르갈 프로젝트 (Project Nergal)</li>
+          <li><strong>초기 단계:</strong> 2014년 북해 폐기 예정 해양 시추선(Semi-submersible Rig)을 임차하여 착수한 민관 합동 초심부 지각 시추 연구.</li>
+          <li><strong>목적:</strong> 모호로비치치 불연속면(모호면) 인근 고온·고압 지층 도달을 통한 신규 지열·가스 자원 탐색 및 에너지 패권 확보.</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- 본문 섹션 2 -->
+    <div class="section">
+      <div class="section-title">2. 신규 자원 '롤롯 가스(Roylott Gas)' 발견 및 경제성</div>
+      <div class="section-content">
+        <ul>
+          <li><strong>자원 개요:</strong> 시추 심도 6.8km 구간에서 채취된 초고순도 메탄 기반 천연가스.</li>
+          <li><strong>생성 기원:</strong> 고생대 동식물 유기물 층이 극단적인 지질학적 압력과 지열에 의해 완전히 응축·정제된 형태.</li>
+          <li><strong>상업적 가치:</strong>
+            <ul>
+              <li>황화수소 등 불순물 함유율 0.02% 미만 (정제 공정 비용 70% 이상 절감).</li>
+              <li>기존 북해산 가스 대비 연소 효율 34% 증가, 국내 천연가스 수입 의존도 100% 상쇄 가능.</li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- 본문 섹션 3 -->
+    <div class="section">
+      <div class="section-title">3. 시추선 재배치 및 플랫폼 구축 계획</div>
+      <div class="section-content">
+        <ul>
+          <li><strong>작전 해역:</strong> 북해 데빌스 홀 (Devil's Hole, 56°17'N, 0°45'E 부근).</li>
+          <li><strong>배치 사유:</strong> 탄성파 탐사 결과, 지각 하부에 최소 50년 이상 공급 가능한 대형 롤롯 가스 포켓(Pocket) 확인.</li>
+          <li><strong>시설 개조:</strong> 기존 시추선을 고정식 반영구 초심부 연구 플랫폼(현 '데빌스 홀 플랫폼')으로 전면 개조.</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- 본문 섹션 4 -->
+    <div class="section">
+      <div class="section-title">4. 핵심 인프라 증설 요청: 해군 퇴역 잠수함 원자로(PWR) 이관 건</div>
+      <div class="section-content">
+        <ul>
+          <li><strong>현행 디젤 구동계 한계:</strong> 심도 8km 이상 돌파 시 마찰 토크 부하 과다로 드릴 스톨(Stall) 및 과열 지속 발생.</li>
+          <li><strong>요청 사항:</strong> 영국 해군 퇴역 공격원잠에서 추출한 롤스로이스 가압수형 원자로(PWR) 탑재 승인.</li>
+          <li><strong>기대 효과:</strong> 상시 120~135% 수준의 초고출력 전력 공급을 통해 24시간 무중단 심부 타격 시추 실현.</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- 인용문 -->
+    <div class="quote-box">
+      "네르갈(Nergal)은 고대 신화에서 지하 세계의 주인이자 깊은 어둠의 힘을 상징합니다. 우리가 파고드는 이 지층은 영국의 미래를 바꿀 보고(寶庫)입니다. 원자로 승인과 자금 지원만 확정된다면, 연내 인류 역사상 가장 깊은 곳에서 롤롯 가스의 상업 채굴을 완수해 보이겠습니다."
+      <span class="quote-author">— 총괄 책임자 Dr. Arthur Roylott</span>
+    </div>
+
+    <!-- 최종 결과 -->
+    <div class="decision-box">
+      <div class="decision-title">■ BEIS-IPA 합동 심의 결과: [가결 / 조건부 승인]</div>
+      <div class="decision-content">
+        1. 2015-2018 회계연도 특별 예산 증액 지원 승인 완료.<br>
+        2. 해군 가압수형 원자로 1기 민간 이관 및 플랫폼 탑재 승인 (단, 포투도 보안팀 상주 및 감독 의무화 조건).
+      </div>
+    </div>
+
+    <!-- 하단 대외비 푸터 -->
+    <div class="classification-footer">
+      CONFIDENTIAL // FOR AUTHORIZED PERSONNEL ONLY
+    </div>
+
+  </div>
+
+</body>
+</html>
