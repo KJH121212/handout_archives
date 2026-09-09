@@ -10,15 +10,12 @@ def build():
     tree_data = defaultdict(list)
 
     for root, dirs, files in os.walk(BASE_DIR):
-        # .git, .venv 등 숨김 폴더 제외
         dirs[:] = [d for d in dirs if not d.startswith(".")]
-
         rel_dir = os.path.relpath(root, BASE_DIR)
         
         for file in sorted(files):
             if file.endswith(".html") and file not in EXCLUDE_FILES:
                 category = "루트" if rel_dir == "." else rel_dir
-                # 브라우저용 URL 상대 경로 생성 (한글/공백 안전 인코딩)
                 rel_file_path = os.path.join(rel_dir, file) if rel_dir != "." else file
                 encoded_path = "./" + "/".join([urllib.parse.quote(p) for p in rel_file_path.split(os.sep)])
                 tree_data[category].append((file, encoded_path))
@@ -53,7 +50,7 @@ def build():
   <title>TRPG 핸드아웃 허브</title>
   <style>
     body {{ background: #121314; color: #f0f2f5; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; padding: 1.5rem; margin: 0; }}
-    .container {{ max-width: 960px; margin: 0 auto; }}
+    .container {{ max-width: 960px; margin: 0 auto; display: none; }}
     header {{ display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #33373b; padding-bottom: 1rem; margin-bottom: 1.5rem; }}
     h1 {{ margin: 0; font-size: 1.5rem; }}
     .grid {{ display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1rem; }}
@@ -65,10 +62,45 @@ def build():
     .link-list li a:hover {{ background: rgba(88, 166, 255, 0.15); color: #58a6ff; }}
     .file-name {{ word-break: break-all; }}
     .btn {{ font-size: 0.75rem; background: #238636; color: #fff; padding: 2px 6px; border-radius: 4px; margin-left: 0.5rem; flex-shrink: 0; }}
+
+    /* 잠금 화면 스타일 */
+    #auth-overlay {{
+      position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+      background: #121314; display: flex; align-items: center; justify-content: center;
+      z-index: 9999;
+    }}
+    .auth-box {{
+      background: #1c1e20; border: 1px solid #33373b; padding: 2rem; border-radius: 8px;
+      text-align: center; width: 280px; box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+    }}
+    .auth-box h2 {{ margin: 0 0 1rem; font-size: 1.1rem; color: #f0f2f5; }}
+    .auth-box input {{
+      width: 100%; box-sizing: border-box; padding: 0.6rem; border-radius: 4px;
+      border: 1px solid #33373b; background: #0d1117; color: #fff; text-align: center;
+      margin-bottom: 0.8rem; font-size: 1rem; outline: none;
+    }}
+    .auth-box input:focus {{ border-color: #58a6ff; }}
+    .auth-box button {{
+      width: 100%; padding: 0.6rem; border: none; border-radius: 4px;
+      background: #238636; color: #fff; font-weight: bold; cursor: pointer;
+    }}
+    .auth-box button:hover {{ background: #2ea043; }}
+    .error-msg {{ color: #f85149; font-size: 0.8rem; margin-top: 0.6rem; display: none; }}
   </style>
 </head>
 <body>
-  <div class="container">
+  <!-- 암호 입력 오버레이 -->
+  <div id="auth-overlay">
+    <div class="auth-box">
+      <h2>🔒 접근 권한 확인</h2>
+      <input type="password" id="pw-input" placeholder="암호 입력" autofocus>
+      <button onclick="checkPassword()">인증</button>
+      <div id="error-msg" class="error-msg">암호가 일치하지 않습니다.</div>
+    </div>
+  </div>
+
+  <!-- 메인 허브 컨텐츠 -->
+  <div class="container" id="hub-container">
     <header>
       <h1>🎲 TRPG 인터랙티브 허브</h1>
       <span style="color: #8b949e; font-size: 0.85rem;">총 {total_count}개 파일</span>
@@ -77,6 +109,31 @@ def build():
 {rendered_cards}
     </div>
   </div>
+
+  <script>
+    const TARGET_PW = "Harry7160!";
+
+    function unlock() {{
+      document.getElementById("auth-overlay").style.display = "none";
+      document.getElementById("hub-container").style.display = "block";
+    }}
+
+    function checkPassword() {{
+      const val = document.getElementById("pw-input").value;
+      const errorEl = document.getElementById("error-msg");
+      if (val === TARGET_PW) {{
+        unlock();
+      }} else {{
+        errorEl.style.display = "block";
+        document.getElementById("pw-input").value = "";
+        document.getElementById("pw-input").focus();
+      }}
+    }}
+
+    document.getElementById("pw-input").addEventListener("keydown", function(e) {{
+      if (e.key === "Enter") checkPassword();
+    }});
+  </script>
 </body>
 </html>"""
 
