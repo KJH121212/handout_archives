@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>핸드아웃 2 - 불탄 벽의 글자</title>
+  <style>
+    body {
+      background-color: #0b0c0e;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      margin: 0;
+    }
+    .wall {
+      width: 420px;
+      height: 420px;
+      background: radial-gradient(circle, #25282a 0%, #151618 70%, #0d0e0f 100%);
+      border: 2px solid #33373b;
+      box-shadow: inset 0 0 80px rgba(0,0,0,0.8), 0 10px 30px rgba(0,0,0,0.7);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+    }
+    .char {
+      font-size: 150px;
+      font-family: "Hanja", "Batang", serif;
+      color: #e6e6e6;
+      text-shadow: 0 0 10px rgba(255,255,255,0.4), 2px 2px 4px rgba(0,0,0,0.8);
+      letter-spacing: 5px;
+      user-select: none;
+      filter: drop-shadow(0 0 8px rgba(240,240,240,0.2));
+    }
+    .subtext {
+      position: absolute;
+      bottom: 25px;
+      font-size: 13px;
+      color: #727a82;
+      letter-spacing: 1px;
+      font-family: sans-serif;
+    }
+  </style>
+</head>
+<body>
+  <div class="wall">
+    <div class="char">甝</div>
+    <div class="subtext">그을린 벽면 위에 백묵으로 꾹꾹 눌러쓴 흔적</div>
+  </div>
+</body>
+</html>

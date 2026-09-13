@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>핸드아웃 7 - 무당 손의 일지</title>
+  <style>
+    body {
+      background-color: #12100e;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      margin: 0;
+      padding: 24px;
+      box-sizing: border-box;
+      font-family: 'Batang', 'Song Myung', serif;
+    }
+
+    .journal-book {
+      width: 100%;
+      max-width: 620px;
+      background: #ede3cb;
+      padding: 42px 48px;
+      box-shadow: inset 0 0 50px rgba(160, 140, 105, 0.4), 0 12px 35px rgba(0,0,0,0.8);
+      border: 1px solid #b8a688;
+      border-left: 6px solid #634f3b; /* 고서 제본 느낌 */
+      position: relative;
+      color: #241c14;
+      line-height: 1.9;
+    }
+
+    .title {
+      font-size: 15px;
+      letter-spacing: 3px;
+      color: #635240;
+      text-align: center;
+      margin-bottom: 28px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid #c9b99f;
+    }
+
+    .entry {
+      margin-bottom: 26px;
+      position: relative;
+      padding-left: 14px;
+      border-left: 2px solid #bba88c;
+    }
+
+    .date {
+      font-size: 16px;
+      font-weight: bold;
+      color: #7a1d1d; /* 주색(붉은 먹) 느낌 */
+      letter-spacing: 2px;
+      margin-bottom: 6px;
+      display: inline-block;
+    }
+
+    .text {
+      font-size: 15.5px;
+      color: #2b221b;
+      word-break: keep-all;
+      text-align: justify;
+      margin: 0;
+    }
+
+    /* 마지막 훼손 구간 */
+    .damaged {
+      display: inline-block;
+      letter-spacing: 2px;
+      color: #1a1612;
+      background: linear-gradient(90deg, rgba(20,18,15,0.85) 0%, rgba(30,25,20,0.95) 70%, rgba(20,18,15,0.4) 100%);
+      color: transparent;
+      user-select: none;
+      border-radius: 2px;
+      padding: 0 4px;
+      vertical-align: middle;
+      height: 1.1em;
+      width: 180px;
+    }
+
+    .footer {
+      margin-top: 36px;
+      padding-top: 14px;
+      border-top: 1px dashed #bba88c;
+      font-size: 12.5px;
+      color: #6b5d4e;
+      font-family: sans-serif;
+      text-align: right;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="journal-book">
+    <div class="title">【 낡 은 일 지 】</div>
+
+    <div class="entry">
+      <div class="date">一月十三日 (1월 13일)</div>
+      <p class="text">스승인 백돌 선생을 죽이고 후한의 사상가가 썼다는 경전을 손에 넣었다. 스승의 피를 손에 묻힐 만큼 가치 있는 책이어야 할 터.</p>
+    </div>
+
+    <div class="entry">
+      <div class="date">四月二十○日 (4월 20여일)</div>
+      <p class="text">경전은 신묘하다. 전승으로 내려오던 오래된 귀신을 불러냈다. 털빛이 우아하고 신통한 범. 이제 나도 백돌 선생을 능가하는 무녀가 될 수 있다.</p>
+    </div>
+
+    <div class="entry">
+      <div class="date">○月十五日 (○월 15일)</div>
+      <p class="text">드디어 경전을 완전히 익혔다. 영혼을 남의 몸에 옮겨서 살아가는 도술을 터득했다. 이것이 극상의 경지가 아니라면 무언가? 딸년은 아무것도 모르는 눈치다. 가엾고 어리석은 것. 큰일에는 작은 희생이 따르는 법. 나는 곧 영생을 얻는다.</p>
+    </div>
+
+    <div class="entry">
+      <div class="date">二月二十七日 (2월 27일)</div>
+      <p class="text">요사스러운 동물이 백돌 선생의 목소리로 내 귀에다 저주의 말을 쏟아낸다. 오늘 놈에게 홀려 쩍 벌어진 아가리에 내 머리를 집어넣었다. 놈은 그것을 씹지도 않고 내가 정신을 차릴 때까지 한참 동안 비웃는 눈으로 나를 보고 있었다.</p>
+    </div>
+
+    <div class="entry" style="margin-bottom: 8px;">
+      <div class="date">二月二十八日 (2월 28일)</div>
+      <p class="text">저 짐승을 불러낸 것은 잘못이었다. 저것을 없애려면 <span class="damaged">먹물번짐구간</span></p>
+    </div>
+
+    <div class="footer">
+      ※ 오래된 한지에 붓글씨로 쓰여 있습니다. 마지막 구절은 짙은 먹물이 쏟아져 번진 듯 지워져 있어 읽을 수 없습니다.
+    </div>
+  </div>
+
+</body>
+</html>
