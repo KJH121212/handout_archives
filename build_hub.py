@@ -111,7 +111,7 @@ def build():
   </div>
 
   <script>
-    const TARGET_PW = "Harry7160!";
+    const TARGET_PW = "KJH121212";
 
     function unlock() {{
       document.getElementById("auth-overlay").style.display = "none";

@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>비인가 궤도 비상 공중전화</title>
+  <style>
+    :root {
+      --booth-metal: #232731;
+      --booth-orange: #d9531e;
+      --receiver-color: #ba3d10;
+      --lcd-green: #39ff14;
+      --lcd-bg: #07130a;
+      --glow: 0 0 10px rgba(57, 255, 20, 0.6);
+      --panel-border: #14171f;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      user-select: none;
+    }
+
+    body {
+      background: radial-gradient(circle at center, #11141a 0%, #050608 100%);
+      color: #cfd4dc;
+      font-family: -apple-system, BlinkMacSystemFont, "Malgun Gothic", sans-serif;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    /* 공중전화 전체 어셈블리 */
+    .payphone-assembly {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      max-width: 540px;
+      width: 100%;
+    }
+
+    /* 좌측 걸려 있는 수화기 거치대 */
+    .handset-dock {
+      width: 80px;
+      height: 380px;
+      background: #181b22;
+      border: 3px solid var(--panel-border);
+      border-radius: 16px;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.8);
+    }
+
+    .cradle-hook {
+      width: 32px;
+      height: 12px;
+      background: #3a3f4d;
+      border-radius: 3px;
+      position: absolute;
+      top: 55px;
+    }
+
+    .handset {
+      width: 52px;
+      height: 310px;
+      background: linear-gradient(180deg, var(--receiver-color) 0%, #752206 100%);
+      border-radius: 26px;
+      box-shadow: inset 2px 2px 4px rgba(255,255,255,0.2), 4px 10px 20px rgba(0,0,0,0.7);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      align-items: center;
+      padding: 18px 0;
+      border: 2px solid #3c1203;
+    }
+
+    .ear-piece, .mic-piece {
+      width: 42px;
+      height: 42px;
+      background: #471706;
+      border-radius: 50%;
+      box-shadow: inset 0 2px 4px rgba(0,0,0,0.8);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .ear-piece::after, .mic-piece::after {
+      content: "";
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: #1a0802;
+    }
+
+    .handset-grip {
+      width: 24px;
+      height: 140px;
+      background: #96300b;
+      border-radius: 6px;
+    }
+
+    .coiled-cord {
+      width: 8px;
+      height: 40px;
+      background: repeating-linear-gradient(0deg, #111, #111 4px, #333 4px, #333 8px);
+      position: absolute;
+      bottom: -15px;
+    }
+
+    /* 우측 본체 패널 */
+    .payphone-casing {
+      flex: 1;
+      background: linear-gradient(165deg, #2d323d 0%, #171920 100%);
+      border: 4px solid var(--panel-border);
+      border-radius: 18px;
+      box-shadow: 0 30px 60px rgba(0, 0, 0, 0.95);
+      padding: 24px 20px;
+    }
+
+    .plate-header {
+      background: #111318;
+      border: 2px solid #292d38;
+      border-left: 6px solid var(--booth-orange);
+      padding: 10px 12px;
+      margin-bottom: 18px;
+      border-radius: 4px;
+    }
+
+    .plate-title {
+      font-size: 13px;
+      font-weight: 800;
+      letter-spacing: 0.1em;
+      color: var(--booth-orange);
+    }
+
+    .plate-sub {
+      font-size: 10.5px;
+      color: #798296;
+      margin-top: 3px;
+      font-family: monospace;
+    }
+
+    .lcd-screen {
+      background-color: var(--lcd-bg);
+      border: 3px solid #0f2414;
+      border-radius: 6px;
+      padding: 14px 12px;
+      margin-bottom: 20px;
+      box-shadow: inset 0 0 12px rgba(0, 0, 0, 0.9);
+    }
+
+    .lcd-guide {
+      font-size: 10.5px;
+      color: #2b7a3e;
+      font-family: monospace;
+      margin-bottom: 6px;
+    }
+
+    .lcd-digits {
+      font-family: "Courier New", Courier, monospace;
+      font-size: 26px;
+      font-weight: 700;
+      color: var(--lcd-green);
+      text-shadow: var(--glow);
+      min-height: 32px;
+      text-align: right;
+      letter-spacing: 0.08em;
+    }
+
+    .keypad-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-bottom: 18px;
+    }
+
+    .key-btn {
+      background: linear-gradient(180deg, #2b2e38 0%, #1a1c22 100%);
+      border: 1px solid #414756;
+      border-bottom: 3px solid #111216;
+      border-radius: 8px;
+      color: #e2e6ee;
+      font-size: 20px;
+      font-weight: 700;
+      padding: 12px 0;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .key-btn:active {
+      transform: translateY(2px);
+      border-bottom: 1px solid #111216;
+      background: #14151a;
+    }
+
+    .key-char {
+      font-size: 8.5px;
+      color: #636b7c;
+      font-weight: 600;
+      margin-top: 2px;
+    }
+
+    .action-controls {
+      display: grid;
+      grid-template-columns: 1fr 2fr;
+      gap: 10px;
+    }
+
+    .btn-redial {
+      background: #231919;
+      border: 1px solid #472626;
+      border-bottom: 3px solid #150d0d;
+      color: #d87373;
+      font-weight: 700;
+      font-size: 13.5px;
+      border-radius: 6px;
+      cursor: pointer;
+      padding: 12px;
+    }
+
+    .btn-redial:active {
+      transform: translateY(2px);
+      border-bottom: 1px solid #150d0d;
+    }
+
+    .btn-call {
+      background: linear-gradient(180deg, #1c4d29 0%, #12331b 100%);
+      border: 1px solid #2d7a41;
+      border-bottom: 3px solid #08170c;
+      color: #7df59e;
+      font-weight: 800;
+      font-size: 14.5px;
+      border-radius: 6px;
+      cursor: pointer;
+      padding: 12px;
+    }
+
+    .btn-call:active {
+      transform: translateY(2px);
+      border-bottom: 1px solid #08170c;
+    }
+
+    /* 내부 윈도우 모달 (새 창 느낌의 UI) */
+    .internal-modal-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(4, 5, 8, 0.85);
+      backdrop-filter: blur(4px);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 999;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.25s ease;
+    }
+
+    .internal-modal-overlay.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .modal-window {
+      width: 100%;
+      max-width: 480px;
+      background: #0d0f14;
+      border: 2px solid #303746;
+      border-radius: 10px;
+      box-shadow: 0 25px 50px rgba(0, 0, 0, 0.95);
+      overflow: hidden;
+      animation: modalPop 0.2s cubic-bezier(0.18, 0.89, 0.32, 1.28);
+    }
+
+    @keyframes modalPop {
+      0% { transform: scale(0.92); opacity: 0; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+
+    /* 윈도우 타이틀바 */
+    .window-titlebar {
+      background: #181c24;
+      padding: 10px 14px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid #282f3d;
+    }
+
+    .window-title {
+      font-size: 12px;
+      font-weight: 700;
+      color: #9aa5b8;
+      letter-spacing: 0.05em;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .window-title::before {
+      content: "";
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #00ff88;
+      box-shadow: 0 0 6px #00ff88;
+    }
+
+    .window-close {
+      background: transparent;
+      border: none;
+      color: #717d91;
+      font-size: 16px;
+      cursor: pointer;
+      line-height: 1;
+      padding: 2px 6px;
+    }
+
+    .window-close:hover {
+      color: #ff5566;
+    }
+
+    /* 통화 내부 화면 */
+    .window-content {
+      padding: 24px 20px;
+    }
+
+    .call-indicator {
+      text-align: center;
+      margin-bottom: 18px;
+    }
+
+    .phone-icon-wrap {
+      width: 60px;
+      height: 60px;
+      background: #141720;
+      border: 2px solid #303746;
+      border-radius: 50%;
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
+      margin-bottom: 10px;
+      box-shadow: 0 0 16px rgba(217, 83, 30, 0.4);
+    }
+
+    .phone-icon-wrap svg {
+      width: 30px;
+      height: 30px;
+      fill: #d9531e;
+      animation: pulseRing 1.8s infinite;
+    }
+
+    @keyframes pulseRing {
+      0%, 100% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.08); opacity: 0.8; }
+    }
+
+    .dept-tag {
+      color: #d9531e;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+    }
+
+    .call-title {
+      color: #f0f4fc;
+      font-size: 16px;
+      font-weight: 700;
+      margin-top: 4px;
+    }
+
+    .call-monitor {
+      background: #040507;
+      border: 1px solid #1c212b;
+      border-radius: 6px;
+      padding: 16px 14px;
+      min-height: 180px;
+      font-size: 14.5px;
+      line-height: 1.8;
+      color: #6ee7b7;
+      white-space: pre-wrap;
+      font-family: "Courier New", Courier, monospace;
+    }
+
+    .voice-line {
+      color: #f3f4f6;
+      font-weight: 700;
+    }
+
+    .silent-line {
+      color: #64748b;
+    }
+
+    .modal-footer {
+      margin-top: 18px;
+      text-align: center;
+    }
+
+    .btn-hangup {
+      background: #2b1114;
+      border: 1px solid #5a1f26;
+      color: #ff9da8;
+      padding: 10px 24px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 13.5px;
+      transition: background 0.1s ease;
+    }
+
+    .btn-hangup:hover {
+      background: #42181d;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="payphone-assembly">
+    <!-- 좌측 거치된 수화기 모형 -->
+    <div class="handset-dock">
+      <div class="cradle-hook"></div>
+      <div class="handset">
+        <div class="ear-piece"></div>
+        <div class="handset-grip"></div>
+        <div class="mic-piece"></div>
+      </div>
+      <div class="coiled-cord"></div>
+    </div>
+
+    <!-- 우측 본체 패널 -->
+    <div class="payphone-casing">
+      <div class="plate-header">
+        <div class="plate-title">긴급 비상 통신선 (EMERGENCY)</div>
+        <div class="plate-sub">괴담관리국 제5종점 고정 앵커 부스</div>
+      </div>
+
+      <div class="lcd-screen">
+        <div class="lcd-guide" id="lcdStatus">READY : 번호를 누른 후 [통화]를 누르십시오</div>
+        <div class="lcd-digits" id="screenDisplay"></div>
+      </div>
+
+      <div class="keypad-grid">
+        <button class="key-btn" onclick="pressKey('1')">1<span class="key-char">-</span></button>
+        <button class="key-btn" onclick="pressKey('2')">2<span class="key-char">ABC</span></button>
+        <button class="key-btn" onclick="pressKey('3')">3<span class="key-char">DEF</span></button>
+        <button class="key-btn" onclick="pressKey('4')">4<span class="key-char">GHI</span></button>
+        <button class="key-btn" onclick="pressKey('5')">5<span class="key-char">JKL</span></button>
+        <button class="key-btn" onclick="pressKey('6')">6<span class="key-char">MNO</span></button>
+        <button class="key-btn" onclick="pressKey('7')">7<span class="key-char">PRS</span></button>
+        <button class="key-btn" onclick="pressKey('8')">8<span class="key-char">TUV</span></button>
+        <button class="key-btn" onclick="pressKey('9')">9<span class="key-char">WXY</span></button>
+        <button class="key-btn" onclick="pressKey('*')">*<span class="key-char">SEC</span></button>
+        <button class="key-btn" onclick="pressKey('0')">0<span class="key-char">OPER</span></button>
+        <button class="key-btn" onclick="pressKey('#')">#<span class="key-char">ACK</span></button>
+      </div>
+
+      <div class="action-controls">
+        <button class="btn-redial" onclick="resetNumber()">정정</button>
+        <button class="btn-call" onclick="attemptCall()">통화</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 내부 윈도우 스타일 모달 (새 창 대체) -->
+  <div class="internal-modal-overlay" id="callModal">
+    <div class="modal-window">
+      <div class="window-titlebar">
+        <div class="window-title">SECURE_LINK // 괴담관리국 제9상황실 비상 통신선</div>
+        <button class="window-close" onclick="closeCallModal()">✕</button>
+      </div>
+      <div class="window-content">
+        <div class="call-indicator">
+          <div class="phone-icon-wrap">
+            <svg viewBox="0 0 24 24">
+              <path d="M20.01 15.38c-1.23 0-2.42-.2-3.53-.56a.977.977 0 0 0-1.01.24l-2.2 2.2a15.053 15.053 0 0 1-6.59-6.59l2.2-2.21a.96.96 0 0 0 .25-1.01A11.36 11.36 0 0 1 8.57 3.9c0-.55-.45-1-1-1H4c-.55 0-1 .45-1 1 0 9.39 7.61 17 17 17 .55 0 1-.45 1-1v-3.52c0-.55-.45-1-.99-1z"/>
+            </svg>
+          </div>
+          <div class="dept-tag">괴담관리국 제9상황실</div>
+          <div class="call-title">긴급 현실 앵커 회선 연결</div>
+        </div>
+
+        <div class="call-monitor" id="monitorBox">...통신 앵커 연결 시도 중</div>
+
+        <div class="modal-footer">
+          <button class="btn-hangup" onclick="closeCallModal()">수화기 내려놓기 (통화 종료)</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let dialedDigits = "";
+    const TARGET_RAW = "77777777777";
+    let typeTimers = [];
+
+    function formatNumber(digits) {
+      if (digits.length <= 3) return digits;
+      if (digits.length <= 7) return digits.slice(0, 3) + "-" + digits.slice(3);
+      return digits.slice(0, 3) + "-" + digits.slice(3, 7) + "-" + digits.slice(7, 11);
+    }
+
+    function pressKey(key) {
+      if (dialedDigits.length >= 11) return;
+      dialedDigits += key;
+      document.getElementById("screenDisplay").innerText = formatNumber(dialedDigits);
+    }
+
+    function resetNumber() {
+      dialedDigits = "";
+      document.getElementById("screenDisplay").innerText = "";
+      document.getElementById("lcdStatus").innerText = "READY : 번호를 누른 후 [통화]를 누르십시오";
+    }
+
+    function attemptCall() {
+      const status = document.getElementById("lcdStatus");
+
+      if (dialedDigits === TARGET_RAW) {
+        status.innerText = "CONNECTING... / 비상 통신 앵커 연결 중";
+        openInternalCall();
+      } else {
+        status.innerText = "ERROR : 유효하지 않은 통신망입니다";
+        dialedDigits = "";
+        document.getElementById("screenDisplay").innerText = "";
+      }
+    }
+
+    function openInternalCall() {
+      const modal = document.getElementById("callModal");
+      const monitor = document.getElementById("monitorBox");
+      
+      // 타이머 초기화
+      typeTimers.forEach(t => clearTimeout(t));
+      typeTimers = [];
+
+      monitor.innerHTML = "...통신 앵커 연결 시도 중";
+      modal.classList.add("active");
+
+      // 대사 순차 출력 시퀀스
+      typeTimers.push(setTimeout(() => { monitor.innerHTML += " 뚜루루..."; }, 1000));
+      typeTimers.push(setTimeout(() => { monitor.innerHTML += " 뚜루루..."; }, 2200));
+      typeTimers.push(setTimeout(() => { monitor.innerHTML += "\n<span style='color:#a78bfa;'>달칵. (수화기 연결음)</span>"; }, 3400));
+      typeTimers.push(setTimeout(() => { monitor.innerHTML += "\n\n<span class='voice-line'>\"생존자 이십니까?\"</span>"; }, 4800));
+      typeTimers.push(setTimeout(() => { monitor.innerHTML += "\n\n<span class='silent-line'>\"...\"</span>"; }, 6400));
+      typeTimers.push(setTimeout(() => { 
+        monitor.innerHTML += "\n\n<span class='voice-line'>\"출발하겠습니다. 생존을 축하드립니다.\"</span>"; 
+      }, 7800));
+    }
+
+    function closeCallModal() {
+      const modal = document.getElementById("callModal");
+      modal.classList.remove("active");
+      typeTimers.forEach(t => clearTimeout(t));
+      typeTimers = [];
+      resetNumber();
+    }
+  </script>
+</body>
+</html>

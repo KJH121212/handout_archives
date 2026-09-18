@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>차내 단일 노선 안내도 (진상)</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@500;700;900&family=Share+Tech+Mono&display=swap');
+
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  body {
+    background: #050608;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 24px;
+    font-family: 'Noto Sans KR', sans-serif;
+  }
+
+  /* 차내 부착용 패널 (public과 완전히 동일한 외형 규격) */
+  .route-panel {
+    position: relative;
+    width: 100%;
+    max-width: 960px;
+    background: linear-gradient(180deg, #1b1e24 0%, #0f1216 100%);
+    border: 3px solid #2d333b;
+    border-radius: 8px;
+    padding: 36px 40px 48px;
+    box-shadow: 
+      0 15px 40px rgba(0,0,0,0.9),
+      inset 0 1px 0 rgba(255,255,255,0.08);
+    overflow: hidden;
+  }
+
+  .panel-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 2px solid #282e38;
+    padding-bottom: 12px;
+    margin-bottom: 48px;
+  }
+
+  .line-badge {
+    background: #7a1c1c;
+    color: #f0f6fc;
+    font-size: 13px;
+    font-weight: 900;
+    padding: 4px 12px;
+    border-radius: 4px;
+    letter-spacing: 1px;
+  }
+
+  .panel-title {
+    font-size: 12px;
+    color: #6e7681;
+    letter-spacing: 2px;
+    font-family: 'Share Tech Mono', monospace;
+  }
+
+  /* 5개 균등 분할 그리드 컨테이너 */
+  .track-container {
+    position: relative;
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    align-items: center;
+    padding: 20px 0;
+  }
+
+  /* 1번(도산)에서 4번(종점)까지 이어지는 붉은 선로 */
+  .track-line {
+    position: absolute;
+    top: 33px;
+    left: calc(10% + 13px);
+    width: calc(60% - 26px);
+    height: 8px;
+    background: #8b0000;
+    z-index: 1;
+    box-shadow: 0 0 12px rgba(139, 0, 0, 0.4);
+  }
+
+  /* 4번(종점)에서 5번(마지막역)으로 이어지는 숨겨진 비상 앵커 선로 */
+  .track-line-last {
+    position: absolute;
+    top: 33px;
+    left: calc(70% + 13px);
+    width: calc(20% - 26px);
+    height: 8px;
+    background: repeating-linear-gradient(
+      90deg,
+      #38ef7d,
+      #38ef7d 6px,
+      #093318 6px,
+      #093318 12px
+    );
+    box-shadow: 0 0 12px rgba(56, 239, 125, 0.45);
+    z-index: 1;
+  }
+
+  /* 역 노드 공통 */
+  .station-node {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: default;
+  }
+
+  .circle {
+    width: 26px;
+    height: 26px;
+    background: #0f1216;
+    border: 4px solid #b32626;
+    border-radius: 50%;
+    margin-bottom: 16px;
+    transition: all 0.2s;
+  }
+
+  .station-node.current .circle {
+    background: #ff4d4d;
+    border-color: #fff;
+    box-shadow: 0 0 16px #ff4d4d;
+    transform: scale(1.15);
+  }
+
+  .station-node.terminus .circle {
+    border-color: #ff2a2a;
+    background: repeating-linear-gradient(
+      45deg,
+      #400,
+      #400 3px,
+      #800 3px,
+      #800 6px
+    );
+  }
+
+  .station-name {
+    font-size: 18px;
+    font-weight: 900;
+    color: #c9d1d9;
+    letter-spacing: 1px;
+    text-align: center;
+  }
+
+  .hanja {
+    display: block;
+    font-size: 12px;
+    font-weight: 500;
+    color: #8b949e;
+    margin-top: 2px;
+  }
+
+  .station-node.current .station-name {
+    color: #ff7b72;
+  }
+
+  .station-node.terminus .station-name {
+    color: #ff3838;
+  }
+
+  /* 5번째 칸: 밝혀진 [마지막역] 전용 스타일 */
+  .station-node.revealed-last .circle {
+    border: 3px solid #38ef7d;
+    background: #041d0e;
+    box-shadow: 0 0 18px rgba(56, 239, 125, 0.7);
+    animation: pulse 1.8s infinite;
+  }
+
+  .station-node.revealed-last .station-name {
+    color: #38ef7d;
+    font-size: 18px;
+    text-shadow: 0 0 10px rgba(56, 239, 125, 0.5);
+  }
+
+  .station-node.revealed-last .hanja {
+    color: #2da45e;
+    font-family: 'Share Tech Mono', monospace;
+    letter-spacing: 1px;
+  }
+
+  .panel-footer {
+    margin-top: 40px;
+    border-top: 1px dashed #282e38;
+    padding-top: 14px;
+    display: flex;
+    justify-content: flex-end;
+    font-size: 11px;
+    color: #484f58;
+    font-family: 'Share Tech Mono', monospace;
+  }
+
+  @keyframes pulse {
+    0%, 100% { transform: scale(1); opacity: 0.95; }
+    50% { transform: scale(1.15); opacity: 0.65; }
+  }
+</style>
+</head>
+<body>
+
+<div class="route-panel">
+  <div class="panel-header">
+    <div class="line-badge">순환선 (미승인 궤도)</div>
+    <div class="panel-title">TRANSIT SYSTEM LINE MAP</div>
+  </div>
+
+  <div class="track-container">
+    <!-- 기본 붉은 선로 -->
+    <div class="track-line"></div>
+    <!-- 종점 너머 마지막역 연결 선로 -->
+    <div class="track-line-last"></div>
+
+    <!-- 1. 도산역 -->
+    <div class="station-node current">
+      <div class="circle"></div>
+      <div class="station-name">도산<span class="hanja">刀山</span></div>
+    </div>
+
+    <!-- 2. 등활역 -->
+    <div class="station-node">
+      <div class="circle"></div>
+      <div class="station-name">등활<span class="hanja">等活</span></div>
+    </div>
+
+    <!-- 3. 흑승역 -->
+    <div class="station-node">
+      <div class="circle"></div>
+      <div class="station-name">흑승<span class="hanja">黑繩</span></div>
+    </div>
+
+    <!-- 4. 종점역 -->
+    <div class="station-node terminus">
+      <div class="circle"></div>
+      <div class="station-name">종점<span class="hanja">終點</span></div>
+    </div>
+
+    <!-- 5. 밝혀진 마지막역 -->
+    <div class="station-node revealed-last">
+      <div class="circle"></div>
+      <div class="station-name">마지막역<span class="hanja">TERMINUS</span></div>
+    </div>
+  </div>
+
+  <div class="panel-footer">
+    <span>CAR NO. 0523</span>
+  </div>
+</div>
+
+</body>
+</html>

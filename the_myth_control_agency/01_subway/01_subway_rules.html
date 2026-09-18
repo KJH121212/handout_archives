@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>핸드아웃: 비인가 순환선 승객 안전 행동 수칙</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&family=Noto+Serif+KR:wght@500;700;900&display=swap');
+
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  body {
+    background: #09090b;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 30px 16px;
+    font-family: 'Noto Serif KR', serif;
+    color: #1a1714;
+  }
+
+  /* 세월에 바래고 오염된 갱지 배경 질감 */
+  .parchment {
+    position: relative;
+    width: 100%;
+    max-width: 680px;
+    background-color: #cbbe9f;
+    background-image: 
+      radial-gradient(circle at 85% 15%, rgba(105, 25, 25, 0.28) 0%, transparent 40%),
+      radial-gradient(circle at 10% 85%, rgba(45, 30, 15, 0.45) 0%, transparent 45%),
+      radial-gradient(circle at 50% 50%, rgba(203, 190, 159, 0.95) 0%, rgba(162, 147, 114, 0.95) 100%);
+    padding: 46px 44px 56px;
+    border: 1px solid #4a3e2e;
+    box-shadow: 
+      0 0 40px rgba(0, 0, 0, 0.95),
+      inset 0 0 70px rgba(40, 28, 16, 0.75),
+      inset 0 0 15px rgba(0, 0, 0, 0.6);
+    filter: contrast(110%) brightness(95%);
+    overflow: hidden;
+  }
+
+  /* 테두리 부식 및 낡은 절취선 */
+  .parchment::before {
+    content: "";
+    position: absolute;
+    top: 6px;
+    left: 6px;
+    right: 6px;
+    bottom: 6px;
+    border: 1px dashed rgba(65, 50, 32, 0.45);
+    pointer-events: none;
+  }
+
+  /* 헤더 영역 */
+  .header {
+    border-bottom: 2px solid #362c20;
+    padding-bottom: 18px;
+    margin-bottom: 26px;
+    text-align: center;
+  }
+
+  .classification {
+    font-family: 'Courier Prime', monospace;
+    font-size: 12px;
+    letter-spacing: 3px;
+    color: #7f1d1d;
+    font-weight: bold;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+
+  .title {
+    font-size: 23px;
+    font-weight: 900;
+    letter-spacing: 1.5px;
+    color: #16120e;
+    margin-bottom: 12px;
+    text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.25);
+  }
+
+  .preamble {
+    font-size: 13px;
+    color: #433728;
+    line-height: 1.55;
+    font-style: italic;
+    word-break: keep-all;
+  }
+
+  /* 수칙 리스트 */
+  .rules-container {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .rule-item {
+    display: flex;
+    align-items: flex-start;
+    font-size: 14.5px;
+    line-height: 1.75;
+    color: #1e1914;
+    text-align: justify;
+    word-break: keep-all;
+  }
+
+  .rule-num {
+    font-family: 'Courier Prime', monospace;
+    font-weight: 700;
+    font-size: 16px;
+    min-width: 24px;
+    color: #2b2218;
+    line-height: 1.65;
+  }
+
+  .rule-content {
+    flex: 1;
+  }
+
+  /* 지워진 부분 (먹물 덧칠) */
+  .redacted {
+    display: inline-block;
+    background: #14110e;
+    color: #14110e;
+    user-select: none;
+    padding: 0 4px;
+    margin: 0 2px;
+    transform: skew(-3deg);
+    line-height: 1.25;
+    box-shadow: 0 0 2px rgba(20, 17, 14, 0.8);
+  }
+
+  /* 경고 및 강조 텍스트 */
+  .danger {
+    color: #751a1a;
+    font-weight: 700;
+    text-shadow: 0 0 1px rgba(117, 26, 26, 0.3);
+  }
+
+  .note {
+    display: block;
+    margin-top: 3px;
+    font-size: 13px;
+    color: #4e402f;
+  }
+
+  /* 우하단 관리국 인주 도장 */
+  .stamp {
+    position: absolute;
+    bottom: 20px;
+    right: 22px;
+    width: 86px;
+    height: 86px;
+    border: 3px double rgba(117, 26, 26, 0.65);
+    border-radius: 4px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    transform: rotate(-11deg);
+    pointer-events: none;
+    mix-blend-mode: multiply;
+  }
+
+  .stamp span {
+    color: rgba(117, 26, 26, 0.75);
+    font-size: 11.5px;
+    font-weight: 900;
+    letter-spacing: 1px;
+    line-height: 1.35;
+    text-align: center;
+  }
+</style>
+</head>
+<body>
+
+<div class="parchment">
+  <div class="header">
+    <div class="classification">SEC-0850 // 미승인 구역 생존 매뉴얼</div>
+    <h1 class="title">비인가 순환선 승객 안전 행동 수칙</h1>
+    <p class="preamble">본 인쇄물은 미승인 시공간에 진입한 열차 내 승객의 온전한 보전을 위해 배포되었습니다.</p>
+  </div>
+
+  <div class="rules-container">
+    <div class="rule-item">
+      <span class="rule-num">1.</span>
+      <div class="rule-content">
+        <strong>열차가 정차하기 직전에는 반드시 자리에 앉아 있어야 합니다.</strong> 만약 자리에 앉을 수 없는 상황일 경우, <span class="danger">반드시 손잡이라도 잡아야 합니다.</span>
+      </div>
+    </div>
+
+    <div class="rule-item">
+      <span class="rule-num">2.</span>
+      <div class="rule-content">
+        <strong>역에 정차하기 전에 문이 열리면 안 됩니다.</strong> 내부로 무엇이 들어오든 우호적인 입장으로 승차하지는 않습니다.
+        <span class="note">(어떤 이유로든 달리는 차내에서 출입문을 강제로 열려는 자가 있다면 즉시 제압하십시오.)</span>
+      </div>
+    </div>
+
+    <div class="rule-item">
+      <span class="rule-num">3.</span>
+      <div class="rule-content">
+        <strong>행상인에게 물건 구매를 거절하지 마십시오.</strong> 거절할 경우, <span class="redacted">신체 일부와 자아를 징발</span>하게 됩니다. 값을 치를 수 있는 방법을 생각해 내십시오.
+        <span class="note">(그가 당신에게 물건 구매를 촉구하지 않길, 당신의 운이 좋기만을 기도하십시오.)</span>
+      </div>
+    </div>
+
+    <div class="rule-item">
+      <span class="rule-num">4.</span>
+      <div class="rule-content">
+        가끔 노약자가 탑승하는 경우가 있습니다. 노약자에게 자리를 양보할 경우, <span class="redacted">승차권</span>을 받을 수 있습니다. 최대한 <span class="redacted">공손히 머리를 조아려</span> 대하십시오.
+      </div>
+    </div>
+
+    <div class="rule-item">
+      <span class="rule-num">5.</span>
+      <div class="rule-content">
+        <strong>차장이 승차권을 제시하라고 할 것입니다.</strong> 표를 제시하지 못할 경우 신분증을 달라고 요구합니다. 그때 <span class="danger">절대 신분증을 제출하시면 안 됩니다.</span> 제출하게 되면 다시는 다른 역으로 내리실 수 없습니다. 대신 다른 것으로 값을 치르겠다고 하십시오. 값을 치를 무언가를 제시하십시오.
+      </div>
+    </div>
+
+    <div class="rule-item">
+      <span class="rule-num">6.</span>
+      <div class="rule-content">
+        <strong>빛을 유지하십시오.</strong> 칠흑 속에서 당신은 길을 잃을 수 있습니다. 한번 길을 잃으면 다시는 되돌아올 수 없습니다. 당신이 길을 잃었을 때 길을 찾을 유일한 방법입니다.
+      </div>
+    </div>
+
+    <div class="rule-item">
+      <span class="rule-num">7.</span>
+      <div class="rule-content">
+        <span class="danger">반드시 마지막 역에서 내리셔야 합니다. 마지막 역입니다.</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="stamp">
+    <span>괴담관리국</span>
+    <span>현장회수조</span>
+  </div>
+</div>
+
+</body>
+</html>
