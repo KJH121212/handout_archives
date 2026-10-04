@@ -1,107 +1,442 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CoC FvTT 퀵 가이드</title>
-    <style>
-        body {
-            font-family: 'Pretendard', -apple-system, sans-serif;
-            background-color: #f5f5f7;
-            color: #333;
-            line-height: 1.5;
-            padding: 20px;
-        }
-        .container {
-            max-width: 600px;
-            margin: 0 auto;
-            background: #ffffff;
-            border: 1px solid #e5e5e5;
-            border-radius: 8px;
-            padding: 30px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.03);
-        }
-        h1 {
-            font-size: 1.5em;
-            margin: 0 0 20px 0;
-            padding-bottom: 12px;
-            border-bottom: 2px solid #222;
-            text-align: center;
-            letter-spacing: -0.5px;
-        }
-        h2 {
-            font-size: 1.1em;
-            color: #111;
-            margin: 24px 0 10px 0;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-        ul {
-            margin: 0;
-            padding-left: 22px;
-            color: #555;
-            font-size: 0.95em;
-        }
-        li {
-            margin-bottom: 6px;
-        }
-        .kbd {
-            background-color: #f0f0f0;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            padding: 1px 6px;
-            font-family: monospace;
-            font-size: 0.9em;
-            font-weight: 600;
-            color: #333;
-        }
-        .highlight {
-            color: #d32f2f;
-            font-weight: 600;
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Foundry VTT CoC 7th - 플레이어 기초 가이드</title>
+  <style>
+    :root {
+      --bg-main: #0d0f12;
+      --bg-card: #171a1f;
+      --bg-card-hover: #1f232b;
+      --border-color: #2e3440;
+      --accent-gold: #c89b3c;
+      --accent-green: #608b4e;
+      --accent-red: #e05252;
+      --accent-blue: #4d90fe;
+      --text-main: #e6e6e6;
+      --text-sub: #9da5b4;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Noto Sans KR", sans-serif;
+      background-color: var(--bg-main);
+      color: var(--text-main);
+      line-height: 1.6;
+      padding-bottom: 80px;
+    }
+
+    /* 헤더 */
+    header {
+      background: linear-gradient(180deg, #161920 0%, #0d0f12 100%);
+      border-bottom: 1px solid var(--border-color);
+      padding: 40px 20px;
+      text-align: center;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      backdrop-filter: blur(8px);
+    }
+
+    .badge-vtt {
+      display: inline-block;
+      padding: 4px 12px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--accent-gold);
+      background-color: rgba(200, 155, 60, 0.15);
+      border: 1px solid var(--accent-gold);
+      border-radius: 20px;
+      margin-bottom: 12px;
+      letter-spacing: 0.05em;
+    }
+
+    header h1 {
+      font-size: 1.9rem;
+      color: #f0f0f0;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+    }
+
+    header p {
+      color: var(--text-sub);
+      font-size: 0.95rem;
+      margin-top: 8px;
+    }
+
+    /* 레이아웃 컨테이너 */
+    .container {
+      max-width: 1040px;
+      margin: 30px auto 0;
+      padding: 0 20px;
+    }
+
+    .global-notice {
+      background-color: rgba(200, 155, 60, 0.08);
+      border-left: 4px solid var(--accent-gold);
+      padding: 16px 20px;
+      border-radius: 6px;
+      margin-bottom: 30px;
+      font-size: 0.95rem;
+      color: #e2d2b5;
+    }
+
+    /* 카드 리스트 */
+    .steps-list {
+      display: flex;
+      flex-direction: column;
+      gap: 32px;
+    }
+
+    .step-card {
+      background-color: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+      display: grid;
+      grid-template-columns: 1fr 1.1fr;
+      align-items: center;
+      transition: transform 0.2s ease, border-color 0.2s ease;
+    }
+
+    .step-card:hover {
+      border-color: #4b5263;
+      background-color: var(--bg-card-hover);
+    }
+
+    /* 지그재그 배치 */
+    .step-card:nth-child(even) {
+      grid-template-columns: 1.1fr 1fr;
+    }
+    .step-card:nth-child(even) .step-text {
+      order: 2;
+    }
+    .step-card:nth-child(even) .step-img-wrap {
+      order: 1;
+      border-left: none;
+      border-right: 1px solid var(--border-color);
+    }
+
+    .step-text {
+      padding: 28px 24px;
+    }
+
+    .step-number {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 32px;
+      height: 32px;
+      background-color: var(--accent-gold);
+      color: #111;
+      font-weight: 800;
+      font-size: 1rem;
+      border-radius: 50%;
+      margin-bottom: 14px;
+    }
+
+    .step-title {
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: #ffffff;
+      margin-bottom: 12px;
+    }
+
+    .step-desc {
+      color: #ccd2db;
+      font-size: 0.96rem;
+      line-height: 1.7;
+    }
+
+    .step-desc strong {
+      color: #fff;
+    }
+
+    /* 팁 박스 및 하이라이트 */
+    .tip-box {
+      margin-top: 14px;
+      padding: 10px 14px;
+      background: rgba(255, 255, 255, 0.05);
+      border-left: 3px solid var(--accent-gold);
+      font-size: 0.88rem;
+      color: #d1d5db;
+      border-radius: 0 6px 6px 0;
+    }
+
+    .tip-box.warning {
+      border-left-color: var(--accent-red);
+      background: rgba(224, 82, 82, 0.08);
+    }
+
+    .key-badge {
+      display: inline-block;
+      padding: 2px 7px;
+      background-color: #2b303c;
+      border: 1px solid #4b5263;
+      border-radius: 4px;
+      font-family: monospace;
+      font-size: 0.85rem;
+      color: #ffd166;
+    }
+
+    /* 탭 목록 불릿 */
+    .tab-list {
+      margin-top: 10px;
+      padding-left: 18px;
+      font-size: 0.92rem;
+      color: #c0c6d0;
+    }
+
+    .tab-list li {
+      margin-bottom: 4px;
+    }
+
+    /* 이미지 컨테이너 */
+    .step-img-wrap {
+      background-color: #0b0c0e;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      border-left: 1px solid var(--border-color);
+      cursor: pointer;
+    }
+
+    .step-img-wrap img {
+      max-width: 100%;
+      max-height: 380px;
+      object-fit: contain;
+      border-radius: 6px;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.6);
+      transition: transform 0.2s ease;
+    }
+
+    .step-img-wrap:hover img {
+      transform: scale(1.02);
+    }
+
+    /* 라이트박스 모달 */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.85);
+      justify-content: center;
+      align-items: center;
+      cursor: zoom-out;
+    }
+
+    .modal img {
+      max-width: 92vw;
+      max-height: 92vh;
+      border-radius: 8px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.9);
+    }
+
+    /* 반응형 레이아웃 */
+    @media (max-width: 820px) {
+      .step-card,
+      .step-card:nth-child(even) {
+        grid-template-columns: 1fr;
+      }
+      .step-card:nth-child(even) .step-text {
+        order: 1;
+      }
+      .step-card:nth-child(even) .step-img-wrap {
+        order: 2;
+        border-right: none;
+        border-top: 1px solid var(--border-color);
+      }
+      .step-img-wrap {
+        border-left: none;
+        border-top: 1px solid var(--border-color);
+      }
+      header h1 {
+        font-size: 1.5rem;
+      }
+    }
+  </style>
 </head>
 <body>
 
-    <div class="container">
-        <h1>CoC FvTT 퀵 가이드</h1>
+  <!-- 헤더 -->
+  <header>
+    <span class="badge-vtt">Foundry Virtual Tabletop</span>
+    <h1>Foundry VTT 플레이어 기초 조작 가이드</h1>
+    <p>원활한 CoC 세션 진행을 위한 인터페이스 및 필수 조작법 매뉴얼입니다.</p>
+  </header>
 
-        <h2>⚙️ 1. 기본 설정</h2>
-        <ul>
-            <li><span class="highlight">픽셀 해상도 비율 조정</span>, <span class="highlight">좌클릭으로 오브젝트 선택해제</span> ➔ <strong>체크 유지 (나머지 끔)</strong></li>
-            <li><strong>성능 모드:</strong> PC 환경에 맞게 타협 (낮음~최대)</li>
-            <li><strong>최대 FPS:</strong> 30FPS 이상 권장</li>
-        </ul>
-
-        <h2>🗣️ 2. 조작 및 대화</h2>
-        <ul>
-            <li><strong>이동:</strong> <span class="kbd">W</span><span class="kbd">A</span><span class="kbd">S</span><span class="kbd">D</span> 키를 사용하여 토큰 이동</li>
-            <li><strong>대화:</strong> 채팅창 하단 <strong>맨 우측</strong>에 있는 <strong>[Public as Character]</strong> 선택 후 입력 (캐릭터 토큰 이름으로 말하기)</li>
-        </ul>
-
-        <h2>⚔️ 3. 판정 및 전투</h2>
-        <ul>
-            <li><strong>기능 판정:</strong> 시트에서 기능 클릭 ➔ <strong>채팅창</strong>에 테스트 창이 올라오면 그곳에서 주사위 굴리기</li>
-            <li><strong>행운 소모:</strong> 판정 실패 시, 채팅창에 뜬 결과를 클릭하고 <strong>[행운 소모]</strong> 버튼을 눌러 적용</li>
-            <li><strong>전투 1 (대상 지정):</strong> <span class="kbd">Alt</span> + 좌클릭으로 공격 대상 지정</li>
-            <li><strong>전투 2 (행동 선택):</strong> 시트의 <strong>[전투] 탭</strong>에서 원하는 행동(액션) 클릭</li>
-            <li><strong>전투 3 (굴림):</strong> 채팅창에 나타난 메시지에서 <strong>주사위 굴리기</strong> 진행</li>
-        </ul>
-
-        <h2>📜 4. 핸드아웃 (단서)</h2>
-        <ul>
-            <li>우측 <strong>저널(책 아이콘)</strong> 탭에서 확인</li>
-            <li>창의 <strong>우측 하단을 드래그</strong>하여 자유롭게 크기 조절 가능</li>
-        </ul>
-
-        <h2>⌨️ 5. 필수 단축키</h2>
-        <ul>
-            <li><span class="kbd">R</span> : 거리 측정 자 ↔ 토큰 선택 도구 전환</li>
-            <li><span class="kbd">C</span> : 내 캐릭터 시트 열기/닫기</li>
-            <li><span class="kbd">Alt</span> + 좌클릭 : 공격 대상 지정 (타겟팅)</li>
-        </ul>
+  <div class="container">
+    <div class="global-notice">
+      💡 <strong>안내:</strong> 이미지를 클릭하면 큰 화면으로 확대하여 확인하실 수 있습니다. 각 기능의 위치와 단축키를 숙지해 주세요.
     </div>
 
+    <div class="steps-list">
+      
+      <!-- 1. 우측 사이드바 탭 안내 -->
+      <article class="step-card">
+        <div class="step-text">
+          <div class="step-number">1</div>
+          <h2 class="step-title">사이드바 주요 탭 구성</h2>
+          <p class="step-desc">
+            화면 우측 사이드바 상단에는 세션에 필요한 핵심 기능 탭들이 모여 있습니다. 붉은색 상자 순서대로 다음과 같습니다.
+          </p>
+          <ul class="tab-list">
+            <li>💬 <strong>채팅 로그:</strong> 텍스트 대화, 주사위 굴림 및 판정 결과 확인</li>
+            <li>👤 <strong>액터 디렉터리:</strong> 내 조사자 시트 확인 및 관리</li>
+            <li>📖 <strong>저널 엔트리:</strong> 세션 중 공유받은 핸드아웃 모아보기</li>
+            <li>🎵 <strong>오디오 재생목록:</strong> 배경음악 및 환경음 조절</li>
+            <li>⚙️ <strong>게임 설정:</strong> 브라우저 그래픽 최적화 및 편의 환경설정</li>
+          </ul>
+        </div>
+        <div class="step-img-wrap" onclick="openModal(this)">
+          <img src="./img/fvtt_guide_1.jpg" alt="1. 우측 사이드바 탭 구성" />
+        </div>
+      </article>
+
+      <!-- 2. 환경설정 및 렉 최적화 -->
+      <article class="step-card">
+        <div class="step-text">
+          <div class="step-number">2</div>
+          <h2 class="step-title">환경 설정 및 렉 최적화 (저사양 설정)</h2>
+          <p class="step-desc">
+            세션 도중 버벅임이나 렉이 발생한다면 <strong>[환경 설정] 탭</strong>에서 렌더링 성능을 조절하여 쾌적하게 플레이할 수 있습니다.
+          </p>
+          <div class="tip-box">
+            ⚙️ <strong>추천 설정 방법:</strong>
+            <ul style="margin: 6px 0 0 16px;">
+              <li><strong>[좌클릭으로 오브젝트 선택 해제]</strong>는 반드시 <strong>체크</strong>해 주세요.</li>
+              <li>나머지 무거운 비주얼 옵션은 모두 꺼도 플레이에 지장이 없습니다.</li>
+              <li>특히 <strong>[성능 모드]를 낮추거나</strong>, <strong>[최대 FPS]를 낮추는 것</strong>을 가장 우선적으로 추천합니다.</li>
+            </ul>
+          </div>
+        </div>
+        <div class="step-img-wrap" onclick="openModal(this)">
+          <img src="./img/fvtt_guide_2.jpg" alt="2. 게임 환경 설정 최적화" />
+        </div>
+      </article>
+
+      <!-- 3. 채팅창 및 판정/강행/행운 -->
+      <article class="step-card">
+        <div class="step-text">
+          <div class="step-number">3</div>
+          <h2 class="step-title">채팅창 주사위 판정 & 강행 / 행운 소모</h2>
+          <p class="step-desc">
+            채팅창을 통해 다양한 다이스 굴림을 진행합니다.
+          </p>
+          <ul class="tab-list">
+            <li><strong>GM 판정 버튼:</strong> GM 메시지에 판정 버튼이 표시되면, 클릭 시 자동으로 주사위가 굴려집니다.</li>
+            <li><strong>직접 굴림:</strong> 채팅창에 판정 버튼이 없다면, 내 조사자 시트에서 해당 기능치 이름을 직접 클릭해 굴릴 수 있습니다.</li>
+          </ul>
+          <div class="tip-box warning">
+            ⚠️ <strong>강행 & 행운 소모 규칙:</strong><br>
+            판정 결과 카드를 눌러 주사위 강행이나 행운 수치 소모를 진행할 수 있습니다. 단, <u>시스템 버튼을 누르기 전 반드시 GM에게 먼저 사용하겠다고 구두/채팅으로 말씀해 주세요.</u>
+          </div>
+        </div>
+        <div class="step-img-wrap" onclick="openModal(this)">
+          <img src="./img/fvtt_guide_3.jpg" alt="3. 채팅창 판정 및 조사자 시트 굴림" />
+        </div>
+      </article>
+
+      <!-- 4. 전투 진행 방식 -->
+      <article class="step-card">
+        <div class="step-text">
+          <div class="step-number">4</div>
+          <h2 class="step-title">전투 조작 (타겟 지정 및 공격)</h2>
+          <p class="step-desc">
+            전투 발생 시 다음 순서에 맞춰 공격 판정을 진행해야 정확하게 처리됩니다.
+          </p>
+          <ol style="margin: 8px 0 8px 18px; font-size: 0.93rem; color: #ccd2db;">
+            <li>공격할 적 토큰에 마우스를 올리고 <span class="key-badge">Alt + 좌클릭</span>을 눌러 <strong>타겟(대상)을 지정</strong>합니다.</li>
+            <li>내 조사자 시트의 <strong>[전투]</strong> 탭으로 이동하여 사용할 <strong>무기(예: 맨주먹 등)를 직접 클릭</strong>합니다.</li>
+          </ol>
+          <div class="tip-box warning">
+            🚨 <strong>주의:</strong> 하단에 표시되는 단순 기능(근접전/사격 등)을 직접 누르시면 타겟 판정 연동이 되지 않습니다. <u>반드시 상단의 무기 목록을 클릭</u>하시고, 이후 채팅창에 뜨는 대응/판정 버튼을 확인하며 진행해 주세요.
+          </div>
+        </div>
+        <div class="step-img-wrap" onclick="openModal(this)">
+          <img src="./img/fvtt_guide_4.jpg" alt="4. 전투 타겟팅 및 무기 공격" />
+        </div>
+      </article>
+
+      <!-- 5. 핸드아웃 확인 -->
+      <article class="step-card">
+        <div class="step-text">
+          <div class="step-number">5</div>
+          <h2 class="step-title">핸드아웃 확인 (저널 탭)</h2>
+          <p class="step-desc">
+            세션 중 획득한 단서나 지나간 텍스트 자료는 우측 <strong>[저널 엔트리(책 아이콘)]</strong> 탭에 모두 보관됩니다.
+          </p>
+          <div class="tip-box">
+            💬 <strong>확인 팁:</strong> 공개되었어야 할 핸드아웃이 목록에 보이지 않거나 열람 권한이 없는 경우, 즉시 GM에게 말씀해 주시면 권한을 열어드립니다.
+          </div>
+        </div>
+        <div class="step-img-wrap" onclick="openModal(this)">
+          <img src="./img/fvtt_guide_5.webp" alt="5. 저널 탭 핸드아웃 열람" />
+        </div>
+      </article>
+
+      <!-- 6. 음량 조절 -->
+      <article class="step-card">
+        <div class="step-text">
+          <div class="step-number">6</div>
+          <h2 class="step-title">음악 및 환경음 볼륨 조절</h2>
+          <p class="step-desc">
+            우측의 <strong>[오디오(음표 아이콘)]</strong> 탭을 클릭하면 개인별 볼륨 제어 슬라이더가 나타납니다.
+          </p>
+          <ul class="tab-list">
+            <li><strong>음악:</strong> BGM 배경음악 음량 조절</li>
+            <li><strong>환경음:</strong> 바람 소리, 빗소리 등 공간 환경음 조절</li>
+            <li><strong>인터페이스:</strong> 주사위 굴림 소리 등 효과음 조절</li>
+          </ul>
+          <p class="step-desc" style="margin-top: 10px; font-size: 0.9rem; color: var(--text-sub);">
+            슬라이더를 드래그하여 본인에게 알맞은 볼륨으로 자유롭게 설정하시면 됩니다.
+          </p>
+        </div>
+        <div class="step-img-wrap" onclick="openModal(this)">
+          <img src="./img/fvtt_guide_6.webp" alt="6. 음량 및 사운드 조절" />
+        </div>
+      </article>
+
+    </div>
+  </div>
+
+  <!-- 이미지 확대 모달 -->
+  <div id="imageModal" class="modal" onclick="closeModal()">
+    <img id="modalImg" src="" alt="확대 이미지" />
+  </div>
+
+  <script>
+    const modal = document.getElementById('imageModal');
+    const modalImg = document.getElementById('modalImg');
+
+    function openModal(wrapper) {
+      const img = wrapper.querySelector('img');
+      if (img && img.src) {
+        modalImg.src = img.src;
+        modal.style.display = 'flex';
+      }
+    }
+
+    function closeModal() {
+      modal.style.display = 'none';
+    }
+
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') closeModal();
+    });
+  </script>
 </body>
 </html>
