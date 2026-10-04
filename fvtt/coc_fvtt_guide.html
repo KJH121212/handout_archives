@@ -298,7 +298,7 @@
             <li>👤 <strong>액터 디렉터리:</strong> 내 조사자 시트 확인 및 관리</li>
             <li>📖 <strong>저널 엔트리:</strong> 세션 중 공유받은 핸드아웃 모아보기</li>
             <li>🎵 <strong>오디오 재생목록:</strong> 배경음악 및 환경음 조절</li>
-            <li>⚙️ <strong>게임 설정:</strong> 브라우저 그래픽 최적화 및 편의 환경설정</li>
+            <li>⚙️️ <strong>게임 설정:</strong> 브라우저 그래픽 최적화 및 편의 환경설정</li>
           </ul>
         </div>
         <div class="step-img-wrap" onclick="openModal(this)">
@@ -419,6 +419,20 @@
   </div>
 
   <script>
+    // 이미지 확장자 자동 교차 복구 (webp <-> webp)
+    document.querySelectorAll('.step-img-wrap img').forEach(img => {
+      img.addEventListener('error', function () {
+        if (!this.dataset.fallbackTried) {
+          this.dataset.fallbackTried = "true";
+          if (this.src.endsWith('.webp')) {
+            this.src = this.src.replace(/\.webp$/, '.webp');
+          } else if (this.src.endsWith('.webp')) {
+            this.src = this.src.replace(/\.webp$/, '.webp');
+          }
+        }
+      });
+    });
+
     const modal = document.getElementById('imageModal');
     const modalImg = document.getElementById('modalImg');
 
