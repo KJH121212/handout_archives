@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>아컴 가제트 - 고대 단검 도난 사건</title>
+    <style>
+        body {
+            background-color: #f4f1ea;
+            font-family: "Malgun Gothic", "Apple SD Gothic Neo", sans-serif;
+            color: #2b2b2b;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .newspaper {
+            width: 600px;
+            background: #fffef9;
+            border: 2px solid #333;
+            padding: 40px;
+            box-shadow: 5px 5px 15px rgba(0,0,0,0.2);
+            position: relative;
+        }
+        .newspaper::before {
+            content: "";
+            position: absolute;
+            top: 10px; left: 10px; right: 10px; bottom: 10px;
+            border: 1px solid #999;
+            pointer-events: none;
+        }
+        .header {
+            text-align: center;
+            border-bottom: 3px double #333;
+            padding-bottom: 15px;
+            margin-bottom: 20px;
+        }
+        .newspaper-name {
+            font-size: 32px;
+            font-weight: bold;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            font-family: "Georgia", serif;
+            margin: 0;
+        }
+        .newspaper-date {
+            font-size: 14px;
+            font-style: italic;
+            margin-top: 5px;
+        }
+        .article-title {
+            font-size: 24px;
+            font-weight: bold;
+            text-align: center;
+            margin: 20px 0 20px 0;
+            font-family: "Georgia", serif;
+        }
+        .article-body {
+            font-size: 15px;
+            line-height: 1.8;
+            text-align: left;
+        }
+        .article-body p {
+            margin: 0 0 16px 0;
+            text-indent: 0;
+        }
+    </style>
+</head>
+<body>
+
+<div class="newspaper">
+    <div class="header">
+        <div class="newspaper-name">아컴 가제트</div>
+        <div class="newspaper-date">1922년 10월 18일 화요일</div>
+    </div>
+    
+    <div class="article-title">고대 단검 도난 사건</div>
+    
+    <div class="article-body">
+        <p>대학 박물관에 침입 사건이 발생했다는 소식이 전해지면서 오늘 대학 관계자들은 큰 충격에 빠졌다. 어젯밤 한 도둑이 건물에 잠입하여 전시품 중 하나인 아메리카 원주민 소유로 추정되는 단검을 훔쳐 달아났다.</p>
+        <p>해당 단검은 지난 12개월 동안 수많은 어린 학생들의 흥미를 자아내며 큰 인기를 끌었던 '미스캐토닉 지역의 역사' 전시의 일부로 진열되어 있었다. 이 단검은 아컴의 부족 유산을 보여주는 몇 안 되는 귀중한 유물 중 하나이다.</p>
+        <p>저명한 지역 사학자인 아우구스트 퍼플린스키 박사는 이 단검이 주술사가 영혼의 세계로 여행을 떠날 때 사용했을 가능성이 있는 희귀한 주술용 도구의 대표적인 예라고 논평했다.</p>
+        <p>한편, 기이하고도 예상치 못한 반전으로 아컴 경찰국은 어젯밤 대학교 캠퍼스 내에서 두 번째 절도 사건도 발생했다고 확인해 주었다. 캠퍼스 광장 건너편에 위치한 도서관 건물의 희귀 도서 소장 구역이 털린 것이다.</p>
+        <p>현재까지 당국이 확인한 도서관 피해 물품은 수학적 공식이 담긴 그리스어로 쓰인 고대 두루마리 단 한 점뿐이다.</p>
+        <p>대학 대변인인 프링글러 씨는 도둑을 체포하고 도난당한 물품을 회수하는 데 단서가 될 정보를 제공하는 이에게 100달러의 현상금을 내걸었다고 밝혔다. 경찰은 관련 정보가 있는 시민들의 적극적인 제보를 당부하고 있다.</p>
+    </div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>아컴 가제트 - 교수의 자택에서 서류 도난당해</title>
+    <style>
+        body {
+            background-color: #f4f1ea;
+            font-family: "Malgun Gothic", "Apple SD Gothic Neo", sans-serif;
+            color: #2b2b2b;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .newspaper {
+            width: 600px;
+            background: #fffef9;
+            border: 2px solid #333;
+            padding: 40px;
+            box-shadow: 5px 5px 15px rgba(0,0,0,0.2);
+            position: relative;
+        }
+        .newspaper::before {
+            content: "";
+            position: absolute;
+            top: 10px; left: 10px; right: 10px; bottom: 10px;
+            border: 1px solid #999;
+            pointer-events: none;
+        }
+        .header {
+            text-align: center;
+            border-bottom: 3px double #333;
+            padding-bottom: 15px;
+            margin-bottom: 20px;
+        }
+        .newspaper-name {
+            font-size: 32px;
+            font-weight: bold;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            font-family: "Georgia", serif;
+            margin: 0;
+        }
+        .newspaper-date {
+            font-size: 14px;
+            font-style: italic;
+            margin-top: 5px;
+        }
+        .article-title {
+            font-size: 24px;
+            font-weight: bold;
+            text-align: center;
+            margin: 20px 0 20px 0;
+            font-family: "Georgia, serif";
+        }
+        .article-body {
+            font-size: 15px;
+            line-height: 1.8;
+            text-align: left;
+        }
+        .article-body p {
+            margin: 0 0 16px 0;
+            text-indent: 0;
+        }
+    </style>
+</head>
+<body>
+
+<div class="newspaper">
+    <div class="header">
+        <div class="newspaper-name">아컴 가제트</div>
+        <div class="newspaper-date">1922년 10월 19일 수요일</div>
+    </div>
+    
+    <div class="article-title">교수의 자택에서 서류 도난당해</div>
+    
+    <div class="article-body">
+        <p>아컴 경찰은 미스캐토닉 대학교의 주요 교수 중 한 명인 자택에서 발생한 침입 사건을 수사 중이다.</p>
+        <p>어젯밤 스탠리 데이비드 교수의 자택에 침입자가 들어와 교수가 연구 중이던 여러 장의 서류를 들고 달아났다.</p>
+        <p>데이비드 교수는 "도대체 누가 이런 서류를 탐내는지 이유를 모르겠습니다!"라며, "제가 작업 중이던 고대 문헌의 번역본일 뿐이며 금전적 가치는 전혀 없습니다"라고 말했다.</p>
+        <p>이어 교수는 웃으며 "어쩌면 멍청한 도둑이 서류를 다른 무언가로 오인한 모양이군요. 글을 읽어보면 아주 깜짝 놀랄 겁니다!"라고 덧붙였다.</p>
+        <p>경찰은 어젯밤 자정에서 오전 2사 사이 사우스 개리슨 가 부근에 있었던 이들 중 수상한 자를 목격했다면 제보해 줄 것을 요청하고 있다.</p>
+    </div>
+</div>
+
+</body>
+</html>

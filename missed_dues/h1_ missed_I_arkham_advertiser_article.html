@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>아컴 애드버타이저 - 이중 절도 사건</title>
+    <style>
+        body {
+            background-color: #f4f1ea;
+            font-family: "Malgun Gothic", "Apple SD Gothic Neo", sans-serif;
+            color: #2b2b2b;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .newspaper {
+            width: 600px;
+            background: #fffef9;
+            border: 2px solid #333;
+            padding: 40px;
+            box-shadow: 5px 5px 15px rgba(0,0,0,0.2);
+            position: relative;
+        }
+        .newspaper::before {
+            content: "";
+            position: absolute;
+            top: 10px; left: 10px; right: 10px; bottom: 10px;
+            border: 1px solid #999;
+            pointer-events: none;
+        }
+        .header {
+            text-align: center;
+            border-bottom: 3px double #333;
+            padding-bottom: 15px;
+            margin-bottom: 20px;
+        }
+        .newspaper-name {
+            font-size: 32px;
+            font-weight: bold;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            font-family: "Georgia", serif;
+            margin: 0;
+        }
+        .newspaper-date {
+            font-size: 14px;
+            font-style: italic;
+            margin-top: 5px;
+        }
+        .article-title {
+            font-size: 24px;
+            font-weight: bold;
+            text-align: center;
+            margin: 20px 0 20px 0;
+            font-family: "Georgia", serif;
+        }
+        .article-body {
+            font-size: 16px;
+            line-height: 1.8;
+            text-align: left;
+        }
+        .article-body p {
+            margin: 0 0 16px 0;
+            text-indent: 0;
+        }
+    </style>
+</head>
+<body>
+
+<div class="newspaper">
+    <div class="header">
+        <div class="newspaper-name">아컴 애드버타이저</div>
+        <div class="newspaper-date">1922년 10월 19일 수요일</div>
+    </div>
+    
+    <div class="article-title">이중 절도 사건</div>
+    
+    <div class="article-body">
+        <p>어젯밤 미스캐토닉 대학교에서 도서관과 박물관 양쪽이 모두 침입을 당해 희귀 유물이 도난당하는 충격적인 이중 절도 사건이 발생했다. 경찰과 대학 당국은 이번 절도 사건이 오후 8시에서 오전 5시 사이에 일어난 것으로 보고 있으나, 두 사건이 서로 연관되어 있는지에 대해서는 아직 공식 입장이 나오지 않았다.</p>
+        <p>부총장실 대변인인 아치볼드 프링글러는 도서관에서 고대 그리스어 두루마리가 사라졌으며 박물관에서도 아메리카 원주민 단검이 사라졌음을 확인해 주었다. 두 물품 모두 막대한 학술적 의의를 지니고 있으나 금전적 가치는 거의 없는 것으로 알려졌다.</p>
+    </div>
+</div>
+
+</body>
+</html>
