@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>Carte de Visite - Antonin Pinot</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;900&family=Great+Vibes&family=Noto+Serif+KR:wght@300;400;600&display=swap');
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background: #141312;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 40px 20px;
+      font-family: 'Noto Serif KR', serif;
+      color: #2b241e;
+    }
+
+    /* 19세기 명함(Carte de visite) 규격 비율 */
+    .card-wrapper {
+      width: 100%;
+      max-width: 520px;
+      background: #faf5ea url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" opacity="0.04"><filter id="noise"><feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="3" stitchTiles="stitch"/></filter><rect width="100%" height="100%" filter="url(%23noise)"/></svg>');
+      border: 1px solid #c9b58e;
+      box-shadow: 0 16px 36px rgba(0,0,0,0.6), inset 0 0 50px rgba(160, 130, 85, 0.22);
+      position: relative;
+      padding: 38px 36px 34px;
+      text-align: center;
+    }
+
+    .border-line {
+      position: absolute;
+      inset: 8px;
+      border: 1px solid #7a5c37;
+      pointer-events: none;
+    }
+
+    .border-line::after {
+      content: '';
+      position: absolute;
+      inset: 3px;
+      border: 1px dashed rgba(122, 92, 55, 0.5);
+    }
+
+    .corner {
+      position: absolute;
+      width: 14px;
+      height: 14px;
+      border: 1px solid #5a1818;
+    }
+    .tl { top: 6px; left: 6px; border-right: none; border-bottom: none; }
+    .tr { top: 6px; right: 6px; border-left: none; border-bottom: none; }
+    .bl { bottom: 6px; left: 6px; border-right: none; border-top: none; }
+    .br { bottom: 6px; right: 6px; border-left: none; border-top: none; }
+
+    .header-sub {
+      font-family: 'Cinzel', serif;
+      font-size: 11px;
+      letter-spacing: 3.5px;
+      color: #7d6549;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+
+    .name-fr {
+      font-family: 'Great Vibes', cursive;
+      font-size: 42px;
+      color: #4a1212;
+      line-height: 1.1;
+      margin-bottom: 2px;
+      letter-spacing: 1px;
+    }
+
+    .name-kr {
+      font-family: 'Cinzel', serif;
+      font-size: 14px;
+      font-weight: 700;
+      color: #3b2e22;
+      letter-spacing: 2px;
+      margin-bottom: 12px;
+    }
+
+    .role {
+      font-size: 12.5px;
+      color: #5c4731;
+      letter-spacing: 1px;
+      margin-bottom: 16px;
+    }
+
+    .divider {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 12px 0 16px;
+    }
+
+    .line {
+      height: 1px;
+      background: linear-gradient(90deg, transparent, #8c6e48, transparent);
+      width: 70%;
+    }
+
+    .art-badge {
+      font-size: 13px;
+      color: #4a1212;
+      padding: 0 8px;
+    }
+
+    /* 필기 메모 영역 (시나리오 상의 약속 기록) */
+    .memo-section {
+      background: rgba(255, 255, 255, 0.45);
+      border: 1px dashed #aa9370;
+      padding: 12px 16px;
+      margin: 14px 0 16px;
+      text-align: left;
+      font-size: 12.5px;
+      line-height: 1.6;
+      color: #33271d;
+    }
+
+    .memo-tag {
+      font-weight: 700;
+      color: #5a1818;
+      font-size: 11.5px;
+      margin-bottom: 4px;
+      letter-spacing: 0.5px;
+    }
+
+    .memo-text {
+      font-family: 'Noto Serif KR', serif;
+      font-style: italic;
+    }
+
+    .contact-info {
+      font-size: 11.5px;
+      line-height: 1.65;
+      color: #63503b;
+      margin-top: 10px;
+    }
+
+    .salon-affiliation {
+      font-family: 'Cinzel', serif;
+      font-size: 10px;
+      letter-spacing: 1.5px;
+      color: #7d6549;
+      margin-top: 14px;
+      padding-top: 10px;
+      border-top: 1px solid rgba(140, 110, 70, 0.25);
+    }
+
+    @media print {
+      body { background: none; padding: 0; }
+      .card-wrapper { box-shadow: none; border: none; max-width: 100%; padding: 25px; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="card-wrapper">
+    <div class="border-line"></div>
+    <div class="corner tl"></div>
+    <div class="corner tr"></div>
+    <div class="corner bl"></div>
+    <div class="corner br"></div>
+
+    <div class="header-sub">Artiste Peintre Symboliste</div>
+    <div class="name-fr">Antonin Pinot</div>
+    <div class="name-kr">앙토냉 피노</div>
+    <div class="role">파리 살롱 드 라 로즈 크루아 정회원 화가</div>
+
+    <div class="divider">
+      <div class="line"></div>
+      <div class="art-badge">✦</div>
+      <div class="line"></div>
+    </div>
+
+    <!-- 탐사자와의 거래 증빙 메모 -->
+    <div class="memo-section">
+      <div class="memo-tag">【 작품 인수 및 상담에 관한 친필 배서 】</div>
+      <div class="memo-text">
+        “전시작 《인간과 황소 (The Man and the Bull)》 양도에 관하여는 내일(11일) 오전 몸 상태가 호전되는 대로 아틀리에에서 담화하도록 합시다.” — A. Pinot
+      </div>
+    </div>
+
+    <div class="contact-info">
+      <div><strong>화실 (Atelier) :</strong> 파리 중심가 작업실 (Paris Centre)</div>
+      <div><strong>현 전시처 :</strong> 뒤랑뤼엘 갤러리 11 Rue le Peletier</div>
+    </div>
+
+    <div class="salon-affiliation">
+      SALON DE LA ROSE + CROIX • ÉDITION 1892
+    </div>
+  </div>
+
+</body>
+</html>

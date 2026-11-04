@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>Handout 10 - Professor Hart's Astronomy Journal</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;900&family=Courier+Prime:ital,wght@0,400;0,700;1,400&family=Noto+Serif+KR:wght@400;600;700&display=swap');
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: #11100f;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 30px 15px;
+      font-family: 'Noto Serif KR', serif;
+      color: #27211a;
+    }
+
+    .journal-page {
+      width: 100%;
+      max-width: 730px;
+      background: #fbf5e7 url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="220" height="220" opacity="0.04"><filter id="noise"><feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="3" stitchTiles="stitch"/></filter><rect width="100%" height="100%" filter="url(%23noise)"/></svg>');
+      border: 1px solid #c9b491;
+      box-shadow: 0 18px 42px rgba(0,0,0,0.7), inset 0 0 65px rgba(140, 100, 60, 0.22);
+      position: relative;
+      padding: 48px 44px 50px;
+    }
+
+    .border-double {
+      position: absolute;
+      inset: 10px;
+      border: 1px solid #7d5b3a;
+      pointer-events: none;
+    }
+
+    .border-double::after {
+      content: '';
+      position: absolute;
+      inset: 4px;
+      border: 1px dashed rgba(125, 91, 58, 0.45);
+    }
+
+    .header-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      border-bottom: 2px solid #57331c;
+      padding-bottom: 10px;
+      margin-bottom: 20px;
+    }
+
+    .doc-category {
+      font-family: 'Cinzel', serif;
+      font-size: 13px;
+      letter-spacing: 2px;
+      color: #7a3c1c;
+      font-weight: 700;
+    }
+
+    .coords-tag {
+      font-family: 'Courier Prime', monospace;
+      font-size: 12px;
+      color: #634d3b;
+      letter-spacing: 1px;
+    }
+
+    h1 {
+      font-family: 'Cinzel', serif;
+      font-size: 24px;
+      font-weight: 900;
+      color: #3b1c0e;
+      margin-bottom: 4px;
+      letter-spacing: 1px;
+    }
+
+    .journal-sub {
+      font-family: 'Courier Prime', monospace;
+      font-size: 13px;
+      color: #6e543e;
+      margin-bottom: 18px;
+    }
+
+    .log-entry {
+      margin-bottom: 20px;
+      padding-bottom: 14px;
+      border-bottom: 1px dashed #c9b596;
+    }
+
+    .log-date {
+      font-family: 'Cinzel', serif;
+      font-size: 14px;
+      font-weight: 700;
+      color: #7a2612;
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .content-p {
+      font-size: 14px;
+      line-height: 1.85;
+      color: #2b221a;
+      text-align: justify;
+      text-indent: 1.2em;
+      margin-bottom: 8px;
+    }
+
+    .highlight-quote {
+      background: rgba(140, 70, 30, 0.08);
+      border-left: 3px solid #7a2612;
+      padding: 12px 16px;
+      margin: 10px 0;
+      font-style: italic;
+      color: #421c10;
+      font-size: 13.5px;
+      line-height: 1.75;
+    }
+
+    .table-section-title {
+      font-family: 'Cinzel', serif;
+      font-size: 15px;
+      font-weight: 700;
+      color: #5a2612;
+      letter-spacing: 1px;
+      margin: 20px 0 10px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .visitor-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+      margin: 12px 0 20px;
+      background: rgba(255, 255, 255, 0.55);
+      border: 1px solid #baa385;
+    }
+
+    .visitor-table th {
+      background: #7a3219;
+      color: #fcf4e6;
+      font-family: 'Cinzel', serif;
+      font-weight: 700;
+      padding: 8px 10px;
+      border: 1px solid #632410;
+      letter-spacing: 0.5px;
+    }
+
+    .visitor-table td {
+      padding: 8px 10px;
+      border: 1px solid #baa385;
+      line-height: 1.5;
+      color: #2b1f17;
+    }
+
+    .visitor-table tr:nth-child(even) {
+      background: rgba(240, 225, 205, 0.4);
+    }
+
+    .status-blessed {
+      color: #1a5223;
+      font-weight: 700;
+    }
+
+    .status-broken {
+      color: #8c1e14;
+      font-weight: 700;
+    }
+
+    .footer-bar {
+      margin-top: 24px;
+      padding-top: 12px;
+      border-top: 1px solid #c4af92;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 11.5px;
+      color: #786653;
+      font-family: 'Courier Prime', monospace;
+    }
+
+    @media print {
+      body { background: none; padding: 0; }
+      .journal-page { box-shadow: none; border: none; max-width: 100%; padding: 25px; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="journal-page">
+    <div class="border-double"></div>
+
+    <div class="header-bar">
+      <span class="doc-category">ASTRONOMICAL LOG • TOME VII</span>
+      <span class="coords-tag">RA 03h 47m / Dec +24° 07′</span>
+    </div>
+
+    <h1>하트 교수의 천문 관측 일지</h1>
+    <div class="journal-sub">Prof. Melvin Hart's Observatory Journal (Stowell, 1920s)</div>
+
+    <!-- 1차 관측 기록 -->
+    <div class="log-entry">
+      <div class="log-date">❖ 1920년대 2월 14일 (화요일) — 첫 접촉 (Day 0)</div>
+      <p class="content-p">
+        황소자리 방면 플레이아데스(M45) 외곽에 초점을 맞추던 중 미지의 암흑 영역을 포착했다. 공허 저편에서 거대한 의식이 내 뇌리를 강타했고, 우주의 모든 진리를 한순간에 깨달았다. 나는 이를 ‘위대한 정신(The Great Mind)’이라 명명한다.
+      </p>
+      <div class="highlight-quote">
+        “위대한 정신은 인색하지 않다. 그 빛은 이웃들에게 전파되어야 하며, 인류는 무지의 어둠에서 벗어날 것이다.”
+      </div>
+    </div>
+
+    <!-- 일자별 관측자 명부 표 -->
+    <div class="table-section-title">❖ 심야 온실 방문자 관측 기록 (Observer Registry)</div>
+    <table class="visitor-table">
+      <thead>
+        <tr>
+          <th style="width: 18%;">일자</th>
+          <th style="width: 25%;">방문 대상</th>
+          <th style="width: 17%;">반응 결과</th>
+          <th>세부 증상 및 상태 요약</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>2월 14일</strong><br>(Day 0)</td>
+          <td>멜빈 하트 교수</td>
+          <td><span class="status-blessed">축복 (Blessed)</span></td>
+          <td>위대한 정신과 최초 조우. 우주 진리 각성.</td>
+        </tr>
+        <tr>
+          <td><strong>2월 16일</strong><br>(Day 2)</td>
+          <td>피츠제럴드 목사</td>
+          <td><span class="status-blessed">축복 (Blessed)</span></td>
+          <td>하나님과의 영적 합일로 수용. 심야 미사 선별 착수.</td>
+        </tr>
+        <tr>
+          <td><strong>2월 17일</strong><br>(Day 3)</td>
+          <td>스탠리 알렉산더<br>마틴 캐버노 서장<br>클로드 매시</td>
+          <td><span class="status-blessed">축복</span><br><span class="status-broken">파탄 (Broken)</span><br><span class="status-blessed">축복</span></td>
+          <td>• 스탠리: 마을 질서 유지 및 은폐 총괄.<br>• 캐버노: 인지 붕괴, 백치화 상태 (꼭두각시).<br>• 매시: 암반 지대 금맥 발견 및 채굴 지휘.</td>
+        </tr>
+        <tr>
+          <td><strong>2월 20일</strong><br>(Day 6)</td>
+          <td>프레디 젠슨<br>피어슨 노인</td>
+          <td><span class="status-broken">파탄</span><br><span class="status-blessed">축복</span></td>
+          <td>• 젠슨: 교활한 갱단화, 시신·탈주자 처리 전담.<br>• 피어슨: 민첩성 각성, 전신주 유선 도청망 구축.</td>
+        </tr>
+        <tr>
+          <td><strong>2월 21일</strong><br>(Day 7)</td>
+          <td>브래디 할머니<br>롤랜드 버포드<br>로디 매튜스</td>
+          <td><span class="status-blessed">축복</span><br><span class="status-broken">파탄</span><br><span class="status-broken">파탄</span></td>
+          <td>• 브래디: 전파·라디오 통신 기기 제작 공급.<br>• 롤랜드/로디: 젠슨 갱단 행동원으로 예속.</td>
+        </tr>
+        <tr>
+          <td><strong>2월 22일</strong><br>(Day 8)</td>
+          <td>케네스 맥커디<br>스탠리 맥가비</td>
+          <td><span class="status-broken">파탄</span><br><span class="status-broken">파탄</span></td>
+          <td>• 맥커디: 폭력적 식인 충동 발현, 격리 조치.<br>• 맥가비: 젠슨 갱단 총잡이 및 완력 배속.</td>
+        </tr>
+        <tr>
+          <td><strong>2월 24일</strong><br>(Day 10)</td>
+          <td>레이먼드 로우리</td>
+          <td><span class="status-blessed">축복 (Blessed)</span></td>
+          <td>우주 화음 각성. 잡동사니 악기 및 오르간 연주 몰입.</td>
+        </tr>
+        <tr>
+          <td><strong>2월 25일</strong><br>(Day 11)</td>
+          <td>아놀드 맥더멋<br>글래디스 맥더멋<br>허먼 셰이</td>
+          <td><span class="status-broken">파탄</span><br><span class="status-broken">파탄</span><br><span class="status-blessed">축복</span></td>
+          <td>• 아놀드: 엘머스 스테이크하우스 주방 노예 배속.<br>• 글래디스: 넋 나간 상태, 젠슨 농장으로 이송.<br>• 허먼: 완벽한 변장 및 인물 모사 재능 개화.</td>
+        </tr>
+        <tr>
+          <td><strong>2월 26일</strong><br>(Day 12)</td>
+          <td>글렌다 & 도널드<br>셜리 & 맥신 (쌍둥이)<br>토머스 빙엄 은행장<br>브래드 & 토드</td>
+          <td><span class="status-broken">파탄 (부모)</span><br><span class="status-blessed">축복 (쌍둥이)</span><br><span class="status-blessed">축복</span><br><span class="status-blessed">축복 (소년들)</span></td>
+          <td>• 부모: 도널드 난폭화 감금, 글렌다 무기력 복종.<br>• 쌍둥이: 해부학 재능 폭발, 생체 절개 착수.<br>• 빙엄: 냉혹한 효율 추구, 강제 퇴거 및 자산 회수.<br>• 소년들: 이론물리학 및 양자역학 개념 통달.</td>
+        </tr>
+        <tr>
+          <td><strong>2월 27일</strong><br>(Day 13)</td>
+          <td>펠릭스 타라마에<br>레너드 엘머</td>
+          <td><span class="status-blessed">축복</span><br><span class="status-broken">파탄</span></td>
+          <td>• 펠릭스: 엘머스 장악, 특제 생고기 요리 개발.<br>• 엘머: 전 사장에서 접시닦이 노예로 강등.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- 일기 형식으로 전면 수정한 결문 기록 -->
+    <div class="log-entry" style="border-bottom: none; margin-bottom: 0;">
+      <div class="log-date">❖ 2월 28일 (화요일 새벽) — 대통합을 향한 묵상</div>
+      <p class="content-p">
+        밤하늘을 올려다볼 때마다 내 정신은 저 머나먼 별들의 맥박과 온전히 하나가 됨을 느낀다. 궂은비가 쏟아져도 온실 위 하늘만은 언제나 거짓말처럼 투명하게 열려 망원경을 반겨준다. 위대한 정신과의 이 아름다운 교신은 내 영혼을 지탱하는 유일한 숨결이며, 매일 밤 거르지 않고 접안렌즈를 들여다보아야만 비로소 이 평온한 지혜가 온몸에 머문다.
+      </p>
+      <p class="content-p">
+        만약 단 하룻밤이라도 저 광활한 지성과의 끈이 끊어진다면 어떻게 될까. 상상조차 두렵다. 어두운 밤을 비추던 등불이 한순간에 꺼져버리듯, 우리가 얻은 이 벅찬 깨달음이 차가운 아침 햇살 아래서 견딜 수 없는 공포와 광기로 뒤바뀌어 버릴지도 모른다. 결코 그런 비극이 일어나서는 안 된다. 부품이 마모되지 않도록 작업실의 예비 렌즈와 경통 부속들을 한 번 더 점검해 두어야겠다. 오늘 밤에도 새로운 이웃들이 진리를 마주하러 올 것이다.
+      </p>
+    </div>
+
+    <div class="footer-bar">
+      <span>OBSERVATORY ARCHIVE</span>
+      <span>PROF. MELVIN HART RESIDENCE</span>
+    </div>
+  </div>
+
+</body>
+</html>

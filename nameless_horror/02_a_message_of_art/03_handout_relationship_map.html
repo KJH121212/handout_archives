@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>Relationship Map & Guide - A Message of Art</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;900&family=Noto+Serif+KR:wght@300;400;600;700&display=swap');
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background: #121110;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 40px 20px;
+      font-family: 'Noto Serif KR', serif;
+      color: #2b241e;
+    }
+
+    .guide-container {
+      width: 100%;
+      max-width: 900px;
+      background: #fcf7ec url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="300" height="300" opacity="0.04"><filter id="noise"><feTurbulence type="fractalNoise" baseFrequency="0.75" numOctaves="3" stitchTiles="stitch"/></filter><rect width="100%" height="100%" filter="url(%23noise)"/></svg>');
+      border: 1px solid #c9b58f;
+      box-shadow: 0 20px 45px rgba(0,0,0,0.65), inset 0 0 80px rgba(150, 120, 80, 0.22);
+      position: relative;
+      padding: 50px 46px 55px;
+    }
+
+    /* 외곽 프레임 */
+    .frame-border {
+      position: absolute;
+      inset: 14px;
+      border: 2px solid #541616;
+      pointer-events: none;
+    }
+
+    .frame-border::after {
+      content: '';
+      position: absolute;
+      inset: 4px;
+      border: 1px dashed rgba(135, 105, 65, 0.5);
+    }
+
+    .corner {
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      border: 2px solid #541616;
+    }
+    .tl { top: 10px; left: 10px; border-right: none; border-bottom: none; }
+    .tr { top: 10px; right: 10px; border-left: none; border-bottom: none; }
+    .bl { bottom: 10px; left: 10px; border-right: none; border-top: none; }
+    .br { bottom: 10px; right: 10px; border-left: none; border-top: none; }
+
+    /* 헤더 */
+    .header {
+      text-align: center;
+      margin-bottom: 26px;
+    }
+
+    .sub-tag {
+      font-family: 'Cinzel', serif;
+      font-size: 12px;
+      letter-spacing: 4px;
+      color: #7d6549;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+
+    .main-title {
+      font-family: 'Cinzel', serif;
+      font-size: 30px;
+      font-weight: 900;
+      letter-spacing: 2.5px;
+      color: #4a1212;
+      margin-bottom: 4px;
+    }
+
+    .sub-title {
+      font-size: 15px;
+      font-weight: 600;
+      color: #3b2e23;
+      letter-spacing: 1px;
+    }
+
+    .divider {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 14px 0 20px;
+    }
+
+    .line {
+      height: 1px;
+      background: linear-gradient(90deg, transparent, #8c6e48, transparent);
+      width: 75%;
+    }
+
+    .symbol {
+      color: #541616;
+      padding: 0 10px;
+      font-size: 15px;
+    }
+
+    /* 상단 안내 박스 */
+    .intro-box {
+      background: rgba(140, 110, 70, 0.08);
+      border-left: 3px solid #541616;
+      padding: 12px 16px;
+      font-size: 13.5px;
+      line-height: 1.7;
+      color: #382c20;
+      margin-bottom: 24px;
+    }
+
+    /* 그리드 카드 레이아웃 */
+    .grid-section {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-bottom: 22px;
+    }
+
+    .card {
+      background: rgba(255, 255, 255, 0.45);
+      border: 1px solid rgba(140, 110, 70, 0.35);
+      padding: 14px 16px;
+      border-radius: 2px;
+    }
+
+    .card.order-member {
+      border-top: 3px solid #541616;
+    }
+
+    .card.rivalry {
+      border-top: 3px solid #735122;
+    }
+
+    .card-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      border-bottom: 1px dashed rgba(140, 110, 70, 0.4);
+      padding-bottom: 6px;
+      margin-bottom: 8px;
+    }
+
+    .char-name {
+      font-size: 15px;
+      font-weight: 700;
+      color: #4a1212;
+    }
+
+    .char-role {
+      font-size: 12px;
+      color: #6e583e;
+      font-style: italic;
+    }
+
+    .tag-badge {
+      display: inline-block;
+      font-size: 10.5px;
+      padding: 1px 6px;
+      border-radius: 2px;
+      background: rgba(84, 22, 22, 0.1);
+      color: #541616;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+
+    .card-body {
+      font-size: 13px;
+      line-height: 1.65;
+      color: #33271d;
+    }
+
+    .relation-point {
+      margin-top: 4px;
+      padding-left: 10px;
+      text-indent: -10px;
+    }
+
+    .relation-point strong {
+      color: #541616;
+    }
+
+    /* 하단 탐사자 연계 요약표 */
+    .investigator-link {
+      background: rgba(255, 255, 255, 0.55);
+      border: 1px solid #aa9171;
+      padding: 14px 18px;
+      margin-top: 10px;
+      font-size: 13px;
+      line-height: 1.7;
+    }
+
+    .link-head {
+      font-family: 'Cinzel', serif;
+      font-size: 14px;
+      font-weight: 700;
+      color: #541616;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .link-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      row-gap: 6px;
+      column-gap: 16px;
+    }
+
+    .link-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 6px;
+    }
+
+    .link-name {
+      font-weight: 700;
+      color: #3b2a1a;
+      min-width: 105px;
+      white-space: nowrap;
+    }
+
+    .footer-seal {
+      margin-top: 24px;
+      padding-top: 12px;
+      border-top: 1px dashed rgba(140, 110, 70, 0.4);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 11.5px;
+      color: #7d6b56;
+    }
+
+    .seal-text {
+      font-family: 'Cinzel', serif;
+      letter-spacing: 2px;
+      color: #541616;
+      font-weight: 700;
+    }
+
+    @media print {
+      body { background: none; padding: 0; }
+      .guide-container { box-shadow: none; border: none; max-width: 100%; padding: 25px; }
+      .grid-section { grid-template-columns: 1fr 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="guide-container">
+    <div class="frame-border"></div>
+    <div class="corner tl"></div>
+    <div class="corner tr"></div>
+    <div class="corner bl"></div>
+    <div class="corner br"></div>
+
+    <header class="header">
+      <div class="sub-tag">Dramatis Personae & Relations</div>
+      <h1 class="main-title">A MESSAGE OF ART</h1>
+      <div class="sub-title">살롱 드 라 로즈 크루아 : 인물 관계 및 암투 구도 안내서</div>
+      <div class="divider">
+        <div class="line"></div>
+        <div class="symbol">🙣 ✠ 🙡</div>
+        <div class="line"></div>
+      </div>
+    </header>
+
+    <div class="intro-box">
+      1892년 4월 10일 밤, 펠라당 저택 파티장에서는 상징주의 예술의 부흥 뒤편으로 은밀한 질투, 예술적 반목, 오컬트 결사의 암투가 교차하고 있습니다. 각 인물 간의 관계와 동기를 파악하여 조사와 대인 관계 판정에 활용하십시오.
+    </div>
+
+    <div class="grid-section">
+      <!-- 펠라당 & 라 러시 -->
+      <div class="card order-member">
+        <div class="card-head">
+          <span class="char-name">조제팽 펠라당 (Joséphin Péladan)</span>
+          <span class="char-role">살롱 주최자 / 대사제 (Sâr)</span>
+        </div>
+        <div class="tag-badge">장미십자 신비 교단 수장</div>
+        <div class="card-body">
+          <div class="relation-point">• <strong>위상 :</strong> 오컬트 마도서와 비의를 독점하며 예술가들을 영적 도구로 활용.</div>
+          <div class="relation-point">• <strong>갈등 :</strong> 라 러시가 출품 약속(미노타우로스 조각)을 어겨 분노했으나, 그의 아내 바세바의 매혹에 사로잡혀 용서함.</div>
+        </div>
+      </div>
+
+      <!-- 피에르 라 러시 & 바세바 -->
+      <div class="card order-member">
+        <div class="card-head">
+          <span class="char-name">피에르 라 러시 (Pierre La Rush)</span>
+          <span class="char-role">사실주의 조각가</span>
+        </div>
+        <div class="tag-badge">신비 교단 신규 입단원</div>
+        <div class="card-body">
+          <div class="relation-point">• <strong>창작과 피조물 :</strong> 펠라당의 금서를 훔쳐 대리석 조각상 <strong>바세바(Bathsheba)</strong>에 생명을 불어넣음.</div>
+          <div class="relation-point">• <strong>피노와의 관계 :</strong> 피노의 유화와 조각 협업을 약속했으나 파기 후 뒤늦게 사과함.</div>
+        </div>
+      </div>
+
+      <!-- 앙토냉 피노 -->
+      <div class="card">
+        <div class="card-head">
+          <span class="char-name">앙토냉 피노 (Antonin Pinot)</span>
+          <span class="char-role">비운의 모더니스트 화가</span>
+        </div>
+        <div class="tag-badge">비(非)교단원 / 인기 작가</div>
+        <div class="card-body">
+          <div class="relation-point">• <strong>대표작 :</strong> 살롱 최고 화제작 《인간과 황소》 단독 전시.</div>
+          <div class="relation-point">• <strong>상태 :</strong> 이틀 전 바세바에게 영감의 씨앗을 주입받아 극심한 두통과 비출혈을 겪으며 파멸 직전.</div>
+        </div>
+      </div>
+
+      <!-- 라반 & 프리도 -->
+      <div class="card rivalry">
+        <div class="card-head">
+          <span class="char-name">막시밀리앙 라반 (Maximillien Lavagne)</span>
+          <span class="char-role">고딕 소설가</span>
+        </div>
+        <div class="tag-badge">질투와 음모의 주동자</div>
+        <div class="card-body">
+          <div class="relation-point">• <strong>프리도에 대한 적의 :</strong> 시인 에메 프리도가 교단에 입단하고 찬사를 받자 극심한 질투심에 휩싸임.</div>
+          <div class="relation-point">• <strong>모함 공작 :</strong> 하녀 기용(Guillon)을 매수해 소란을 피운 뒤 2층 오컬트 서적을 프리도의 외투에 넣어 누명을 씌우려 함.</div>
+        </div>
+      </div>
+
+      <!-- 뷔송 & 드네리아즈 -->
+      <div class="card rivalry" style="grid-column: span 2;">
+        <div class="card-head">
+          <span class="char-name">에메 프리도 (Aimée Prideaux) & 뷔송 & 드네리아즈의 반목</span>
+          <span class="char-role">살롱의 중심 예술가들</span>
+        </div>
+        <div class="card-body" style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px;">
+          <div>
+            <div class="relation-point">• <strong>에메 프리도 (시인) :</strong> 순진하고 몽상적이며, 라반이 자신을 증오한다는 사실을 전혀 눈치채지 못하고 있음.</div>
+            <div class="relation-point">• <strong>바세바 (정체불명의 여인) :</strong> 라 러시의 아내를 자칭하며 파티장 전원의 귓가에 파멸적 영감을 속삭임.</div>
+          </div>
+          <div>
+            <div class="relation-point">• <strong>쥐스틴 뷔송 (안무가) vs 도미니크 드네리아즈 (음악가) :</strong></div>
+            <div style="font-size: 12.5px; color: #524030; padding-left: 10px; margin-top: 2px;">
+              펠라당의 강요로 무대 합동 공연을 진행했으나 서로의 예술적 독자성을 주장하며 극도로 혐오함. 같은 방에 머무는 것조차 거부함.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 프리메이드 탐사자 연계 요약 -->
+    <div class="investigator-link">
+      <div class="link-head">
+        <span>❖ 프리메이드 탐사자(PC)별 주요 목표 및 인물 연계</span>
+      </div>
+      <div class="link-grid">
+        <div class="link-item">
+          <span class="link-name">클로비스 에르베 :</span>
+          <span>피노의 오랜 친구. 피노의 건강을 염려하며 그의 작품 후원을 조율.</span>
+        </div>
+        <div class="link-item">
+          <span class="link-name">에드위나 알렉산더 :</span>
+          <span>펠라당의 신비 교단 가입을 열망하며 오컬트 서고 열람을 노림.</span>
+        </div>
+        <div class="link-item">
+          <span class="link-name">도나티앵 브누아 :</span>
+          <span>예술 비평가. 바세바의 얼굴이 과거 피노의 종교화 《5,000》과 일치함을 직감.</span>
+        </div>
+        <div class="link-item">
+          <span class="link-name">비비안 에노 :</span>
+          <span>부유한 후원자. 드네리아즈의 광기 어린 피아노 연주를 진정시키려 함.</span>
+        </div>
+        <div class="link-item">
+          <span class="link-name">르네 로슈포르 :</span>
+          <span>기자. 살롱 내부의 예술가 간 갈등과 추문을 파헤쳐 신문 특종을 노림.</span>
+        </div>
+        <div class="link-item">
+          <span class="link-name">제인 한스워스 :</span>
+          <span>피노의 걸작 《인간과 황소》 유화를 소장하기 위해 교섭 시도.</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-seal">
+      <div>SALON DE LA ROSE + CROIX • TABLEAU DES RELATIONS</div>
+      <div class="seal-text">PARIS 1892</div>
+    </div>
+  </div>
+
+</body>
+</html>

@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>Church Revival Flyer - Reverend Fitzgerald</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;900&family=Noto+Serif+KR:wght@400;600;700&family=Special+Elite&display=swap');
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: #141312;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 30px 15px;
+      font-family: 'Noto Serif KR', serif;
+      color: #2b221a;
+    }
+
+    .flyer {
+      width: 100%;
+      max-width: 640px;
+      background: #faf3e3 url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" opacity="0.05"><filter id="noise"><feTurbulence type="fractalNoise" baseFrequency="0.75" numOctaves="3" stitchTiles="stitch"/></filter><rect width="100%" height="100%" filter="url(%23noise)"/></svg>');
+      border: 2px solid #5a3825;
+      box-shadow: 0 16px 36px rgba(0,0,0,0.7), inset 0 0 50px rgba(150, 110, 70, 0.25);
+      position: relative;
+      padding: 44px 38px 46px;
+      text-align: center;
+    }
+
+    .border-double {
+      position: absolute;
+      inset: 8px;
+      border: 1px dashed #7a5033;
+      pointer-events: none;
+    }
+
+    .cross-symbol {
+      font-size: 26px;
+      color: #5a2a18;
+      margin-bottom: 6px;
+    }
+
+    .church-title {
+      font-family: 'Cinzel', serif;
+      font-size: 14px;
+      letter-spacing: 3px;
+      color: #63432b;
+      text-transform: uppercase;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+
+    h1 {
+      font-size: 26px;
+      font-weight: 900;
+      color: #4a180d;
+      letter-spacing: -0.5px;
+      margin-bottom: 12px;
+      line-height: 1.3;
+    }
+
+    .scripture-quote {
+      font-style: italic;
+      font-size: 13.5px;
+      line-height: 1.7;
+      color: #3b2215;
+      background: rgba(140, 80, 40, 0.08);
+      border-left: 3px solid #7a2612;
+      border-right: 3px solid #7a2612;
+      padding: 12px 18px;
+      margin: 16px auto 20px;
+      max-width: 520px;
+    }
+
+    .divider {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      margin: 18px 0;
+      color: #7a4628;
+      font-size: 13px;
+    }
+
+    .divider::before, .divider::after {
+      content: '';
+      height: 1px;
+      background: #7a4628;
+      width: 100px;
+    }
+
+    .event-info {
+      font-size: 14.5px;
+      line-height: 1.85;
+      color: #2b1f17;
+      margin-bottom: 20px;
+    }
+
+    .special-guest {
+      background: rgba(255, 255, 255, 0.55);
+      border: 1px solid #bfa482;
+      padding: 14px 18px;
+      margin: 18px 0;
+      font-size: 13.5px;
+      line-height: 1.75;
+      color: #382417;
+    }
+
+    .special-guest strong {
+      color: #6e1c0d;
+    }
+
+    .time-badge {
+      font-family: 'Special Elite', cursive;
+      font-size: 15px;
+      font-weight: 700;
+      color: #5a2012;
+      letter-spacing: 1px;
+      margin-top: 8px;
+    }
+
+    .footer-warning {
+      margin-top: 24px;
+      padding-top: 12px;
+      border-top: 1px solid #b89c79;
+      font-size: 11.5px;
+      color: #6b5745;
+      font-style: italic;
+    }
+
+    @media print {
+      body { background: none; padding: 0; }
+      .flyer { box-shadow: none; border: none; max-width: 100%; padding: 25px; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="flyer">
+    <div class="border-double"></div>
+
+    <div class="cross-symbol">🕀</div>
+    <div class="church-title">Stowell Methodist Episcopal Church</div>
+    <h1>특별 심야 부흥 성회와 영적 각성</h1>
+
+    <div class="scripture-quote">
+      “더러는 흙이 얕은 자갈밭에 떨어지매 싹이 나오나 해가 돋은 후에 타서 뿌리가 없으므로 말랐고...<br>
+      오직 택함 받은 자만이 하늘의 거대한 뜻을 온전히 품을 것이니, 깨어난 자는 복되도다.”<br>
+      <span style="font-size: 12px; color: #6e3922;">— 피츠제럴드 목사의 설교 말씀 중에서</span>
+    </div>
+
+    <div class="divider">❖ ❖ ❖</div>
+
+    <div class="event-info">
+      길을 잃고 방황하는 영혼들이여, 심야의 거룩한 빛을 맞이하십시오.<br>
+      하늘의 위대한 지성이 준비한 영적 은총이 마을의 모든 성도들에게 열려 있습니다.<br>
+      피츠제럴드 목사님의 특별 인도로 새로운 시대를 여는 축복의 비밀이 공개됩니다.
+    </div>
+
+    <div class="special-guest">
+      <strong>[특별 천상의 성악 및 파이프 오르간 연주]</strong><br>
+      스토웰의 오랜 이웃 <strong>레이먼드 로우리(Raymond Lowry)</strong> 성도 특별 반주<br>
+      <em>“인간의 귓가를 전율시키는 전혀 새로운 우주적 화음과 영적 리듬을 성전에서 직접 체험하십시오.”</em>
+    </div>
+
+    <div class="time-badge">
+      매일 밤 11시 30분 성전 문 개방 • 자정(12:00 AM) 심야 특별 미사
+    </div>
+
+    <div class="footer-warning">
+      * 목사님의 심도 있는 면담과 시험을 거쳐 선별된 성도에게는 밤하늘의 경이로운 기적을 친히 목격하는 은혜가 주어집니다.
+    </div>
+  </div>
+
+</body>
+</html>

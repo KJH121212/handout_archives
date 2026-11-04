@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>Shirley and Maxine's Notebook</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Nanum+Pen+Script&family=Gaegu:wght@400;700&display=swap');
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: #181614;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 30px 15px;
+      font-family: 'Gaegu', 'Nanum Pen Script', cursive;
+      color: #2b201a;
+    }
+
+    /* 낡은 줄공책 스프링 노트를 그대로 재현한 컨테이너 */
+    .notebook-page {
+      width: 100%;
+      max-width: 690px;
+      background: #fbf4e2;
+      background-image: 
+        radial-gradient(#d3c3a4 1px, transparent 1px),
+        linear-gradient(#e2d3ba 1px, transparent 1px);
+      background-size: 24px 24px;
+      border: 1px solid #c4b08c;
+      box-shadow: 0 16px 42px rgba(0,0,0,0.75), inset 0 0 60px rgba(150, 110, 60, 0.22);
+      position: relative;
+      padding: 55px 45px 50px 75px;
+      border-radius: 4px;
+    }
+
+    /* 왼쪽 공책 빨간 마진선 */
+    .margin-line {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 60px;
+      width: 2px;
+      background: rgba(200, 60, 60, 0.35);
+    }
+
+    /* 상단 스프링 구멍 연출 */
+    .holes {
+      position: absolute;
+      left: 20px;
+      top: 30px;
+      bottom: 30px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .hole {
+      width: 14px;
+      height: 14px;
+      background: #181614;
+      border-radius: 50%;
+      box-shadow: inset 1px 1px 3px rgba(0,0,0,0.8);
+    }
+
+    .header-tag {
+      font-size: 22px;
+      color: #63432b;
+      margin-bottom: 6px;
+      text-decoration: underline wavy #b3855a;
+    }
+
+    .main-title {
+      font-size: 32px;
+      font-weight: 700;
+      color: #4a1c10;
+      line-height: 1.2;
+      margin-bottom: 22px;
+    }
+
+    .entry {
+      font-size: 20px;
+      line-height: 1.6;
+      margin-bottom: 24px;
+      color: #2e2119;
+    }
+
+    .entry-date {
+      font-size: 22px;
+      font-weight: 700;
+      color: #822e1a;
+      display: inline-block;
+      margin-bottom: 4px;
+      background: rgba(200, 100, 60, 0.12);
+      padding: 1px 8px;
+      border-radius: 4px;
+    }
+
+    /* 그림 삽입 영역 스타일 */
+    .drawing-box {
+      border: 1.5px dashed #8c684d;
+      background: rgba(255, 255, 255, 0.6);
+      border-radius: 6px;
+      padding: 14px 18px;
+      margin: 14px 0;
+      color: #57321e;
+    }
+
+    .drawing-tag {
+      font-family: 'Caveat', cursive;
+      font-size: 20px;
+      font-weight: 700;
+      color: #8c2617;
+      display: block;
+      margin-bottom: 4px;
+    }
+
+    .drawing-desc {
+      font-size: 18.5px;
+      line-height: 1.5;
+      color: #664128;
+    }
+
+    .scribble {
+      text-decoration: line-through;
+      color: #8c7261;
+    }
+
+    .heart-mark {
+      color: #9e2a1b;
+      font-size: 20px;
+    }
+
+    .bottom-plan {
+      margin-top: 25px;
+      padding-top: 15px;
+      border-top: 1px dashed #aa8b6d;
+      font-size: 21px;
+      color: #4a150b;
+    }
+
+    @media print {
+      body { background: none; padding: 0; }
+      .notebook-page { box-shadow: none; max-width: 100%; padding: 40px 30px 40px 60px; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="notebook-page">
+    <div class="margin-line"></div>
+    <div class="holes">
+      <div class="hole"></div>
+      <div class="hole"></div>
+      <div class="hole"></div>
+      <div class="hole"></div>
+      <div class="hole"></div>
+      <div class="hole"></div>
+      <div class="hole"></div>
+      <div class="hole"></div>
+      <div class="hole"></div>
+      <div class="hole"></div>
+    </div>
+
+    <div class="header-tag">셜리와 맥신의 비밀 관찰 일기장 <span class="heart-mark">♥</span></div>
+    <div class="main-title">생물들의 안쪽 비밀과 연구 기록</div>
+
+    <!-- 일기 1: 동물 해부와 시작 -->
+    <div class="entry">
+      <span class="entry-date">2월 23일 (수요일)</span><br>
+      정원에서 잡은 황소개구리는 가슴뼈를 열었더니 심장이 팔딱팔딱 뛰었다. 하지만 10분도 안 돼서 굳어버렸다. 집고양이 미미도 마찬가지였다. 작은 짐승들은 심장이 너무 빨리 멈춘다. 맥신이랑 나는 <span class="scribble">새와 꽃</span>보다 더 크고 재미있는 걸 열어보기로 했다.
+      
+      <div class="drawing-box">
+        <span class="drawing-tag">[그림: 색연필로 서툴게 그린 황소개구리 해부도]</span>
+        <div class="drawing-desc">
+          초록색 개구리가 배를 하늘로 향한 채 네 다리에 핀이 꽂혀 고정되어 있고, Y자로 찢겨 벌어진 붉은 뱃속 한가운데에 진한 빨간색 하트 모양 심장이 둥둥 떠 있는 크레파스 낙서. 옆에는 서툰 글씨로 '쿵쿵 심장'이라고 적혀 있다.
+        </div>
+      </div>
+    </div>
+
+    <!-- 일기 2: 망원경 본 날 -->
+    <div class="entry">
+      <span class="entry-date">2월 26일 (일요일) — 하트 교수님 댁 다녀온 날!</span><br>
+      하트 아저씨의 안경 속 별을 보았다. 머릿속이 쾅! 하고 울리더니 하늘에서 거대한 목소리가 속삭였다. 이제 우리는 사람의 껍질 속에 무엇이 숨겨져 있는지 전부 안다. 
+      엄마는 머리가 아프다면서 주방에서 하루 종일 빵만 굽고 있다. 엄마가 구워준 케이크를 먹으면서, 아빠에게 약을 먹이고 지하실 의자에 묶었다.
+
+      <div class="drawing-box">
+        <span class="drawing-tag">[그림: 밤하늘의 소용돌이치는 눈동자 스케치]</span>
+        <div class="drawing-desc">
+          보라색과 검은색 크레파스를 어지럽게 칠해 만든 소용돌이 모양의 밤하늘 중심에, 사람의 동공처럼 생긴 거대한 눈 하나가 번쩍이며 지상의 작은 집들을 내려다보고 있는 기괴한 환각화.
+        </div>
+      </div>
+    </div>
+
+    <!-- 일기 3: 인체 해부 정밀 스케치와 레시피 -->
+    <div class="entry">
+      <span class="entry-date">2월 27일 (월요일)</span><br>
+      아빠는 정말 착하고 참을성이 많다. 에테르를 적신 헝겊을 코에 대주면 소리도 안 지르고 눈만 말똥말똥 뜬다.
+      
+      <div class="drawing-box">
+        <span class="drawing-tag">[그림: 전문 의학 서적 수준으로 섬뜩하게 묘사된 가슴 늑골 전개도]</span>
+        <div class="drawing-desc">
+          소녀들의 귀여운 필체와는 소름 돋게 대조되는, 날카로운 연필로 정밀하게 묘사된 성인 남성의 흉강 단면도. 벌려진 갈비뼈 안쪽에서 꿈틀거리는 폐와 혈관 다발, 그리고 미세한 신경선들이 번호(①, ②, ③)와 함께 전신주 전선처럼 정교하게 이어져 있다. 갈피 구석에는 붉은 핏자국 얼룩이 말라붙어 있다.
+        </div>
+      </div>
+
+      • 에테르 3방울 + 아편팅크 1스푼 = 아빠가 얌전해지는 황금 비율!<br>
+      • 갈비뼈를 양옆으로 벌리니까 폐 뒤에서 심장이 쿵쿵 뛰는 게 보인다. 빨간 파도가 치는 것처럼 예쁘다.<br>
+      • 메스로 살짝 건드리면 다리가 움찔거린다. 신경 다발이 전깃줄처럼 연결되어 있다.
+    </div>
+
+    <!-- 일기 4: 현재 상태 및 위협 계획 -->
+    <div class="entry">
+      <span class="entry-date">오늘 밤 (2월 28일 화요일)</span><br>
+      아빠 피부가 점점 차가워지고 파래진다. 숨소리가 너무 가늘어져서 심장 박동이 느려지고 있다. 맥신이랑 신경줄을 세 개 더 잘라봤는데 이제 아빠는 눈도 잘 못 깜빡거린다. 아무래도 아빠 표본은 내일이면 끝날 것 같다.
+    </div>
+
+    <div class="bottom-plan">
+      <strong>★ 다음 숙제 :</strong><br>
+      지하실에 둘 더 크고 싱싱한 새 표본을 찾아야 해.<br>
+      엄마 케이크를 먹으러 오거나 우리를 찾아오는 어른들이 제일 좋을 것 같아! <span class="heart-mark">♥</span>
+      
+      <div class="drawing-box" style="margin-top: 14px;">
+        <span class="drawing-tag">[그림: 두 소녀가 손을 잡고 수술 도구를 든 전신 낙서]</span>
+        <div class="drawing-desc">
+          원피스를 입고 양갈래 머리를 한 셜리와 맥신이 해맑게 웃으며 손을 잡고 있고, 다른 한 손에는 각각 피가 뚝뚝 떨어지는 커다란 뼈톱과 수술용 메스를 쥐고 서 있는 그림. 발밑에는 어른 모양의 시커먼 실루엣이 결박되어 쓰러져 있다.
+        </div>
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>

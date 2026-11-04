@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>Letter from Arnold to Gladys</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Nanum+Pen+Script&family=Caveat:wght@600&family=Special+Elite&display=swap');
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: #141210;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 30px 15px;
+      font-family: 'Nanum Pen Script', cursive;
+      color: #261c14;
+    }
+
+    /* 찢어진 편지지 질감 */
+    .note-sheet {
+      width: 100%;
+      max-width: 520px;
+      background: #fcf6e8 url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="180" height="180" opacity="0.04"><filter id="noise"><feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="3" stitchTiles="stitch"/></filter><rect width="100%" height="100%" filter="url(%23noise)"/></svg>');
+      border: 1px solid #d4c2a3;
+      box-shadow: 0 16px 38px rgba(0,0,0,0.7), inset 0 0 45px rgba(160, 120, 70, 0.2);
+      position: relative;
+      padding: 46px 40px 42px;
+      transform: rotate(-1deg);
+      border-radius: 2px;
+      line-height: 1.8;
+    }
+
+    /* 상단 은제 포크로 눌러두었던 자국 */
+    .fork-mark {
+      position: absolute;
+      top: 18px;
+      right: 28px;
+      width: 26px;
+      height: 10px;
+      border-top: 1.5px solid rgba(130, 95, 60, 0.35);
+      border-bottom: 1.5px solid rgba(130, 95, 60, 0.35);
+      transform: rotate(12deg);
+      opacity: 0.7;
+    }
+
+    .time-header {
+      font-size: 21px;
+      color: #78533b;
+      text-align: right;
+      margin-bottom: 16px;
+    }
+
+    .greeting {
+      font-size: 27px;
+      font-weight: 700;
+      color: #3d1c10;
+      margin-bottom: 14px;
+    }
+
+    .letter-text {
+      font-size: 24px;
+      line-height: 1.75;
+      color: #241911;
+      margin-bottom: 14px;
+      text-align: justify;
+      word-break: keep-all;
+    }
+
+    .signature-block {
+      text-align: right;
+      font-size: 28px;
+      font-weight: 700;
+      color: #33150b;
+      margin-top: 22px;
+    }
+
+    .postscript {
+      margin-top: 20px;
+      padding-top: 12px;
+      border-top: 1px dashed #c4ab8c;
+      font-size: 22px;
+      line-height: 1.6;
+      color: #5c3b28;
+    }
+
+    @media print {
+      body { background: none; padding: 0; }
+      .note-sheet { box-shadow: none; max-width: 100%; padding: 25px; transform: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="note-sheet">
+    <div class="fork-mark"></div>
+
+    <div class="time-header">토요일 저녁 7시 40분</div>
+
+    <div class="greeting">사랑하는 글래디스에게,</div>
+
+    <p class="letter-text">
+      교회 봉사는 잘 마치고 오고 있소? 제재소 퇴근길에 일찍 들어와 당신이 아끼는 은식기와 와인잔 둘을 식탁에 꺼내두었소.
+    </p>
+
+    <p class="letter-text">
+      당신이 재워둔 안심과 당근을 오븐에 넣고 막 불을 지폈는데, 방금 스탠리 부관이 집 앞을 지나며 피츠제럴드 목사님의 급한 전갈을 전해주었소. 하트 교수님 댁 온실에서 마을 사람들에게 하늘의 거대한 별과 놀라운 기적을 보여주고 계신다고 하오.
+    </p>
+
+    <p class="letter-text">
+      목사님께서 우리 부부를 위해 차를 대기시켜 두셨다며 꼭 들르라 하셨소. 오븐 불은 아주 약하게 줄여두었으니, 당신이 집에 도착하는 대로 곧장 하트 교수님 댁 온실로 건너오시오.
+    </p>
+
+    <p class="letter-text">
+      별을 잠깐 보고 와서 늦은 저녁을 함께 나눕시다. 30분이면 충분할 거요.
+    </p>
+
+    <div class="signature-block">
+      당신의 남편, 아놀드가
+    </div>
+
+    <div class="postscript">
+      추신: 밤공기가 쌀쌀하니 현관에 걸린 두꺼운 외투를 꼭 챙겨 입고 오시오. 교수님 댁 마당에서 기다리겠소!
+    </div>
+  </div>
+
+</body>
+</html>

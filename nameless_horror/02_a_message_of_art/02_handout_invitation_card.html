@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>Invitation - Salon de la Rose + Croix Celebration</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;900&family=Great+Vibes&family=Noto+Serif+KR:wght@300;400;600;700&display=swap');
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background: #181716;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 40px 20px;
+      font-family: 'Noto Serif KR', serif;
+      color: #2b2520;
+    }
+
+    .card-container {
+      width: 100%;
+      max-width: 680px;
+      background: #faf6ee url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="260" height="260" opacity="0.04"><filter id="noise"><feTurbulence type="fractalNoise" baseFrequency="0.75" numOctaves="3" stitchTiles="stitch"/></filter><rect width="100%" height="100%" filter="url(%23noise)"/></svg>');
+      border: 1px solid #c4b08d;
+      box-shadow: 0 20px 45px rgba(0,0,0,0.6), inset 0 0 70px rgba(160, 130, 85, 0.25);
+      position: relative;
+      padding: 50px 44px 55px;
+      text-align: center;
+    }
+
+    /* 금빛 이중 액자 프레임 */
+    .frame-border {
+      position: absolute;
+      inset: 12px;
+      border: 2px solid #5a1818;
+      pointer-events: none;
+    }
+
+    .frame-border::after {
+      content: '';
+      position: absolute;
+      inset: 4px;
+      border: 1px dashed #9e7d53;
+    }
+
+    .corner-decor {
+      position: absolute;
+      width: 22px;
+      height: 22px;
+      border: 2px solid #5a1818;
+    }
+    .tl { top: 8px; left: 8px; border-right: none; border-bottom: none; }
+    .tr { top: 8px; right: 8px; border-left: none; border-bottom: none; }
+    .bl { bottom: 8px; left: 8px; border-right: none; border-top: none; }
+    .br { bottom: 8px; right: 8px; border-left: none; border-top: none; }
+
+    /* 상단 헤더 & 모노그램 */
+    .emblem {
+      font-size: 28px;
+      color: #5a1818;
+      margin-bottom: 6px;
+      line-height: 1;
+    }
+
+    .order-title {
+      font-family: 'Cinzel', serif;
+      font-size: 11.5px;
+      letter-spacing: 4px;
+      color: #6b553c;
+      font-weight: 700;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+
+    .card-title {
+      font-family: 'Great Vibes', cursive;
+      font-size: 46px;
+      color: #4a1212;
+      line-height: 1.15;
+      margin-bottom: 4px;
+      text-shadow: 1px 1px 1px rgba(0,0,0,0.08);
+    }
+
+    .sub-head {
+      font-family: 'Cinzel', serif;
+      font-size: 13.5px;
+      letter-spacing: 2px;
+      color: #3b3229;
+      font-weight: 600;
+      margin-bottom: 22px;
+    }
+
+    .ornament-line {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 14px 0 24px;
+    }
+
+    .line {
+      height: 1px;
+      background: linear-gradient(90deg, transparent, #8c6e48, transparent);
+      width: 65%;
+    }
+
+    .symbol {
+      color: #5a1818;
+      padding: 0 10px;
+      font-size: 14px;
+    }
+
+    /* 본문 */
+    .invitation-body {
+      font-size: 14px;
+      line-height: 1.85;
+      color: #332b23;
+      margin-bottom: 26px;
+      text-align: center;
+      padding: 0 10px;
+    }
+
+    .invitation-body p {
+      margin-bottom: 10px;
+    }
+
+    .guest-line {
+      display: inline-block;
+      min-width: 220px;
+      border-bottom: 1px solid #5a1818;
+      padding-bottom: 2px;
+      font-family: 'Cinzel', serif;
+      font-weight: 700;
+      color: #4a1212;
+      font-size: 15px;
+    }
+
+    /* 행사 상세 정보 박스 */
+    .details-card {
+      background: rgba(140, 110, 70, 0.08);
+      border: 1px solid rgba(140, 110, 70, 0.3);
+      padding: 16px 20px;
+      margin: 0 auto 26px;
+      max-width: 520px;
+      font-size: 13.5px;
+      line-height: 1.7;
+      text-align: left;
+    }
+
+    .detail-row {
+      display: flex;
+      margin-bottom: 4px;
+    }
+    .detail-row:last-child {
+      margin-bottom: 0;
+    }
+
+    .detail-label {
+      font-weight: 700;
+      color: #5a1818;
+      min-width: 85px;
+    }
+
+    /* 하단 서명 및 주의사항 */
+    .signature-area {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      padding-top: 15px;
+      margin-top: 20px;
+      border-top: 1px dashed rgba(140, 110, 70, 0.4);
+      text-align: left;
+    }
+
+    .host-block {
+      text-align: right;
+    }
+
+    .host-sign {
+      font-family: 'Great Vibes', cursive;
+      font-size: 30px;
+      color: #4a1212;
+      line-height: 1;
+      margin-bottom: 2px;
+    }
+
+    .host-desc {
+      font-family: 'Cinzel', serif;
+      font-size: 11px;
+      letter-spacing: 1.5px;
+      color: #6b553c;
+    }
+
+    .notice {
+      font-size: 11px;
+      color: #7d6c59;
+      line-height: 1.45;
+    }
+
+    @media print {
+      body { background: none; padding: 0; }
+      .card-container { box-shadow: none; border: none; max-width: 100%; padding: 30px; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="card-container">
+    <div class="frame-border"></div>
+    <div class="corner-decor tl"></div>
+    <div class="corner-decor tr"></div>
+    <div class="corner-decor bl"></div>
+    <div class="corner-decor br"></div>
+
+    <div class="emblem">☩</div>
+    <div class="order-title">Ordre Mystique de la Rose + Croix</div>
+
+    <h1 class="card-title">Invitation d'Honneur</h1>
+    <div class="sub-head">제1회 살롱 드 라 로즈 크루아 폐막 기념 연회 초대장</div>
+
+    <div class="ornament-line">
+      <div class="line"></div>
+      <div class="symbol">✠</div>
+      <div class="line"></div>
+    </div>
+
+    <div class="invitation-body">
+      <p>귀하를 예술의 성스러운 비의와 영적 승리를 기리는 은밀한 축하의 밤에 모십니다.</p>
+      <p>
+        지난 한 달간 뒤랑뤼엘 갤러리에서 거행된 <strong>『살롱 드 라 로즈 크루아』</strong>의 대단원을 맞이하여,<br>
+        새로운 상징주의 르네상스를 함께 이끌어갈 존경받는 동료 예술가와 후원자분들을 초대하오니<br>
+        부디 자리를 빛내어 주시길 청합니다.
+      </p>
+      <p style="margin-top: 14px;">
+        수신인 : <span class="guest-line">귀하 (L'Invité d'Honneur)</span>
+      </p>
+    </div>
+
+    <div class="details-card">
+      <div class="detail-row">
+        <span class="detail-label">일 시 :</span>
+        <span>1892년 4월 10일 (일요일) 오후 8시 정각</span>
+      </div>
+      <div class="detail-row">
+        <span class="detail-label">장 소 :</span>
+        <span>파리 9구 피뇽 거리(Rue Pinon) 펠라당 사저 (Hôtel Péladan)</span>
+      </div>
+      <div class="detail-row">
+        <span class="detail-label">드레스코드 :</span>
+        <span>정복 및 이브닝 드레스 (Tenue de Soirée)</span>
+      </div>
+      <div class="detail-row">
+        <span class="detail-label">사전 모임 :</span>
+        <span>오후 7시, 피뇽 거리 모퉁이 '압생트 하우스'에서 환담</span>
+      </div>
+    </div>
+
+    <div class="signature-area">
+      <div class="notice">
+        * 본 초대장을 정문 집사 파비앙 코피에(Fabian Coffier)에게 제시하십시오.<br>
+        * 사저 내 1층(로비·도서관·라운지) 외 개인 구역 및 서고 출입을 엄금합니다.
+      </div>
+
+      <div class="host-block">
+        <div class="host-sign">Joséphin Péladan</div>
+        <div class="host-desc">Sâr Péladan • Grand Maître</div>
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>

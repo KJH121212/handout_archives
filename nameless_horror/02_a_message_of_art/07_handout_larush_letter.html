@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>Lettre d'Invitation - Pierre La Rush</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Great+Vibes&family=Noto+Serif+KR:wght@300;400;600&display=swap');
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background: #171615;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 40px 20px;
+      font-family: 'Noto Serif KR', serif;
+      color: #2b241e;
+    }
+
+    /* 19세기 거친 수제 종이 편지지 질감 */
+    .letter-container {
+      width: 100%;
+      max-width: 680px;
+      background: #fbf5e8 url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="220" height="220" opacity="0.04"><filter id="noise"><feTurbulence type="fractalNoise" baseFrequency="0.75" numOctaves="3" stitchTiles="stitch"/></filter><rect width="100%" height="100%" filter="url(%23noise)"/></svg>');
+      border: 1px solid #c4b08d;
+      box-shadow: 0 18px 40px rgba(0,0,0,0.6), inset 0 0 60px rgba(150, 120, 80, 0.22);
+      position: relative;
+      padding: 50px 48px 52px;
+    }
+
+    .border-line {
+      position: absolute;
+      inset: 12px;
+      border: 1px solid #7d6144;
+      pointer-events: none;
+    }
+
+    .border-line::after {
+      content: '';
+      position: absolute;
+      inset: 4px;
+      border: 1px dashed rgba(125, 97, 68, 0.45);
+    }
+
+    .corner-mark {
+      position: absolute;
+      width: 16px;
+      height: 16px;
+      border: 1.5px solid #5a1818;
+    }
+    .tl { top: 8px; left: 8px; border-right: none; border-bottom: none; }
+    .tr { top: 8px; right: 8px; border-left: none; border-bottom: none; }
+    .bl { bottom: 8px; left: 8px; border-right: none; border-top: none; }
+    .br { bottom: 8px; right: 8px; border-left: none; border-top: none; }
+
+    .letter-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      border-bottom: 1px solid #aa9171;
+      padding-bottom: 12px;
+      margin-bottom: 24px;
+    }
+
+    .head-title {
+      font-family: 'Cinzel', serif;
+      font-size: 13px;
+      letter-spacing: 2px;
+      color: #634b35;
+      font-weight: 700;
+    }
+
+    .head-date {
+      font-size: 12px;
+      color: #7d6549;
+      font-style: italic;
+    }
+
+    .salutation {
+      font-size: 15px;
+      font-weight: 600;
+      color: #443425;
+      margin-bottom: 16px;
+    }
+
+    .letter-body {
+      font-size: 14px;
+      line-height: 1.85;
+      text-align: justify;
+      color: #31271f;
+      margin-bottom: 24px;
+    }
+
+    .letter-body p {
+      margin-bottom: 14px;
+      text-indent: 1.2em;
+    }
+
+    .highlight-quote {
+      background: rgba(140, 105, 65, 0.08);
+      border-left: 3px solid #5a1818;
+      padding: 10px 14px;
+      margin: 14px 0;
+      font-style: italic;
+      color: #4a1818;
+    }
+
+    /* 찾아오는 길 및 약도 안내 박스 */
+    .route-card {
+      background: rgba(255, 255, 255, 0.45);
+      border: 1px dashed #9e8464;
+      padding: 16px 20px;
+      margin-bottom: 24px;
+      font-size: 13px;
+      line-height: 1.7;
+    }
+
+    .route-title {
+      font-family: 'Cinzel', serif;
+      font-size: 13.5px;
+      font-weight: 700;
+      color: #5a1818;
+      letter-spacing: 1px;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .route-item {
+      display: flex;
+      margin-bottom: 4px;
+    }
+    .route-item:last-child {
+      margin-bottom: 0;
+    }
+
+    .route-label {
+      font-weight: 700;
+      color: #61462d;
+      min-width: 95px;
+    }
+
+    .closing {
+      margin-top: 15px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+    }
+
+    .cl-note {
+      font-size: 11px;
+      color: #7a6652;
+      font-style: italic;
+      max-width: 320px;
+      line-height: 1.45;
+    }
+
+    .sign-box {
+      text-align: right;
+    }
+
+    .signature {
+      font-family: 'Great Vibes', cursive;
+      font-size: 34px;
+      color: #4a1212;
+      line-height: 1;
+      margin-bottom: 2px;
+    }
+
+    .sign-title {
+      font-family: 'Cinzel', serif;
+      font-size: 11px;
+      letter-spacing: 1.5px;
+      color: #634b35;
+    }
+
+    @media print {
+      body { background: none; padding: 0; }
+      .letter-container { box-shadow: none; border: none; max-width: 100%; padding: 30px; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="letter-container">
+    <div class="border-line"></div>
+    <div class="corner-mark tl"></div>
+    <div class="corner-mark tr"></div>
+    <div class="corner-mark bl"></div>
+    <div class="corner-mark br"></div>
+
+    <div class="letter-head">
+      <div class="head-title">Atelier de Sculpture — Thoiry</div>
+      <div class="head-date">파리, 1892년 4월 10일 밤</div>
+    </div>
+
+    <div class="salutation">친애하는 벗이자 예술의 이해자 귀하,</div>
+
+    <div class="letter-body">
+      <p>
+        오늘 저녁 펠라당 사저의 소란스러운 연회 속에서, 저의 조각 예술과 저의 아내 바세바(Bathsheba)에게 보내주신 따뜻한 찬사와 진지한 관심에 깊이 감사드립니다. 대다수 평론가들은 저의 사실주의적 집착을 낡은 유물 취급하지만, 귀하만큼은 그 속에 깃든 진실한 숨결을 알아봐 주셨습니다.
+      </p>
+
+      <div class="highlight-quote">
+        “살롱에 출품하지 못했던 미완의 미노타우로스를 마침내 완성했습니다. 그것은 단순한 돌덩이가 아닌, 신성의 손길이 닿아 살아 숨 쉬는 기적이 될 것입니다.”
+      </div>
+
+      <p>
+        미켈란젤로에게 다비드가 있었다면 제게는 바세바가 있습니다. 도시의 번잡함에서 벗어나 제 숲속 작업실로 오신다면, 세상을 전율시킬 이 위대한 걸작들을 그 누구보다 먼저 목격하는 영광을 누리실 수 있을 것입니다.
+      </p>
+    </div>
+
+    <div class="route-card">
+      <div class="route-title">
+        <span>❖ 찾아오시는 길 (Itinéraire)</span>
+      </div>
+      <div class="route-item">
+        <span class="route-label">목 적 지 :</span>
+        <span>일드프랑스 투아리(Thoiry), 호숫가 숲속 오두막 아틀리에</span>
+      </div>
+      <div class="route-item">
+        <span class="route-label">기차 편 :</span>
+        <span>파리 몽파르나스 역 탑승 ➔ 가랑시에르(Garancières) 역 하차</span>
+      </div>
+      <div class="route-item">
+        <span class="route-label">마차 이동 :</span>
+        <span>가랑시에르 역에서 북쪽 투아리 숲길 방면으로 약 4마일(7km)</span>
+      </div>
+      <div class="route-item">
+        <span class="route-label">위치 안내 :</span>
+        <span>비포장 흙길 끝자락, 고요한 호수를 마주 보고 선 대형 목조 오두막</span>
+      </div>
+    </div>
+
+    <div class="closing">
+      <div class="cl-note">
+        * 화실 문은 언제나 열려 있습니다. 언제든 찾아오시어 신이 빚어낸 생명의 기적을 친히 확인하십시오.
+      </div>
+      <div class="sign-box">
+        <div class="signature">Pierre La Rush</div>
+        <div class="sign-title">Pierre La Rush • Sculpteur</div>
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>
