@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>Handout: Amaranthine 1 - Setting the Scene</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800&family=Noto+Serif+KR:wght@300;400;600;700&display=swap');
+
+  :root {
+    --bg-dark: #121418;
+    --paper-bg: #f5eedc;
+    --paper-border: #c4b595;
+    --ink-color: #2b2118;
+    --accent-red: #7c221e;
+    --gold: #9e783f;
+  }
+
+  * {
+    box-sizing: border-box;
+  }
+
+  body {
+    background-color: var(--bg-dark);
+    font-family: 'Noto Serif KR', serif;
+    color: var(--ink-color);
+    margin: 0;
+    padding: 40px 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+  }
+
+  .handout-container {
+    max-width: 680px;
+    width: 100%;
+    background: var(--paper-bg);
+    border: 2px solid var(--paper-border);
+    padding: 45px 40px;
+    position: relative;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), inset 0 0 60px rgba(180, 160, 120, 0.2);
+    border-radius: 3px;
+  }
+
+  /* 이중 테두리 장식 */
+  .handout-container::after {
+    content: "";
+    position: absolute;
+    inset: 8px;
+    border: 1px solid rgba(158, 120, 63, 0.4);
+    pointer-events: none;
+  }
+
+  .header {
+    text-align: center;
+    border-bottom: 2px solid var(--accent-red);
+    padding-bottom: 15px;
+    margin-bottom: 25px;
+  }
+
+  .scenario-title {
+    font-family: 'Cinzel', serif;
+    font-size: 0.95rem;
+    letter-spacing: 3px;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+
+  .main-title {
+    font-family: 'Cinzel', 'Noto Serif KR', serif;
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: var(--accent-red);
+    margin: 0;
+    letter-spacing: 1px;
+  }
+
+  .date-badge {
+    display: inline-block;
+    margin-top: 10px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #554838;
+    border-top: 1px solid #d5c8ab;
+    border-bottom: 1px solid #d5c8ab;
+    padding: 3px 14px;
+    letter-spacing: 1px;
+  }
+
+  .content {
+    font-size: 1.02rem;
+    line-height: 1.85;
+    text-align: justify;
+    word-break: keep-all;
+    color: var(--ink-color);
+  }
+
+  .content p {
+    margin: 0 0 18px 0;
+    text-indent: 1.2em;
+  }
+
+  .content p:last-child {
+    margin-bottom: 0;
+  }
+
+  .footer-decor {
+    margin-top: 25px;
+    text-align: center;
+    color: var(--gold);
+    font-size: 1.1rem;
+    letter-spacing: 5px;
+  }
+</style>
+</head>
+<body>
+
+<div class="handout-container">
+  <div class="header">
+    <div class="scenario-title">An Amaranthine Desire</div>
+    <h1 class="main-title">Handout: Amaranthine 1</h1>
+    <div class="date-badge">1895년 1월 25일</div>
+  </div>
+
+  <div class="content">
+    <p>잉글랜드에서 밀수는 한때 대규모 사업이었으나, 그것도 유럽과의 전쟁 자금을 마련하기 위해 막대한 관세가 부과되던 2세기 전의 이야기입니다. 지금에 이르러서는 그 규모가 과거에 비해 훨씬 줄어들었지만, 여전히 알코올과 담배 같은 품목을 중심으로 밀수가 성행하고 있습니다.</p>
+    <p>당신들은 모두 네덜란드에서 들여온 담배 화물을 서퍽주 월버스윅 항구에서 남쪽으로 3마일 떨어진 작은 해안 마을 던위치(Dunwich) 인근에 상륙시키는 밀수 작전에 가담하고 있습니다. 매수된 세관원과 극소수의 지역 주민들이 상륙 작업을 돕기 위해 해변에 대기하고 있으며, 작전의 우두머리 중 한 명인 루이 게르드 선장은 자신의 증기선 웨이브 라이더(Wave Rider) 호에서 고용된 인부들과 선원들을 지휘해 화물을 해안으로 실어 나르고 있습니다.</p>
+    <p>시각은 새벽 2시경으로 향하고 있으며, 거친 바다를 건너는 항해는 대체로 잔잔했습니다. 그러나 점차 바람이 거세지며 불길한 폭풍의 조짐이 피어오르고 있습니다. 수평선 너머로 던위치의 불빛 몇 점이 희미하게 모습을 드러내고 있으며, 바다가 점차 사나워지면서 선원들 사이에는 팽팽한 긴장감이 감돕니다. 바로 그 순간, 마을 남쪽 절벽 위에서 배를 해안으로 안내하기 위한 신호 램프 불빛이 밝혀집니다.</p>
+  </div>
+
+  <div class="footer-decor">✦ ✦ ✦</div>
+</div>
+
+</body>
+</html>
