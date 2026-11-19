@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>The Space Between - Cast & Crew Directory</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Courier+Prime:ital,wght@0,400;0,700;1,400&family=Noto+Sans+KR:wght@300;400;500;700&display=swap');
+
+    :root {
+      --bg: #141518;
+      --paper: #f4f1ea;
+      --ink: #1f1f1f;
+      --lead-badge: #8b0000;
+      --investigator-badge: #1b4d3e;
+      --church-tag: #705417;
+      --border: #3b3d45;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--ink);
+      font-family: 'Noto Sans KR', sans-serif;
+      padding: 35px 20px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    .callsheet-container {
+      background: var(--paper);
+      width: 100%;
+      max-width: 840px;
+      padding: 45px 50px;
+      border-radius: 4px;
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.75);
+      border-top: 8px solid #2c2d30;
+      position: relative;
+    }
+
+    .top-header {
+      display: flex;
+      justify-content: space-between;
+      border-bottom: 2px solid #222;
+      padding-bottom: 8px;
+      margin-bottom: 20px;
+      font-family: 'Courier Prime', monospace;
+      font-size: 11px;
+      letter-spacing: 1.5px;
+      color: #555;
+    }
+
+    .title-area {
+      text-align: center;
+      margin-bottom: 25px;
+    }
+
+    .prod-code {
+      font-family: 'Courier Prime', monospace;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      color: #666;
+    }
+
+    h1.title {
+      font-family: 'Courier Prime', serif;
+      font-size: 26px;
+      letter-spacing: 2px;
+      color: #111;
+      text-transform: uppercase;
+      margin-top: 4px;
+    }
+
+    .legend-bar {
+      display: flex;
+      gap: 15px;
+      background: #e7e3d8;
+      padding: 8px 16px;
+      border-radius: 3px;
+      font-size: 12px;
+      margin-bottom: 25px;
+      align-items: center;
+      font-family: 'Courier Prime', monospace;
+    }
+
+    .badge-sample {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 3px;
+      color: #fff;
+      font-size: 10.5px;
+      font-weight: bold;
+    }
+    .badge-sample.pc { background: var(--investigator-badge); }
+    .badge-sample.lead { background: var(--lead-badge); }
+
+    .crew-list {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .person-card {
+      background: #faf8f4;
+      border: 1px solid #dcd7cb;
+      border-radius: 4px;
+      padding: 16px 20px;
+      border-left: 4px solid #666;
+      transition: all 0.2s ease;
+    }
+
+    .person-card.investigator {
+      border-left-color: var(--investigator-badge);
+      background: #f1f7f4;
+    }
+
+    .person-card.key-lead {
+      border-left-color: var(--lead-badge);
+    }
+
+    .card-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: 8px;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .name-role {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .person-name {
+      font-family: 'Courier Prime', 'Noto Sans KR', monospace;
+      font-weight: 700;
+      font-size: 16.5px;
+      color: #111;
+    }
+
+    .person-role {
+      font-size: 12.5px;
+      color: #666;
+      font-weight: 600;
+    }
+
+    .badges {
+      display: flex;
+      gap: 6px;
+    }
+
+    .tag {
+      font-family: 'Courier Prime', monospace;
+      font-size: 10.5px;
+      font-weight: bold;
+      padding: 2px 7px;
+      border-radius: 3px;
+    }
+
+    .tag.pc-tag {
+      background: var(--investigator-badge);
+      color: white;
+    }
+
+    .tag.missing {
+      background: #b33939;
+      color: white;
+      animation: pulse 2s infinite;
+    }
+
+    .tag.vip {
+      background: #2c3e50;
+      color: white;
+    }
+
+    .person-desc {
+      font-size: 13.5px;
+      line-height: 1.65;
+      color: #2b2b2b;
+      word-break: keep-all;
+    }
+
+    .footer-section {
+      margin-top: 30px;
+      padding-top: 15px;
+      border-top: 1px solid #ccc;
+      display: flex;
+      justify-content: space-between;
+      font-size: 11px;
+      color: #777;
+      font-family: 'Courier Prime', monospace;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="callsheet-container">
+    <div class="top-header">
+      <span>SCHRIVER STUDIOS • SOUNDSTAGE 4</span>
+      <span>HANDOUT: SPACE 1C</span>
+    </div>
+
+    <div class="title-area">
+      <div class="prod-code">PRODUCTION DIRECTORY & PERSONNEL</div>
+      <h1 class="title">THE SPACE BETWEEN : CAST & CREW</h1>
+    </div>
+
+    <div class="legend-bar">
+      <span><strong>범례:</strong></span>
+      <span><span class="badge-sample pc">PC / 탐사자</span> 플레이어 캐릭터 가능</span>
+      <span><span class="badge-sample lead">중점 인물</span> 주요 접촉 및 조사 대상</span>
+    </div>
+
+    <div class="crew-list">
+      <!-- Jared Woodward -->
+      <div class="person-card key-lead">
+        <div class="card-top">
+          <div class="name-role">
+            <span class="person-name">Jared Woodward</span>
+            <span class="person-role">각본 · 감독 · 편집</span>
+          </div>
+          <div class="badges">
+            <span class="tag vip">교단 고위 간부</span>
+          </div>
+        </div>
+        <p class="person-desc">
+          20년 이상 헐리우드에서 활동한 중견 감독. 성격이 변덕스럽고 까다로우나 커리어적 성과로 인해 현장에서 큰 존경을 받는다. 여배우 베리티 해로우가 실종된 4월 3일 이후 세트장에 전혀 나타나지 않고 있으며, 개인 펜트하우스 편집실에 틀어박혀 내일(4월 9일) 저녁 예정된 러프컷 비공개 시사회 준비에만 매달리고 있다.
+        </p>
+      </div>
+
+      <!-- Craig Steele -->
+      <div class="person-card key-lead">
+        <div class="card-top">
+          <div class="name-role">
+            <span class="person-name">Craig Steele</span>
+            <span class="person-role">총괄 프로듀서 (제작자)</span>
+          </div>
+          <div class="badges">
+            <span class="tag vip">교단 2인자 / 스타 배우</span>
+          </div>
+        </div>
+        <p class="person-desc">
+          은퇴한 헐리우드 톱스타이자 순야타 교단의 실질적 얼굴. 이번 영화 기획 및 시나리오 골자에 직접 관여한 핵심 인물이다. 현장에는 두 차례만 방문했으나 프로덕션의 모든 자금과 인사 결정을 쥐고 있으며, 제작진의 중대한 문제는 모두 그를 거치도록 통제하고 있다.
+        </p>
+      </div>
+
+      <!-- Verity Harrow -->
+      <div class="person-card key-lead">
+        <div class="card-top">
+          <div class="name-role">
+            <span class="person-name">Verity Harrow</span>
+            <span class="person-role">주연 여배우 (Clarissa 役)</span>
+          </div>
+          <div class="badges">
+            <span class="tag missing">실종 상태</span>
+          </div>
+        </div>
+        <p class="person-desc">
+          교단 인맥을 통해 입지를 넓히고 있던 20대 중반의 신예 여배우. 이번 작품을 단독 주연 도약의 기회로 여겼으나, 4월 3일 밤 세트장을 떠난 직후 행방불명되었다. 현재 경찰(LAPD)이 실종 사건으로 수사에 착수했으며, 세트장 안팎으로 온갖 추측과 흉흉한 소문이 돌고 있다.
+        </p>
+      </div>
+
+      <!-- David Otera -->
+      <div class="person-card investigator">
+        <div class="card-top">
+          <div class="name-role">
+            <span class="person-name">David Otera (*)</span>
+            <span class="person-role">주연 남배우 (Trent 役)</span>
+          </div>
+          <div class="badges">
+            <span class="tag pc-tag">INVESTIGATOR</span>
+          </div>
+        </div>
+        <p class="person-desc">
+          극 중 클라리사의 전남편 트렌트 역을 맡은 유망한 배우. 교단 내 평판이 우수하며 라이징 스타로 주목받고 있다. 실종된 베리티 해로우와 스캔들(위장 연인 관계)로 엮여 있어, 사건 이후 언론과 경찰로부터 가장 집중적인 의심과 추궁을 받는 중이다.
+        </p>
+      </div>
+
+      <!-- Julia Cortese -->
+      <div class="person-card investigator">
+        <div class="card-top">
+          <div class="name-role">
+            <span class="person-name">Julia Cortese (*)</span>
+            <span class="person-role">감독 개인 비서 (PA)</span>
+          </div>
+          <div class="badges">
+            <span class="tag pc-tag">INVESTIGATOR</span>
+          </div>
+        </div>
+        <p class="person-desc">
+          재러드 우드워드 감독의 최측근이자 신뢰받는 젊은 인재. 우드워드가 극도의 편집증적 상태에 빠져 모든 소통을 단절할 때도 유일하게 그와 직접 연락하고 전달하는 연결 창구 역할을 맡고 있다. 최근 며칠간 세트장에서 감독의 대리인 역할을 수행해 왔다.
+        </p>
+      </div>
+
+      <!-- Amanda Stenett -->
+      <div class="person-card investigator">
+        <div class="card-top">
+          <div class="name-role">
+            <span class="person-name">Amanda Stenett (*)</span>
+            <span class="person-role">세트 제작 보조 (Set PA)</span>
+          </div>
+          <div class="badges">
+            <span class="tag pc-tag">INVESTIGATOR</span>
+          </div>
+        </div>
+        <p class="person-desc">
+          촬영장 내부의 모든 소통과 진행을 조율하는 현장 조감독/보조원. 모든 스태프가 그녀를 신뢰하고 의지하고 있다. 교단에 입교한 지는 얼마 되지 않았으나 성실함과 헌신으로 빠르게 적응해 가고 있으며, 현장 곳곳의 이상 징후를 가장 가까이서 감지할 수 있는 위치에 있다.
+        </p>
+      </div>
+
+      <!-- Tekroop Singh -->
+      <div class="person-card">
+        <div class="card-top">
+          <div class="name-role">
+            <span class="person-name">Tekroop Singh</span>
+            <span class="person-role">조감독 (Assistant Director)</span>
+          </div>
+        </div>
+        <p class="person-desc">
+          우드워드 감독의 오랜 동료. 교단 교리 자체보다는 우드워드와의 작업 관계를 유지하기 위해 교단에 가입했다. 감독의 부재 속에 촬영 무산을 막고자 보충 컷을 찍으며 버티고 있으나 극심한 두통과 스트레스로 한계에 도달해 있다.
+        </p>
+      </div>
+
+      <!-- Tom Bolender -->
+      <div class="person-card">
+        <div class="card-top">
+          <div class="name-role">
+            <span class="person-name">Tom Bolender</span>
+            <span class="person-role">촬영장 보안 책임자</span>
+          </div>
+        </div>
+        <p class="person-desc">
+          은퇴한 LAPD 순경 출신으로, 현재 세트장의 보안 총괄을 맡고 있다. 사교적이고 털털하지만 해로우의 실종에 큰 책임감을 느끼고 있다. 경찰에 대해 적대감이 없어 LAPD 형사 뉴마이어가 세트장에 진입하려 할 때 호의적으로 협조하려 한다.
+        </p>
+      </div>
+    </div>
+
+    <div class="footer-section">
+      <span>PRODUCTION OFFICE • 53 CREW ROSTER</span>
+      <span>UPDATED: APRIL 8TH</span>
+    </div>
+  </div>
+
+</body>
+</html>

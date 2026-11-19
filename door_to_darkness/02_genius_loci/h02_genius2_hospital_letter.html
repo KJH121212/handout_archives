@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>댄버스 주립 병원 공식 서신</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Courier+Prime:ital,wght@0,400;0,700;1,400&family=Gowun+Batang:wght@400;700&family=Nanum+Myeongjo:wght@400;700;800&display=swap');
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: #17181a;
+      background-image:
+        radial-gradient(circle at 50% 35%, #26292d 0%, #141517 75%, #0c0d0e 100%);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 44px 18px;
+      color: #1f2124;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* 1920년대 병원 공식 레터헤드 용지 */
+    .stationery {
+      position: relative;
+      width: 100%;
+      max-width: 700px;
+      min-height: 820px;
+      background-color: #f7f4ec;
+      background-image:
+        radial-gradient(circle at 50% 45%, #fbf9f3 0%, #f1ece0 100%);
+      border: 1px solid #cfc8b8;
+      box-shadow:
+        0 22px 48px rgba(0, 0, 0, 0.72),
+        inset 0 0 60px rgba(120, 110, 90, 0.14);
+      padding: 52px 62px 58px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      overflow: hidden;
+    }
+
+    /* 미세한 고급 면지 질감 */
+    .paper-texture {
+      position: absolute;
+      inset: 0;
+      opacity: 0.035;
+      pointer-events: none;
+      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='f'><feTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23f)'/></svg>");
+    }
+
+    /* 깔끔한 공식 3단 우편 접힘선 */
+    .fold-lines {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background:
+        linear-gradient(
+          to bottom,
+          transparent 33.1%,
+          rgba(40, 38, 34, 0.09) 33.35%,
+          rgba(255, 255, 255, 0.45) 33.6%,
+          transparent 33.9%
+        ),
+        linear-gradient(
+          to bottom,
+          transparent 66.4%,
+          rgba(40, 38, 34, 0.09) 66.65%,
+          rgba(255, 255, 255, 0.45) 66.9%,
+          transparent 67.2%
+        );
+    }
+
+    /* 병원 공식 레터헤드 */
+    .letterhead {
+      position: relative;
+      z-index: 2;
+      text-align: center;
+      padding-bottom: 20px;
+      border-bottom: 3px double #2b343d;
+      margin-bottom: 42px;
+    }
+
+    .crest-wrap {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 10px;
+    }
+
+    .state-label {
+      font-family: 'Cinzel', serif;
+      font-size: 10.5px;
+      letter-spacing: 3px;
+      color: #4b5560;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+
+    .hospital-name-kr {
+      font-family: 'Nanum Myeongjo', serif;
+      font-size: 28px;
+      font-weight: 800;
+      letter-spacing: 6px;
+      color: #1c242b;
+      margin-bottom: 4px;
+    }
+
+    .hospital-name-en {
+      font-family: 'Cinzel', serif;
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 3.5px;
+      color: #36414c;
+      margin-bottom: 12px;
+    }
+
+    .address-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-top: 1px solid rgba(43, 52, 61, 0.35);
+      padding-top: 9px;
+      font-family: 'Nanum Myeongjo', serif;
+      font-size: 12px;
+      color: #464e56;
+      letter-spacing: 0.4px;
+    }
+
+    .address-en {
+      font-family: 'Courier Prime', monospace;
+      font-size: 11.5px;
+      color: #545d66;
+    }
+
+    /* 타자기 작성 본문 영역 */
+    .typewritten-area {
+      position: relative;
+      z-index: 2;
+      flex: 1;
+      padding: 10px 14px 30px;
+      font-family: 'Courier Prime', 'Gowun Batang', monospace;
+      font-size: 16.5px;
+      line-height: 2.05;
+      color: #232528;
+      letter-spacing: 0.65px;
+      word-break: keep-all;
+      /* 타자기 잉크 리본의 약간 거칠고 건조한 타격감 */
+      text-shadow: 0.4px 0 0 rgba(25, 28, 32, 0.22);
+    }
+
+    .tw-salutation {
+      margin-bottom: 30px;
+      font-weight: 400;
+    }
+
+    .tw-body p {
+      margin-bottom: 22px;
+    }
+
+    .tw-closing {
+      margin-top: 46px;
+      padding-left: 52%;
+    }
+
+    .tw-sign-name {
+      margin-top: 6px;
+      letter-spacing: 1.2px;
+    }
+
+    .tw-sign-en {
+      font-family: 'Courier Prime', monospace;
+      font-size: 13.5px;
+      color: #4b4f54;
+      margin-top: 2px;
+      letter-spacing: 0.5px;
+    }
+
+    /* 하단 기관 푸터 */
+    .stationery-footer {
+      position: relative;
+      z-index: 2;
+      border-top: 1px solid rgba(43, 52, 61, 0.25);
+      padding-top: 12px;
+      display: flex;
+      justify-content: space-between;
+      font-family: 'Courier Prime', 'Nanum Myeongjo', serif;
+      font-size: 11px;
+      color: #6b727a;
+      letter-spacing: 0.5px;
+    }
+
+    @media (max-width: 640px) {
+      .stationery {
+        padding: 36px 26px 40px;
+        min-height: auto;
+      }
+      .hospital-name-kr {
+        font-size: 22px;
+        letter-spacing: 3px;
+      }
+      .address-bar {
+        flex-direction: column;
+        gap: 4px;
+      }
+      .tw-closing {
+        padding-left: 25%;
+      }
+      .stationery-footer {
+        flex-direction: column;
+        gap: 4px;
+        text-align: center;
+      }
+    }
+
+    @media print {
+      body {
+        background: none;
+        padding: 0;
+      }
+      .stationery {
+        box-shadow: none;
+        border: none;
+        max-width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <main class="stationery">
+    <div class="paper-texture"></div>
+    <div class="fold-lines"></div>
+
+    <div>
+      <header class="letterhead">
+        <div class="crest-wrap">
+          <!-- 댄버스 주립 병원 공식 엠블럼 -->
+          <svg width="46" height="46" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <circle cx="32" cy="32" r="29" stroke="#2b343d" stroke-width="1.6"/>
+            <circle cx="32" cy="32" r="24.5" stroke="#2b343d" stroke-width="0.8" stroke-dasharray="2 2"/>
+            <!-- 고딕 병원 본관 중앙 탑 실루엣 -->
+            <path d="M32 14 L27 23 L27 44 L37 44 L37 23 Z" stroke="#2b343d" stroke-width="1.4" fill="rgba(43,52,61,0.08)"/>
+            <path d="M17 31 L27 28 L27 44 L17 44 Z" stroke="#2b343d" stroke-width="1.2" fill="rgba(43,52,61,0.05)"/>
+            <path d="M47 31 L37 28 L37 44 L47 44 Z" stroke="#2b343d" stroke-width="1.2" fill="rgba(43,52,61,0.05)"/>
+            <line x1="14" y1="44" x2="50" y2="44" stroke="#2b343d" stroke-width="1.5"/>
+            <line x1="32" y1="10" x2="32" y2="14" stroke="#2b343d" stroke-width="1.4"/>
+            <rect x="30.5" y="27" width="3" height="5" fill="#2b343d"/>
+            <rect x="30.5" y="35" width="3" height="5" fill="#2b343d"/>
+            <text x="32" y="53" text-anchor="middle" font-family="serif" font-size="6.5" fill="#2b343d" letter-spacing="1">EST. 1878</text>
+          </svg>
+        </div>
+
+        <div class="state-label">Commonwealth of Massachusetts · Department of Mental Diseases</div>
+        <h1 class="hospital-name-kr">댄버스 주립 병원</h1>
+        <div class="hospital-name-en">DANVERS STATE HOSPITAL</div>
+
+        <div class="address-bar">
+          <span>매사추세츠주 댄버스 메이플가 450</span>
+          <span class="address-en">450 Maple St., Danvers, MA</span>
+        </div>
+      </header>
+
+      <section class="typewritten-area">
+        <div class="tw-salutation">친애하는 이에게,</div>
+
+        <div class="tw-body">
+          <p>이전에 보낸 제 편지는 부디 신경 쓰지 마십시오.</p>
+          <p>잠시 불안 발작을 겪었던 것뿐입니다.</p>
+          <p>이곳의 모든 것은 평안합니다. 찾아오지 마십시오.</p>
+          <p>제게는 더 많은 휴식과 상담이 필요합니다.</p>
+          <p>감사합니다.</p>
+        </div>
+
+        <div class="tw-closing">
+          <div class="tw-sign-name">로렌스 크로스웰 올림</div>
+          <div class="tw-sign-en">Lawrence Croswell</div>
+        </div>
+      </section>
+    </div>
+
+    <footer class="stationery-footer">
+      <span>OFFICE OF THE SUPERINTENDENT · JAMES BERGER, M.D.</span>
+      <span>DANVERS, MASSACHUSETTS</span>
+    </footer>
+  </main>
+
+</body>
+</html>

@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>Church of Sunyata - Core Terminology</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Noto+Serif+KR:wght@300;400;600;700&family=Noto+Sans+KR:wght@300;400;500&display=swap');
+
+    :root {
+      --bg-dark: #0f1013;
+      --card-bg: #1c1d22;
+      --gold-primary: #d4af37;
+      --gold-dim: #997f2b;
+      --gold-glow: rgba(212, 175, 55, 0.15);
+      --text-main: #e8e6e3;
+      --text-muted: #a0a0a5;
+      --border-color: #2e3038;
+      --tag-bg: #272932;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      font-family: 'Noto Sans KR', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 40px 20px;
+    }
+
+    .pamphlet-card {
+      background-color: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+      max-width: 760px;
+      width: 100%;
+      padding: 45px 50px;
+      box-shadow: 0 20px 45px rgba(0, 0, 0, 0.8), 0 0 25px var(--gold-glow);
+      position: relative;
+    }
+
+    .top-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 12px;
+      margin-bottom: 30px;
+      font-size: 11px;
+      letter-spacing: 2px;
+      color: var(--gold-dim);
+      text-transform: uppercase;
+      font-family: 'Cinzel', serif;
+    }
+
+    .church-emblem {
+      text-align: center;
+      margin-bottom: 25px;
+    }
+
+    .emblem-icon {
+      font-size: 32px;
+      color: var(--gold-primary);
+      margin-bottom: 10px;
+      letter-spacing: 4px;
+    }
+
+    h1.main-title {
+      font-family: 'Cinzel', serif;
+      font-size: 26px;
+      letter-spacing: 3px;
+      color: var(--gold-primary);
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+
+    .sub-title {
+      font-family: 'Noto Serif KR', serif;
+      font-size: 13.5px;
+      color: var(--text-muted);
+      letter-spacing: 1px;
+    }
+
+    .intro-quote {
+      font-family: 'Noto Serif KR', serif;
+      font-style: italic;
+      font-size: 13.5px;
+      color: #cfc8b8;
+      background: rgba(212, 175, 55, 0.05);
+      border-left: 3px solid var(--gold-primary);
+      padding: 14px 20px;
+      margin: 25px 0 35px 0;
+      line-height: 1.6;
+    }
+
+    .glossary-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+
+    .term-item {
+      background: var(--tag-bg);
+      border: 1px solid rgba(255, 255, 255, 0.04);
+      border-radius: 4px;
+      padding: 16px 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      transition: border-color 0.2s ease;
+    }
+
+    .term-item:hover {
+      border-color: var(--gold-dim);
+    }
+
+    .term-header {
+      display: flex;
+      align-items: baseline;
+      gap: 12px;
+    }
+
+    .term-name-en {
+      font-family: 'Cinzel', serif;
+      font-weight: 700;
+      font-size: 16px;
+      color: var(--gold-primary);
+      letter-spacing: 1px;
+    }
+
+    .term-name-ko {
+      font-family: 'Noto Serif KR', serif;
+      font-size: 13px;
+      font-weight: 600;
+      color: #bbb;
+    }
+
+    .term-def {
+      font-size: 13.5px;
+      color: var(--text-main);
+      line-height: 1.6;
+      word-break: keep-all;
+    }
+
+    .term-item.warning {
+      background: rgba(139, 0, 0, 0.12);
+      border-left: 3px solid #b33939;
+    }
+
+    .term-item.warning .term-name-en {
+      color: #e55039;
+    }
+
+    .footer-bar {
+      margin-top: 40px;
+      padding-top: 15px;
+      border-top: 1px solid var(--border-color);
+      display: flex;
+      justify-content: space-between;
+      font-size: 11px;
+      color: #666;
+      font-family: 'Cinzel', sans-serif;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="pamphlet-card">
+    <div class="top-bar">
+      <span>Church of Sunyata • Initiate Guidance</span>
+      <span>Handout: Space 1B</span>
+    </div>
+
+    <div class="church-emblem">
+      <div class="emblem-icon">○</div>
+      <h1 class="main-title">Church Jargon</h1>
+      <div class="sub-title">순야타 교단 핵심 교리 및 내부 용어 해설</div>
+    </div>
+
+    <div class="intro-quote">
+      “인간의 마음은 혼돈의 소용돌이다. 진정한 깨달음이란 이 소용돌이 속에서 자신을 비워내고, 우주의 평존한 침묵으로 가득 차는 것이다.” — 랄프 L. 챈들러
+    </div>
+
+    <div class="glossary-grid">
+      <div class="term-item">
+        <div class="term-header">
+          <span class="term-name-en">Sunyata</span>
+          <span class="term-name-ko">순야타 (공 / 空)</span>
+        </div>
+        <div class="term-def">불교적 개념인 '공(空, Emptiness)'. 모든 번뇌와 집착이 씻겨 나간 궁극의 본질이자 모든 존재 사이의 진정한 공간.</div>
+      </div>
+
+      <div class="term-item">
+        <div class="term-header">
+          <span class="term-name-en">Sunyata Central</span>
+          <span class="term-name-ko">순야타 센트럴</span>
+        </div>
+        <div class="term-def">로스앤젤레스 벤투라 대로(Ventura Boulevard)에 위치한 10층 규모의 순야타 교단 전세계 총본부 빌딩.</div>
+      </div>
+
+      <div class="term-item">
+        <div class="term-header">
+          <span class="term-name-en">Woes</span>
+          <span class="term-name-ko">고뇌 / 번뇌</span>
+        </div>
+        <div class="term-def">정신을 어지럽히고 영적 깨달음을 가로막는 인간 본연의 고뇌, 불안, 의심 및 감정적 잡념들.</div>
+      </div>
+
+      <div class="term-item">
+        <div class="term-header">
+          <span class="term-name-en">Empty</span>
+          <span class="term-name-ko">비워진 상태</span>
+        </div>
+        <div class="term-def">모든 고뇌(Woes)와 인간적 불안에서 온전히 해방되어 평온의 경지에 도달한 청정한 영적 상태.</div>
+      </div>
+
+      <div class="term-item">
+        <div class="term-header">
+          <span class="term-name-en">Emptying</span>
+          <span class="term-name-ko">비우기 (세션)</span>
+        </div>
+        <div class="term-def">훈련된 조언자와의 1:1 상담 기법. 내면의 고뇌를 직시하고 이를 하나씩 부정하여 소멸시키는 정화 과정.</div>
+      </div>
+
+      <div class="term-item">
+        <div class="term-header">
+          <span class="term-name-en">Full</span>
+          <span class="term-name-ko">가득 찬 상태</span>
+        </div>
+        <div class="term-def">내면에 고뇌와 스트레스가 가득 차 효율성이 떨어지고 불안정한 상태. 즉시 '비우기(Emptying)' 세션이 요구됨.</div>
+      </div>
+
+      <div class="term-item">
+        <div class="term-header">
+          <span class="term-name-en">Shadows</span>
+          <span class="term-name-ko">그림자</span>
+        </div>
+        <div class="term-def">아직 순야타 교단의 가르침을 접하지 못했거나 입교하지 않은 비신도 및 외부 대중.</div>
+      </div>
+
+      <div class="term-item warning">
+        <div class="term-header">
+          <span class="term-name-en">Infections</span>
+          <span class="term-name-ko">감염체</span>
+        </div>
+        <div class="term-def">교단의 안녕과 진실을 위협하거나 훼방을 놓는 모든 적대적 존재 및 내부 배신자.</div>
+      </div>
+
+      <div class="term-item warning">
+        <div class="term-header">
+          <span class="term-name-en">Cleansing</span>
+          <span class="term-name-ko">정화</span>
+        </div>
+        <div class="term-def">교단과 신도들을 보호하기 위해, 수단과 방법을 가리지 않고 '감염체(Infections)'를 무력화하고 배제하는 조치.</div>
+      </div>
+    </div>
+
+    <div class="footer-bar">
+      <span>THE CELEBRITY RETREAT • HOLLYWOOD HILLS</span>
+      <span>STRICTLY FOR INITIATE REFERENCE</span>
+    </div>
+  </div>
+
+</body>
+</html>

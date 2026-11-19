@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>크롤리 이그재미너 - 보관 자료실</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Nanum+Myeongjo:wght@400;700;800&family=Noto+Sans+KR:wght@400;500;700&display=swap');
+
+  body {
+    background-color: #2b2622;
+    margin: 0;
+    padding: 40px 20px;
+    display: flex;
+    justify-content: center;
+    font-family: 'Nanum Myeongjo', serif;
+    color: #1a1612;
+    word-break: keep-all;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* Newspaper Sheet */
+  .newspaper-page {
+    background-color: #f4ece1;
+    background-image: 
+      radial-gradient(#f4ece1 0%, #e6dac6 100%),
+      repeating-linear-gradient(rgba(0,0,0,0.01) 0px, rgba(0,0,0,0.01) 1px, transparent 1px, transparent 2px);
+    width: 900px;
+    padding: 42px 48px;
+    box-shadow: 0 4px 25px rgba(0,0,0,0.5), inset 0 0 60px rgba(110, 80, 40, 0.15);
+    border: 1px solid #c9bca6;
+    position: relative;
+    box-sizing: border-box;
+  }
+
+  /* Archival Header / Slug */
+  .archive-slug {
+    border-bottom: 2px solid #2d241e;
+    padding-bottom: 8px;
+    margin-bottom: 12px;
+    display: flex;
+    justify-content: space-between;
+    font-family: 'Noto Sans KR', sans-serif;
+    font-size: 12px;
+    font-weight: 500;
+    color: #4a3e35;
+  }
+
+  /* Newspaper Masthead */
+  .masthead {
+    text-align: center;
+    border-bottom: 4px double #1a1612;
+    padding-bottom: 12px;
+    margin-bottom: 18px;
+  }
+
+  .masthead h1 {
+    font-family: 'Nanum Myeongjo', serif;
+    font-weight: 800;
+    font-size: 54px;
+    margin: 0;
+    letter-spacing: 6px;
+    line-height: 1.1;
+  }
+
+  .masthead .sub-bar {
+    display: flex;
+    justify-content: space-between;
+    border-top: 1px solid #1a1612;
+    border-bottom: 1px solid #1a1612;
+    margin-top: 10px;
+    padding: 5px 8px;
+    font-size: 13px;
+    font-family: 'Noto Sans KR', sans-serif;
+    font-weight: 600;
+  }
+
+  /* Headlines */
+  .main-headline {
+    text-align: center;
+    margin: 18px 0 14px 0;
+  }
+
+  .main-headline h2 {
+    font-family: 'Nanum Myeongjo', serif;
+    font-size: 36px;
+    font-weight: 800;
+    margin: 0 0 8px 0;
+    line-height: 1.25;
+    letter-spacing: -0.5px;
+  }
+
+  .main-headline .deck {
+    font-family: 'Nanum Myeongjo', serif;
+    font-size: 16px;
+    font-weight: 700;
+    color: #2b221a;
+    margin: 0;
+    line-height: 1.4;
+  }
+
+  .rule-thick {
+    border: none;
+    border-top: 2px solid #1a1612;
+    margin: 12px 0;
+  }
+
+  /* Multi-column Layout */
+  .columns {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 24px;
+    text-align: justify;
+    line-height: 1.65;
+    font-size: 14px;
+  }
+
+  .column {
+    position: relative;
+  }
+
+  .column:not(:last-child)::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: -12px;
+    width: 1px;
+    background-color: #2d241e;
+    opacity: 0.35;
+  }
+
+  .columns p {
+    margin: 0 0 12px 0;
+    text-indent: 14px;
+  }
+
+  .columns p:first-of-type {
+    text-indent: 0;
+  }
+
+  .dateline {
+    font-family: 'Noto Sans KR', sans-serif;
+    font-weight: 700;
+    font-size: 13px;
+  }
+
+  .subhead {
+    font-family: 'Nanum Myeongjo', serif;
+    font-weight: 800;
+    font-size: 16px;
+    text-align: center;
+    margin: 14px 0 8px 0;
+    border-top: 1px solid #1a1612;
+    border-bottom: 1px solid #1a1612;
+    padding: 4px 0;
+  }
+
+  /* Archival stamp & clipping effect */
+  .archive-stamp {
+    position: absolute;
+    top: 55px;
+    right: 50px;
+    border: 2px solid #8b2500;
+    color: #8b2500;
+    padding: 5px 12px;
+    font-family: 'Noto Sans KR', sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+    transform: rotate(7deg);
+    opacity: 0.9;
+    pointer-events: none;
+    letter-spacing: 1px;
+    text-align: center;
+    line-height: 1.3;
+  }
+
+  /* Address box in corner */
+  .editorial-sidebar {
+    background-color: rgba(0, 0, 0, 0.04);
+    border: 1px solid #2d241e;
+    padding: 12px;
+    margin-top: 14px;
+    font-size: 13px;
+    line-height: 1.5;
+  }
+
+  .editorial-sidebar h4 {
+    margin: 0 0 6px 0;
+    font-family: 'Nanum Myeongjo', serif;
+    font-weight: 800;
+    font-size: 14px;
+    text-align: center;
+    border-bottom: 1px solid #1a1612;
+    padding-bottom: 4px;
+  }
+
+  .editorial-sidebar ul {
+    margin: 0;
+    padding-left: 18px;
+  }
+
+  .editorial-sidebar li {
+    margin-bottom: 5px;
+  }
+</style>
+</head>
+<body>
+
+<div class="newspaper-page">
+  <div class="archive-stamp">자료실 보관본<br>1931년 11월 철</div>
+
+  <div class="archive-slug">
+    <span>분류: 금융 및 시정 기록</span>
+    <span>마이크로필름 번호: #1931-MC-041</span>
+    <span>주제: 미다스 서클</span>
+  </div>
+
+  <header class="masthead">
+    <h1>크롤리 이그재미너</h1>
+    <div class="sub-bar">
+      <span>제42권 제278호</span>
+      <span>매사추세츠주 크롤리</span>
+      <span>정가 5센트</span>
+    </div>
+  </header>
+
+  <div class="main-headline">
+    <h2>크롤리의 기적</h2>
+    <p class="deck">월스트리트의 대참패를 비웃는 네 명의 실업가 — 국가적 파산 속에서 거침없는 번영을 이어가다</p>
+  </div>
+
+  <hr class="rule-thick">
+
+  <div class="columns">
+    <!-- Col 1 -->
+    <div class="column">
+      <p><span class="dateline">크롤리, 11월 14일발 — </span>대공황의 짙은 그늘 아래 매사추세츠 전역에서 공장들이 문을 닫고 무료 급식소 앞 줄이 끝없이 늘어서고 있으나, 크롤리 시내에서는 기이할 만큼 이례적인 호황이 이어지고 있다. 국가 경제의 심장부가 멈춰 서는 혼란 속에서도, 지역의 유력 실업가와 투자자들로 구성된 특정 집단은 제조업, 상업용 부동산, 시정 사업 전반에서 연일 전례 없는 수익을 기록하고 있다.</p>
+      <p>월스트리트 논평가들과 지역 인사들 사이에서 일명 “미다스 서클(Midas Circle)”로 불리는 이 4인의 인물들은 손대는 사업마다 순금으로 탈바꿈시키고 있다. 금융 시장의 흐름을 꿰뚫어 보는 이들의 기이한 안목과 불가사의한 행운은 노련한 경제 전문가들조차 당혹케 만들고 있다.</p>
+      
+      <div class="subhead">실패를 모르는 사업 행보</div>
+      <p>1929년 말의 비극적인 증시 폭락기 투기에서부터 이어진 부실 자산 매입에 이르기까지, 이 서클의 결단은 단 한 번의 오차도 보이지 않았다. 보수적인 금융권 인사들이 극단적인 도박이라 경고했던 과감한 투자마저 예외 없이 막대한 수익으로 돌아왔으며, 동종 업계 경쟁자들이 파산의 나락으로 떨어지는 동안 이들은 완벽하게 보호받았다.</p>
+    </div>
+
+    <!-- Col 2 -->
+    <div class="column">
+      <div class="subhead">신디케이트의 주역들</div>
+      <p>이 막대한 부의 중심에는 저명한 자산가이자 실력자인 <strong>시어도어 세지윅(Theodore Sedgwick)</strong> 씨가 자리하고 있다. 챔벌레인 가의 사택에서 서신과 법적 대리인을 통해 은밀하게 활동하는 세지윅 씨는 특유의 통찰력으로 서클의 핵심 사업을 지휘하며, 지역 언론과 시정 기반 전반에 확고한 영향력을 구축했다.</p>
+      <p>세지윅 씨의 오랜 동업자인 <strong>로스코 말로이(Roscoe Molloy)</strong> 씨는 과거 경쟁 관계였던 주요 공장들을 차례로 인수하고 호화로운 크롤리 그랜드 호텔의 소유권을 확보했다. 그는 현재 호텔 스위트룸에 거처를 두고 방대한 상업망을 지휘하고 있다.</p>
+      <p>서클의 모든 법률 자문과 계약 체결은 전직 변호사인 <strong>캐스퍼 브링크(Casper Brinck)</strong> 법학박사가 전담하고 있으며, 그는 아캄 도로변에 위치한 그린리즈(Greenleys) 저택에 거주 중이다. 한편, 신디케이트의 보안 및 사설 물류는 과단성 있는 업무 처리로 유명한 <strong>알렉스 로세티(Alex Rossetti)</strong> 씨가 총괄하고 있다.</p>
+    </div>
+
+    <!-- Col 3 -->
+    <div class="column">
+      <div class="subhead">시정 장악과 자선 사업</div>
+      <p>막대한 사재를 확립한 미다스 서클 멤버들은 시정 행정, 관급 계약, 공공 기관에 대한 지배적인 영향력을 지속적으로 확장하고 있다. 특히 벤담 병원을 비롯한 주요 공공 시설의 운영 전반에도 이들의 손길이 닿아 있다.</p>
+      <p>시 당국은 이들의 사업 수완이 도시의 완전한 파산을 막아내는 방파제 역할을 하고 있다고 칭송하고 있으나, 경쟁 업체들이 파산 직후 의문스러울 만큼 신속하게 신디케이트의 수중으로 넘어간 정황에 대해 의구심을 표하는 목소리도 일부 존재한다.</p>
+
+      <div class="editorial-sidebar">
+        <h4>취재 수첩 및 인명 주소록</h4>
+        <ul>
+          <li><strong>T. 세지윅:</strong> 챔벌레인 대로, 세지윅 사택</li>
+          <li><strong>R. 말로이:</strong> 크롤리 그랜드 호텔 펜트하우스 스위트 / 말로이 섬유공장</li>
+          <li><strong>C. 브링크:</strong> 아캄 로드, 그린리즈 저택</li>
+          <li><strong>A. 로세티:</strong> 중앙 부두 관리 사무소</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

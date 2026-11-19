@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>Church Database - Steele Security Dossier</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Noto+Sans+KR:wght@300;400;600;700&display=swap');
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: #0b0c10;
+      color: #c5c6c7;
+      font-family: 'Noto Sans KR', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 35px 15px;
+    }
+
+    .terminal-container {
+      background-color: #12141a;
+      border: 1px solid #1f2833;
+      border-radius: 6px;
+      width: 100%;
+      max-width: 860px;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.9), 0 0 20px rgba(69, 162, 158, 0.1);
+      overflow: hidden;
+    }
+
+    .terminal-topbar {
+      background: #1a1e27;
+      padding: 10px 18px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid #2e3544;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 12px;
+      color: #45a29e;
+    }
+
+    .top-controls {
+      display: flex;
+      gap: 6px;
+    }
+    .c-dot {
+      width: 11px;
+      height: 11px;
+      border-radius: 50%;
+      display: inline-block;
+    }
+    .c-red { background: #e74c3c; }
+    .c-yellow { background: #f1c40f; }
+    .c-green { background: #2ecc71; }
+
+    .content-area {
+      padding: 30px 35px;
+    }
+
+    .warning-banner {
+      background: rgba(231, 76, 60, 0.12);
+      border: 1px solid #c0392b;
+      border-left: 5px solid #e74c3c;
+      padding: 12px 18px;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 12px;
+      color: #ff6b6b;
+      margin-bottom: 25px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .profile-header {
+      border-bottom: 1px solid #2e3544;
+      padding-bottom: 18px;
+      margin-bottom: 25px;
+    }
+
+    .sys-title {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 11px;
+      color: #66fcf1;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-bottom: 4px;
+    }
+
+    h1.dossier-title {
+      font-family: 'Share Tech Mono', 'Noto Sans KR', sans-serif;
+      font-size: 24px;
+      color: #ffffff;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+
+    .dossier-sub {
+      font-size: 12.5px;
+      color: #8c92a4;
+      margin-top: 4px;
+    }
+
+    .person-eval-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 18px;
+    }
+
+    .eval-card {
+      background: #181b24;
+      border: 1px solid #2b3242;
+      border-radius: 4px;
+      padding: 18px 22px;
+      position: relative;
+    }
+
+    .eval-card.alert-high {
+      border-left: 4px solid #e74c3c;
+    }
+
+    .eval-card.alert-mid {
+      border-left: 4px solid #f39c12;
+    }
+
+    .eval-card.alert-low {
+      border-left: 4px solid #45a29e;
+    }
+
+    .eval-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: 10px;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .subject-name {
+      font-size: 16px;
+      font-weight: 700;
+      color: #ffffff;
+      font-family: 'Share Tech Mono', 'Noto Sans KR', monospace;
+    }
+
+    .subject-meta {
+      font-size: 12px;
+      color: #8c92a4;
+    }
+
+    .threat-tag {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 11px;
+      font-weight: bold;
+      padding: 3px 8px;
+      border-radius: 3px;
+    }
+    .threat-high { background: rgba(231, 76, 60, 0.25); color: #ff6b6b; border: 1px solid #e74c3c; }
+    .threat-mid { background: rgba(243, 156, 18, 0.25); color: #f39c12; border: 1px solid #f39c12; }
+    .threat-low { background: rgba(69, 162, 158, 0.25); color: #66fcf1; border: 1px solid #45a29e; }
+
+    .transcript-box {
+      background: #101217;
+      border: 1px dashed #2b3242;
+      padding: 12px 16px;
+      margin-bottom: 12px;
+      font-size: 13px;
+      line-height: 1.6;
+      color: #b0b5c0;
+    }
+
+    .transcript-box strong {
+      color: #e5e5e5;
+    }
+
+    .steele-eval {
+      font-size: 13.5px;
+      line-height: 1.65;
+      color: #e0e0e0;
+      word-break: keep-all;
+    }
+
+    .steele-eval strong {
+      color: #66fcf1;
+    }
+
+    .eval-flag {
+      margin-top: 10px;
+      font-size: 12px;
+      color: #ff6b6b;
+      font-family: 'Share Tech Mono', monospace;
+    }
+
+    .terminal-footer {
+      background: #0f1116;
+      border-top: 1px solid #2e3544;
+      padding: 10px 20px;
+      display: flex;
+      justify-content: space-between;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 11px;
+      color: #636a7b;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="terminal-container">
+    <div class="terminal-topbar">
+      <div class="top-controls">
+        <span class="c-dot c-red"></span>
+        <span class="c-dot c-yellow"></span>
+        <span class="c-dot c-green"></span>
+      </div>
+      <div>SEC://STEELE_TERMINAL/LOCAL_VAULT/DOSSIERS_INDEX.DAT</div>
+      <div>ENCRYPTED (INTERNAL PROTOCOL 7)</div>
+    </div>
+
+    <div class="content-area">
+      <div class="warning-banner">
+        <span>[CRAIG STEELE PRIVATE DATABASE : CONFIDENTIAL AUDIT DOSSIER]</span>
+        <span>SECURITY LEVEL: APEX (RESTRICTED)</span>
+      </div>
+
+      <div class="profile-header">
+        <div class="sys-title">Church Intelligence & Surveillance Record</div>
+        <h1 class="dossier-title">Subject Assessment & Emptying Audio Transcripts</h1>
+        <div class="dossier-sub">비공개 상담실(Emptying Suite) 은닉 도청 테이프 전사록 및 대상자별 통제 가이드</div>
+      </div>
+
+      <div class="person-eval-grid">
+        <!-- Rich Vallario -->
+        <div class="eval-card alert-high">
+          <div class="eval-top">
+            <div>
+              <span class="subject-name">리치 발라리오 (Rich Vallario)</span>
+              <span class="subject-meta">| 교단 중앙 로비 자원봉사자</span>
+            </div>
+            <span class="threat-tag threat-high">위험 등급: HIGH (감염 징후)</span>
+          </div>
+          <div class="transcript-box">
+            <strong>[비밀 녹음 발췌 #R-104]:</strong> “...머스그로브 총재님이 최근 몇 달간 집무실 밖으로 전혀 안 나오는 거 봤어? 게다가 실내에서도 선글라스를 단 한 번도 안 벗는다고. 스틸 씨도 마찬가지야... 뭔가 잘못 돌아가고 있어. 그 사람들 눈동자가...”
+          </div>
+          <p class="steele-eval">
+            <strong>[스틸의 평가 및 조치]:</strong> 충성심으로 위장하고 있으나 쓸데없는 의구심과 호기심이 '가득 찬(Full)' 상태. 교단 본부 광장에서 방문자들을 상대로 의혹을 퍼뜨리고 다님. 더 이상의 방치는 교단 안녕에 위해가 됨. 조속한 시일 내 리트리트로 소환하여 <strong>급속 비우기(Fast-Track) 수술 대상</strong>으로 전환 처리할 것.
+          </p>
+          <div class="eval-flag">ACTION: DETENTION & FLAYING PROTOCOL SCHEDULED</div>
+        </div>
+
+        <!-- Jared Woodward -->
+        <div class="eval-card alert-high">
+          <div class="eval-top">
+            <div>
+              <span class="subject-name">재러드 우드워드 (Jared Woodward)</span>
+              <span class="subject-meta">| 영화 《The Space Between》 감독</span>
+            </div>
+            <span class="threat-tag threat-high">상태: MENTALLY FRACTURED</span>
+          </div>
+          <div class="transcript-box">
+            <strong>[전화 통화 감청 발췌]:</strong> “...그 여자가 날 보고 있어. 현암 절벽의 파도 소리가 방 안까지 차오른다고! 난 준비가 안 됐어, 크레이그... 제발 날 내버려 둬! 베리티의 비명이 귓가에서 멈추질 않아...”
+          </div>
+          <p class="steele-eval">
+            <strong>[스틸의 평가 및 조치]:</strong> 4월 3일 의식 이후 정신적 붕괴 직전. 다량의 코카인과 보드카로 연명 중. 현암 절벽의 이베트 소머스(공허의 아바타)를 직접 마주한 후 극도의 공포에 사로잡혀 통제력 상실. 단, 4월 9일 시사회용 러프컷 편집은 끝마쳐야 하므로 완성 직전까지는 간섭을 최소화하되, 시사회 완료 즉시 <strong>'진정한 비움(Truly Empty)'</strong>을 강제 접견시킬 것.
+          </p>
+          <div class="eval-flag">ACTION: ISOLATE UNTIL 04/09 20:00 SCREENING</div>
+        </div>
+
+        <!-- Investigators & Production Personnel -->
+        <div class="eval-card alert-mid">
+          <div class="eval-top">
+            <div>
+              <span class="subject-name">현장 스태프 및 탐사자 그룹 (Core Crew)</span>
+              <span class="subject-meta">| 사운드스테이지 4 투입 인원</span>
+            </div>
+            <span class="threat-tag threat-mid">위험 등급: CONDITIONAL MONITORING</span>
+          </div>
+          <div class="steele-eval">
+            <strong>[데이비드 오테라]:</strong> 베리티와의 위장 연인 관계로 인해 LAPD의 주요 타깃이 됨. 외부 발설 위험 주시.<br>
+            <strong>[줄리아 코르테세]:</strong> 우드워드의 유일한 연락 창구. 편집실 출입 열쇠를 보유하고 있으므로 동태 밀착 감시.<br>
+            <strong>[아만다 스테넷]:</strong> 현장 PA로서 모든 동선을 쥐고 있음. 의혹 제기 시 1:1 개인 비우기 세션으로 회유 필요.
+          </p>
+          <p class="steele-eval" style="margin-top: 8px;">
+            <strong>[대응 방침]:</strong> 탐사자들이 베리티의 실종이나 세트장 혈흔(바위 틈)을 집요하게 파고들 경우, <em>“촬영 스트레스로 번뇌(Woes)가 가득 차 효율성이 저하되었다”</em>는 명분을 내세워 본인 집무실로 호출, <strong>단독 개인 비우기 세션(Private Emptying Session)</strong>을 진행할 것. 거짓말이나 적대감이 감지되면 즉시 리트리트 북관 수술실로 직송 조치함.
+          </p>
+          <div class="eval-flag">ACTION: SUMMON FOR PRIVATE SESSION IF AGITATED</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="terminal-footer">
+      <span>TERMINAL IP: 192.168.1.104 [CELEBRITY RETREAT OFFICE]</span>
+      <span>LOGGED AS: C_STEELE [ROOT_ACCESS]</span>
+    </div>
+  </div>
+
+</body>
+</html>

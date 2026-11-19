@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>조너선 도버의 일기</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=IM+Fell+English:ital@0;1&family=Nanum+Myeongjo:wght@400;700;800&family=Nanum+Pen+Script&display=swap');
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: #131110;
+      background-image:
+        radial-gradient(circle at 50% 30%, #231e1b 0%, #12100f 75%, #090808 100%);
+      padding: 46px 18px;
+      display: flex;
+      justify-content: center;
+      font-family: 'Nanum Myeongjo', serif;
+      color: #241d17;
+      word-break: keep-all;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* 낡은 천에 싸여 침대 밑에 숨겨져 있던 두꺼운 가죽 장정 일기장 */
+    .leather-cover {
+      width: 100%;
+      max-width: 780px;
+      background: #2b1d15;
+      background-image:
+        linear-gradient(135deg, rgba(255, 225, 190, 0.06) 0%, transparent 45%, rgba(0, 0, 0, 0.45) 100%);
+      padding: 16px;
+      border-radius: 6px;
+      border: 1px solid #493326;
+      box-shadow: 0 26px 56px rgba(0, 0, 0, 0.82);
+    }
+
+    .journal-page {
+      position: relative;
+      background-color: #f0e6d0;
+      background-image:
+        radial-gradient(ellipse at 40% 35%, #f5edd9 0%, #e1d2b3 100%),
+        repeating-linear-gradient(
+          to bottom,
+          transparent 0px,
+          transparent 29px,
+          rgba(110, 86, 56, 0.09) 29px,
+          rgba(110, 86, 56, 0.09) 30px
+        );
+      padding: 48px 54px 52px;
+      border: 1px solid #baa582;
+      box-shadow: inset 0 0 75px rgba(98, 70, 36, 0.25);
+      overflow: hidden;
+    }
+
+    .paper-noise {
+      position: absolute;
+      inset: 0;
+      opacity: 0.05;
+      pointer-events: none;
+      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+    }
+
+    /* 검은 얼룩 (더 블랙의 미약한 흔적) */
+    .black-blot {
+      position: absolute;
+      bottom: 24px;
+      right: 28px;
+      width: 78px;
+      height: 64px;
+      background: radial-gradient(ellipse, rgba(16, 14, 18, 0.26) 0%, rgba(16, 14, 18, 0.08) 48%, transparent 72%);
+      border-radius: 44% 56% 52% 48%;
+      transform: rotate(18deg);
+      pointer-events: none;
+    }
+
+    .journal-header {
+      position: relative;
+      z-index: 2;
+      border-bottom: 2px solid #3c2b1e;
+      padding-bottom: 12px;
+      margin-bottom: 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+    }
+
+    .journal-title {
+      font-size: 22px;
+      font-weight: 800;
+      color: #1e150e;
+      letter-spacing: 0.5px;
+    }
+
+    .journal-en {
+      font-family: 'Cinzel', serif;
+      font-size: 11px;
+      letter-spacing: 2px;
+      color: #6a523b;
+    }
+
+    /* 다양한 색상의 잉크와 연필로 빽빽이 적힌 단락들 */
+    .entry {
+      position: relative;
+      z-index: 2;
+      margin-bottom: 24px;
+    }
+
+    .entry-label {
+      font-family: 'IM Fell English', 'Nanum Myeongjo', serif;
+      font-size: 13.5px;
+      font-weight: 700;
+      color: #663620;
+      margin-bottom: 7px;
+      letter-spacing: 0.5px;
+    }
+
+    .entry p {
+      font-size: 14.8px;
+      line-height: 1.9;
+      text-align: justify;
+      text-indent: 14px;
+      margin-bottom: 10px;
+    }
+
+    /* 파란-검정 만년필 잉크 톤 */
+    .ink-blueblack {
+      color: #1d2633;
+    }
+
+    /* 짙은 세피아 잉크 톤 */
+    .ink-sepia {
+      color: #342214;
+    }
+
+    /* 짙은 흑연 연필 톤 */
+    .ink-pencil {
+      color: #3c3c40;
+    }
+
+    /* 이브-츠틀 인용 구절 */
+    .mythos-quote {
+      margin: 16px 0;
+      padding: 14px 18px;
+      border-left: 3px solid #1f1b24;
+      background: rgba(20, 18, 24, 0.065);
+      font-style: italic;
+      color: #18141c;
+      line-height: 1.85;
+      font-size: 15px;
+      text-indent: 0 !important;
+    }
+
+    .mythos-quote .quote-en {
+      display: block;
+      margin-top: 6px;
+      font-family: 'IM Fell English', serif;
+      font-size: 13.5px;
+      color: #463d4d;
+    }
+
+    /* 페이지 하단 광기 어린 여백 메모 */
+    .margin-scrawl {
+      position: relative;
+      z-index: 2;
+      margin-top: 22px;
+      padding-top: 16px;
+      border-top: 1px dashed rgba(82, 60, 40, 0.45);
+      font-family: 'Nanum Pen Script', cursive;
+      font-size: 27px;
+      line-height: 1.4;
+      color: #1a181c;
+      text-align: right;
+    }
+
+    @media (max-width: 640px) {
+      .leather-cover { padding: 10px; }
+      .journal-page { padding: 30px 22px 34px; }
+      .journal-header { flex-direction: column; gap: 4px; }
+    }
+
+    @media print {
+      body { background: none; padding: 0; }
+      .leather-cover { background: none; border: none; box-shadow: none; padding: 0; }
+      .journal-page { box-shadow: none; border: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="leather-cover">
+    <article class="journal-page">
+      <div class="paper-noise"></div>
+      <div class="black-blot"></div>
+
+      <header class="journal-header">
+        <h1 class="journal-title">조너선 도버의 개인 일기</h1>
+        <span class="journal-en">JONATHAN DOVER'S JOURNAL</span>
+      </header>
+
+      <section class="entry ink-sepia">
+        <div class="entry-label">■ 여정의 발단 — 마거릿의 죽음 이후</div>
+        <p>
+          마거릿이 갑작스럽고 끔찍한 사고로 내 곁을 떠난 뒤, 내 세상은 산산조각이 났다. 내가 미리 알 수만 있었더라면—미래를 들여다볼 단 한 줌의 힘만 있었더라면 그녀를 구할 수 있었을 것이다. 제이컵은 한 곳에 오래 머물지 못해 친구를 사귈 수 없다며 끊임없이 불평하지만, 아이는 아직 모른다. <strong>“목적이 수단을 정당화한다.”</strong>
+        </p>
+        <p>
+          수년 동안 전 세계를 떠돌며 수많은 신비주의자, 로마니 점술가, 주술사, 오컬티스트들을 만났으나 대부분은 헛수고와 사기꾼뿐이었다. 가산은 바닥을 드러냈지만, 나는 멈출 수 없다.
+        </p>
+      </section>
+
+      <section class="entry ink-blueblack">
+        <div class="entry-label">■ 서아프리카 — 그와리쿠유(Gwari'kuyu) 부족과의 조우</div>
+        <p>
+          마침내 서아프리카의 외딴 땅에서 나는 진실을 지닌 자들을 만났다. 그와리쿠유 부족은 고대로부터 <strong>이브-츠틀(Yibb-Tstll)</strong>이라 불리는 존재를 숭배해 왔다. 부족의 장로들은 그 존재를 다음과 같이 일컬었다.
+        </p>
+
+        <blockquote class="mythos-quote">
+          “꿈의 경계 너머, 클레드(Kled)의 정글에 앉아 모든 시간과 장소를 꿰뚫어 보는 자.”
+          <span class="quote-en">“He who sits in the jungles of Kled, beyond the borders of dreams, and sees all time and place.”</span>
+        </blockquote>
+
+        <p>
+          나는 그들과 벗이 되어 이브-츠틀과 접촉하는 의식, 얼굴 없는 어둠의 하수인들을 불러내는 법, 그리고 무엇보다 그 존재의 불경한 피—<strong>‘더 블랙(The Black)’</strong>을 소환하는 비의를 기록해 두었다.
+        </p>
+      </section>
+
+      <section class="entry ink-pencil">
+        <div class="entry-label">■ 마지막 기록 — 검은 피에 관한 가설</div>
+        <p>
+          본래 ‘더 블랙’은 적을 삼키는 무기로 쓰인다고 전해지나, 그것은 이브-츠틀의 피다. 그렇다면 모든 시간과 장소를 꿰뚫어 보는 신의 권능 일부가 그 피 속에도 깃들어 있지 않겠는가? 극소량을 조심스럽게 취한다면, 나 역시 시공의 베일 너머를 엿볼 수 있을 것이다.
+        </p>
+      </section>
+
+      <div class="margin-scrawl">
+        혀가 검게 물들고 있다… 그러나 보인다. 과거도, 먼 곳도, 아직 오지 않은 날들까지도…
+      </div>
+    </article>
+  </div>
+
+</body>
+</html>

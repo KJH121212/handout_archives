@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>세일럼 병원 기록보관소 - 윌리엄 샤인 박사의 문서</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Great+Vibes&family=IM+Fell+English:ital@0;1&family=Nanum+Myeongjo:wght@400;700;800&family=Noto+Sans+KR:wght@400;500;700&display=swap');
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: #181410;
+      background-image:
+        radial-gradient(circle at 50% 28%, #29221b 0%, #16120e 70%, #0d0a08 100%);
+      padding: 46px 18px;
+      display: flex;
+      justify-content: center;
+      font-family: 'Nanum Myeongjo', serif;
+      color: #271e16;
+      word-break: keep-all;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* 세일럼 병원 먼지 쌓인 기록보관소 기증 문서철 */
+    .archive-sheet {
+      position: relative;
+      width: 100%;
+      max-width: 790px;
+      background-color: #f3e9d2;
+      background-image:
+        radial-gradient(ellipse at 30% 20%, #f8f0df 0%, #e7d8b9 100%),
+        repeating-linear-gradient(
+          to bottom,
+          transparent 0px,
+          transparent 29px,
+          rgba(120, 92, 58, 0.06) 29px,
+          rgba(120, 92, 58, 0.06) 30px
+        );
+      padding: 54px 60px 60px;
+      border: 1px solid #c3ae8b;
+      box-shadow:
+        0 24px 52px rgba(0, 0, 0, 0.72),
+        inset 0 0 90px rgba(118, 84, 42, 0.24);
+      overflow: hidden;
+    }
+
+    /* 이중 장식 테두리 */
+    .inner-frame {
+      position: absolute;
+      inset: 14px;
+      border: 1px solid rgba(110, 82, 50, 0.42);
+      pointer-events: none;
+    }
+
+    .inner-frame::after {
+      content: "";
+      position: absolute;
+      inset: 4px;
+      border: 1px dashed rgba(110, 82, 50, 0.28);
+    }
+
+    /* 노이즈 & 오랜 얼룩 */
+    .parchment-grain {
+      position: absolute;
+      inset: 0;
+      opacity: 0.05;
+      pointer-events: none;
+      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='3' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+    }
+
+    .water-stain {
+      position: absolute;
+      top: -20px;
+      left: -25px;
+      width: 210px;
+      height: 190px;
+      background: radial-gradient(ellipse, rgba(132, 92, 42, 0.14) 0%, rgba(132, 92, 42, 0.05) 55%, transparent 72%);
+      border-radius: 48% 52% 44% 56%;
+      pointer-events: none;
+    }
+
+    /* 보관소 등록 헤더 */
+    .archive-header {
+      position: relative;
+      z-index: 2;
+      border-bottom: 2px solid #4a3726;
+      padding-bottom: 14px;
+      margin-bottom: 28px;
+    }
+
+    .archive-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-family: 'Cinzel', serif;
+      font-size: 11px;
+      letter-spacing: 2px;
+      color: #6f553c;
+      margin-bottom: 8px;
+    }
+
+    .archive-title {
+      font-size: 24px;
+      font-weight: 800;
+      color: #21160e;
+      letter-spacing: 0.5px;
+      margin-bottom: 4px;
+    }
+
+    .archive-subtitle {
+      font-family: 'IM Fell English', 'Nanum Myeongjo', serif;
+      font-style: italic;
+      font-size: 13.5px;
+      color: #664e39;
+    }
+
+    .archive-stamp {
+      position: absolute;
+      top: 4px;
+      right: 0;
+      border: 1.5px solid rgba(92, 54, 32, 0.72);
+      color: rgba(92, 54, 32, 0.78);
+      padding: 4px 10px;
+      font-family: 'Noto Sans KR', sans-serif;
+      font-size: 10.5px;
+      font-weight: 700;
+      transform: rotate(3.5deg);
+      letter-spacing: 0.8px;
+      text-align: center;
+      line-height: 1.3;
+    }
+
+    /* 일지 항목 */
+    .journal-entry {
+      position: relative;
+      z-index: 2;
+      margin-bottom: 28px;
+    }
+
+    .entry-date {
+      display: flex;
+      align-items: baseline;
+      gap: 10px;
+      margin-bottom: 10px;
+      border-bottom: 1px solid rgba(98, 72, 46, 0.35);
+      padding-bottom: 5px;
+    }
+
+    .entry-date-kr {
+      font-size: 17.5px;
+      font-weight: 800;
+      color: #3a1f12;
+      letter-spacing: 0.3px;
+    }
+
+    .entry-date-en {
+      font-family: 'IM Fell English', serif;
+      font-style: italic;
+      font-size: 13.5px;
+      color: #775d45;
+    }
+
+    .entry-body {
+      font-size: 15px;
+      line-height: 1.92;
+      color: #291f17;
+      text-align: justify;
+      text-indent: 14px;
+    }
+
+    /* 1890년 11월 12일 항목: 원반 문양의 작은 잉크 스케치 곁들임 */
+    .entry-with-sketch {
+      display: grid;
+      grid-template-columns: 1fr 122px;
+      gap: 20px;
+      align-items: start;
+    }
+
+    .marginal-sketch {
+      border: 1px dashed rgba(98, 72, 46, 0.45);
+      background: rgba(120, 86, 46, 0.045);
+      padding: 8px 6px 6px;
+      text-align: center;
+      transform: rotate(1.2deg);
+    }
+
+    .sketch-label {
+      margin-top: 4px;
+      font-family: 'IM Fell English', 'Nanum Myeongjo', serif;
+      font-style: italic;
+      font-size: 10.5px;
+      color: #674e38;
+      line-height: 1.3;
+    }
+
+    /* 항목 구분선 */
+    .ink-divider {
+      position: relative;
+      z-index: 2;
+      text-align: center;
+      margin: 24px 0;
+      color: #846a4e;
+      font-size: 13px;
+      letter-spacing: 8px;
+    }
+
+    .ink-divider::before,
+    .ink-divider::after {
+      content: "";
+      display: inline-block;
+      width: 26%;
+      height: 1px;
+      background: linear-gradient(to right, transparent, rgba(110, 82, 50, 0.45), transparent);
+      vertical-align: middle;
+      margin: 0 12px;
+    }
+
+    /* 25년 시간 경과 구분 블록 (1890 -> 1915) */
+    .era-break {
+      position: relative;
+      z-index: 2;
+      margin: 34px 0 28px;
+      padding: 8px 0;
+      border-top: 1px double rgba(92, 66, 40, 0.5);
+      border-bottom: 1px double rgba(92, 66, 40, 0.5);
+      text-align: center;
+      font-family: 'Cinzel', 'Nanum Myeongjo', serif;
+      font-size: 11.5px;
+      letter-spacing: 3px;
+      color: #6b533b;
+      background: rgba(110, 82, 50, 0.04);
+    }
+
+    /* 1915년 기록은 25년 뒤 다른 만년필 잉크 톤으로 미세하게 구분 */
+    .entry-1915 .entry-date-kr {
+      color: #26313d;
+    }
+
+    .entry-1915 .entry-body {
+      color: #222932;
+    }
+
+    /* 서명 및 하단 기록 */
+    .journal-footer {
+      position: relative;
+      z-index: 2;
+      margin-top: 34px;
+      padding-top: 16px;
+      border-top: 1px solid rgba(110, 82, 50, 0.35);
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+    }
+
+    .archive-ref {
+      font-family: 'Noto Sans KR', sans-serif;
+      font-size: 11px;
+      color: #776049;
+      line-height: 1.5;
+    }
+
+    .sign-block {
+      text-align: right;
+    }
+
+    .signature {
+      font-family: 'Great Vibes', cursive;
+      font-size: 34px;
+      color: #242b34;
+      line-height: 1.05;
+    }
+
+    .sign-caption {
+      font-family: 'Cinzel', serif;
+      font-size: 10.5px;
+      letter-spacing: 1.5px;
+      color: #5e4936;
+    }
+
+    @media (max-width: 680px) {
+      .archive-sheet {
+        padding: 36px 24px 40px;
+      }
+      .archive-stamp {
+        position: static;
+        display: inline-block;
+        margin-top: 10px;
+        transform: none;
+      }
+      .entry-with-sketch {
+        grid-template-columns: 1fr;
+      }
+      .marginal-sketch {
+        max-width: 150px;
+        margin: 8px auto 0;
+        transform: none;
+      }
+      .journal-footer {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 14px;
+      }
+      .sign-block {
+        align-self: flex-end;
+      }
+    }
+
+    @media print {
+      body { background: none; padding: 0; }
+      .archive-sheet { box-shadow: none; border: none; max-width: 100%; padding: 28px; }
+    }
+  </style>
+</head>
+<body>
+
+  <main class="archive-sheet">
+    <div class="inner-frame"></div>
+    <div class="parchment-grain"></div>
+    <div class="water-stain"></div>
+
+    <header class="archive-header">
+      <div class="archive-meta">
+        <span>SALEM HOSPITAL ARCHIVES</span>
+        <span>BEQUEST BOX #1915-WS</span>
+      </div>
+      <h1 class="archive-title">윌리엄 샤인 박사의 개인 기록 발췌</h1>
+      <div class="archive-subtitle">Private Journals &amp; Notes of Dr. William Shine, Superintendent of Danvers State Hospital (1890–1915)</div>
+      <div class="archive-stamp">세일럼 병원 기록보관소<br>1915년 기증 자료</div>
+    </header>
+
+    <!-- 1890년 6월 2일 -->
+    <section class="journal-entry">
+      <div class="entry-date">
+        <span class="entry-date-kr">1890년 6월 2일</span>
+        <span class="entry-date-en">June 2nd, 1890</span>
+      </div>
+      <p class="entry-body">
+        병원을 괴롭히는 재앙의 뿌리는 깊으며, 내 존경하는 동료들이라면 결코 이성적이고 질서 정연한 우주의 일부로 받아들이지 못할 부류의 것이다. 진실로 내가 품은 확신을 동료들에게 털어놓는다면, 나는 관리자가 아니라 바로 이 벽 안에 갇힌 환자 신세가 되고 말 것이다. 그러나 나는 과거 여행길에서 이러한 참상을 목격한 적이 있기에 신속히 행동해야만 한다. 내 의심을 눈치챈 그 존재가 나를 향해 움직이기 시작했다. 하지만 나는 머나먼 옛날 그 기묘한 고대 도시에서 배운 수호의 주문을 읊었고, 지금까지는 무사할 수 있었다. 나는 서둘러 해서른의 원반을 찾아내야 한다. 그리하여 이곳의 모든 이를 괴롭히고 가뜩이나 상처 입고 취약한 정신들을 뒤틀어 놓는 그 괴물을 잠재워야 한다. 해서른은 그 원반을 이교도의 악령 숭배 상징이라 여겨 치워버렸다. 광신적인 설교자가 저지른 얼마나 끔찍한 실수인가. 하늘이 도와 부디 내가 그 원반을 찾을 수 있기를, 그리고 찾아낸다면 그것이 해서른 언덕 위에서 우리 모두를 옥죄어 오는 그 존재를 억누를 수 있기를 간절히 기도한다.
+      </p>
+    </section>
+
+    <div class="ink-divider">✦</div>
+
+    <!-- 1890년 11월 12일 -->
+    <section class="journal-entry">
+      <div class="entry-date">
+        <span class="entry-date-kr">1890년 11월 12일</span>
+        <span class="entry-date-en">November 12th, 1890</span>
+      </div>
+      <div class="entry-with-sketch">
+        <p class="entry-body">
+          해서른의 원반을 찾아냈다. 짐작했던 대로, 그것은 언덕의 대지와 공기 속에 똬리를 튼 존재를 막아서는 아득한 옛 시대의 고대 표식(Elder Sign)이었다. 다행스럽게도 원반은 오랜 세월과 방치 속에서도 놀라울 만큼 온전하게 보존되어 있었다. 표면에 새겨진 문양은 처음 놓였던 그날처럼 선명하다. 대체 누구의 손으로 새겨진 것일까? 그런 아득한 태고의 신비는 깊이 파고들지 않는 편이 현명하리라. 이제 내 과업은 그것을 언덕 위에 다시 설치하여, 그 족속들이 늘 그러하듯 이 세계를 물려받은 우리 인간들에게 적의를 품은 그 괴물을 굴복시키는 것이다.
+        </p>
+
+        <!-- 여백에 샤인 박사가 펜으로 직접 스케치해 둔 원반 문양 -->
+        <aside class="marginal-sketch">
+          <svg viewBox="0 0 100 100" width="96" height="96" xmlns="http://www.w3.org/2000/svg" aria-label="화강암 원반에 새겨진 문양 스케치">
+            <circle cx="50" cy="50" r="44" fill="none" stroke="#4a3321" stroke-width="1.4" stroke-dasharray="14 3 19 4 12 3"/>
+            <circle cx="50" cy="50" r="40" fill="none" stroke="#4a3321" stroke-width="0.7" opacity="0.6"/>
+            <path d="M50,12 L59,38 L86,38 L64,54 L72,81 L50,65 L28,81 L36,54 L14,38 L41,38 Z"
+                  fill="none" stroke="#3b2617" stroke-width="2" stroke-linejoin="round"/>
+            <path d="M50,30 C55,39 58,46 56,54 C54,60 51,63 50,64 C49,63 46,60 44,54 C42,46 45,39 50,30 Z"
+                  fill="rgba(59,38,23,0.16)" stroke="#3b2617" stroke-width="1.6"/>
+            <path d="M50,40 C52,45 53,50 51,55 C50,57 50,58 50,58 C50,58 50,57 49,55 C47,50 48,45 50,40 Z"
+                  fill="#3b2617"/>
+          </svg>
+          <div class="sketch-label">해서른의 화강암 원반<br>표면 각인 사생</div>
+        </aside>
+      </div>
+    </section>
+
+    <div class="ink-divider">✦</div>
+
+    <!-- 1890년 12월 3일 -->
+    <section class="journal-entry">
+      <div class="entry-date">
+        <span class="entry-date-kr">1890년 12월 3일</span>
+        <span class="entry-date-en">December 3rd, 1890</span>
+      </div>
+      <p class="entry-body">
+        마침내 해냈다. 표식이 대지 위에 놓였고, 언덕에 웅크리고 있던 존재는 불안정한 혼수 상태로 억눌려 들어갔다. 납세자들은 병원에 그런 '쓸모없는 장식품'을 설치하는 데 든 비용을 따져 묻고 있지만, 그들이 철거를 강제할 만큼 심각한 위협은 되지 못하며 그 진짜 목적 또한 천만다행으로 까맣게 모르고 있다. 그러나 진실을 아는 자들에게 이 표식은 현재와 미래를 지켜줄 결계가 되어줄 것이다. 벌써 환자들과 직원들에게서 회복의 기미가 보인다. 마치 길고 긴 생시의 악몽에서 깨어나는 것처럼.
+      </p>
+    </section>
+
+    <div class="era-break">· · · &nbsp; 후기 기록 (LATER ENTRY) &nbsp; · · ·</div>
+
+    <!-- 1915년 5월 7일 -->
+    <section class="journal-entry entry-1915" style="margin-bottom: 0;">
+      <div class="entry-date">
+        <span class="entry-date-kr">1915년 5월 7일</span>
+        <span class="entry-date-en">May 7th, 1915</span>
+      </div>
+      <p class="entry-body">
+        내 후임자를 만났다. 제임스 버거 박사는 쾌활하고 유능한 젊은이로 보인다. 적극적인 성품을 지닌 그 젊은 의사에게, 나는 언덕 위 저수지 가장자리에 놓인 원반을 절대로 치우지 말라고 신신당부했다. 과연 그가 내 경고에 귀를 기울일까? 그 먼 옛날 내가 왜 그 원반을 심어두었는지에 대한 진짜 이유를 그에게 털어놓을 수는 없었다. 그저 원반을 건드리지 않고 두는 것이 얼마나 중요한지 강조하기 위해 개인적인 감상이라는 핑계를 꾸며대야만 했다. 그가 원반을 방치해 두겠다는 약속을 부디 기억해 주기를 기도할 뿐이다.
+      </p>
+    </section>
+
+    <footer class="journal-footer">
+      <div class="archive-ref">
+        보관처: 매사추세츠주 세일럼 병원 기록보관소<br>
+        문서 분류: 故 윌리엄 샤인 원장 기증 개인 서류철
+      </div>
+      <div class="sign-block">
+        <div class="signature">William Shine</div>
+        <div class="sign-caption">WILLIAM SHINE, M.D.</div>
+      </div>
+    </footer>
+  </main>
+
+</body>
+</html>

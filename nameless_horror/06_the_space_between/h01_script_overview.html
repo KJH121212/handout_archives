@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>The Space Between - Script Overview</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Courier+Prime:ital,wght@0,400;0,700;1,400&family=Noto+Sans+KR:wght@300;400;600;700&display=swap');
+
+    :root {
+      --bg-color: #121316;
+      --paper-bg: #f8f6f0;
+      --ink-color: #1a1a1a;
+      --accent-red: #8b0000;
+      --church-gold: #c5a059;
+      --border-color: #3a3d45;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-color);
+      color: #e0e0e0;
+      font-family: 'Noto Sans KR', sans-serif;
+      padding: 30px 20px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    .handout-container {
+      background: var(--paper-bg);
+      color: var(--ink-color);
+      width: 100%;
+      max-width: 720px;
+      padding: 45px 50px;
+      border-radius: 4px;
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.7), 0 0 15px rgba(197, 160, 89, 0.2);
+      border-top: 8px solid var(--accent-red);
+      position: relative;
+    }
+
+    .header-tag {
+      font-family: 'Courier Prime', monospace;
+      font-size: 11px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: #777;
+      border-bottom: 2px solid #ddd;
+      padding-bottom: 8px;
+      margin-bottom: 25px;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .movie-title-block {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .production-label {
+      font-family: 'Courier Prime', monospace;
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--church-gold);
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      margin-bottom: 5px;
+    }
+
+    h1.title {
+      font-family: 'Courier Prime', serif;
+      font-size: 32px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      color: #111;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+
+    .subtitle {
+      font-size: 14px;
+      color: #555;
+      font-style: italic;
+    }
+
+    .meta-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+      background: #ede9df;
+      padding: 15px 20px;
+      border-radius: 4px;
+      font-size: 13px;
+      font-family: 'Courier Prime', 'Noto Sans KR', monospace;
+      margin-bottom: 28px;
+      border-left: 4px solid var(--church-gold);
+    }
+
+    .meta-item strong {
+      color: #222;
+    }
+
+    .section-title {
+      font-family: 'Courier Prime', monospace;
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--accent-red);
+      border-bottom: 1px solid #ccc;
+      padding-bottom: 4px;
+      margin-top: 25px;
+      margin-bottom: 15px;
+    }
+
+    .synopsis-body {
+      font-size: 14.5px;
+      line-height: 1.75;
+      color: #222;
+      text-align: justify;
+      margin-bottom: 18px;
+    }
+
+    .highlight-box {
+      background: #f1ede2;
+      border-left: 3px solid var(--accent-red);
+      padding: 14px 18px;
+      margin: 20px 0;
+      font-size: 13.5px;
+      line-height: 1.6;
+      color: #333;
+    }
+
+    .footer-note {
+      margin-top: 35px;
+      padding-top: 15px;
+      border-top: 1px dashed #bbb;
+      font-size: 11.5px;
+      color: #666;
+      font-family: 'Courier Prime', monospace;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .stamp {
+      position: absolute;
+      top: 40px;
+      right: 40px;
+      border: 2px dashed rgba(139, 0, 0, 0.4);
+      color: rgba(139, 0, 0, 0.5);
+      font-family: 'Courier Prime', monospace;
+      font-size: 12px;
+      font-weight: bold;
+      padding: 4px 10px;
+      transform: rotate(6deg);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      pointer-events: none;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="handout-container">
+    <div class="stamp">INTERNAL CIRCULATION ONLY</div>
+    
+    <div class="header-tag">
+      <span>CHURCH OF SUNYATA • ENTERTAINMENT DIVISION</span>
+      <span>HANDOUT: SPACE 1A</span>
+    </div>
+
+    <div class="movie-title-block">
+      <div class="production-label">Feature Film Production Overview</div>
+      <h1 class="title">THE SPACE BETWEEN</h1>
+      <div class="subtitle">그 사이의 공간 — 각본 시놉시스 및 기획 개요</div>
+    </div>
+
+    <div class="meta-grid">
+      <div class="meta-item"><strong>각본 / 감독:</strong> Jared Woodward</div>
+      <div class="meta-item"><strong>총괄 프로듀서:</strong> Craig Steele</div>
+      <div class="meta-item"><strong>주연 배역:</strong> Verity Harrow (Clarissa 役)</div>
+      <div class="meta-item"><strong>상태:</strong> 5주차 촬영 완료 / 러프컷 편집 중</div>
+    </div>
+
+    <div class="section-title">■ 줄거리 개요 (Story Synopsis)</div>
+    <p class="synopsis-body">
+      표면적으로 영화 <strong>《The Space Between》</strong>은 최근 쓰라린 이혼을 겪고 삶을 재건하기 위해 낯선 도시의 새 아파트로 이사 온 여성, <strong>클라리사 홀로우스(Clarissa Hollows)</strong>의 이야기를 다룬다.
+    </p>
+    <p class="synopsis-body">
+      극심한 고립감과 감정적 혼란에 휩싸인 클라리사는 자신의 삶 구석구석을 되짚어보며 깊은 번뇌에 빠져든다. 혼란이 극에 달할 무렵, 그녀는 옆집에 사는 신비로운 여인 <strong>이베트 소머스(Yvette Sommers)</strong>와 친구가 된다.
+    </p>
+    <p class="synopsis-body">
+      이베트는 교단의 명칭을 직접 언급하지는 않지만, 순야타 교단(Church of Sunyata)의 정화 기술을 교묘하게 녹여낸 일련의 수행법을 통해 클라리사에게 내면의 <strong>'고뇌(Woes)'</strong>를 씻어내고 스스로를 <strong>'비워내는 법(Emptying)'</strong>을 가르친다.
+    </p>
+
+    <div class="highlight-box">
+      <strong>[핵심 연출 시퀀스: 현암 절벽의 꿈]</strong><br>
+      클라리사는 점차 밤마다 이베트의 꿈을 꾸기 시작한다. 그 꿈속에서 이베트가 전해준 비유와 명상 기법들은 거대한 검은 암벽(현암 절벽) 위의 구체적인 현실로 구현되며, 그녀의 정신과 삶에서 모든 번뇌와 고통을 송두리째 비워내 버린다.
+    </div>
+
+    <div class="section-title">■ 결말부 (The Climax)</div>
+    <p class="synopsis-body">
+      영화의 클라이맥스에서 완전한 평온을 얻은 클라리사는 마침내 진실을 마주한다. 자신이 그토록 의지했던 옆집 아파트는 — <em>처음부터 완전히 비어 있는 텅 빈 공간(Empty)이었다는 사실을.</em>
+    </p>
+
+    <div class="footer-note">
+      <span>SCHRIVER STUDIOS • SOUNDSTAGE 4</span>
+      <span>RESTRICTED TO CAST & CREW</span>
+    </div>
+  </div>
+
+</body>
+</html>

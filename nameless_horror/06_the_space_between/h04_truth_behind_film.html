@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>Notepad - production_log_draft.txt</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Courier+Prime:ital,wght@0,400;0,700;1,400&family=Nanum+Gothic+Coding:wght@400;700&display=swap');
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: #1a1c23;
+      font-family: 'Nanum Gothic Coding', 'Courier Prime', monospace;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 30px 15px;
+    }
+
+    .window-frame {
+      background-color: #f0f0f0;
+      border: 1px solid #707070;
+      border-radius: 6px;
+      width: 100%;
+      max-width: 760px;
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.65);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Classic Windows Notepad Titlebar */
+    .title-bar {
+      background: linear-gradient(90deg, #183152, #375a7f);
+      color: #ffffff;
+      padding: 6px 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 13px;
+      user-select: none;
+    }
+
+    .title-text {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: bold;
+    }
+
+    .title-controls {
+      display: flex;
+      gap: 6px;
+    }
+
+    .win-btn {
+      width: 16px;
+      height: 16px;
+      line-height: 14px;
+      text-align: center;
+      background: #e1e1e1;
+      border: 1px solid #707070;
+      color: #000;
+      font-size: 10px;
+      font-weight: bold;
+      border-radius: 2px;
+      cursor: default;
+    }
+    .win-btn.close { background: #e81123; color: #fff; border-color: #e81123; }
+
+    /* Menu Bar */
+    .menu-bar {
+      background-color: #f5f6f7;
+      border-bottom: 1px solid #dadada;
+      padding: 3px 10px;
+      display: flex;
+      gap: 15px;
+      font-size: 12px;
+      color: #333;
+      user-select: none;
+    }
+
+    /* Notepad Body */
+    .text-area {
+      background-color: #ffffff;
+      padding: 25px 28px;
+      min-height: 520px;
+      color: #1a1a1a;
+      font-size: 14px;
+      line-height: 1.8;
+      white-space: pre-wrap;
+      word-break: break-all;
+      overflow-y: auto;
+    }
+
+    .struck {
+      text-decoration: line-through;
+      color: #888;
+    }
+
+    .scrawled {
+      color: #9c0006;
+      font-weight: bold;
+    }
+
+    /* Status Bar */
+    .status-bar {
+      background-color: #f0f0f0;
+      border-top: 1px solid #dcdcdc;
+      padding: 3px 15px;
+      font-size: 11px;
+      color: #555;
+      display: flex;
+      justify-content: flex-end;
+      gap: 25px;
+      user-select: none;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="window-frame">
+    <div class="title-bar">
+      <div class="title-text">
+        <span>📝</span>
+        <span>production_log_draft_0404.txt - 메모장</span>
+      </div>
+      <div class="title-controls">
+        <span class="win-btn">_</span>
+        <span class="win-btn">□</span>
+        <span class="win-btn close">✕</span>
+      </div>
+    </div>
+
+    <div class="menu-bar">
+      <span>파일(F)</span>
+      <span>편집(E)</span>
+      <span>서식(O)</span>
+      <span>보기(V)</span>
+      <span>도움말(H)</span>
+    </div>
+
+    <div class="text-area">4/4 새벽 3시 20분경 기록.
+손이 계속 떨린다. 코카인을 더 들이켰지만 머릿속에서 그 비명 소리가 지워지질 않는다.
+
+크레이그가 말하던 그 망할 '비워진 상태(Emptiness)'라는 게 결국 이런 거였나?
+마음의 평화니, 내면의 고뇌(Woes)를 씻어낸다느니 하던 교단의 소리들은 전부 개소리였다. 이건 심리적인 상담 따위가 아니다. 문자 그대로, 물리적으로 사람의 가죽을 벗겨내고 그 안에 똬리 튼 무언가로 속을 채워 넣는 작업이다.
+
+크레이그는 그걸 '굶주린 공허(The Hungry Void)'라고 불렀다.
+그 늙은 괴물은 챈들러의 유고 노트를 읽고 완전히 미쳐버린 거다. 아니, 크레이그의 껍데기만 남아있고 그 안은 이미 그 끔찍한 우주의 공허 덩어리가 삼켜버렸다는 게 맞겠지. 그 녀석의 눈동자를 본 순간 알 수 있었다. 선글라스 뒤에는 눈알 같은 게 없다. 끝도 없는 암흑과 별빛뿐이다.
+
+영화의 목적은 처음부터 완성이나 흥행 따위가 아니었다.
+《The Space Between》은 영화의 탈을 쓴 거대한 의식 전파 도구다. 크레이그는 스크린 앞에 앉을 수많은 관객들을 별들 사이의 암흑에 서식하는 그 외계 지성체에게 한꺼번에 먹이로 던져줄 셈이다. 이 빌어먹을 필름을 보는 순간 관객의 뇌와 자아는 산 채로 먹혀 치워지고 그 공허에 영혼이 접속당한다.
+
+<span class="struck">촬영을 멈춰야 했다. 진작에 도망쳤어야 했는데.</span>
+4월 3일 밤, 사운드스테이지 4... 현암 절벽 세트장.
+베리티(Verity Harrow)는 자신이 위대한 영적 승화를 맞이하는 줄 알고 순순히 그 칼을 받아들였다. 
+하지만 내가 한 짓은 승화가 아니라 도살이었다. 크레이그가 주문을 읊조리는 동안 난 내 손으로 직접 베리티를... 그녀가 살아 숨 쉬고 의식이 또렷한 상태에서 그 곡두칼로 등을 가르고 가죽을 도려냈다. 피가 세트장 검은 바위 틈새로 쏟아져 내렸고, 숨이 끊어지기까지 30분 동안 그녀의 살가죽을 벗겨냈다. 카메라 모터는 단 1초도 멈추지 않고 그 참극을 전부 35mm 필름에 담았다.
+
+그리고 지금 나는 그 필름들을 내 손으로 자르고 이어붙이고 있다.
+이베트 소머스가 화면에 처음 걸리는 그 순간마다, 1프레임, 또 1프레임씩... 베리티의 살가죽이 뜯겨나가며 피범벅이 된 살덩이와 칼날의 궤적을 서브리미널로 숨겨 넣고 있다. 붉은 피로 프레임마다 문양을 그려 넣으면서.
+
+스틴벡 편집기 모니터에서 이베트가 날 쳐다본다. 
+아직 촬영도 안 끝났는데 그 여자가 필름 안에서 고개를 돌려 나를 쳐다보고 있다고.
+파도 소리가 들린다. 방 안이 얼어붙을 것처럼 춥다.
+내일(4월 9일) 저녁 8시, 셀럽 리트리트 시사실에서 불이 꺼지는 순간 끝이다. 
+<span class="scrawled">그 문을 열어선 안 돼. 세트장을 불태워야 해. 전부 태워버려야 해.</span></div>
+
+    <div class="status-bar">
+      <span>줄 38, 열 1</span>
+      <span>100%</span>
+      <span>Windows (CRLF)</span>
+      <span>UTF-8</span>
+    </div>
+  </div>
+
+</body>
+</html>

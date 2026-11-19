@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>제임스 프레이저의 수첩</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Gaegu:wght@400;700&family=Nanum+Pen+Script&family=Noto+Serif+KR:wght@400;600&display=swap');
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: #161412;
+      background-image:
+        radial-gradient(circle at 50% 34%, #27221d 0%, #14110e 70%, #0b0907 100%);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 46px 18px;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* 작은 주머니용 스프링 노트 */
+    .notebook-shell {
+      position: relative;
+      width: 100%;
+      max-width: 620px;
+      padding-left: 28px;
+      transform: rotate(-0.5deg);
+      filter: drop-shadow(0 24px 40px rgba(0, 0, 0, 0.78));
+    }
+
+    /* 뒤쪽 낡은 캔버스/마분지 표지 테두리 */
+    .notebook-backing {
+      position: relative;
+      background-color: #3b2d22;
+      background-image:
+        linear-gradient(135deg, #47372a 0%, #2d2118 100%);
+      padding: 6px 6px 7px 0;
+      border-radius: 3px 10px 10px 3px;
+      box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.08),
+        3px 4px 10px rgba(0, 0, 0, 0.45);
+    }
+
+    /* 줄 쳐진 수첩 용지 */
+    .notebook-page {
+      position: relative;
+      background-color: #f3ecda;
+      background-image:
+        /* 파란색 수첩 가로줄 (36px 간격) */
+        repeating-linear-gradient(
+          to bottom,
+          transparent 0px,
+          transparent 35px,
+          rgba(104, 138, 174, 0.34) 35px,
+          rgba(104, 138, 174, 0.34) 36px
+        ),
+        radial-gradient(ellipse at 25% 18%, rgba(255, 252, 244, 0.45) 0%, transparent 58%),
+        radial-gradient(ellipse at 86% 88%, rgba(128, 96, 54, 0.16) 0%, transparent 60%);
+      background-position: 0 38px, 0 0, 0 0;
+      padding: 44px 42px 50px 66px;
+      border-radius: 2px 7px 7px 2px;
+      border-right: 1px solid #c7b89c;
+      border-bottom: 1px solid #bfb093;
+      box-shadow:
+        inset 12px 0 18px -10px rgba(45, 32, 18, 0.28),
+        inset 0 0 54px rgba(118, 92, 54, 0.16),
+        2px 2px 0 #e6ddc8,
+        4px 4px 0 #d9ceb6;
+      overflow: hidden;
+    }
+
+    /* 좌측 붉은 여백선 */
+    .notebook-page::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 48px;
+      width: 1px;
+      background: rgba(188, 92, 86, 0.42);
+      pointer-events: none;
+    }
+
+    /* 좌측 펀치 구멍들 */
+    .punch-holes {
+      position: absolute;
+      top: 22px;
+      bottom: 22px;
+      left: 11px;
+      width: 14px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      pointer-events: none;
+      z-index: 3;
+    }
+
+    .punch-hole {
+      width: 13px;
+      height: 13px;
+      border-radius: 50%;
+      background: #1b1714;
+      box-shadow:
+        inset 1px 2px 3px rgba(0, 0, 0, 0.85),
+        0 1px 0 rgba(255, 255, 255, 0.35);
+    }
+
+    /* 좌측 금속 스프링 코일 SVG */
+    .spiral-binding {
+      position: absolute;
+      top: 16px;
+      bottom: 16px;
+      left: 0;
+      width: 52px;
+      z-index: 5;
+      pointer-events: none;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .spiral-ring {
+      width: 52px;
+      height: 24px;
+      overflow: visible;
+    }
+
+    /* 종이 질감 노이즈 & 만년필 잉크 얼룩 */
+    .paper-grain {
+      position: absolute;
+      inset: 0;
+      opacity: 0.05;
+      pointer-events: none;
+      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.88' numOctaves='3' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+    }
+
+    .ink-smudge {
+      position: absolute;
+      bottom: 62px;
+      right: 34px;
+      width: 48px;
+      height: 26px;
+      background: radial-gradient(ellipse, rgba(24, 42, 68, 0.11) 0%, rgba(24, 42, 68, 0.03) 52%, transparent 72%);
+      transform: rotate(-14deg);
+      pointer-events: none;
+    }
+
+    .corner-fold {
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      width: 34px;
+      height: 34px;
+      background: linear-gradient(135deg, transparent 48%, rgba(92, 72, 44, 0.14) 50%, #e5dac2 54%, #d7c9ae 100%);
+      pointer-events: none;
+    }
+
+    /* 제임스 프레이저의 서두른 만년필 손글씨 */
+    .handwriting {
+      position: relative;
+      z-index: 2;
+      font-family: 'Nanum Pen Script', 'Gaegu', cursive;
+      font-size: 27.5px;
+      line-height: 36px;
+      color: #1d2c42;
+      letter-spacing: 0.3px;
+      word-break: keep-all;
+      text-shadow: 0.25px 0.25px 0 rgba(16, 28, 46, 0.22);
+    }
+
+    .handwriting p {
+      margin-bottom: 36px;
+    }
+
+    .handwriting p:last-child {
+      margin-bottom: 0;
+    }
+
+    .anxious-mark {
+      color: #142033;
+      text-decoration: underline;
+      text-decoration-style: wavy;
+      text-decoration-color: rgba(24, 40, 66, 0.45);
+      text-underline-offset: 4px;
+    }
+
+    .emily-line {
+      display: inline-block;
+      color: #162438;
+      font-size: 29px;
+      transform: rotate(-0.6deg);
+    }
+
+    @media (max-width: 600px) {
+      body {
+        padding: 24px 10px;
+      }
+      .notebook-shell {
+        padding-left: 20px;
+        transform: none;
+      }
+      .spiral-binding {
+        width: 40px;
+      }
+      .spiral-ring {
+        width: 40px;
+        height: 20px;
+      }
+      .notebook-page {
+        padding: 36px 22px 42px 48px;
+        background-position: 0 32px, 0 0, 0 0;
+      }
+      .notebook-page::before {
+        left: 36px;
+      }
+      .punch-holes {
+        left: 8px;
+      }
+      .punch-hole {
+        width: 10px;
+        height: 10px;
+      }
+      .handwriting {
+        font-size: 24px;
+        line-height: 36px;
+      }
+      .emily-line {
+        font-size: 25.5px;
+      }
+    }
+
+    @media print {
+      body {
+        background: none;
+        padding: 0;
+      }
+      .notebook-shell {
+        transform: none;
+        filter: none;
+        max-width: 100%;
+        padding-left: 0;
+      }
+      .spiral-binding,
+      .punch-holes {
+        display: none;
+      }
+      .notebook-backing {
+        background: none;
+        padding: 0;
+        box-shadow: none;
+      }
+      .notebook-page {
+        box-shadow: none;
+        border: 1px solid #ccc;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="notebook-shell">
+    <!-- 금속 와이어 스프링 코일 -->
+    <div class="spiral-binding" aria-hidden="true">
+      <svg class="spiral-ring" viewBox="0 0 52 24" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="w1" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#c9cfd6"/><stop offset="45%" stop-color="#7c848e"/><stop offset="100%" stop-color="#3a3f46"/></linearGradient></defs><path d="M5,14 C2,5 22,2 44,10" fill="none" stroke="rgba(0,0,0,0.45)" stroke-width="4.5" stroke-linecap="round"/><path d="M4,13 C2,4 22,1 45,9" fill="none" stroke="url(#w1)" stroke-width="3.6" stroke-linecap="round"/><path d="M6,15 C14,20 32,20 43,14" fill="none" stroke="#4c525a" stroke-width="2.2" stroke-linecap="round" opacity="0.7"/></svg>
+      <svg class="spiral-ring" viewBox="0 0 52 24" xmlns="http://www.w3.org/2000/svg"><path d="M5,14 C2,5 22,2 44,10" fill="none" stroke="rgba(0,0,0,0.45)" stroke-width="4.5" stroke-linecap="round"/><path d="M4,13 C2,4 22,1 45,9" fill="none" stroke="url(#w1)" stroke-width="3.6" stroke-linecap="round"/><path d="M6,15 C14,20 32,20 43,14" fill="none" stroke="#4c525a" stroke-width="2.2" stroke-linecap="round" opacity="0.7"/></svg>
+      <svg class="spiral-ring" viewBox="0 0 52 24" xmlns="http://www.w3.org/2000/svg"><path d="M5,14 C2,5 22,2 44,10" fill="none" stroke="rgba(0,0,0,0.45)" stroke-width="4.5" stroke-linecap="round"/><path d="M4,13 C2,4 22,1 45,9" fill="none" stroke="url(#w1)" stroke-width="3.6" stroke-linecap="round"/><path d="M6,15 C14,20 32,20 43,14" fill="none" stroke="#4c525a" stroke-width="2.2" stroke-linecap="round" opacity="0.7"/></svg>
+      <svg class="spiral-ring" viewBox="0 0 52 24" xmlns="http://www.w3.org/2000/svg"><path d="M5,14 C2,5 22,2 44,10" fill="none" stroke="rgba(0,0,0,0.45)" stroke-width="4.5" stroke-linecap="round"/><path d="M4,13 C2,4 22,1 45,9" fill="none" stroke="url(#w1)" stroke-width="3.6" stroke-linecap="round"/><path d="M6,15 C14,20 32,20 43,14" fill="none" stroke="#4c525a" stroke-width="2.2" stroke-linecap="round" opacity="0.7"/></svg>
+      <svg class="spiral-ring" viewBox="0 0 52 24" xmlns="http://www.w3.org/2000/svg"><path d="M5,14 C2,5 22,2 44,10" fill="none" stroke="rgba(0,0,0,0.45)" stroke-width="4.5" stroke-linecap="round"/><path d="M4,13 C2,4 22,1 45,9" fill="none" stroke="url(#w1)" stroke-width="3.6" stroke-linecap="round"/><path d="M6,15 C14,20 32,20 43,14" fill="none" stroke="#4c525a" stroke-width="2.2" stroke-linecap="round" opacity="0.7"/></svg>
+      <svg class="spiral-ring" viewBox="0 0 52 24" xmlns="http://www.w3.org/2000/svg"><path d="M5,14 C2,5 22,2 44,10" fill="none" stroke="rgba(0,0,0,0.45)" stroke-width="4.5" stroke-linecap="round"/><path d="M4,13 C2,4 22,1 45,9" fill="none" stroke="url(#w1)" stroke-width="3.6" stroke-linecap="round"/><path d="M6,15 C14,20 32,20 43,14" fill="none" stroke="#4c525a" stroke-width="2.2" stroke-linecap="round" opacity="0.7"/></svg>
+      <svg class="spiral-ring" viewBox="0 0 52 24" xmlns="http://www.w3.org/2000/svg"><path d="M5,14 C2,5 22,2 44,10" fill="none" stroke="rgba(0,0,0,0.45)" stroke-width="4.5" stroke-linecap="round"/><path d="M4,13 C2,4 22,1 45,9" fill="none" stroke="url(#w1)" stroke-width="3.6" stroke-linecap="round"/><path d="M6,15 C14,20 32,20 43,14" fill="none" stroke="#4c525a" stroke-width="2.2" stroke-linecap="round" opacity="0.7"/></svg>
+      <svg class="spiral-ring" viewBox="0 0 52 24" xmlns="http://www.w3.org/2000/svg"><path d="M5,14 C2,5 22,2 44,10" fill="none" stroke="rgba(0,0,0,0.45)" stroke-width="4.5" stroke-linecap="round"/><path d="M4,13 C2,4 22,1 45,9" fill="none" stroke="url(#w1)" stroke-width="3.6" stroke-linecap="round"/><path d="M6,15 C14,20 32,20 43,14" fill="none" stroke="#4c525a" stroke-width="2.2" stroke-linecap="round" opacity="0.7"/></svg>
+      <svg class="spiral-ring" viewBox="0 0 52 24" xmlns="http://www.w3.org/2000/svg"><path d="M5,14 C2,5 22,2 44,10" fill="none" stroke="rgba(0,0,0,0.45)" stroke-width="4.5" stroke-linecap="round"/><path d="M4,13 C2,4 22,1 45,9" fill="none" stroke="url(#w1)" stroke-width="3.6" stroke-linecap="round"/><path d="M6,15 C14,20 32,20 43,14" fill="none" stroke="#4c525a" stroke-width="2.2" stroke-linecap="round" opacity="0.7"/></svg>
+      <svg class="spiral-ring" viewBox="0 0 52 24" xmlns="http://www.w3.org/2000/svg"><path d="M5,14 C2,5 22,2 44,10" fill="none" stroke="rgba(0,0,0,0.45)" stroke-width="4.5" stroke-linecap="round"/><path d="M4,13 C2,4 22,1 45,9" fill="none" stroke="url(#w1)" stroke-width="3.6" stroke-linecap="round"/><path d="M6,15 C14,20 32,20 43,14" fill="none" stroke="#4c525a" stroke-width="2.2" stroke-linecap="round" opacity="0.7"/></svg>
+      <svg class="spiral-ring" viewBox="0 0 52 24" xmlns="http://www.w3.org/2000/svg"><path d="M5,14 C2,5 22,2 44,10" fill="none" stroke="rgba(0,0,0,0.45)" stroke-width="4.5" stroke-linecap="round"/><path d="M4,13 C2,4 22,1 45,9" fill="none" stroke="url(#w1)" stroke-width="3.6" stroke-linecap="round"/><path d="M6,15 C14,20 32,20 43,14" fill="none" stroke="#4c525a" stroke-width="2.2" stroke-linecap="round" opacity="0.7"/></svg>
+      <svg class="spiral-ring" viewBox="0 0 52 24" xmlns="http://www.w3.org/2000/svg"><path d="M5,14 C2,5 22,2 44,10" fill="none" stroke="rgba(0,0,0,0.45)" stroke-width="4.5" stroke-linecap="round"/><path d="M4,13 C2,4 22,1 45,9" fill="none" stroke="url(#w1)" stroke-width="3.6" stroke-linecap="round"/><path d="M6,15 C14,20 32,20 43,14" fill="none" stroke="#4c525a" stroke-width="2.2" stroke-linecap="round" opacity="0.7"/></svg>
+    </div>
+
+    <div class="notebook-backing">
+      <article class="notebook-page">
+        <div class="paper-grain"></div>
+        <div class="ink-smudge"></div>
+        <div class="corner-fold"></div>
+
+        <div class="punch-holes" aria-hidden="true">
+          <span class="punch-hole"></span>
+          <span class="punch-hole"></span>
+          <span class="punch-hole"></span>
+          <span class="punch-hole"></span>
+          <span class="punch-hole"></span>
+          <span class="punch-hole"></span>
+          <span class="punch-hole"></span>
+          <span class="punch-hole"></span>
+          <span class="punch-hole"></span>
+          <span class="punch-hole"></span>
+          <span class="punch-hole"></span>
+          <span class="punch-hole"></span>
+        </div>
+
+        <div class="handwriting">
+          <p>
+            아버지와 크게 다툰 뒤라 기운이 쏙 빠졌는데, 이런 후미진 곳에 머물게 되니 영 나아지질 않는다. 차는 아직도 고장 난 상태다 — 윌리엄 영감은 고칠 수 있다고 하지만, 그 양반 말을 믿어도 될지 모르겠다. 겨우 하룻밤 묵었을 뿐인데 이곳은 어딘가 등골이 서늘하다. 호숫가에서 시끄럽게 울어대는 개구리 소리도 질색이고, 산책을 나갔을 때는 호수 저편에 불빛들이 떠 있는 것도 보았다. 한밤중의 낚시꾼들인가? 배 세 척은 모두 묶여 있었고, 저 늙고 쇠약한 형제가 밤중에 호수에 나갔을 리도 만무한데. 어차피 호수에서는 악취가 진동한다. 어젯밤은 정말 최악이었다. <span class="anxious-mark">몽유병이라니!</span> 어릴 적 이후로 그런 적은 한 번도 없었는데. 물속에 잠겨 시체들이 널브러진 기괴한 도시 사이를 떠다니는 꿈을 꾸었다. 자정이 지난 시각, 내 방 밖에서 온몸이 얼어붙을 듯한 추위에 떨며 깨어났다. 접수실 불빛만 환하게 켜져 있었다. 그 노인네들은 어딘가 기묘하다. 다행히 마주칠 일은 별로 없었지만. 온종일 호수를 마주한 그 작업실인지 뭔지 하는 곳에 틀어박혀 지내는 모양이다.
+          </p>
+
+          <p>
+            젠장, 오늘 안으로 차가 고쳐지지 않는다면 그냥 운에 맡기고 지나가는 차를 얻어 타서라도 킹스포트까지 가야겠다. <span class="emily-line">에밀리, 네가 너무 보고 싶어!</span>
+          </p>
+        </div>
+      </article>
+    </div>
+  </div>
+
+</body>
+</html>

@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>제이콥 비숍의 편지 (1811년 1월 5일)</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Great+Vibes&family=IM+Fell+English:ital@0;1&family=Nanum+Myeongjo:wght@400;700;800&family=Noto+Sans+KR:wght@400;500&display=swap');
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: #161310;
+      background-image:
+        radial-gradient(circle at 50% 30%, #262019 0%, #14110e 75%, #0b0907 100%);
+      padding: 46px 18px;
+      display: flex;
+      justify-content: center;
+      font-family: 'Nanum Myeongjo', serif;
+      color: #2b2016;
+      word-break: keep-all;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* 1811년 식민지 시대 수제 닥종이/면지 편지지 */
+    .colonial-letter {
+      position: relative;
+      width: 100%;
+      max-width: 760px;
+      background-color: #efe2c6;
+      background-image:
+        radial-gradient(ellipse at 35% 25%, #f5ebd4 0%, #e3d0ab 100%),
+        /* 오래된 수제 종이의 횡선 무늬(laid paper lines) */
+        repeating-linear-gradient(
+          to bottom,
+          transparent 0px,
+          transparent 11px,
+          rgba(122, 92, 50, 0.045) 11px,
+          rgba(122, 92, 50, 0.045) 12px
+        );
+      padding: 58px 64px 62px;
+      border: 1px solid #bba47d;
+      box-shadow:
+        0 24px 54px rgba(0, 0, 0, 0.75),
+        inset 0 0 95px rgba(112, 76, 32, 0.28);
+      overflow: hidden;
+    }
+
+    .paper-grain {
+      position: absolute;
+      inset: 0;
+      opacity: 0.055;
+      pointer-events: none;
+      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='3' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+    }
+
+    /* 100년 넘게 접혀 보관된 십자 접힘선과 세월의 얼룩 */
+    .age-creases {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background:
+        linear-gradient(
+          to bottom,
+          transparent 33.2%,
+          rgba(78, 52, 22, 0.14) 33.6%,
+          rgba(255, 248, 232, 0.25) 34%,
+          transparent 34.4%
+        ),
+        linear-gradient(
+          to bottom,
+          transparent 66.5%,
+          rgba(78, 52, 22, 0.14) 66.9%,
+          rgba(255, 248, 232, 0.24) 67.3%,
+          transparent 67.7%
+        ),
+        linear-gradient(
+          to right,
+          transparent 49.4%,
+          rgba(78, 52, 22, 0.09) 49.8%,
+          rgba(255, 248, 232, 0.18) 50.2%,
+          transparent 50.6%
+        ),
+        radial-gradient(circle at 88% 14%, rgba(126, 82, 34, 0.14) 0%, transparent 20%),
+        radial-gradient(circle at 10% 82%, rgba(120, 78, 30, 0.13) 0%, transparent 22%);
+    }
+
+    /* 프로비던스 아테네움 도서관 아카이브 소장 스탬프 */
+    .archive-bar {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px dashed rgba(105, 76, 44, 0.45);
+      padding-bottom: 10px;
+      margin-bottom: 28px;
+      font-family: 'Cinzel', serif;
+      font-size: 10.5px;
+      letter-spacing: 2px;
+      color: #71563b;
+    }
+
+    .archive-badge {
+      border: 1px solid rgba(114, 52, 32, 0.55);
+      color: rgba(114, 52, 32, 0.72);
+      padding: 3px 9px;
+      font-family: 'Noto Sans KR', sans-serif;
+      font-size: 10.5px;
+      letter-spacing: 0.6px;
+      transform: rotate(-1.5deg);
+    }
+
+    /* 날짜 & 수신인 */
+    .dateline {
+      position: relative;
+      z-index: 2;
+      text-align: right;
+      font-size: 15px;
+      font-weight: 700;
+      color: #423020;
+      margin-bottom: 24px;
+      letter-spacing: 0.5px;
+    }
+
+    .dateline-en {
+      display: block;
+      font-family: 'IM Fell English', serif;
+      font-style: italic;
+      font-size: 13px;
+      font-weight: 400;
+      color: #745b42;
+      margin-top: 2px;
+    }
+
+    .salutation {
+      position: relative;
+      z-index: 2;
+      font-size: 17.5px;
+      font-weight: 800;
+      color: #24190f;
+      margin-bottom: 20px;
+    }
+
+    /* 철담 잉크 본문 */
+    .letter-body {
+      position: relative;
+      z-index: 2;
+      font-size: 15.2px;
+      line-height: 1.96;
+      color: #2d2116;
+      text-align: justify;
+    }
+
+    .letter-body p {
+      margin-bottom: 18px;
+      text-indent: 15px;
+    }
+
+    .letter-body p:last-child {
+      margin-bottom: 0;
+    }
+
+    .dramatic-line {
+      text-indent: 0 !important;
+      margin: 22px 10px !important;
+      padding: 12px 18px;
+      border-left: 2.5px solid #6b3622;
+      background: rgba(107, 54, 34, 0.055);
+      font-weight: 700;
+      color: #361c12;
+      line-height: 1.8;
+    }
+
+    /* 서명 & 붉은 밀랍 봉인 잔흔 */
+    .closing-block {
+      position: relative;
+      z-index: 2;
+      margin-top: 38px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+    }
+
+    .wax-seal {
+      width: 56px;
+      height: 56px;
+      opacity: 0.78;
+    }
+
+    .sign-area {
+      text-align: right;
+    }
+
+    .sign-valediction {
+      font-size: 14.5px;
+      color: #463322;
+      margin-bottom: 6px;
+    }
+
+    .sign-cursive {
+      font-family: 'Great Vibes', cursive;
+      font-size: 38px;
+      color: #2c1e12;
+      line-height: 1;
+    }
+
+    .sign-korean {
+      font-size: 14px;
+      font-weight: 700;
+      color: #3a291a;
+      margin-top: 4px;
+      letter-spacing: 0.8px;
+    }
+
+    @media (max-width: 660px) {
+      .colonial-letter {
+        padding: 36px 26px 42px;
+      }
+      .archive-bar {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+      }
+    }
+
+    @media print {
+      body { background: none; padding: 0; }
+      .colonial-letter { box-shadow: none; border: none; max-width: 100%; padding: 26px; }
+    }
+  </style>
+</head>
+<body>
+
+  <article class="colonial-letter">
+    <div class="paper-grain"></div>
+    <div class="age-creases"></div>
+
+    <div class="archive-bar">
+      <span>PROVIDENCE ATHENAEUM · COLONIAL MANUSCRIPTS</span>
+      <span class="archive-badge">식민지 시대 서신 보관본</span>
+    </div>
+
+    <div class="dateline">
+      프로비던스, 1811년 1월 5일
+      <span class="dateline-en">Providence, January 5th, 1811</span>
+    </div>
+
+    <div class="salutation">필립스에게,</div>
+
+    <div class="letter-body">
+      <p>
+        엘리야 윈스콧이 이 세상을 떠나 이제 우리 주님의 자애로운 품에 안겼다는 소식을 이루 말할 수 없는 슬픔으로 전하네. 그가 수년 동안 육체와 영혼 모두 온전치 못했다는 것은 우리 모두 알고 있던 사실이었지. 그는 동료들과의 교류를 끊어버렸기에 어떤 고통을 겪고 있는지 알기조차 매우 어려웠네. 나는 그가 몇 년간 머물던 시골집으로 병문안을 다녀왔다네. 병상에 누운 그는 마침내 입을 열어 내 상식으로는 도저히 헤아릴 수 없는 이야기를 들려주었네. 이 이야기를 자네에게 털어놓는 것이 과연 옳은 일인지 확신할 수 없지만, 자네 역시 우리 친구를 몹시 걱정해 왔음을 알기에 적어보네.
+      </p>
+
+      <p>
+        그는 15년 전 우리가 큰돈을 벌었던 무역 사업을 어떻게 계속 이어갈 수 있을지 고심했던 때를 상기시켰네. 우리의 생계를 가로막는 증오스러운 법률과 선량한 존 브라운을 괴롭히던 골칫거리들은 그를 끊임없이 분노케 했지. 자네도 기억하겠지만 당시 주점에서 엘리야가 보였던 언행은 실로 대단했지 않나. 우리는 그저 허황된 공상이나 과음 탓이라 치부했었네. 마을 지하에 터널을 뚫어야 한다고 떠벌리던 그의 말을 들으며 우리 모두 웃어넘기지 않았던가. 하지만 그것이 완전히 헛된 망상만은 아니었음을 우리는 그때 알지 못했네. 그가 은밀하게 계획을 꾸미고 있었다는 사실 또한 몰랐지. 엘리야 윈스콧의 집 지하 저장고를 놓을 당시, 지하 터널 하나가 발견되었다네. 그 터널은 강 근처까지 이어져 있었기에 조금만 더 파고 들어가면 강과 연결하기란 일도 아니었지. 그는 이 통로를 이용해 마을 안팎으로 노예들을 은밀히 실어 나르려 했던 걸세.
+      </p>
+
+      <p class="dramatic-line">
+        모든 준비가 끝나고, 엘리야는 일꾼들이 노예들을 데려오기를 집에서 흡족하게 기다리고 있었네. 그러나 그들은 오지 않았다네.
+      </p>
+
+      <p>
+        도대체 무슨 일로 지체되는지 의아해진 그는 곁에 있던 인부들을 데리고 무슨 일이 벌어졌는지 확인하러 내려갔다네. 그리고 그들이 발견한 것은 죽음이었네. 그는 떨리는 목소리로 백인과 노예를 가릴 것 없이 찢겨나간 인간의 사체 조각들이 터널 바닥에 걸레짝처럼 널브러져 있었다고 말했네. 오래 머물지 못해 확신할 수는 없었지만, 모든 남자가 다 그 자리에 있었던 것은 아니었으며 노예 여성들의 흔적은 전혀 찾아볼 수 없었다고 했네. 그렇다면 나머지 사람들은 대체 어디로 사라진 것이며, 무엇이 그들을 덮쳤단 말인가? 동굴의 어둠이 진실을 감춘 채 그를 비웃는 것만 같았다고 하네. 그는 서둘러 되돌아왔고, 지하 깊은 곳에 있는 그것이 무엇이든 기어 나오지 못하도록 자신의 집 지하실 아래와 강가 근처를 튼튼한 벽돌 벽으로 황급히 봉쇄해 버렸네.
+      </p>
+
+      <p>
+        그날 이후로 그는 단 하루도 편히 쉬지 못했네. 적어도 그 저택에 머무는 동안에는 결코 안식을 찾지 못했지. 우리가 알고 있던 것이라곤 그가 병에 걸렸고, 법을 피하려던 계략에 대해 더 이상 입을 열지 않았다는 것뿐이었네. 생을 마감하기 직전 병상에서 그는 자신이 떠나온 마을 지하 깊은 곳으로 거대한 심연이 입을 벌리고 있다고 웅얼거렸네. 그는 창밖으로 붉게 흔들리는 단풍나무를 멍하니 내다보더니 이내 평온해지는 듯 보였네. 마지막 숨을 거두는 순간 이 시골집이 그에게 일말의 평온을 주었기를 바랄 뿐이네. 부디 프로비던스의 그 저택에 남겨진 그의 후손들에게는 그보다 더 나은 행운이 깃들기를 빌겠네.
+      </p>
+    </div>
+
+    <div class="closing-block">
+      <!-- 깨진 붉은 밀랍 인장 잔흔 -->
+      <svg class="wax-seal" viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <path d="M40,6 C58,7 72,18 74,38 C75,56 62,73 41,74 C22,75 8,61 7,42 C6,21 21,5 40,6 Z" fill="#7c281e" opacity="0.82"/>
+        <circle cx="40" cy="40" r="24" fill="none" stroke="#4f150e" stroke-width="2" stroke-dasharray="10 4"/>
+        <text x="40" y="46" text-anchor="middle" font-family="serif" font-size="18" font-weight="bold" fill="#d9a896" opacity="0.72">JB</text>
+      </svg>
+
+      <div class="sign-area">
+        <div class="sign-valediction">진심 어린 존경을 담아,</div>
+        <div class="sign-cursive">Jacob Bishop</div>
+        <div class="sign-korean">제이콥 비숍 (Jacob Bishop)</div>
+      </div>
+    </div>
+  </article>
+
+</body>
+</html>

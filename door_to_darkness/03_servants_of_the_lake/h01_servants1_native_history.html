@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>뉴잉글랜드 원주민사 — 78쪽</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=IM+Fell+English:ital@0;1&family=Nanum+Myeongjo:wght@400;700;800&family=Noto+Sans+KR:wght@400;500;700&display=swap');
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: #16120e;
+      background-image:
+        radial-gradient(circle at 50% 30%, #2a221a 0%, #15110d 72%, #0c0907 100%);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 48px 20px;
+      font-family: 'Nanum Myeongjo', serif;
+      color: #241b13;
+      word-break: keep-all;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* 하드커버 고서 좌측(짝수) 페이지 */
+    .book-wrapper {
+      position: relative;
+      width: 100%;
+      max-width: 680px;
+      filter: drop-shadow(0 26px 46px rgba(0, 0, 0, 0.78));
+    }
+
+    /* 왼쪽 책장 두께(페이지 겹침) 표현 */
+    .book-page {
+      position: relative;
+      background-color: #f1e7d0;
+      background-image:
+        radial-gradient(ellipse at 45% 32%, #f7efe0 0%, #eadbc0 65%, #dec9a4 100%),
+        /* 오른쪽 제본선(책등) 음영 */
+        linear-gradient(
+          to left,
+          rgba(62, 42, 22, 0.28) 0%,
+          rgba(78, 54, 28, 0.11) 3.5%,
+          rgba(110, 78, 42, 0.03) 9%,
+          transparent 16%
+        );
+      padding: 52px 66px 64px 62px;
+      border-top: 1px solid #cbb794;
+      border-bottom: 1px solid #bca682;
+      border-left: 1px solid #c5b18e;
+      border-right: 1px solid #9f8967;
+      box-shadow:
+        -3px 0 0 #dfd0b4,
+        -4px 0 0 #b49f7d,
+        -7px 0 0 #d8c7a8,
+        -8px 0 0 #a58f6d,
+        inset 0 0 80px rgba(114, 82, 44, 0.22);
+      overflow: hidden;
+    }
+
+    /* 고서 종이 질감 노이즈 */
+    .paper-grain {
+      position: absolute;
+      inset: 0;
+      opacity: 0.055;
+      pointer-events: none;
+      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+    }
+
+    /* 오래된 책의 황변 & 작은 얼룩(폭싱) */
+    .foxing-1 {
+      position: absolute;
+      top: 72px;
+      left: 38px;
+      width: 140px;
+      height: 110px;
+      background: radial-gradient(ellipse, rgba(138, 96, 46, 0.11) 0%, rgba(138, 96, 46, 0.03) 55%, transparent 72%);
+      border-radius: 50%;
+      pointer-events: none;
+    }
+
+    .foxing-2 {
+      position: absolute;
+      bottom: 48px;
+      right: 54px;
+      width: 160px;
+      height: 120px;
+      background: radial-gradient(ellipse, rgba(124, 86, 40, 0.13) 0%, rgba(124, 86, 40, 0.04) 52%, transparent 70%);
+      border-radius: 45% 55% 48% 52%;
+      pointer-events: none;
+    }
+
+    /* 상단 러닝 헤더 (짝수 페이지: 좌측 쪽수, 중앙 서명) */
+    .running-header {
+      position: relative;
+      z-index: 2;
+      display: grid;
+      grid-template-columns: 44px 1fr 44px;
+      align-items: baseline;
+      padding-bottom: 10px;
+      margin-bottom: 34px;
+      border-bottom: 1px solid rgba(72, 52, 32, 0.42);
+    }
+
+    .running-header::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: -3px;
+      border-bottom: 1px solid rgba(72, 52, 32, 0.22);
+    }
+
+    .page-num {
+      font-family: 'IM Fell English', 'Nanum Myeongjo', serif;
+      font-size: 16px;
+      color: #4a3724;
+      letter-spacing: 0.5px;
+    }
+
+    .book-running-title {
+      text-align: center;
+      font-family: 'Cinzel', 'Nanum Myeongjo', serif;
+      font-size: 12px;
+      letter-spacing: 2.2px;
+      color: #543f2b;
+      text-transform: uppercase;
+    }
+
+    .book-running-sub {
+      display: block;
+      font-family: 'Nanum Myeongjo', serif;
+      font-size: 11px;
+      letter-spacing: 2.5px;
+      color: #6c553e;
+      margin-top: 3px;
+    }
+
+    /* 도서관 장서인 (은은하게 바랜 스탬프) */
+    .library-stamp {
+      position: absolute;
+      top: 28px;
+      right: 36px;
+      z-index: 3;
+      border: 1.5px double rgba(92, 48, 36, 0.48);
+      padding: 5px 10px;
+      text-align: center;
+      transform: rotate(5.5deg);
+      color: rgba(92, 48, 36, 0.54);
+      pointer-events: none;
+      mix-blend-mode: multiply;
+    }
+
+    .library-stamp-en {
+      font-family: 'Cinzel', serif;
+      font-size: 8px;
+      font-weight: 700;
+      letter-spacing: 1.4px;
+      line-height: 1.3;
+    }
+
+    .library-stamp-kr {
+      font-family: 'Nanum Myeongjo', serif;
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      margin-top: 2px;
+    }
+
+    /* 본문 활자 영역 */
+    .book-content {
+      position: relative;
+      z-index: 2;
+      font-size: 16.5px;
+      line-height: 2.04;
+      color: #261d15;
+      text-align: justify;
+    }
+
+    .carryover-paragraph {
+      margin-bottom: 24px;
+      text-indent: 0;
+    }
+
+    .ellipsis-lead {
+      letter-spacing: 2px;
+      color: #574431;
+      margin-right: 3px;
+    }
+
+    .main-paragraph {
+      text-indent: 0;
+      margin-bottom: 26px;
+    }
+
+    /* 고서 목판 느낌의 드롭캡 */
+    .drop-cap {
+      float: left;
+      font-family: 'Nanum Myeongjo', serif;
+      font-size: 56px;
+      font-weight: 800;
+      line-height: 0.92;
+      padding: 6px 10px 4px 8px;
+      margin: 5px 12px 2px 0;
+      color: #2f1e12;
+      border: 1px solid rgba(78, 54, 30, 0.45);
+      background:
+        radial-gradient(circle at center, rgba(132, 94, 48, 0.08) 0%, rgba(132, 94, 48, 0.16) 100%);
+      box-shadow: inset 0 0 0 2px #f1e7d0, inset 0 0 0 3px rgba(78, 54, 30, 0.25);
+    }
+
+    .term-emphasis {
+      font-weight: 700;
+      color: #1c130c;
+    }
+
+    .foreign-italic {
+      font-family: 'IM Fell English', serif;
+      font-style: italic;
+      font-size: 17px;
+      color: #3b2a1c;
+    }
+
+    /* 하단 장식 및 서지 주석 */
+    .page-ornament {
+      position: relative;
+      z-index: 2;
+      text-align: center;
+      margin: 32px 0 22px;
+      color: #7c6248;
+      font-size: 14px;
+      letter-spacing: 10px;
+    }
+
+    .page-ornament::before,
+    .page-ornament::after {
+      content: "";
+      display: inline-block;
+      width: 24%;
+      height: 1px;
+      background: linear-gradient(to right, transparent, rgba(102, 76, 48, 0.42), transparent);
+      vertical-align: middle;
+      margin: 0 12px;
+    }
+
+    .page-footer {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-top: 12px;
+      border-top: 1px solid rgba(102, 76, 48, 0.24);
+      font-family: 'IM Fell English', 'Nanum Myeongjo', serif;
+      font-size: 11.5px;
+      color: #755d45;
+    }
+
+    .call-number {
+      font-family: 'Noto Sans KR', sans-serif;
+      font-size: 10.5px;
+      letter-spacing: 0.6px;
+      color: #7d664f;
+    }
+
+    @media (max-width: 640px) {
+      body {
+        padding: 24px 12px;
+      }
+      .book-page {
+        padding: 36px 26px 42px 26px;
+        box-shadow:
+          -2px 0 0 #dfd0b4,
+          -3px 0 0 #b49f7d,
+          inset 0 0 50px rgba(114, 82, 44, 0.2);
+      }
+      .library-stamp {
+        position: static;
+        display: inline-block;
+        margin-bottom: 18px;
+        transform: rotate(-1.5deg);
+      }
+      .book-content {
+        font-size: 15.5px;
+        line-height: 1.95;
+      }
+      .drop-cap {
+        font-size: 46px;
+        padding: 5px 8px 3px 7px;
+      }
+      .page-footer {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 6px;
+      }
+    }
+
+    @media print {
+      body {
+        background: none;
+        padding: 0;
+      }
+      .book-wrapper {
+        filter: none;
+        max-width: 100%;
+      }
+      .book-page {
+        box-shadow: none;
+        border: 1px solid #ccc;
+        padding: 32px 38px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="book-wrapper">
+    <article class="book-page">
+      <div class="paper-grain"></div>
+      <div class="foxing-1"></div>
+      <div class="foxing-2"></div>
+
+      <div class="library-stamp" aria-label="도서관 장서인">
+        <div class="library-stamp-en">NEW ENGLAND ARCHIVE</div>
+        <div class="library-stamp-kr">향토사 열람실 소장</div>
+      </div>
+
+      <header class="running-header">
+        <span class="page-num">78</span>
+        <div class="book-running-title">
+          A Native History of New England
+          <span class="book-running-sub">뉴잉글랜드 원주민사</span>
+        </div>
+        <span></span>
+      </header>
+
+      <div class="book-content">
+        <p class="carryover-paragraph">
+          <span class="ellipsis-lead">……</span>버몬트, 뉴햄프셔, 매사추세츠 일대의 코네티컷 강 계곡에 터를 잡고 살아가던 <span class="term-emphasis">아베나키(<span class="foreign-italic">Abenaki</span>)</span>라 불리는 부족이 있었다.
+        </p>
+
+        <p class="main-paragraph">
+          <span class="drop-cap">아</span>베나키 족은 원래 <span class="term-emphasis">스쿼터스 호수(<span class="foreign-italic">Squatters Lake</span>)</span> 일대의 땅을 차지하고 있었으나, 1722년 영국인 정착민들에 의해 쫓겨나고 말았다. 호숫가에 먹이를 찾아 모여드는 까마귀 떼가 워낙 많았기에 아베나키 족은 이곳을 본래 <span class="term-emphasis">‘퐁키-음카자스(<span class="foreign-italic">Ponki-mkazas</span>, 까마귀)’</span>라 불렀다. 그러나 이주해 온 정착민들은 얼마 지나지 않아 이곳이 정착지로 영 부적합하다는 사실을 깨달았다. 물고기도 사냥감도 좀처럼 잡히지 않았기 때문이다. 게다가 주변을 에워싼 솔송나무(헴록) 숲은 땔감으로도 쓸모가 없었으며, 방부 처리를 하지 않은 채 지은 목조 가옥들은 금세 썩어 문드러졌다. 결국 정착민들은 마을을 버리고 더 북쪽으로 떠나 버렸고, 세월이 흐르며 낡고 허물어진 오두막들은 부랑자와 도망 노예, 그리고 군 탈영병들의 은신처가 되었다. 이 오두막들마저 1805년의 대홍수로 호수에 모조리 쓸려 내려간 뒤, 인근 주민들은 이곳을 <span class="term-emphasis">스쿼터스 호수(<span class="foreign-italic">Squatters Lake</span>)</span>라 부르기 시작했으며 그 이름은 오늘날까지 전해지고 있다.
+        </p>
+      </div>
+
+      <div class="page-ornament">❦</div>
+
+      <footer class="page-footer">
+        <span>Chapter IV. — Tribes of the Northern Valleys</span>
+        <span class="call-number">청구기호: F 974.01 N21</span>
+      </footer>
+    </article>
+  </div>
+
+</body>
+</html>

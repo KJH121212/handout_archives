@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>쿰스 박사의 개인 진료 일지</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Nanum+Myeongjo:wght@400;700;800&family=Noto+Sans+KR:wght@400;500;700&display=swap');
+
+  body {
+    background-color: #24201c;
+    margin: 0;
+    padding: 40px 20px;
+    display: flex;
+    justify-content: center;
+    font-family: 'Nanum Myeongjo', serif;
+    color: #241c16;
+    word-break: keep-all;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* Worn Journal Page */
+  .diary-page {
+    background-color: #f6eedf;
+    background-image: 
+      radial-gradient(#f6eedf 0%, #ebe0ca 100%),
+      repeating-linear-gradient(rgba(0,0,0,0.015) 0px, rgba(0,0,0,0.015) 1px, transparent 1px, transparent 2px);
+    width: 780px;
+    padding: 50px 55px;
+    box-shadow: 0 4px 25px rgba(0,0,0,0.6), inset 0 0 70px rgba(130, 95, 45, 0.2);
+    border: 1px solid #d2c3aa;
+    position: relative;
+    box-sizing: border-box;
+    line-height: 1.75;
+  }
+
+  /* Notebook Header */
+  .notebook-header {
+    border-bottom: 2px solid #3c3024;
+    padding-bottom: 8px;
+    margin-bottom: 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    font-family: 'Noto Sans KR', sans-serif;
+    font-size: 13px;
+    color: #554433;
+    font-weight: 500;
+  }
+
+  /* Entry Title */
+  .entry-date {
+    font-size: 18px;
+    font-weight: 800;
+    color: #1a140e;
+    margin: 0 0 4px 0;
+    letter-spacing: -0.5px;
+  }
+
+  .entry-sub {
+    font-size: 13px;
+    color: #725d49;
+    margin-bottom: 16px;
+    font-weight: 700;
+  }
+
+  p {
+    margin: 0 0 14px 0;
+    font-size: 14px;
+    text-indent: 14px;
+    color: #261f18;
+    text-align: justify;
+  }
+
+  /* Journal Section Divider */
+  .divider {
+    border: none;
+    border-top: 1px dashed #9d8872;
+    margin: 22px 0;
+  }
+
+  /* Frustrated Scribble Callout */
+  .scribble-box {
+    background-color: rgba(139, 37, 0, 0.04);
+    border-left: 3px solid #8b2500;
+    padding: 10px 14px;
+    margin: 14px 0 18px 0;
+    font-size: 13.5px;
+    color: #631b00;
+    line-height: 1.6;
+  }
+
+  .scribble-box strong {
+    font-family: 'Noto Sans KR', sans-serif;
+  }
+
+  /* Bottom Sign-off */
+  .sign-off {
+    margin-top: 32px;
+    text-align: right;
+    font-size: 14px;
+    color: #4a3828;
+  }
+
+  .sign-off .name {
+    font-weight: 800;
+    font-size: 16px;
+    letter-spacing: 1px;
+    margin-top: 2px;
+  }
+</style>
+</head>
+<body>
+
+<div class="diary-page">
+  <div class="notebook-header">
+    <span>크롤리 외곽 판자촌 &bull; 진료실 일지</span>
+    <span>1932년 11월</span>
+  </div>
+
+  <div class="entry-date">10월 28일 — 도저히 설명할 수 없는 증세들</div>
+  <div class="entry-sub">밤안개가 지독하게 차가움. 석유난로 기름이 바닥나 입김이 하얗게 언다.</div>
+
+  <p>이 지긋지긋한 판잣집에 머무는 마흔일곱 명 주민 대다수가 같은 증상으로 앓아눕기 시작했다. 처음엔 그저 대공황이 몰고 온 굶주림이나 비타민 결핍, 아니면 늪지의 오염된 물을 마셔 생긴 풍토병이라 여겼다.</p>
+  <p>하지만 아니다. 환자들의 피부가 바싹 마르더니 하얗게 각질이 일어나 비듬처럼 우수수 떨어져 나간다. 다들 극심한 피로를 호소하며 멍하니 앉아 하루를 보낸다. 팔다리를 짚어보면 근육이 말라붙은 장작개비처럼 홀쭉해져 힘을 전혀 쓰지 못한다. 이게 대체 무슨 병이란 말인가? 내가 알던 어떤 의학 교과서에도 이런 병증은 존재하지 않는다.</p>
+
+  <hr class="divider">
+
+  <div class="entry-date">11월 2일 — 참혹한 실수와 공포</div>
+  <div class="entry-sub">손이 떨려 펜을 제대로 쥐기 힘들다.</div>
+
+  <p>오늘 캐번디시 박사가 위험을 무릅쓰고 몰래 빼돌려 준 소독약과 생리식염수를 들고 환자들을 살폈다. 열이 끓고 피부가 바스러지려는 환자를 보며 몸을 닦아주고 수액을 놓으려 했다. 그런데…… 절대 손을 대지 말았어야 했다.</p>
+
+  <div class="scribble-box">
+    <strong>[붉은 잉크로 덧칠해 적은 메모]:</strong><br>
+    피부에 물이 닿는 순간 살점이 물기를 흡수하기는커녕, 마치 물에 젖은 묵은 종이나 죽처럼 힘없이 뭉개지며 흘러내렸다! 가벼운 손길에도 살가죽과 뼈마디가 먼지처럼 바스러져 떨어져 나간다. 환자는 끔찍한 비명을 지르다 기절했다.<br>
+    <strong>절대로 환부에 물이나 액체를 대지 말 것. 만지지도 말 것. 수분은 살을 녹이고 접촉은 뼈를 바스러뜨린다.</strong>
+  </div>
+
+  <p>환자가 숨을 헐떡일 때마다 마른 목구멍에서 먼지 같은 미세한 가루가 뿜어져 나온다. 이건 병균이나 바이러스가 퍼뜨리는 전염병이 아니다. 누군가가 환자의 몸속에서 '생명력' 자체를 보이지 않는 빨대로 악착같이 빨아먹고 껍데기만 남겨둔 것 같다.</p>
+  <p>헤럴드 프리스틀리의 상태가 제일 심각하다. 이제는 그를 만질 수도, 물 한 모금 넘겨줄 수도 없다. 이 겨울이 다 가기 전에 판자촌 전체가 산산이 부서져 무덤이 될지도 모른다. 제발 신이든 누구든 우리를 구해주길.</p>
+
+  <div class="sign-off">
+    <div>환자 곁에서 지새우며</div>
+    <div class="name">— 내새니얼 쿰스</div>
+  </div>
+</div>
+
+</body>
+</html>

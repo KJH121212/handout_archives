@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>크롤리 이그재미너 - 보관 자료실 (1926)</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Nanum+Myeongjo:wght@400;700;800&family=Noto+Sans+KR:wght@400;500;700&display=swap');
+
+  body {
+    background-color: #2b2622;
+    margin: 0;
+    padding: 40px 20px;
+    display: flex;
+    justify-content: center;
+    font-family: 'Nanum Myeongjo', serif;
+    color: #1a1612;
+    word-break: keep-all;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* Newspaper Sheet */
+  .newspaper-page {
+    background-color: #f4ece1;
+    background-image: 
+      radial-gradient(#f4ece1 0%, #e6dac6 100%),
+      repeating-linear-gradient(rgba(0,0,0,0.01) 0px, rgba(0,0,0,0.01) 1px, transparent 1px, transparent 2px);
+    width: 900px;
+    padding: 42px 48px;
+    box-shadow: 0 4px 25px rgba(0,0,0,0.5), inset 0 0 60px rgba(110, 80, 40, 0.15);
+    border: 1px solid #c9bca6;
+    position: relative;
+    box-sizing: border-box;
+  }
+
+  /* Archival Header / Slug */
+  .archive-slug {
+    border-bottom: 2px solid #2d241e;
+    padding-bottom: 8px;
+    margin-bottom: 12px;
+    display: flex;
+    justify-content: space-between;
+    font-family: 'Noto Sans KR', sans-serif;
+    font-size: 12px;
+    font-weight: 500;
+    color: #4a3e35;
+  }
+
+  /* Newspaper Masthead */
+  .masthead {
+    text-align: center;
+    border-bottom: 4px double #1a1612;
+    padding-bottom: 12px;
+    margin-bottom: 18px;
+  }
+
+  .masthead h1 {
+    font-family: 'Nanum Myeongjo', serif;
+    font-weight: 800;
+    font-size: 54px;
+    margin: 0;
+    letter-spacing: 6px;
+    line-height: 1.1;
+  }
+
+  .masthead .sub-bar {
+    display: flex;
+    justify-content: space-between;
+    border-top: 1px solid #1a1612;
+    border-bottom: 1px solid #1a1612;
+    margin-top: 10px;
+    padding: 5px 8px;
+    font-size: 13px;
+    font-family: 'Noto Sans KR', sans-serif;
+    font-weight: 600;
+  }
+
+  /* Headlines */
+  .main-headline {
+    text-align: center;
+    margin: 18px 0 14px 0;
+  }
+
+  .main-headline h2 {
+    font-family: 'Nanum Myeongjo', serif;
+    font-size: 34px;
+    font-weight: 800;
+    margin: 0 0 8px 0;
+    line-height: 1.25;
+    letter-spacing: -0.5px;
+  }
+
+  .main-headline .deck {
+    font-family: 'Nanum Myeongjo', serif;
+    font-size: 16px;
+    font-weight: 700;
+    color: #2b221a;
+    margin: 0;
+    line-height: 1.4;
+  }
+
+  .rule-thick {
+    border: none;
+    border-top: 2px solid #1a1612;
+    margin: 12px 0;
+  }
+
+  /* Multi-column Layout */
+  .columns {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 24px;
+    text-align: justify;
+    line-height: 1.65;
+    font-size: 14px;
+  }
+
+  .column {
+    position: relative;
+  }
+
+  .column:not(:last-child)::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: -12px;
+    width: 1px;
+    background-color: #2d241e;
+    opacity: 0.35;
+  }
+
+  .columns p {
+    margin: 0 0 12px 0;
+    text-indent: 14px;
+  }
+
+  .columns p:first-of-type {
+    text-indent: 0;
+  }
+
+  .dateline {
+    font-family: 'Noto Sans KR', sans-serif;
+    font-weight: 700;
+    font-size: 13px;
+  }
+
+  .subhead {
+    font-family: 'Nanum Myeongjo', serif;
+    font-weight: 800;
+    font-size: 16px;
+    text-align: center;
+    margin: 14px 0 8px 0;
+    border-top: 1px solid #1a1612;
+    border-bottom: 1px solid #1a1612;
+    padding: 4px 0;
+  }
+
+  /* Archival stamp & clipping effect */
+  .archive-stamp {
+    position: absolute;
+    top: 55px;
+    right: 50px;
+    border: 2px solid #8b2500;
+    color: #8b2500;
+    padding: 5px 12px;
+    font-family: 'Noto Sans KR', sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+    transform: rotate(6deg);
+    opacity: 0.9;
+    pointer-events: none;
+    letter-spacing: 1px;
+    text-align: center;
+    line-height: 1.3;
+  }
+
+  /* Archival clipping sidebar */
+  .editorial-sidebar {
+    background-color: rgba(0, 0, 0, 0.04);
+    border: 1px solid #2d241e;
+    padding: 12px;
+    margin-top: 14px;
+    font-size: 13px;
+    line-height: 1.5;
+  }
+
+  .editorial-sidebar h4 {
+    margin: 0 0 6px 0;
+    font-family: 'Nanum Myeongjo', serif;
+    font-weight: 800;
+    font-size: 14px;
+    text-align: center;
+    border-bottom: 1px solid #1a1612;
+    padding-bottom: 4px;
+  }
+
+  .editorial-sidebar ul {
+    margin: 0;
+    padding-left: 18px;
+  }
+
+  .editorial-sidebar li {
+    margin-bottom: 5px;
+  }
+</style>
+</head>
+<body>
+
+<div class="newspaper-page">
+  <div class="archive-stamp">자료실 보관본<br>1926년 10월 철</div>
+
+  <div class="archive-slug">
+    <span>분류: 미해결 실종 및 사건 기록</span>
+    <span>마이크로필름 번호: #1926-DS-088</span>
+    <span>주제: 애스턴 호크스 박사 실종 사건</span>
+  </div>
+
+  <header class="masthead">
+    <h1>크롤리 이그재미너</h1>
+    <div class="sub-bar">
+      <span>제37권 제245호</span>
+      <span>매사추세츠주 크롤리</span>
+      <span>정가 3센트</span>
+    </div>
+  </header>
+
+  <div class="main-headline">
+    <h2>저명 물리학자, 자택 연구실서 흔적 없이 증발</h2>
+    <p class="deck">미스캐토닉대 전 교수 애스턴 호크스 박사, 프로스펙트 저택서 실종 — 경찰 수사 실마리 찾지 못해</p>
+  </div>
+
+  <hr class="rule-thick">
+
+  <div class="columns">
+    <!-- Col 1 -->
+    <div class="column">
+      <p><span class="dateline">크롤리, 10월 19일발 — </span>아캄 로드 외곽에 위치한 유서 깊은 저택 ‘프로스펙트(Prospect)’에서 고립된 연구를 이어오던 저명한 물리학자 애스턴 호크스(Aston Hawkes) 박사가 지난 10월 14일 밤 돌연 자취를 감추는 기괴한 사건이 발생했다.</p>
+      <p>과거 미스캐토닉 대학교 물리학과 교수직을 역임했던 호크스 박사는 1924년 돌연 강단을 떠나 가문의 저택에 틀어박힌 채 전자기파 및 변칙 물리학에 관한 은밀한 개인 연구에 몰두해 온 것으로 알려져 있다. 실종 당일 밤, 저택 별동에 설치된 대형 발전 장치에서 심한 진동과 이상 소음이 발생했다는 인근 주민들의 제보가 잇따랐으나, 경찰이 현장에 진입했을 때 저택 내부에는 외부 침입이나 격투의 흔적이 전혀 발견되지 않았다.</p>
+      
+      <div class="subhead">미궁에 빠진 경찰 수사</div>
+      <p>크롤리 경찰서는 현장에 수사관을 급파하여 30에이커에 달하는 프로스펙트 사유지와 인근 숲, 과수원 및 호수를 샅샅이 수색하였으나 박사의 행방은 물론 그의 신발 한 짝조차 찾아내지 못했다. 마치 사람이 공기 중으로 그대로 녹아 사라진 듯한 정황에 수사 당국은 당혹감을 감추지 못하고 있다.</p>
+    </div>
+
+    <!-- Col 2 -->
+    <div class="column">
+      <div class="subhead">조수 세지윅 씨의 진술</div>
+      <p>경찰 당국은 사건 당시 저택에 유일하게 머물고 있던 연구 조수 <strong>시어도어 세지윅(Theodore Sedgwick)</strong> 씨를 소환하여 장시간에 걸친 조사를 진행했다. 세지윅 씨는 경찰 진술에서 “심야 실험 도중 발생한 예기치 못한 전기 과부하로 인해 퓨즈가 차단되었고, 차단기를 복구하기 위해 발전기 헛간으로 다녀온 사이에 호크스 박사가 작업실에서 흔적도 없이 사라져 있었다”고 진술했다.</p>
+      <p>그러나 수사 관계자에 따르면, 세지윅 씨는 당시 진행 중이던 실험의 기술적 실체나 작업실 내 설치된 원형 철제 장치의 용도에 관해서는 “학술적 기밀”이라는 이유로 명확한 설명을 거부하였으며, 박사의 행방을 추적할 수 있는 어떠한 실질적 단서도 제시하지 못하고 있다.</p>
+      <p>경찰은 조수 세지윅 씨에 대한 용의점 여부를 면밀히 검토하였으나, 시신이나 범죄 혐의점을 뒷받침할 명백한 물증이 전무하여 공식적인 기소 없이 그를 참고인 신분으로 석방했다.</p>
+    </div>
+
+    <!-- Col 3 -->
+    <div class="column">
+      <div class="subhead">남겨진 의문과 유산의 향방</div>
+      <p>학계 일각에서는 고인이 된 크로퍼드 틸링해스트의 기괴한 미완성 이론을 계승하려 했던 호크스 박사의 실험이 파국을 맞은 것이 아니냐는 불길한 추측마저 제기되고 있다. 그러나 공식 확인된 사실은 없으며, 대학 관계자들 역시 이번 사건에 대한 언급을 회피하고 있다.</p>
+      <p>호크스 박사는 가문의 마지막 직계 후손으로 미혼이며 알려진 법적 상속인 또한 전무한 상태이다. 현재 광대한 프로스펙트 저택과 부지는 폐쇄 조치되었으며, 향후 법원 관리 하에 처분될 것으로 보인다.</p>
+
+      <div class="editorial-sidebar">
+        <h4>사건 파일 및 사건 일지 요약</h4>
+        <ul>
+          <li><strong>실종자:</strong> 애스턴 호크스 박사 (남, 당시 44세)</li>
+          <li><strong>발생 일시:</strong> 1926년 10월 14일 심야 추정</li>
+          <li><strong>사건 현장:</strong> 아캄 로드 외곽 프로스펙트 저택 작업실</li>
+          <li><strong>주요 참고인:</strong> 시어도어 세지윅 (연구 조수)</li>
+          <li><strong>수사 결과:</strong> 범죄 물증 부재로 미해결 실종 처리</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>존 하퍼의 동굴 벽면 각인</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=Nanum+Myeongjo:wght@400;700;800&display=swap');
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: #0b0e0d;
+      background-image:
+        radial-gradient(circle at 50% 35%, #16201d 0%, #0a0d0c 72%, #050706 100%);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 44px 18px;
+      font-family: 'Gowun Batang', 'Nanum Myeongjo', serif;
+      color: #c8cec7;
+      word-break: keep-all;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* 축축한 지하 동굴 암반 석판 */
+    .cavern-wall {
+      position: relative;
+      width: 100%;
+      max-width: 760px;
+      background-color: #2b2f2d;
+      background-image:
+        /* 발광 이끼의 희미한 청록빛 반사 */
+        radial-gradient(ellipse at 12% 14%, rgba(86, 178, 146, 0.16) 0%, transparent 42%),
+        radial-gradient(ellipse at 88% 84%, rgba(74, 162, 134, 0.14) 0%, transparent 45%),
+        /* 암석 표면의 굴곡과 습기 */
+        radial-gradient(ellipse at 50% 48%, #353a37 0%, #232725 68%, #181b1a 100%);
+      padding: 54px 56px 58px;
+      border: 2px solid #3f4642;
+      border-radius: 6px;
+      box-shadow:
+        0 26px 60px rgba(0, 0, 0, 0.85),
+        inset 0 0 80px rgba(6, 10, 9, 0.72),
+        0 0 42px rgba(72, 164, 136, 0.08);
+      overflow: hidden;
+    }
+
+    /* 거친 암석 질감 */
+    .rock-texture {
+      position: absolute;
+      inset: 0;
+      opacity: 0.16;
+      pointer-events: none;
+      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='260' height='260'><filter id='r'><feTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='4' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23r)'/></svg>");
+    }
+
+    /* 벽면 균열선 SVG */
+    .rock-cracks {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      opacity: 0.55;
+    }
+
+    /* 상단 현장 표시 */
+    .carving-meta {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid rgba(154, 176, 166, 0.22);
+      padding-bottom: 12px;
+      margin-bottom: 28px;
+      font-size: 12px;
+      letter-spacing: 2px;
+      color: #84a296;
+    }
+
+    /* 정으로 고통스럽게 파낸 음각(Chiseled) 본문 */
+    .chiseled-text {
+      position: relative;
+      z-index: 2;
+      font-size: 16.5px;
+      line-height: 2.02;
+      letter-spacing: 0.7px;
+      color: #ced6ce;
+      text-align: justify;
+      /* 돌에 깊게 파인 음각 명암 효과 */
+      text-shadow:
+        -1px -1px 1px rgba(6, 8, 7, 0.95),
+        1px 1px 0 rgba(176, 206, 194, 0.22);
+    }
+
+    .chiseled-text p {
+      margin-bottom: 20px;
+    }
+
+    .chiseled-text p:last-child {
+      margin-bottom: 0;
+    }
+
+    .chiseled-emphasis {
+      color: #e2ebe2;
+      font-weight: 700;
+    }
+
+    .final-line {
+      margin-top: 26px !important;
+      padding-top: 18px;
+      border-top: 1px dashed rgba(140, 166, 155, 0.28);
+      text-align: center;
+      font-weight: 700;
+      color: #dce6dd;
+      letter-spacing: 1px;
+    }
+
+    /* 하단 각인 서명 */
+    .carved-signature {
+      position: relative;
+      z-index: 2;
+      margin-top: 28px;
+      text-align: right;
+      font-size: 14px;
+      letter-spacing: 2.5px;
+      color: #93aba0;
+      text-shadow: -1px -1px 1px rgba(5, 7, 6, 0.9);
+    }
+
+    @media (max-width: 640px) {
+      .cavern-wall {
+        padding: 36px 24px 40px;
+      }
+      .chiseled-text {
+        font-size: 15px;
+        line-height: 1.9;
+      }
+      .carving-meta {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 4px;
+      }
+    }
+
+    @media print {
+      body { background: #fff; color: #111; padding: 0; }
+      .cavern-wall {
+        background: #f5f5f3;
+        color: #111;
+        box-shadow: none;
+        border: 1px solid #888;
+      }
+      .chiseled-text, .chiseled-emphasis, .final-line, .carved-signature, .carving-meta {
+        color: #111;
+        text-shadow: none;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <article class="cavern-wall">
+    <div class="rock-texture"></div>
+
+    <!-- 동굴 암반 균열 및 발광 이끼 테두리 -->
+    <svg class="rock-cracks" viewBox="0 0 760 640" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <path d="M0,78 L48,96 L82,84 L120,112" fill="none" stroke="#111513" stroke-width="2.2"/>
+      <path d="M0,79 L48,97 L82,85 L120,113" fill="none" stroke="rgba(110,192,160,0.22)" stroke-width="0.9"/>
+      <path d="M760,152 L704,174 L672,162 L636,198" fill="none" stroke="#111513" stroke-width="2"/>
+      <path d="M760,153 L704,175 L672,163 L636,199" fill="none" stroke="rgba(110,192,160,0.18)" stroke-width="0.8"/>
+      <path d="M18,590 L76,554 L132,570 L185,532" fill="none" stroke="#111513" stroke-width="2"/>
+      <path d="M742,568 L678,538 L640,564" fill="none" stroke="#111513" stroke-width="1.8"/>
+    </svg>
+
+    <div class="carving-meta">
+      <span>지하 동굴 굴 벽면 · 정으로 새긴 각인</span>
+      <span>CARVED INTO CAVERN STONE</span>
+    </div>
+
+    <div class="chiseled-text">
+      <p>
+        신의 뜻이 있어 훗날 누군가 이 글을 읽게 되기를 바란다. 나 <span class="chiseled-emphasis">존 하퍼(John Harper)</span>는 나와 내 동료들의 비참한 이야기를 전하고자 이곳에 글을 남긴다. 윈스콧은 자신의 교활한 계획으로 우리를 파멸로 몰아넣었다. 그는 자신이 발견한 터널을 통해 로드아일랜드주의 감시를 피할 수 있으리라 믿었다. 애초에 이 터널이 대체 무슨 목적으로 만들어진 것인지 깊이 생각했어야만 했다. 그는 스스로 운이 좋다고 여겼으나, 그것은 우리에게 내린 저주였다.
+      </p>
+
+      <p>
+        우리가 그의 화물을 터널로 몰고 가던 중, 끔찍한 괴물들이 덮쳐왔고 운이 좋은 자들은 놈들의 발톱과 송곳니에 목숨을 잃었다. 나머지 사람들은 이곳으로 끌려왔다. 성경과 설교자들은 신께서 뱀을 저주하시어 영원토록 배로 기어 다니게 하셨다고 가르친다. 그런데 어찌하여 우리의 새로운 주인은 여전히 두 발로 걷는단 말인가? 그와 그의 족속들은 어떻게 하느님의 심판을 피했단 말인가? 그들은 인류의 타락 이전에 이곳에서 잠들어 주님의 눈길을 피한 것인가?
+      </p>
+
+      <p>
+        이제 우리는 이 흉측한 뱀을 섬긴다. 그는 인종을 가리지 않고 모든 인간을 노예처럼 부린다. 우리를 짐승 취급하며 강제로 짝짓기하게 만든다. 내 동료들이 쇠약해져 죽거나 뱀의 변덕에 목숨을 잃는 모습을 똑똑히 보았다.
+      </p>
+
+      <p class="final-line">
+        우리는 하느님의 자애로운 눈길이 닿지 않는 머나먼 곳에 버려졌다.
+      </p>
+    </div>
+
+    <div class="carved-signature">— J. HARPER</div>
+  </article>
+
+</body>
+</html>

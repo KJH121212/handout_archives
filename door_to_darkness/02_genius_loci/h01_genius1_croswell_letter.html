@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>래리 크로스웰의 편지</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Gaegu:wght@400;700&family=Nanum+Pen+Script&family=Noto+Serif+KR:wght@400;600&display=swap');
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: #191613;
+      background-image:
+        radial-gradient(circle at 50% 35%, #2a241e 0%, #14110e 70%, #0d0b09 100%);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 44px 18px;
+      color: #2f2f33;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* 구겨지고 급히 접힌 줄노트 편지지 */
+    .letter-wrapper {
+      position: relative;
+      width: 100%;
+      max-width: 680px;
+      transform: rotate(-0.6deg);
+      filter: drop-shadow(0 22px 38px rgba(0, 0, 0, 0.72));
+    }
+
+    /* 뜯어낸 상단 톱니 테두리 */
+    .torn-top {
+      display: block;
+      width: 100%;
+      height: 14px;
+      margin-bottom: -1px;
+    }
+
+    .lined-paper {
+      position: relative;
+      background-color: #efe6d2;
+      background-image:
+        /* 줄노트 파란 가로선 (38px 간격) */
+        repeating-linear-gradient(
+          to bottom,
+          transparent 0px,
+          transparent 37px,
+          rgba(116, 146, 172, 0.36) 37px,
+          rgba(116, 146, 172, 0.36) 38px
+        ),
+        /* 종이 황변 & 모서리 어두움 */
+        radial-gradient(ellipse at 20% 15%, rgba(255, 250, 238, 0.45) 0%, transparent 55%),
+        radial-gradient(ellipse at 85% 88%, rgba(122, 92, 54, 0.18) 0%, transparent 60%),
+        linear-gradient(160deg, rgba(255, 252, 244, 0.25) 0%, rgba(168, 140, 98, 0.15) 100%);
+      background-position: 0 34px, 0 0, 0 0, 0 0;
+      padding: 48px 54px 56px 86px;
+      border-left: 1px solid #c9bba0;
+      border-right: 1px solid #c2b296;
+      border-bottom: 1px solid #b8a689;
+      box-shadow:
+        inset 0 0 65px rgba(112, 86, 48, 0.22),
+        inset 0 -8px 20px rgba(70, 52, 28, 0.12);
+      overflow: hidden;
+    }
+
+    /* 좌측 붉은 여백 세로선 */
+    .lined-paper::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 62px;
+      width: 4px;
+      border-left: 1px solid rgba(186, 98, 92, 0.42);
+      border-right: 1px solid rgba(186, 98, 92, 0.22);
+      pointer-events: none;
+    }
+
+    /* 봉투에 구겨 넣어 생긴 접힘선 & 구김 자국 */
+    .creases {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background:
+        /* 가로 3단 접힘선 */
+        linear-gradient(
+          to bottom,
+          transparent 31.8%,
+          rgba(62, 46, 26, 0.16) 32.3%,
+          rgba(255, 252, 245, 0.28) 32.8%,
+          transparent 33.4%
+        ),
+        linear-gradient(
+          to bottom,
+          transparent 66.2%,
+          rgba(62, 46, 26, 0.18) 66.7%,
+          rgba(255, 252, 245, 0.25) 67.2%,
+          transparent 67.8%
+        ),
+        /* 세로 대충 접은 구김 */
+        linear-gradient(
+          92deg,
+          transparent 48.8%,
+          rgba(62, 46, 26, 0.11) 49.4%,
+          rgba(255, 250, 240, 0.2) 50%,
+          transparent 50.6%
+        ),
+        /* 모서리 사선 구김 */
+        linear-gradient(
+          142deg,
+          transparent 78%,
+          rgba(55, 42, 24, 0.12) 79%,
+          transparent 80.5%
+        );
+    }
+
+    /* 흑연 얼룩 / 손때 자국 */
+    .smudge-1 {
+      position: absolute;
+      bottom: 42px;
+      left: 24px;
+      width: 95px;
+      height: 62px;
+      background: radial-gradient(ellipse, rgba(45, 45, 50, 0.085) 0%, transparent 70%);
+      transform: rotate(-18deg);
+      pointer-events: none;
+    }
+
+    .smudge-2 {
+      position: absolute;
+      top: 96px;
+      right: 32px;
+      width: 110px;
+      height: 75px;
+      background: radial-gradient(ellipse, rgba(96, 74, 45, 0.09) 0%, transparent 68%);
+      transform: rotate(12deg);
+      pointer-events: none;
+    }
+
+    /* 종이 질감 노이즈 오버레이 */
+    .paper-grain {
+      position: absolute;
+      inset: 0;
+      opacity: 0.055;
+      pointer-events: none;
+      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+    }
+
+    /* 연필 손글씨 본문 */
+    .handwriting {
+      position: relative;
+      z-index: 2;
+      font-family: 'Nanum Pen Script', 'Gaegu', cursive;
+      font-size: 29px;
+      line-height: 38px;
+      color: #36363b;
+      letter-spacing: 0.4px;
+      word-break: keep-all;
+      /* 연필 흑연의 거친 필압 느낌 */
+      text-shadow:
+        0.3px 0.3px 0 rgba(35, 35, 40, 0.25),
+        -0.2px 0 0 rgba(255, 255, 255, 0.15);
+    }
+
+    .salutation {
+      margin-bottom: 38px;
+      font-size: 31px;
+      color: #2b2b30;
+    }
+
+    .handwriting p {
+      margin-bottom: 38px;
+    }
+
+    .urgent-emphasis {
+      color: #202024;
+      text-decoration: underline;
+      text-decoration-style: wavy;
+      text-decoration-color: rgba(45, 45, 52, 0.48);
+      text-underline-offset: 4px;
+    }
+
+    .urgent-line {
+      color: #232328;
+      letter-spacing: 0.6px;
+    }
+
+    .closing {
+      margin-top: 12px;
+      text-align: right;
+      padding-right: 14px;
+      line-height: 38px;
+    }
+
+    .signature {
+      display: inline-block;
+      font-size: 34px;
+      color: #222227;
+      transform: rotate(-1.5deg);
+      margin-top: 2px;
+    }
+
+    @media (max-width: 640px) {
+      .lined-paper {
+        padding: 40px 24px 44px 48px;
+        background-position: 0 28px, 0 0, 0 0, 0 0;
+      }
+      .lined-paper::before {
+        left: 34px;
+      }
+      .handwriting {
+        font-size: 25px;
+      }
+    }
+
+    @media print {
+      body {
+        background: none;
+        padding: 0;
+      }
+      .letter-wrapper {
+        transform: none;
+        filter: none;
+        max-width: 100%;
+      }
+      .lined-paper {
+        box-shadow: none;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="letter-wrapper">
+    <!-- 노트에서 급히 찢어낸 상단 테두리 -->
+    <svg class="torn-top" viewBox="0 0 680 14" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <path d="M0,14 L0,9 L18,4 L34,10 L55,5 L78,11 L102,4 L126,9 L154,3 L178,10 L205,5 L230,9 L261,3 L289,11 L318,4 L346,9 L374,4 L401,10 L432,5 L458,9 L488,3 L515,10 L544,5 L572,11 L598,4 L626,9 L652,5 L680,10 L680,14 Z" fill="#efe6d2" stroke="#c9bba0" stroke-width="1"/>
+    </svg>
+
+    <article class="lined-paper">
+      <div class="paper-grain"></div>
+      <div class="creases"></div>
+      <div class="smudge-1"></div>
+      <div class="smudge-2"></div>
+
+      <div class="handwriting">
+        <div class="salutation">친애하는 이에게,</div>
+
+        <p>
+          자네도 알다시피, 나는 최근 초자연적인 현상을 탐사하다 겪은 일 때문에 정신적인 휴식을 취하고자 댄버스 주립 병원에 자진 입원했네. 하지만 댄버스를 선택한 것은 끔찍한 실수였어. 나는 지금 이곳에서 심각한 육체적, 정신적, 영적인 위험에 처해 있네. 이 장소에는 무언가 <span class="urgent-emphasis">'그릇된 것'</span>이 도사리고 있어. 그들은 나를 내보내 주지 않으려 하네. 이곳에선 우편물을 모두 검열하기에 이 편지를 몰래 빼돌려 보낼 수밖에 없었네.
+        </p>
+
+        <p class="urgent-line">
+          부디 와서 나를 이 끔찍한 곳에서 꺼내주게. 혼자 오는 것은 실수일 테니 동행을 데려오는 것이 현명할 걸세.
+        </p>
+
+        <div class="closing">
+          <div>자네의 친구,</div>
+          <div class="signature">래리 크로스웰</div>
+        </div>
+      </div>
+    </article>
+  </div>
+
+</body>
+</html>

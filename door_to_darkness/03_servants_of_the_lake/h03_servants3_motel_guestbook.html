@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>스쿼터스 호수 모텔 투숙객 명부</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Courier+Prime:wght@400;700&family=Gaegu:wght@400;700&family=Great+Vibes&family=IM+Fell+English:ital@0;1&family=Nanum+Myeongjo:wght@400;700;800&family=Nanum+Pen+Script&family=Noto+Sans+KR:wght@400;500;700&display=swap');
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: #171310;
+      background-image:
+        radial-gradient(circle at 50% 32%, #2b231c 0%, #16120e 72%, #0c0907 100%);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 46px 18px;
+      font-family: 'Nanum Myeongjo', serif;
+      color: #271e16;
+      word-break: keep-all;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* 붉은 가죽 장부에서 찢어내어 휴지통에 버렸던 마지막 페이지 */
+    .ledger-wrapper {
+      position: relative;
+      display: flex;
+      align-items: stretch;
+      width: 100%;
+      max-width: 780px;
+      transform: rotate(0.45deg);
+      filter: drop-shadow(0 24px 44px rgba(0, 0, 0, 0.78));
+    }
+
+    /* 좌측 찢어진 톱니 가장자리 SVG */
+    .torn-left-edge {
+      width: 16px;
+      flex-shrink: 0;
+      display: block;
+      margin-right: -1px;
+    }
+
+    .ledger-page {
+      position: relative;
+      flex: 1;
+      background-color: #efe5ce;
+      background-image:
+        radial-gradient(ellipse at 28% 22%, #f6eedb 0%, #e7d8b8 72%, #ddc9a3 100%);
+      padding: 42px 46px 48px 36px;
+      border-top: 1px solid #c6b391;
+      border-right: 1px solid #bda985;
+      border-bottom: 1px solid #b59f7b;
+      box-shadow:
+        inset 14px 0 22px -12px rgba(96, 36, 32, 0.24),
+        inset 0 0 70px rgba(116, 84, 42, 0.2);
+      overflow: hidden;
+    }
+
+    /* 붉은 가죽 제본 풀/실 자국 (찢어진 좌측 안쪽) */
+    .binding-residue {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      width: 7px;
+      background:
+        repeating-linear-gradient(
+          to bottom,
+          rgba(122, 32, 28, 0.22) 0px,
+          rgba(122, 32, 28, 0.22) 22px,
+          transparent 22px,
+          transparent 48px
+        );
+      pointer-events: none;
+    }
+
+    /* 종이 질감 노이즈 */
+    .paper-grain {
+      position: absolute;
+      inset: 0;
+      opacity: 0.055;
+      pointer-events: none;
+      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.84' numOctaves='3' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+    }
+
+    /* 휴지통에 구겨 버렸을 때 생긴 구김선 */
+    .crumple-creases {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background:
+        linear-gradient(
+          118deg,
+          transparent 36%,
+          rgba(68, 50, 28, 0.11) 36.6%,
+          rgba(255, 250, 240, 0.22) 37.2%,
+          transparent 38%
+        ),
+        linear-gradient(
+          22deg,
+          transparent 63%,
+          rgba(68, 50, 28, 0.09) 63.5%,
+          rgba(255, 250, 240, 0.18) 64%,
+          transparent 64.8%
+        );
+    }
+
+    /* 윌리엄의 변명("차를 쏟았다")에 어울리는 옅은 홍차 얼룩 고리 */
+    .tea-stain-ring {
+      position: absolute;
+      bottom: 26px;
+      right: 34px;
+      width: 154px;
+      height: 146px;
+      border-radius: 52% 48% 54% 46% / 47% 53% 48% 52%;
+      border: 4px solid rgba(116, 68, 28, 0.17);
+      background:
+        radial-gradient(
+          ellipse at 48% 52%,
+          rgba(128, 78, 32, 0.03) 0%,
+          rgba(128, 78, 32, 0.06) 62%,
+          rgba(112, 64, 24, 0.14) 84%,
+          rgba(112, 64, 24, 0.04) 100%
+        );
+      box-shadow:
+        0 0 10px rgba(116, 68, 28, 0.08),
+        inset 0 0 12px rgba(116, 68, 28, 0.08);
+      transform: rotate(-12deg);
+      pointer-events: none;
+      z-index: 3;
+      mix-blend-mode: multiply;
+    }
+
+    .tea-splash {
+      position: absolute;
+      bottom: 132px;
+      right: 174px;
+      width: 24px;
+      height: 19px;
+      border-radius: 48% 52% 55% 45%;
+      background: radial-gradient(ellipse, rgba(118, 68, 28, 0.13) 0%, rgba(118, 68, 28, 0.04) 70%, transparent 100%);
+      pointer-events: none;
+      z-index: 3;
+      mix-blend-mode: multiply;
+    }
+
+    /* 장부 상단 헤더 */
+    .ledger-header {
+      position: relative;
+      z-index: 2;
+      text-align: center;
+      padding-bottom: 14px;
+      margin-bottom: 20px;
+      border-bottom: 2px solid #6e2d28;
+    }
+
+    .ledger-header::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: -5px;
+      border-bottom: 1px solid #6e2d28;
+    }
+
+    .motel-name-en {
+      font-family: 'Cinzel', serif;
+      font-size: 20px;
+      font-weight: 700;
+      letter-spacing: 3.5px;
+      color: #4f201c;
+    }
+
+    .motel-name-kr {
+      font-family: 'Nanum Myeongjo', serif;
+      font-size: 13.5px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      color: #6b3830;
+      margin-top: 4px;
+    }
+
+    .ledger-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 10px;
+      font-family: 'IM Fell English', 'Nanum Myeongjo', serif;
+      font-size: 11.5px;
+      color: #775c43;
+      letter-spacing: 0.8px;
+    }
+
+    /* 1920년대 회계/투숙 명부 표 */
+    .register-table {
+      position: relative;
+      z-index: 2;
+      width: 100%;
+      border-collapse: collapse;
+      table-layout: fixed;
+    }
+
+    .register-table thead th {
+      font-family: 'Nanum Myeongjo', serif;
+      font-size: 12px;
+      font-weight: 800;
+      color: #5b2924;
+      letter-spacing: 1px;
+      padding: 8px 10px 9px;
+      border-top: 1px solid rgba(110, 45, 40, 0.55);
+      border-bottom: 2px double rgba(110, 45, 40, 0.7);
+      border-right: 1px solid rgba(92, 122, 146, 0.38);
+      text-align: center;
+      background: rgba(110, 45, 40, 0.035);
+    }
+
+    .register-table thead th:last-child {
+      border-right: none;
+    }
+
+    .th-en {
+      display: block;
+      font-family: 'Cinzel', serif;
+      font-size: 9px;
+      font-weight: 600;
+      letter-spacing: 1.4px;
+      color: #84594c;
+      margin-top: 2px;
+    }
+
+    .register-table tbody td {
+      height: 54px;
+      padding: 6px 12px;
+      border-bottom: 1px solid rgba(92, 122, 146, 0.36);
+      border-right: 1px solid rgba(92, 122, 146, 0.34);
+      vertical-align: middle;
+    }
+
+    .register-table tbody td:last-child {
+      border-right: none;
+    }
+
+    .col-sig { width: 28%; }
+    .col-name { width: 38%; }
+    .col-room { width: 15%; }
+    .col-date { width: 19%; }
+
+    .cell-room,
+    .cell-date {
+      text-align: center;
+    }
+
+    /* 손님 6명의 각기 다른 필체 서명 스타일 */
+    .sig {
+      display: inline-block;
+      line-height: 1.1;
+      white-space: nowrap;
+    }
+
+    .sig-hickey {
+      font-family: 'IM Fell English', serif;
+      font-style: italic;
+      font-size: 22px;
+      color: #202836;
+      transform: rotate(-1.8deg);
+      letter-spacing: 0.4px;
+    }
+
+    .sig-trent {
+      font-family: 'Gaegu', cursive;
+      font-size: 22px;
+      font-weight: 700;
+      color: #2e2926;
+      transform: rotate(1.4deg);
+      letter-spacing: -0.3px;
+    }
+
+    .sig-smith {
+      font-family: 'Great Vibes', cursive;
+      font-size: 23px;
+      color: #2b241d;
+      line-height: 1.02;
+    }
+
+    .sig-smith-sub {
+      display: block;
+      font-family: 'IM Fell English', serif;
+      font-style: italic;
+      font-size: 16px;
+      color: #362c24;
+      margin-left: 10px;
+      transform: rotate(-1deg);
+    }
+
+    .sig-frazer {
+      font-family: 'Great Vibes', cursive;
+      font-size: 28px;
+      color: #192b45;
+      transform: rotate(-2.2deg);
+      letter-spacing: 0.5px;
+    }
+
+    .sig-bonner {
+      font-family: 'Great Vibes', cursive;
+      font-size: 26px;
+      color: #3a232b;
+      transform: rotate(0.8deg);
+    }
+
+    .sig-dunston {
+      font-family: 'Courier Prime', monospace;
+      font-size: 23px;
+      font-weight: 700;
+      color: #18181a;
+      letter-spacing: 3px;
+      transform: rotate(-1deg);
+    }
+
+    /* 성명/객실/날짜 손글씨 기입 */
+    .entry-name {
+      font-family: 'Nanum Pen Script', 'Gaegu', cursive;
+      font-size: 23px;
+      color: #252220;
+      line-height: 1.25;
+    }
+
+    .entry-name-en {
+      display: block;
+      font-family: 'IM Fell English', serif;
+      font-style: italic;
+      font-size: 12.5px;
+      color: #6b5846;
+      letter-spacing: 0.3px;
+      margin-top: -2px;
+    }
+
+    .entry-meta {
+      font-family: 'Nanum Pen Script', 'Gaegu', cursive;
+      font-size: 23px;
+      color: #272320;
+    }
+
+    .entry-frazer .entry-name,
+    .entry-frazer .entry-meta {
+      color: #1a2c46;
+    }
+
+    .entry-dunston .entry-name,
+    .entry-dunston .entry-meta {
+      color: #1c1b1a;
+      font-weight: 700;
+    }
+
+    .empty-row td {
+      height: 40px;
+    }
+
+    .ledger-footer {
+      position: relative;
+      z-index: 2;
+      margin-top: 16px;
+      display: flex;
+      justify-content: space-between;
+      font-family: 'IM Fell English', 'Nanum Myeongjo', serif;
+      font-size: 11px;
+      color: #7c644c;
+    }
+
+    @media (max-width: 680px) {
+      body {
+        padding: 24px 10px;
+      }
+      .ledger-wrapper {
+        transform: none;
+      }
+      .ledger-page {
+        padding: 28px 16px 34px 18px;
+      }
+      .motel-name-en {
+        font-size: 16px;
+        letter-spacing: 2px;
+      }
+      .register-table thead th {
+        font-size: 11px;
+        padding: 6px 4px;
+      }
+      .register-table tbody td {
+        padding: 6px 6px;
+        height: 48px;
+      }
+      .sig-hickey, .sig-trent, .sig-dunston {
+        font-size: 17px;
+      }
+      .sig-frazer, .sig-bonner, .sig-smith {
+        font-size: 21px;
+      }
+      .entry-name, .entry-meta {
+        font-size: 19px;
+      }
+      .entry-name-en {
+        font-size: 10.5px;
+      }
+      .tea-stain-ring {
+        width: 110px;
+        height: 104px;
+        right: 12px;
+        bottom: 16px;
+      }
+    }
+
+    @media print {
+      body {
+        background: none;
+        padding: 0;
+      }
+      .ledger-wrapper {
+        transform: none;
+        filter: none;
+        max-width: 100%;
+      }
+      .ledger-page {
+        box-shadow: none;
+        border: 1px solid #ccc;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="ledger-wrapper">
+    <!-- 장부 제본선에서 급히 찢어낸 좌측 가장자리 -->
+    <svg class="torn-left-edge" viewBox="0 0 16 640" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <path d="M16,0 L9,0 L13,18 L5,36 L12,58 L4,76 L11,98 L6,120 L13,144 L4,168 L10,192 L5,215 L12,238 L6,262 L13,286 L4,310 L11,334 L5,358 L12,382 L6,406 L13,430 L5,456 L11,480 L4,504 L12,528 L6,554 L13,580 L5,606 L11,626 L8,640 L16,640 Z" fill="#efe5ce" stroke="#c2af8d" stroke-width="1"/>
+    </svg>
+
+    <main class="ledger-page">
+      <div class="binding-residue"></div>
+      <div class="paper-grain"></div>
+      <div class="crumple-creases"></div>
+      <div class="tea-stain-ring" aria-hidden="true"></div>
+      <div class="tea-splash" aria-hidden="true"></div>
+
+      <header class="ledger-header">
+        <div class="motel-name-en">SQUATTERS LAKE MOTEL</div>
+        <div class="motel-name-kr">스쿼터스 호수 모텔 · 투숙객 명부</div>
+        <div class="ledger-meta">
+          <span>GUEST REGISTER — MASSACHUSETTS</span>
+          <span>50¢ PER NIGHT · CASH IN ADVANCE</span>
+        </div>
+      </header>
+
+      <table class="register-table">
+        <thead>
+          <tr>
+            <th class="col-sig">서명<span class="th-en">SIGNATURE</span></th>
+            <th class="col-name">성명<span class="th-en">GUEST NAME</span></th>
+            <th class="col-room">객실<span class="th-en">ROOM</span></th>
+            <th class="col-date">투숙일<span class="th-en">DATE</span></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span class="sig sig-hickey">A. Hickey</span></td>
+            <td>
+              <span class="entry-name">에이브 히키</span>
+              <span class="entry-name-en">Abe Hickey</span>
+            </td>
+            <td class="cell-room"><span class="entry-meta">4호실</span></td>
+            <td class="cell-date"><span class="entry-meta">12월 30일</span></td>
+          </tr>
+          <tr>
+            <td><span class="sig sig-trent">J. Trent</span></td>
+            <td>
+              <span class="entry-name">제이컵 트렌트</span>
+              <span class="entry-name-en">Jacob Trent</span>
+            </td>
+            <td class="cell-room"><span class="entry-meta">8호실</span></td>
+            <td class="cell-date"><span class="entry-meta">12월 31일</span></td>
+          </tr>
+          <tr>
+            <td>
+              <span class="sig sig-smith">J. Smith</span>
+              <span class="sig-smith-sub">/ J. Smith</span>
+            </td>
+            <td>
+              <span class="entry-name">스미스 부부</span>
+              <span class="entry-name-en">Mr. &amp; Mrs. Smith</span>
+            </td>
+            <td class="cell-room"><span class="entry-meta">4호실</span></td>
+            <td class="cell-date"><span class="entry-meta">1월 8일</span></td>
+          </tr>
+          <tr class="entry-frazer">
+            <td><span class="sig sig-frazer">J. Frazer</span></td>
+            <td>
+              <span class="entry-name">제임스 프레이저</span>
+              <span class="entry-name-en">James Frazer</span>
+            </td>
+            <td class="cell-room"><span class="entry-meta">1호실</span></td>
+            <td class="cell-date"><span class="entry-meta">1월 8일</span></td>
+          </tr>
+          <tr>
+            <td><span class="sig sig-bonner">S. Bonner</span></td>
+            <td>
+              <span class="entry-name">세라 보너</span>
+              <span class="entry-name-en">Sarah Bonner</span>
+            </td>
+            <td class="cell-room"><span class="entry-meta">7호실</span></td>
+            <td class="cell-date"><span class="entry-meta">1월 13일</span></td>
+          </tr>
+          <tr class="entry-dunston">
+            <td><span class="sig sig-dunston">BD</span></td>
+            <td>
+              <span class="entry-name">빌 던스턴</span>
+              <span class="entry-name-en">Bill Dunston</span>
+            </td>
+            <td class="cell-room"><span class="entry-meta">6호실</span></td>
+            <td class="cell-date"><span class="entry-meta">1월 14일</span></td>
+          </tr>
+          <tr class="empty-row">
+            <td></td><td></td><td></td><td></td>
+          </tr>
+          <tr class="empty-row">
+            <td></td><td></td><td></td><td></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <footer class="ledger-footer">
+        <span>PROPRIETORS: R. &amp; W. BROPHY</span>
+        <span>FORM 14-B · HOTEL &amp; LODGING REGISTER</span>
+      </footer>
+    </main>
+  </div>
+
+</body>
+</html>

@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>별에서 온 준마를 부르고 지배하는 법</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700&family=Cinzel:wght@600;700&family=IM+Fell+English:ital@0;1&family=Nanum+Myeongjo:wght@400;700;800&display=swap');
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: #130f0c;
+      background-image:
+        radial-gradient(circle at 50% 28%, #261d16 0%, #140f0c 70%, #090705 100%);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 48px 18px;
+      font-family: 'Nanum Myeongjo', serif;
+      color: #271b11;
+      word-break: keep-all;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* 습지 마법사의 작업대 위 고대 양피지 두루마리 */
+    .parchment-wrap {
+      position: relative;
+      width: 100%;
+      max-width: 780px;
+      filter: drop-shadow(0 28px 58px rgba(0, 0, 0, 0.84));
+    }
+
+    .vellum {
+      position: relative;
+      background-color: #dec89c;
+      background-image:
+        radial-gradient(ellipse at 50% 24%, #ead9b4 0%, #d8be8c 62%, #bfa06b 100%),
+        radial-gradient(ellipse at 12% 88%, rgba(86, 54, 24, 0.28) 0%, transparent 52%),
+        radial-gradient(ellipse at 88% 12%, rgba(92, 58, 26, 0.25) 0%, transparent 48%);
+      padding: 54px 62px 60px;
+      border: 1px solid #967749;
+      box-shadow:
+        inset 0 0 110px rgba(72, 44, 18, 0.45),
+        inset 0 0 28px rgba(48, 26, 10, 0.34);
+      /* 자연스럽게 닳고 울퉁불퉁한 고대 양피지 가장자리 */
+      clip-path: polygon(
+        0.5% 0.6%, 12% 0%, 28% 0.8%, 47% 0.1%, 66% 0.7%, 84% 0%, 99.4% 0.8%,
+        100% 14%, 99.3% 34%, 100% 56%, 99.2% 78%, 99.8% 98.8%,
+        86% 99.6%, 68% 99%, 49% 99.8%, 31% 99.1%, 14% 99.7%, 0.4% 99%,
+        0% 82%, 0.7% 61%, 0.1% 39%, 0.8% 18%
+      );
+      overflow: hidden;
+    }
+
+    /* 고대 장식 이중 테두리 */
+    .vellum-frame {
+      position: absolute;
+      inset: 18px;
+      border: 1.5px solid rgba(78, 48, 24, 0.46);
+      pointer-events: none;
+    }
+
+    .vellum-frame::after {
+      content: "";
+      position: absolute;
+      inset: 5px;
+      border: 1px solid rgba(78, 48, 24, 0.26);
+    }
+
+    /* 양피지 거친 섬유 질감 노이즈 */
+    .vellum-grain {
+      position: absolute;
+      inset: 0;
+      opacity: 0.085;
+      pointer-events: none;
+      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.78' numOctaves='4' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+    }
+
+    /* 오래된 밀랍 얼룩과 말라붙은 의식용 핏방울 */
+    .stain-wax {
+      position: absolute;
+      top: 72px;
+      left: 34px;
+      width: 68px;
+      height: 54px;
+      border-radius: 52% 48% 58% 42%;
+      background: radial-gradient(ellipse, rgba(96, 62, 26, 0.22) 0%, rgba(96, 62, 26, 0.08) 65%, transparent 76%);
+      transform: rotate(-18deg);
+      pointer-events: none;
+    }
+
+    .blood-drops {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 3;
+    }
+
+    /* 알데바란 천체 인장 헤더 */
+    .ritual-header {
+      position: relative;
+      z-index: 2;
+      text-align: center;
+      padding-bottom: 24px;
+      margin-bottom: 26px;
+      border-bottom: 1px solid rgba(82, 48, 22, 0.42);
+    }
+
+    .sigil-ornament {
+      display: block;
+      margin: 0 auto 14px;
+      width: 88px;
+      height: 88px;
+    }
+
+    .ritual-title {
+      font-size: 26px;
+      font-weight: 800;
+      color: #261409;
+      letter-spacing: 1.5px;
+      margin-bottom: 10px;
+      text-shadow: 0 1px 0 rgba(255, 240, 210, 0.35);
+    }
+
+    .ritual-condition {
+      font-size: 14.5px;
+      font-style: italic;
+      color: #5b2814;
+      letter-spacing: 0.5px;
+    }
+
+    /* 고대 주문서 본문 */
+    .grimoire-body {
+      position: relative;
+      z-index: 2;
+      font-size: 15.5px;
+      line-height: 1.98;
+      color: #24170d;
+      text-align: justify;
+    }
+
+    .grimoire-body p {
+      margin-bottom: 18px;
+      text-indent: 14px;
+    }
+
+    .grimoire-body p.lead-line {
+      text-indent: 0;
+      margin-bottom: 10px;
+      font-weight: 700;
+      color: #361c0e;
+    }
+
+    /* 강조된 비전 영창(Chant) 블록 */
+    .chant-block {
+      margin: 22px 12px 24px;
+      padding: 16px 22px;
+      background: rgba(78, 36, 16, 0.08);
+      border-top: 1px solid rgba(102, 40, 20, 0.45);
+      border-bottom: 1px solid rgba(102, 40, 20, 0.45);
+      border-left: 3px solid #6b2216;
+      text-align: center;
+      box-shadow: inset 0 0 24px rgba(84, 42, 18, 0.08);
+    }
+
+    .chant-kr {
+      font-size: 17px;
+      font-weight: 800;
+      font-style: italic;
+      color: #4f150c;
+      letter-spacing: 0.6px;
+      line-height: 1.7;
+    }
+
+    .chant-en {
+      margin-top: 6px;
+      font-family: 'IM Fell English', serif;
+      font-style: italic;
+      font-size: 14.5px;
+      color: #5d3622;
+      letter-spacing: 0.3px;
+    }
+
+    /* 섹션 구분 문양 */
+    .sigil-divider {
+      text-align: center;
+      margin: 24px 0;
+      color: rgba(84, 46, 22, 0.68);
+      font-size: 13px;
+      letter-spacing: 10px;
+    }
+
+    .sigil-divider::before,
+    .sigil-divider::after {
+      content: "";
+      display: inline-block;
+      width: 24%;
+      height: 1px;
+      background: linear-gradient(to right, transparent, rgba(84, 46, 22, 0.48), transparent);
+      vertical-align: middle;
+      margin: 0 12px;
+    }
+
+    @media (max-width: 660px) {
+      .vellum {
+        padding: 36px 26px 42px;
+      }
+      .ritual-title {
+        font-size: 21px;
+      }
+      .chant-block {
+        margin: 18px 0 20px;
+        padding: 14px 14px;
+      }
+      .chant-kr {
+        font-size: 15.5px;
+      }
+    }
+
+    @media print {
+      body {
+        background: none;
+        padding: 0;
+      }
+      .parchment-wrap {
+        filter: none;
+        max-width: 100%;
+      }
+      .vellum {
+        box-shadow: none;
+        clip-path: none;
+        padding: 28px 32px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="parchment-wrap">
+    <main class="vellum">
+      <div class="vellum-frame"></div>
+      <div class="vellum-grain"></div>
+      <div class="stain-wax"></div>
+
+      <!-- 마른 핏방울과 세월의 얼룩 -->
+      <svg class="blood-drops" viewBox="0 0 780 1100" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="712" cy="184" r="9" fill="#5b150e" opacity="0.46"/>
+        <circle cx="726" cy="198" r="3.5" fill="#5b150e" opacity="0.4"/>
+        <ellipse cx="94" cy="868" rx="14" ry="11" transform="rotate(22 94 868)" fill="#52120b" opacity="0.42"/>
+        <circle cx="112" cy="884" r="4" fill="#52120b" opacity="0.38"/>
+        <circle cx="678" cy="954" r="6.5" fill="#4f120b" opacity="0.44"/>
+        <circle cx="662" cy="942" r="2.8" fill="#5b150e" opacity="0.38"/>
+      </svg>
+
+      <header class="ritual-header">
+        <!-- 알데바란(Aldebaran) 천체 별 문양 인장 -->
+        <svg class="sigil-ornament" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <circle cx="50" cy="50" r="44" fill="none" stroke="#4d2814" stroke-width="1.3" stroke-dasharray="10 3 4 3"/>
+          <circle cx="50" cy="50" r="37" fill="none" stroke="#4d2814" stroke-width="0.9"/>
+          <!-- 팔각 별빛(알데바란) -->
+          <path d="M50,9 L55,41 L82,22 L60,46 L91,50 L60,54 L82,78 L55,59 L50,91 L45,59 L18,78 L40,54 L9,50 L40,46 L18,22 L45,41 Z"
+                fill="rgba(104, 34, 18, 0.16)" stroke="#551d10" stroke-width="1.2" stroke-linejoin="round"/>
+          <!-- 중앙 적색 거성 눈 / 황소자리 기호 -->
+          <circle cx="50" cy="50" r="7.5" fill="#6b1d12" opacity="0.85"/>
+          <circle cx="50" cy="50" r="3" fill="#e5d2a7"/>
+          <path d="M36,36 C41,42 59,42 64,36" fill="none" stroke="#4d2814" stroke-width="1.3"/>
+        </svg>
+
+        <h1 class="ritual-title">별에서 온 준마를 부르고 지배하는 법</h1>
+        <div class="ritual-condition">알데바란이 지평선 위에 떠 있을 때 거행할 것.</div>
+      </header>
+
+      <section class="grimoire-body">
+        <p>
+          이 생물은 경호원, 병사, 암살자, 전령, 그리고 탈것으로 유용하게 쓰일 수 있다. 불러내어 그 의지를 그대의 의지에 종속시켜 거역하지 못하게 하라. 종속되지 않은 괴수는 지극히 무시무시하니, 마지막 단계에서 그대를 쳐 죽이지 않도록 극도로 주의하라.
+        </p>
+
+        <p>
+          태어난 지 6개월 된 흠 없는 송아지나 열네 번의 여름을 넘기지 않은 온순한 처녀의 피를 쏟아, 소환 제단의 돌 위에 붉은 피를 바르며 다음 주문을 반복하라.
+        </p>
+
+        <div class="chant-block">
+          <div class="chant-kr">익 크타, 얀 네! 뱌키 크타 메, 다 나이, 스노마스 나이르브! 얀 네, 익 크타.</div>
+          <div class="chant-en">(Ick ctha, yaahn neh! Byakhee ctha meh, da nai, s'nommas naírb! Yaahn neh, ick ctha.)</div>
+        </div>
+
+        <p>
+          이때 호루라기를 불어 읊조릴 때마다 세 번씩 소리를 내어라.
+        </p>
+
+        <p>
+          얼마 후 하늘이 열리고 천공의 틈새에서 저 너머의 여정으로 얼어붙은 서리를 덮어쓴 별의 준마가 내려올 것이다. 간청자의 부름을 들었기에 응답하지 않을 수 없으나, 녀석은 자신의 본성을 지배할 권리를 시험하려 들 것이다.
+        </p>
+
+        <div class="sigil-divider">✦</div>
+
+        <p>
+          여기서 실패한다면 그대의 목숨의 불꽃은 분명 꺼지고 말리라. 여전히 소환의 피로 젖어 있는 단검을 사용하여 먼저 괴수를 가리킨 다음 땅을 가리켜 녀석에 대한 그대의 지배력을 나타내라. 짐승은 인간의 약점을 찾아내 별들로 달아나려 할 터이니 온 의지를 이 과업에 집중하라.
+        </p>
+
+        <p class="lead-line">힘찬 목소리로 외쳐라.</p>
+
+        <div class="chant-block">
+          <div class="chant-kr">익 크타, 뱌키! 크타 메.</div>
+          <div class="chant-en">(Ick ctha, byakhee! Ctha meh.)</div>
+        </div>
+
+        <p>
+          성공하면 짐승은 엎드려 복종할 것이며 그대의 명령을 따를 것이다.
+        </p>
+
+        <div class="sigil-divider">✦</div>
+
+        <p>
+          명령을 완수한 후에는 관례에 따라 간청자가 생물을 돌려보내야 한다. 뼈 단검을 들고 생물 앞의 허공에 X자를 새겨라. 이는 녀석의 과업이 끝났음을 의미한다. 그런 다음 단검의 날카로운 날로 팔꿈치부터 손목까지 그대의 팔뚝을 긋고, 땅에 세 방울의 피를 떨어뜨리며 읊어라.
+        </p>
+
+        <div class="chant-block">
+          <div class="chant-kr">얀 네, 뱌키! 크타 메.</div>
+          <div class="chant-en">(Yaahn neh, byakhee! Ctha meh.)</div>
+        </div>
+
+        <p style="margin-bottom: 0;">
+          물러가라는 명령에 만족한 생물은 떠나갈 것이다.
+        </p>
+      </section>
+    </main>
+  </div>
+
+</body>
+</html>
