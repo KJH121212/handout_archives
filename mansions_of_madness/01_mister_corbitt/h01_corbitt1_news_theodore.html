@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>지역 신문 기사 - 지역 사업가, 불의의 사고로 사망</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=IM+Fell+English:ital@0;1&family=Nanum+Myeongjo:wght@400;700;800&family=Noto+Sans+KR:wght@400;500;700&display=swap');
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: #191511;
+      background-image:
+        radial-gradient(circle at 50% 32%, #2b231b 0%, #15110d 72%, #0c0a08 100%);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 44px 18px;
+      font-family: 'Nanum Myeongjo', serif;
+      color: #211a13;
+      word-break: keep-all;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* 14년 전 황변한 지역 신문 보관본 오려낸 기사 */
+    .clipping-wrap {
+      position: relative;
+      width: 100%;
+      max-width: 660px;
+      transform: rotate(-0.4deg);
+      filter: drop-shadow(0 22px 42px rgba(0, 0, 0, 0.76));
+    }
+
+    .newspaper-clipping {
+      position: relative;
+      background-color: #e7dac0;
+      background-image:
+        radial-gradient(ellipse at 32% 24%, #efe4cc 0%, #decba8 65%, #cfb992 100%),
+        repeating-linear-gradient(
+          rgba(42, 28, 14, 0.015) 0px,
+          rgba(42, 28, 14, 0.015) 1px,
+          transparent 1px,
+          transparent 2px
+        );
+      padding: 36px 44px 36px;
+      border-top: 1px solid #bca680;
+      border-left: 1px solid #b8a27c;
+      border-right: 1px solid #ad9771;
+      box-shadow:
+        inset 0 0 62px rgba(96, 68, 34, 0.24),
+        inset 0 2px 10px rgba(68, 46, 20, 0.12);
+      overflow: hidden;
+    }
+
+    .paper-grain {
+      position: absolute;
+      inset: 0;
+      opacity: 0.055;
+      pointer-events: none;
+      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='190' height='190'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+    }
+
+    /* 오래된 접힘선과 세월의 얼룩 */
+    .fold-crease {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background:
+        linear-gradient(
+          to bottom,
+          transparent 48.2%,
+          rgba(78, 56, 30, 0.14) 49%,
+          rgba(255, 248, 232, 0.22) 49.6%,
+          transparent 50.5%
+        );
+    }
+
+    .age-stain {
+      position: absolute;
+      top: -18px;
+      right: -20px;
+      width: 170px;
+      height: 155px;
+      background: radial-gradient(ellipse, rgba(126, 86, 38, 0.14) 0%, rgba(126, 86, 38, 0.05) 55%, transparent 72%);
+      border-radius: 52% 48% 58% 42%;
+      pointer-events: none;
+    }
+
+    /* 신문 제호 */
+    .masthead {
+      position: relative;
+      z-index: 2;
+      text-align: center;
+      border-bottom: 3px double #2a2016;
+      padding-bottom: 10px;
+      margin-bottom: 18px;
+    }
+
+    .masthead .en-name {
+      font-family: 'Cinzel', serif;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 5px;
+      color: #5b4834;
+      margin-bottom: 4px;
+    }
+
+    .masthead h1 {
+      font-size: 34px;
+      font-weight: 800;
+      letter-spacing: 6px;
+      line-height: 1.15;
+      color: #1c150e;
+    }
+
+    .masthead .sub-bar {
+      display: flex;
+      justify-content: space-between;
+      border-top: 1px solid #3c2e20;
+      margin-top: 9px;
+      padding-top: 5px;
+      font-family: 'Noto Sans KR', sans-serif;
+      font-size: 11px;
+      font-weight: 500;
+      color: #4f3e2c;
+    }
+
+    .archive-stamp {
+      position: absolute;
+      top: 18px;
+      right: 22px;
+      z-index: 3;
+      border: 1.5px solid rgba(112, 58, 36, 0.62);
+      color: rgba(112, 58, 36, 0.72);
+      font-family: 'Noto Sans KR', sans-serif;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      padding: 3px 8px;
+      transform: rotate(4.5deg);
+      line-height: 1.3;
+      text-align: center;
+      pointer-events: none;
+    }
+
+    /* 지면 분류 */
+    .section-tag {
+      position: relative;
+      z-index: 2;
+      display: inline-block;
+      border: 1px solid #3a2b1d;
+      color: #2f2216;
+      font-family: 'Noto Sans KR', sans-serif;
+      font-size: 10.5px;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      padding: 2px 9px;
+      margin-bottom: 12px;
+      background: rgba(58, 43, 29, 0.06);
+    }
+
+    /* 기사 헤드라인 */
+    .headline {
+      position: relative;
+      z-index: 2;
+      border-top: 2px solid #241b12;
+      border-bottom: 1px solid #241b12;
+      padding: 13px 0;
+      margin-bottom: 18px;
+      text-align: center;
+    }
+
+    .headline h2 {
+      font-size: 27px;
+      font-weight: 800;
+      line-height: 1.3;
+      letter-spacing: -0.4px;
+      color: #19120b;
+    }
+
+    .headline .deck {
+      margin-top: 6px;
+      font-family: 'IM Fell English', 'Nanum Myeongjo', serif;
+      font-style: italic;
+      font-size: 13px;
+      color: #54412e;
+    }
+
+    /* 2단 본문 */
+    .article-columns {
+      position: relative;
+      z-index: 2;
+      column-count: 2;
+      column-gap: 26px;
+      column-rule: 1px solid rgba(48, 35, 22, 0.3);
+      font-size: 14.8px;
+      line-height: 1.86;
+      text-align: justify;
+      color: #221a12;
+    }
+
+    .article-columns p {
+      margin-bottom: 13px;
+      text-indent: 14px;
+    }
+
+    .article-columns p:first-child {
+      text-indent: 0;
+    }
+
+    .article-columns p:first-child::first-letter {
+      float: left;
+      font-size: 40px;
+      line-height: 0.9;
+      padding-right: 6px;
+      padding-top: 3px;
+      font-weight: 800;
+      color: #1a130c;
+    }
+
+    .article-columns p:last-child {
+      margin-bottom: 0;
+    }
+
+    /* 신문 말미 장식선 */
+    .end-rule {
+      position: relative;
+      z-index: 2;
+      margin-top: 22px;
+      padding-top: 10px;
+      border-top: 1px solid rgba(48, 35, 22, 0.35);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-family: 'Noto Sans KR', sans-serif;
+      font-size: 11px;
+      color: #5b4835;
+    }
+
+    .end-mark {
+      letter-spacing: 3px;
+      font-weight: 700;
+      color: #36291c;
+    }
+
+    /* 하단 찢어진 신문지 테두리 */
+    .torn-bottom {
+      display: block;
+      width: 100%;
+      height: 15px;
+      margin-top: -1px;
+    }
+
+    @media (max-width: 600px) {
+      .newspaper-clipping {
+        padding: 28px 22px 26px;
+      }
+      .archive-stamp {
+        position: static;
+        display: inline-block;
+        margin-bottom: 10px;
+        transform: none;
+      }
+      .masthead h1 {
+        font-size: 26px;
+        letter-spacing: 3px;
+      }
+      .headline h2 {
+        font-size: 22px;
+      }
+      .article-columns {
+        column-count: 1;
+      }
+    }
+
+    @media print {
+      body { background: none; padding: 0; }
+      .clipping-wrap { transform: none; filter: none; max-width: 100%; }
+      .newspaper-clipping { box-shadow: none; border: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="clipping-wrap">
+    <article class="newspaper-clipping">
+      <div class="paper-grain"></div>
+      <div class="fold-crease"></div>
+      <div class="age-stain"></div>
+
+      <div class="archive-stamp">보관 자료실<br>14년 전 발행본</div>
+
+      <header class="masthead">
+        <div class="en-name">LOCAL DAILY CHRONICLE · ARCHIVE EDITION</div>
+        <h1>지역 일간지</h1>
+        <div class="sub-bar">
+          <span>외신 및 지역 경제면</span>
+          <span>14년 전 일자 발행본</span>
+          <span>정가 2센트</span>
+        </div>
+      </header>
+
+      <div class="section-tag">비보 · LOCAL BUSINESSMAN LOST ABROAD</div>
+
+      <div class="headline">
+        <h2>지역 사업가, 불의의 사고로 사망</h2>
+        <div class="deck">Theodore Corbitt of Corbitt Imports of America Lost in Punjab Highlands</div>
+      </div>
+
+      <div class="article-columns">
+        <p>
+          '아메리카 코빗 수입 상사'의 소유주인 시어도어 코빗 씨가 인도에서 휴가를 보내던 중 비극적인 사고로 사망했다는 소식이 오늘 전해졌다. 코빗 씨는 아들 버나드와 동행하던 중 펀자브의 고산 지대를 여행하다 추락사한 것으로 알려졌다.
+        </p>
+        <p>
+          당국에 따르면, 두 사람은 등산 도중 해당 지역에 자주 출몰하는 산적 떼의 습격을 받았다. 산비탈을 따라 쫓기던 중, 부친 코빗 씨가 발을 헛디뎌 낭떠러지로 추락해 숨진 것으로 보인다. 아들은 가까스로 탈출하여 안전하게 몸을 피했다. 시어도어 코빗 씨의 시신은 아직 수습되지 못했으며, 당국은 시신이 유실되었거나 산에 서식하는 들개 떼에게 훼손되었을 가능성을 우려하고 있다.
+        </p>
+        <p>
+          고(故) 시어도어 코빗 씨의 유족으로는 부인 일레인과 아들 버나드가 있다. 현재 버나드 코빗이 가업의 경영을 이어받을지는 확인되지 않았다.
+        </p>
+      </div>
+
+      <div class="end-rule">
+        <span>지역 도서관 신문 보관철 발췌</span>
+        <span class="end-mark">— 30 —</span>
+      </div>
+    </article>
+
+    <!-- 낡아 뜯어진 하단 신문 가장자리 -->
+    <svg class="torn-bottom" viewBox="0 0 660 15" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <path d="M0,0 L660,0 L660,8 L636,13 L610,6 L584,12 L556,5 L528,13 L499,6 L470,12 L442,5 L414,13 L386,7 L356,12 L328,5 L298,13 L270,6 L242,11 L212,5 L184,13 L156,6 L128,12 L98,5 L70,13 L44,6 L18,11 L0,7 Z" fill="#d3be97" stroke="#ad9771" stroke-width="0.8"/>
+    </svg>
+  </div>
+
+</body>
+</html>

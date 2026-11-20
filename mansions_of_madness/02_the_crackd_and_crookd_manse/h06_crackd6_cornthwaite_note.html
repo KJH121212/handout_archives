@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>벽난로 격자 안에서 발견된 구겨진 쪽지</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=Nanum+Myeongjo:wght@400;700;800&family=Nanum+Pen+Script&display=swap');
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: #14110f;
+      background-image:
+        radial-gradient(circle at 50% 28%, #251e19 0%, #13100d 72%, #090706 100%);
+      padding: 46px 18px;
+      display: flex;
+      justify-content: center;
+      font-family: 'Gowun Batang', 'Nanum Myeongjo', serif;
+      color: #1f1914;
+      word-break: keep-all;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* 벽난로 쇠창살 안에서 꺼낸 구겨지고 그을린 편지지 */
+    .crumpled-note {
+      position: relative;
+      width: 100%;
+      max-width: 720px;
+      background-color: #ebe0c9;
+      background-image:
+        radial-gradient(ellipse at 32% 28%, #f2e8d4 0%, #dccbb0 72%, #cbb797 100%),
+        repeating-linear-gradient(
+          to bottom,
+          transparent 0px,
+          transparent 33px,
+          rgba(110, 92, 68, 0.1) 33px,
+          rgba(110, 92, 68, 0.1) 34px
+        );
+      padding: 54px 56px 58px;
+      border: 1px solid #a89578;
+      box-shadow:
+        0 26px 60px rgba(0, 0, 0, 0.8),
+        inset 0 0 95px rgba(48, 36, 24, 0.34);
+      overflow: hidden;
+      transform: rotate(-0.4deg);
+    }
+
+    /* 종이 질감 */
+    .paper-noise {
+      position: absolute;
+      inset: 0;
+      opacity: 0.065;
+      pointer-events: none;
+      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.88' numOctaves='3' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+    }
+
+    /* 구겨진 주름선 오버레이 */
+    .crumple-lines {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: 3;
+      opacity: 0.42;
+      background-image:
+        linear-gradient(128deg, transparent 32%, rgba(56, 40, 22, 0.16) 32.4%, rgba(255, 250, 240, 0.42) 32.9%, transparent 33.4%),
+        linear-gradient(42deg, transparent 58%, rgba(56, 40, 22, 0.14) 58.3%, rgba(255, 250, 240, 0.38) 58.8%, transparent 59.3%),
+        linear-gradient(164deg, transparent 68%, rgba(56, 40, 22, 0.18) 68.3%, rgba(255, 250, 240, 0.35) 68.8%, transparent 69.3%),
+        linear-gradient(14deg, transparent 22%, rgba(56, 40, 22, 0.12) 22.3%, rgba(255, 250, 240, 0.3) 22.8%, transparent 23.3%);
+    }
+
+    /* 벽난로 그을음과 재 얼룩 */
+    .soot-top-right {
+      position: absolute;
+      top: -32px;
+      right: -28px;
+      width: 220px;
+      height: 190px;
+      background: radial-gradient(ellipse, rgba(28, 24, 20, 0.34) 0%, rgba(44, 36, 28, 0.14) 48%, transparent 72%);
+      pointer-events: none;
+      z-index: 2;
+    }
+
+    .soot-bottom-left {
+      position: absolute;
+      bottom: -36px;
+      left: -30px;
+      width: 240px;
+      height: 185px;
+      background: radial-gradient(ellipse, rgba(30, 25, 20, 0.3) 0%, rgba(56, 44, 32, 0.12) 50%, transparent 72%);
+      pointer-events: none;
+      z-index: 2;
+    }
+
+    /* 잉크 번짐 방울 */
+    .ink-blot {
+      position: absolute;
+      bottom: 64px;
+      right: 88px;
+      width: 16px;
+      height: 14px;
+      background: radial-gradient(circle, rgba(22, 24, 34, 0.65) 0%, rgba(22, 24, 34, 0.25) 58%, transparent 75%);
+      border-radius: 58% 42% 50% 50%;
+      pointer-events: none;
+      z-index: 2;
+    }
+
+    /* 필체 내용 */
+    .note-content {
+      position: relative;
+      z-index: 4;
+      color: #1b1d26;
+    }
+
+    /* 초반: 침착하게 유언 형식을 갖추려다 끊김 */
+    .salutation {
+      font-size: 18px;
+      font-weight: 700;
+      margin-bottom: 20px;
+      letter-spacing: 0.4px;
+      color: #1a1d28;
+    }
+
+    .para-calm {
+      font-size: 16.5px;
+      line-height: 2.02;
+      margin-bottom: 24px;
+      text-align: justify;
+      color: #1c202c;
+    }
+
+    /* 중반: 공포와 초조함으로 기울고 거칠어지는 필체 */
+    .para-agitated {
+      font-size: 17px;
+      line-height: 1.98;
+      margin-bottom: 24px;
+      text-align: justify;
+      color: #181a24;
+      transform: rotate(-0.35deg);
+      letter-spacing: -0.1px;
+    }
+
+    /* 후반: 절박하고 거칠게 휘갈겨 쓰다 갑자기 끊어짐 */
+    .para-frantic {
+      font-size: 17.8px;
+      font-weight: 700;
+      line-height: 1.96;
+      text-align: justify;
+      color: #14151e;
+      transform: rotate(-0.7deg);
+      letter-spacing: -0.25px;
+    }
+
+    .abrupt-tail {
+      display: inline-block;
+      position: relative;
+    }
+
+    /* 마지막 문장 끝의 급격한 펜 끌림 자국 SVG */
+    .pen-streak-wrap {
+      margin-top: 6px;
+      display: flex;
+      justify-content: flex-end;
+      padding-right: 14px;
+    }
+
+    @media (max-width: 640px) {
+      .crumpled-note {
+        padding: 36px 24px 40px;
+        transform: none;
+      }
+      .para-calm,
+      .para-agitated,
+      .para-frantic {
+        font-size: 15.5px;
+        transform: none;
+      }
+    }
+
+    @media print {
+      body { background: none; padding: 0; }
+      .crumpled-note { box-shadow: none; border: 1px solid #999; max-width: 100%; padding: 28px; transform: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <main class="crumpled-note">
+    <div class="paper-noise"></div>
+    <div class="soot-top-right"></div>
+    <div class="soot-bottom-left"></div>
+    <div class="ink-blot"></div>
+    <div class="crumple-lines"></div>
+
+    <article class="note-content">
+      <div class="salutation">관계자 분께,</div>
+
+      <p class="para-calm">
+        본인은 직원들과 원정대원들의 뒤를 이어 죽음을 맞이할 경우를 대비하여 이 글을 남긴다. 나, 아서 콘스웨이트는 명석한 정신과 건강한 신체를 지닌 상태에서—
+      </p>
+
+      <p class="para-agitated">
+        격식이나 법적 형식을 차릴 시간이 없다. 때가 왔다. 놈에 대해 알려야 한다. 이런 꼴을 목도하고도 제정신을 유지할 수 있는 자가 어디 있겠는가? 그 불경하고 푸르스름한 정글, 그 저주받은 사원에서 도망쳐 나왔다고 믿었건만, 놈은 기어코 나를 여기까지 따라왔다. 흔적을 안다. 틀림없다. 놈이 나와 함께 있다. 놈은 너무도 영리하고 끔찍하여—
+      </p>
+
+      <p class="para-frantic">
+        빌어먹을 신파극 같으니! 빈집에서 혼자 끄적거려 봐야 무슨 소용이란 말인가! 이 글을 읽는 자는 누구든 놈의 정체를 알고 있거나 알게 될 것이다. 그러나 당신이 반드시 알아야 할 사실은, 놈에게 너무도 단순한 약점이 있다는 것이다. <span class="abrupt-tail">그 약점은 바로—</span>
+      </p>
+
+      <!-- 펜촉이 종이 위를 긁으며 급히 끊긴 잉크 선 -->
+      <div class="pen-streak-wrap" aria-hidden="true">
+        <svg width="190" height="34" viewBox="0 0 190 34" xmlns="http://www.w3.org/2000/svg">
+          <path d="M8,6 C46,9 88,15 138,24 C156,27 172,29 184,31"
+                fill="none" stroke="#181a24" stroke-width="2.4" stroke-linecap="round" opacity="0.82"/>
+          <path d="M12,7 C50,11 94,17 148,27"
+                fill="none" stroke="#181a24" stroke-width="0.9" stroke-linecap="round" opacity="0.45"/>
+          <circle cx="14" cy="7" r="3.2" fill="#181a24" opacity="0.72"/>
+          <circle cx="176" cy="29" r="1.4" fill="#181a24" opacity="0.5"/>
+        </svg>
+      </div>
+    </article>
+  </main>
+
+</body>
+</html>

@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>위대한 멤피스의 여행 일지 - 1919년 부탄</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=IM+Fell+English:ital@0;1&family=Nanum+Myeongjo:wght@400;700;800&family=Nanum+Pen+Script&display=swap');
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: #15100c;
+      background-image:
+        radial-gradient(circle at 50% 28%, #2a2018 0%, #15100c 70%, #0b0806 100%);
+      padding: 40px 18px 54px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      font-family: 'Nanum Myeongjo', serif;
+      color: #261c14;
+      word-break: keep-all;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* 금박 따오기(토트) 문양이 새겨진 갈색 가죽 포켓 수첩 외피 */
+    .leather-cover {
+      position: relative;
+      width: 100%;
+      max-width: 1040px;
+      background-color: #3d2415;
+      background-image:
+        radial-gradient(ellipse at 50% 40%, #4d2f1c 0%, #2c180d 100%);
+      padding: 18px 20px 22px;
+      border-radius: 10px;
+      border: 2px solid #221209;
+      box-shadow:
+        0 28px 65px rgba(0, 0, 0, 0.8),
+        inset 0 0 36px rgba(15, 7, 2, 0.72),
+        inset 0 1px 0 rgba(210, 168, 102, 0.18);
+    }
+
+    /* 가죽 상단 금박 토트 따오기 엠블럼 탭 */
+    .cover-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 2px 12px 12px;
+      color: #c8a25a;
+      font-family: 'Cinzel', serif;
+      font-size: 11px;
+      letter-spacing: 2.5px;
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.75);
+    }
+
+    .thoth-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 9px;
+      color: #d9b670;
+    }
+
+    /* 펼쳐진 2페이지 스프레드 */
+    .journal-spread {
+      position: relative;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      background-color: #f3e8d0;
+      border-radius: 4px;
+      box-shadow:
+        0 8px 22px rgba(0, 0, 0, 0.55),
+        inset 0 0 40px rgba(108, 76, 36, 0.18);
+      overflow: hidden;
+    }
+
+    /* 중앙 제본선 음영 */
+    .spine-shadow {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 50%;
+      width: 44px;
+      transform: translateX(-50%);
+      background: linear-gradient(
+        to right,
+        transparent 0%,
+        rgba(58, 38, 20, 0.14) 32%,
+        rgba(38, 24, 12, 0.34) 49%,
+        rgba(24, 15, 8, 0.42) 50%,
+        rgba(38, 24, 12, 0.3) 51%,
+        rgba(58, 38, 20, 0.12) 68%,
+        transparent 100%
+      );
+      pointer-events: none;
+      z-index: 5;
+    }
+
+    .page {
+      position: relative;
+      padding: 40px 42px 44px;
+      background-color: #f4ead3;
+      background-image:
+        repeating-linear-gradient(
+          to bottom,
+          transparent 0px,
+          transparent 28px,
+          rgba(128, 102, 72, 0.14) 28px,
+          rgba(128, 102, 72, 0.14) 29px
+        );
+      min-height: 720px;
+    }
+
+    .page-left {
+      padding-right: 46px;
+      background-image:
+        radial-gradient(ellipse at 25% 20%, rgba(255, 250, 238, 0.65) 0%, rgba(226, 208, 174, 0.4) 100%),
+        repeating-linear-gradient(
+          to bottom,
+          transparent 0px,
+          transparent 28px,
+          rgba(128, 102, 72, 0.14) 28px,
+          rgba(128, 102, 72, 0.14) 29px
+        );
+    }
+
+    .page-right {
+      padding-left: 46px;
+      background-image:
+        radial-gradient(ellipse at 75% 30%, rgba(250, 242, 224, 0.55) 0%, rgba(218, 198, 162, 0.52) 100%),
+        repeating-linear-gradient(
+          to bottom,
+          transparent 0px,
+          transparent 28px,
+          rgba(128, 102, 72, 0.15) 28px,
+          rgba(128, 102, 72, 0.15) 29px
+        );
+    }
+
+    .paper-grain {
+      position: absolute;
+      inset: 0;
+      opacity: 0.05;
+      pointer-events: none;
+      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='3' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+    }
+
+    /* 페이지 상단 헤더 */
+    .page-running-head {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      border-bottom: 1px solid rgba(102, 74, 46, 0.42);
+      padding-bottom: 6px;
+      margin-bottom: 22px;
+      font-family: 'IM Fell English', serif;
+      font-style: italic;
+      font-size: 12.5px;
+      color: #6e553d;
+    }
+
+    .entry {
+      position: relative;
+      z-index: 2;
+      margin-bottom: 22px;
+    }
+
+    .entry:last-child {
+      margin-bottom: 0;
+    }
+
+    .entry-date {
+      font-size: 14.5px;
+      font-weight: 800;
+      color: #462614;
+      margin-bottom: 5px;
+      letter-spacing: 0.3px;
+      display: flex;
+      align-items: baseline;
+      gap: 8px;
+    }
+
+    .entry-date .en-date {
+      font-family: 'IM Fell English', serif;
+      font-style: italic;
+      font-weight: 400;
+      font-size: 12px;
+      color: #7d6249;
+    }
+
+    .entry p {
+      font-size: 14.2px;
+      line-height: 1.88;
+      color: #291e15;
+      text-align: justify;
+    }
+
+    /* 1페이지 하단 여백의 작은 산봉우리·석탑 펜화 스케치 */
+    .margin-sketch {
+      position: relative;
+      z-index: 2;
+      margin-top: 22px;
+      padding: 8px 12px;
+      border-top: 1px dashed rgba(102, 74, 46, 0.35);
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      opacity: 0.86;
+    }
+
+    .margin-sketch-note {
+      font-family: 'IM Fell English', 'Nanum Myeongjo', serif;
+      font-style: italic;
+      font-size: 11.5px;
+      color: #6b523b;
+      line-height: 1.5;
+    }
+
+    /* 2페이지로 갈수록 잉크가 짙고 거칠어지는 연출 */
+    .entry-tense .entry-date {
+      color: #311910;
+    }
+
+    .entry-tense p {
+      color: #1e1610;
+    }
+
+    /* 5월 11일: 광기 어린 "구체들! 보인다..." 강조 */
+    .entry-madness {
+      position: relative;
+      margin: 18px -10px;
+      padding: 12px 14px;
+      background:
+        radial-gradient(ellipse at 72% 45%, rgba(42, 26, 18, 0.08) 0%, transparent 70%);
+      border-left: 2.5px solid rgba(72, 34, 22, 0.55);
+    }
+
+    .entry-madness .entry-date {
+      color: #4f1810;
+      font-size: 15px;
+    }
+
+    .madness-text {
+      font-family: 'Nanum Pen Script', 'Nanum Myeongjo', cursive;
+      font-size: 25px !important;
+      line-height: 1.38 !important;
+      letter-spacing: 0.6px;
+      color: #1a0e0a !important;
+      text-align: left !important;
+      transform: rotate(-0.8deg);
+    }
+
+    .madness-text .loud {
+      font-size: 29px;
+      font-weight: 700;
+      color: #3a0f0a;
+    }
+
+    .spheres-doodle {
+      position: absolute;
+      right: 4px;
+      top: -12px;
+      width: 112px;
+      height: 112px;
+      opacity: 0.36;
+      pointer-events: none;
+    }
+
+    /* 잉크 얼룩 */
+    .ink-blot {
+      position: absolute;
+      bottom: 84px;
+      right: 24px;
+      width: 44px;
+      height: 38px;
+      background: radial-gradient(circle at 45% 50%, rgba(28, 20, 14, 0.24) 0%, rgba(28, 20, 14, 0.1) 48%, transparent 72%);
+      border-radius: 54% 46% 62% 38%;
+      pointer-events: none;
+    }
+
+    /* 5월 12일: 차갑고 건조한 사후 수습 문체 */
+    .entry-cold {
+      margin-top: 18px;
+      padding-top: 12px;
+      border-top: 1px solid rgba(76, 54, 34, 0.3);
+    }
+
+    .entry-cold p {
+      color: #1f2228;
+      font-weight: 700;
+      line-height: 1.82;
+    }
+
+    /* 붉은 갈색 책갈피 리본 */
+    .ribbon-bookmark {
+      position: absolute;
+      bottom: -24px;
+      left: calc(50% - 7px);
+      width: 14px;
+      height: 46px;
+      background: linear-gradient(to right, #691b14, #8c261c, #59140e);
+      clip-path: polygon(0 0, 100% 0, 100% 100%, 50% 78%, 0 100%);
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.5);
+      z-index: 6;
+    }
+
+    @media (max-width: 860px) {
+      .leather-cover {
+        padding: 12px;
+      }
+      .journal-spread {
+        grid-template-columns: 1fr;
+      }
+      .spine-shadow,
+      .ribbon-bookmark {
+        display: none;
+      }
+      .page {
+        padding: 30px 24px 34px;
+        min-height: auto;
+      }
+      .page-left {
+        border-bottom: 3px double rgba(92, 62, 34, 0.45);
+      }
+    }
+
+    @media print {
+      body { background: none; padding: 0; }
+      .leather-cover { box-shadow: none; background: #fff; border: 1px solid #999; padding: 8px; }
+      .cover-header { color: #333; text-shadow: none; }
+      .journal-spread { box-shadow: none; }
+      .page { min-height: auto; padding: 24px; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="leather-cover">
+    <div class="cover-header">
+      <div class="thoth-badge">
+        <!-- 금박 따오기 상형문자 (토트 신의 상징) -->
+        <svg viewBox="0 0 36 32" width="24" height="22" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <g fill="none" stroke="#d9b670" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M6,26 L30,26"/>
+            <path d="M18,26 L18,18 M14,26 L16,18"/>
+            <path d="M10,16 Q16,10 23,14 Q26,16 24,20 Q18,21 12,18 Z" fill="rgba(217,182,112,0.22)"/>
+            <path d="M22,13 Q25,8 22,6 Q19,5 18,8"/>
+            <path d="M23,7 Q29,8 31,15"/>
+            <circle cx="21" cy="7.5" r="0.8" fill="#d9b670"/>
+          </g>
+        </svg>
+        <span>A. S. — TRAVEL JOURNAL</span>
+      </div>
+      <span>KINGDOM OF BHUTAN · 1919</span>
+    </div>
+
+    <main class="journal-spread">
+      <div class="spine-shadow"></div>
+
+      <!-- 1페이지 (좌측) -->
+      <section class="page page-left">
+        <div class="paper-grain"></div>
+
+        <div class="page-running-head">
+          <span>Himalayan Expedition — April 1919</span>
+          <span>p. 64</span>
+        </div>
+
+        <article class="entry">
+          <div class="entry-date">
+            <span>1919년 4월 22일</span>
+            <span class="en-date">April 22nd</span>
+          </div>
+          <p>
+            드디어 고요가 찾아왔다. 피리와 나팔, 종과 북이 불협화음으로 뒤엉킨 그 광기 어린 소음들을 과연 '음악'이라 불러줄 수 있다면 말이지만, 승려들은 그 의식에 단단히 미쳐있는 것 같았다. 이 산길에서는 오직 바람 소리와 기괴한 새들의 울음소리만이 들려올 뿐이다.
+          </p>
+        </article>
+
+        <article class="entry">
+          <div class="entry-date">
+            <span>1919년 4월 23일</span>
+            <span class="en-date">April 23rd</span>
+          </div>
+          <p>
+            한 목동 놈이 '미고이(migoi, 설인)'의 전설을 들먹이며 내 호기심을 자극하려 들었다. 놈은 그 짐승의 두개골을 가지고 있다며 돈을 주면 보여주겠다고 지껄였다. 작년에 뉴욕 뒷골목에서 관찰했던 야바위꾼의 눈빛과 똑같았다. 우리는 그의 친절한 제안을 정중히 거절하고 무병장수를 빌어주었다. 놈은 바닥에 침을 뱉고는 우리가 떠나는 등 뒤에 대고 저주를 중얼거렸다.
+          </p>
+        </article>
+
+        <article class="entry">
+          <div class="entry-date">
+            <span>1919년 4월 25일</span>
+            <span class="en-date">April 25th</span>
+          </div>
+          <p>
+            소문으로 들었던 석탑의 흔적은 여전히 찾을 수 없다. 산을 오를수록 나무는 성겨졌고, 산봉우리들의 정렬을 보아할 때 우리가 올바른 위치에 있는 것은 확실하다. 짐승의 기척조차 전혀 느껴지지 않는 섬뜩한 적막뿐이다. 내일도 아무것도 찾지 못한다면 국왕과의 공연 약조를 지키기 위해 발길을 돌려야만 한다.
+          </p>
+        </article>
+
+        <article class="entry">
+          <div class="entry-date">
+            <span>1919년 4월 26일</span>
+            <span class="en-date">April 26th</span>
+          </div>
+          <p>
+            땅거미가 내려앉고 있다. 오늘은 하산했어야 마땅했다. 하지만 황혼 무렵, 조세핀이 인간의 손으로 쌓아 올린 듯한 석탑을 발견했다. 내일 동이 트는 대로 조사해 보고 허탕이라 하더라도, 서두르면 국왕 앞에서의 공연 시간에 맞추어 돌아갈 수 있을 것이다.
+          </p>
+        </article>
+
+        <!-- 여백 펜 스케치: 산봉우리 정렬과 석탑 -->
+        <div class="margin-sketch">
+          <svg viewBox="0 0 130 56" width="120" height="52" xmlns="http://www.w3.org/2000/svg" aria-label="산봉우리와 석탑의 간략한 펜 스케치">
+            <g fill="none" stroke="#5c442d" stroke-width="1.2" stroke-linecap="round">
+              <path d="M4,50 L28,22 L46,38 L74,10 L102,38 L126,24"/>
+              <path d="M22,50 L54,32 L88,48 L124,42" opacity="0.6"/>
+              <!-- 작은 석탑 -->
+              <path d="M70,38 L71,19 L77,19 L78,38" fill="rgba(92,68,45,0.14)"/>
+              <line x1="69" y1="24" x2="79" y2="24" stroke-width="0.8"/>
+              <line x1="69" y1="30" x2="79" y2="30" stroke-width="0.8"/>
+              <!-- 별/정렬선 -->
+              <line x1="28" y1="14" x2="114" y2="14" stroke-dasharray="3 3" opacity="0.5"/>
+              <circle cx="74" cy="6" r="1.4" fill="#5c442d"/>
+            </g>
+          </svg>
+          <div class="margin-sketch-note">
+            봉우리의 정렬과 황혼 너머의 석탑<br>— 4월 26일 여백 사생
+          </div>
+        </div>
+      </section>
+
+      <!-- 2페이지 (우측) -->
+      <section class="page page-right">
+        <div class="paper-grain"></div>
+        <div class="ink-blot"></div>
+
+        <div class="page-running-head">
+          <span>The Tower &amp; The Maker of Gates</span>
+          <span>p. 65</span>
+        </div>
+
+        <article class="entry">
+          <div class="entry-date">
+            <span>1919년 4월 27일</span>
+            <span class="en-date">April 27th</span>
+          </div>
+          <p>
+            이 사내는 내가 몇 년 만에 발견한 가장 심오한 수수께끼다. 그의 이름을 도무지 정확히 번역할 수가 없으나 대략 '문의 제작자(Maker of Gates)'쯤 되는 것 같다. 동굴 거처에 모포 한 장조차 없는 주제에 어처구니없는 이름이다. 그는 들짐승에 대한 공포 외에는 그 어떤 방비도 없이 살아가는 듯하다.
+          </p>
+        </article>
+
+        <article class="entry">
+          <div class="entry-date">
+            <span>1919년 4월 29일</span>
+            <span class="en-date">April 29th</span>
+          </div>
+          <p>
+            놈이 오늘 내 구두를 허공에 띄웠다. 사전 준비도 없는 순수한 즉흥이었다. 조세핀도 똑똑히 보았다. 그는 내가 구두 주변으로 손을 완전히 휘둘러 확인하고 허공에서 구두를 낚아채도록 허락했다. 유일하게 가능한 설명은 그놈이 우리에게 환각제를 먹이고 있다는 것뿐이다.
+          </p>
+        </article>
+
+        <article class="entry entry-tense">
+          <div class="entry-date">
+            <span>1919년 5월 4일</span>
+            <span class="en-date">May 4th</span>
+          </div>
+          <p>
+            원리가 조금씩 보이는 것 같다. 하지만 그는 여전히 핵심을 숨기고 있다.
+          </p>
+        </article>
+
+        <article class="entry entry-tense">
+          <div class="entry-date">
+            <span>1919년 5월 9일</span>
+            <span class="en-date">May 9th</span>
+          </div>
+          <p>
+            조세핀의 헌신적인 태도에도 불구하고 그는 그녀에게는 손톱만큼의 관심도 보이지 않는다.
+          </p>
+        </article>
+
+        <article class="entry entry-tense">
+          <div class="entry-date">
+            <span>1919년 5월 10일</span>
+            <span class="en-date">May 10th</span>
+          </div>
+          <p>
+            그가 오늘 밤 '부름(the call)'을 행할 것이라 한다. 우리는 정해진 시각에 모두 탑 위에 서 있어야 한다. 그의 눈빛이 변했다.
+          </p>
+        </article>
+
+        <article class="entry entry-madness">
+          <!-- 여백에 거칠게 덧그려진 겹치는 구체 낙서 -->
+          <svg class="spheres-doodle" viewBox="0 0 110 110" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <g fill="none" stroke="#2d140e" stroke-width="1.3">
+              <circle cx="58" cy="52" r="24"/>
+              <circle cx="42" cy="40" r="17"/>
+              <circle cx="72" cy="36" r="14"/>
+              <circle cx="68" cy="68" r="19"/>
+              <circle cx="38" cy="66" r="13"/>
+              <circle cx="54" cy="52" r="8"/>
+              <ellipse cx="56" cy="54" rx="38" ry="18" transform="rotate(-24 56 54)" stroke-dasharray="4 3"/>
+              <ellipse cx="56" cy="54" rx="36" ry="16" transform="rotate(32 56 54)" stroke-dasharray="3 4"/>
+            </g>
+          </svg>
+          <div class="entry-date">
+            <span>1919년 5월 11일</span>
+            <span class="en-date">May 11th</span>
+          </div>
+          <p class="madness-text">
+            <span class="loud">구체들!</span> 보인다. 보인다. 보인다. 보인다. 보인다. 보인다. 보인다. 보인다. 보인다. 보인다.
+          </p>
+        </article>
+
+        <article class="entry entry-cold">
+          <div class="entry-date">
+            <span>1919년 5월 12일</span>
+            <span class="en-date">May 12th</span>
+          </div>
+          <p>
+            유골이라도 있는지 찾아보았으나 아무것도 남지 않았다. 상징들을 모조리 필사했다. 우리의 공백을 둘러댈 그럴싸한 알리바이를 만들어야 한다.
+          </p>
+        </article>
+      </section>
+    </main>
+
+    <div class="ribbon-bookmark"></div>
+  </div>
+
+</body>
+</html>

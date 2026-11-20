@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>더 스코츠맨 — 개보수 중이던 클럽에서 미국인 출판업자 실종</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=UnifrakturMaguntia&family=Nanum+Myeongjo:wght@400;700;800&family=Noto+Sans+KR:wght@400;500;700&display=swap');
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: #211d19;
+      background-image:
+        radial-gradient(circle at 50% 25%, #302a24 0%, #191613 75%, #100d0b 100%);
+      padding: 40px 18px;
+      display: flex;
+      justify-content: center;
+      font-family: 'Nanum Myeongjo', serif;
+      color: #191612;
+      word-break: keep-all;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .newspaper-page {
+      position: relative;
+      width: 100%;
+      max-width: 920px;
+      background-color: #efe5d3;
+      background-image:
+        radial-gradient(ellipse at 48% 36%, #f4ecdd 0%, #e4d4b9 100%),
+        repeating-linear-gradient(
+          rgba(0, 0, 0, 0.012) 0px,
+          rgba(0, 0, 0, 0.012) 1px,
+          transparent 1px,
+          transparent 2px
+        );
+      padding: 40px 48px 46px;
+      border: 1px solid #bfb096;
+      box-shadow:
+        0 18px 44px rgba(0, 0, 0, 0.68),
+        inset 0 0 74px rgba(102, 76, 42, 0.2);
+      overflow: hidden;
+    }
+
+    /* 종이 입자 질감 */
+    .paper-noise {
+      position: absolute;
+      inset: 0;
+      opacity: 0.048;
+      pointer-events: none;
+      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.88' numOctaves='3' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+    }
+
+    /* 접힌 자국 */
+    .fold-crease {
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 52%;
+      height: 2px;
+      background: linear-gradient(
+        to bottom,
+        rgba(38, 28, 16, 0.08),
+        rgba(255, 250, 240, 0.26),
+        rgba(38, 28, 16, 0.06)
+      );
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    /* 스크랩 보관 도장 */
+    .archive-stamp {
+      position: absolute;
+      top: 44px;
+      right: 46px;
+      border: 2px solid rgba(118, 36, 26, 0.78);
+      color: rgba(118, 36, 26, 0.84);
+      padding: 5px 11px;
+      font-family: 'Noto Sans KR', sans-serif;
+      font-size: 11px;
+      font-weight: 700;
+      transform: rotate(5deg);
+      letter-spacing: 0.9px;
+      text-align: center;
+      line-height: 1.38;
+      pointer-events: none;
+      z-index: 3;
+    }
+
+    .archive-slug {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      justify-content: space-between;
+      border-bottom: 1.5px solid #2b231b;
+      padding-bottom: 7px;
+      margin-bottom: 14px;
+      font-family: 'Noto Sans KR', sans-serif;
+      font-size: 11.5px;
+      color: #524537;
+    }
+
+    /* 제호 */
+    .masthead {
+      position: relative;
+      z-index: 2;
+      text-align: center;
+      border-bottom: 4px double #181410;
+      padding-bottom: 12px;
+      margin-bottom: 20px;
+    }
+
+    .masthead-top {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      margin-bottom: 2px;
+    }
+
+    .masthead .gothic-title {
+      font-family: 'UnifrakturMaguntia', 'Cinzel', serif;
+      font-size: 21px;
+      letter-spacing: 2px;
+      color: #2f261e;
+    }
+
+    .thistle-mark {
+      width: 22px;
+      height: 22px;
+      opacity: 0.8;
+    }
+
+    .masthead h1 {
+      font-family: 'Nanum Myeongjo', serif;
+      font-size: 50px;
+      font-weight: 800;
+      letter-spacing: 11px;
+      line-height: 1.12;
+      color: #14110d;
+    }
+
+    .masthead .sub-bar {
+      display: flex;
+      justify-content: space-between;
+      border-top: 1px solid #181410;
+      border-bottom: 1px solid #181410;
+      margin-top: 12px;
+      padding: 5px 10px;
+      font-family: 'Noto Sans KR', sans-serif;
+      font-size: 12.2px;
+      font-weight: 500;
+      color: #292119;
+    }
+
+    /* 기사 표제 */
+    .headline-block {
+      position: relative;
+      z-index: 2;
+      text-align: center;
+      margin-bottom: 20px;
+      padding-bottom: 14px;
+      border-bottom: 2px solid #181410;
+    }
+
+    .headline-kicker {
+      font-family: 'Noto Sans KR', sans-serif;
+      font-size: 11.5px;
+      font-weight: 700;
+      letter-spacing: 3px;
+      color: #4f4134;
+      margin-bottom: 6px;
+    }
+
+    .headline-block h2 {
+      font-size: 33px;
+      font-weight: 800;
+      line-height: 1.3;
+      letter-spacing: -0.6px;
+      margin-bottom: 8px;
+      color: #14110d;
+    }
+
+    .headline-block .deck {
+      font-size: 17px;
+      font-weight: 700;
+      color: #2e251d;
+      letter-spacing: 1px;
+    }
+
+    /* 본문 + 보도 사진 레이아웃 */
+    .article-layout {
+      position: relative;
+      z-index: 2;
+      display: grid;
+      grid-template-columns: 1.14fr 0.94fr;
+      gap: 28px;
+      align-items: start;
+    }
+
+    .article-text {
+      font-size: 15px;
+      line-height: 1.86;
+      text-align: justify;
+      padding-right: 18px;
+      border-right: 1px solid rgba(45, 36, 28, 0.32);
+    }
+
+    .article-text p {
+      margin-bottom: 16px;
+      text-indent: 14px;
+    }
+
+    .article-text p:first-child {
+      text-indent: 0;
+    }
+
+    .article-text p:last-child {
+      margin-bottom: 0;
+    }
+
+    .dateline {
+      font-family: 'Noto Sans KR', sans-serif;
+      font-weight: 700;
+      font-size: 14px;
+      letter-spacing: 0.4px;
+    }
+
+    .pull-quote {
+      margin: 18px 0;
+      padding: 12px 16px;
+      border-top: 2px solid #2b221a;
+      border-bottom: 1px solid #2b221a;
+      background: rgba(30, 22, 14, 0.04);
+      font-size: 14.5px;
+      font-weight: 700;
+      text-align: center;
+      line-height: 1.58;
+      color: #231b14;
+    }
+
+    /* 우측 보도 사진 & 경찰 제보 공고 */
+    .side-column {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .press-photo-frame {
+      background: #dfd2bc;
+      border: 1.5px solid #2b231b;
+      padding: 8px;
+      box-shadow: inset 0 0 18px rgba(0, 0, 0, 0.14);
+    }
+
+    .photo-viewport {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 4 / 3.05;
+      background: #2b2620;
+      overflow: hidden;
+      border: 1px solid #483d31;
+    }
+
+    .halftone-overlay {
+      position: absolute;
+      inset: 0;
+      background-image:
+        radial-gradient(rgba(18, 14, 10, 0.3) 1px, transparent 1px);
+      background-size: 3.4px 3.4px;
+      mix-blend-mode: multiply;
+      pointer-events: none;
+    }
+
+    .photo-caption {
+      margin-top: 8px;
+      padding-top: 7px;
+      border-top: 1px solid rgba(44, 36, 28, 0.35);
+      font-family: 'Noto Sans KR', sans-serif;
+      font-size: 11.8px;
+      line-height: 1.52;
+      color: #312820;
+    }
+
+    .photo-caption strong {
+      font-weight: 700;
+      color: #18120d;
+    }
+
+    .police-notice {
+      border: 2px double #2f251c;
+      background: rgba(0, 0, 0, 0.032);
+      padding: 13px 15px;
+      font-size: 13px;
+      line-height: 1.66;
+    }
+
+    .police-notice-title {
+      font-family: 'Noto Sans KR', sans-serif;
+      font-size: 12.2px;
+      font-weight: 700;
+      text-align: center;
+      border-bottom: 1px solid #3c3127;
+      padding-bottom: 5px;
+      margin-bottom: 8px;
+      letter-spacing: 0.8px;
+      color: #19140f;
+    }
+
+    .notice-list {
+      list-style: none;
+      font-family: 'Noto Sans KR', sans-serif;
+      font-size: 12.2px;
+      color: #2c241c;
+    }
+
+    .notice-list li {
+      margin-bottom: 5px;
+    }
+
+    .notice-list li:last-child {
+      margin-bottom: 0;
+    }
+
+    .notice-list strong {
+      color: #14100c;
+    }
+
+    .page-footer {
+      position: relative;
+      z-index: 2;
+      margin-top: 22px;
+      padding-top: 10px;
+      border-top: 1px solid rgba(45, 36, 28, 0.35);
+      display: flex;
+      justify-content: space-between;
+      font-family: 'Noto Sans KR', sans-serif;
+      font-size: 11px;
+      color: #5c4e3f;
+    }
+
+    @media (max-width: 780px) {
+      .newspaper-page {
+        padding: 26px 20px 30px;
+      }
+      .masthead h1 {
+        font-size: 35px;
+        letter-spacing: 5px;
+      }
+      .masthead .sub-bar {
+        flex-direction: column;
+        gap: 3px;
+        text-align: center;
+      }
+      .headline-block h2 {
+        font-size: 24px;
+      }
+      .article-layout {
+        grid-template-columns: 1fr;
+      }
+      .article-text {
+        padding-right: 0;
+        border-right: none;
+        padding-bottom: 16px;
+        border-bottom: 1px solid rgba(45, 36, 28, 0.32);
+      }
+      .archive-stamp {
+        position: static;
+        display: inline-block;
+        margin-bottom: 12px;
+        transform: none;
+      }
+      .page-footer {
+        flex-direction: column;
+        gap: 4px;
+      }
+    }
+
+    @media print {
+      body {
+        background: none;
+        padding: 0;
+      }
+      .newspaper-page {
+        box-shadow: none;
+        border: none;
+        max-width: 100%;
+        padding: 18px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <article class="newspaper-page">
+    <div class="paper-noise"></div>
+    <div class="fold-crease"></div>
+
+    <div class="archive-stamp">에든버러 · 던디 지방판<br>1928년 9월 스크랩</div>
+
+    <div class="archive-slug">
+      <span>분류: 스코틀랜드 지방 소식 · 앵거스 &amp; 퍼스셔</span>
+      <span>발행처: 에든버러 노스 브리지 24번지</span>
+    </div>
+
+    <header class="masthead">
+      <div class="masthead-top">
+        <svg class="thistle-mark" viewBox="0 0 24 24" fill="none" stroke="#2c241c" stroke-width="1.4" aria-hidden="true">
+          <path d="M12 20V11M12 11C9 11 7 8.5 7 6C8.5 6.5 10.5 7.5 12 9.5C13.5 7.5 15.5 6.5 17 6C17 8.5 15 11 12 11Z"/>
+          <path d="M12 9.5L9.5 4.5M12 9.5L12 3.5M12 9.5L14.5 4.5"/>
+          <path d="M8.5 15C6.5 14 5 12.5 5 11M15.5 15C17.5 14 19 12.5 19 11"/>
+        </svg>
+        <span class="gothic-title">The Scotsman</span>
+        <svg class="thistle-mark" viewBox="0 0 24 24" fill="none" stroke="#2c241c" stroke-width="1.4" aria-hidden="true">
+          <path d="M12 20V11M12 11C9 11 7 8.5 7 6C8.5 6.5 10.5 7.5 12 9.5C13.5 7.5 15.5 6.5 17 6C17 8.5 15 11 12 11Z"/>
+          <path d="M12 9.5L9.5 4.5M12 9.5L12 3.5M12 9.5L14.5 4.5"/>
+          <path d="M8.5 15C6.5 14 5 12.5 5 11M15.5 15C17.5 14 19 12.5 19 11"/>
+        </svg>
+      </div>
+      <h1>더 스코츠맨</h1>
+      <div class="sub-bar">
+        <span>제26,641호</span>
+        <span>스코틀랜드 에든버러 · 1928년 9월 17일 월요일</span>
+        <span>정가 2펜스</span>
+      </div>
+    </header>
+
+    <div class="headline-block">
+      <div class="headline-kicker">던디 북동부 실종 사건 속보</div>
+      <h2>개보수 중이던 클럽에서 미국인 출판업자 실종</h2>
+      <p class="deck">미궁에 빠진 경찰 수사</p>
+    </div>
+
+    <div class="article-layout">
+      <div class="article-text">
+        <p>
+          <span class="dateline">던디—</span>최근 펜실베이니아주 필라델피아에서 이주해 온 아서 맥밀런 씨의 실종 사건과 관련하여 경찰이 도시 북동부의 농부 및 소작인들에게 제보를 요청하고 있다. 올해 64세인 맥밀런 씨는 올해 5월 아내 크리스털 맥밀런과 함께 애버나이트 북쪽의 크로우 우드 홀로 이사했다. 도착 직후 맥밀런 씨는 방치되어 있던 시슬다운 골프 클럽을 매입하고 이듬해 재개장할 계획으로 개보수 공사를 시작했다.
+        </p>
+
+        <p>
+          9월 14일 정오, 맥밀런 씨는 공사 현장을 방문하기 위해 크로우 우드 홀을 떠났다. 당일 수많은 인부들과 현장소장인 카메론 네언 씨가 맥밀런 씨를 만나거나 목격했으나, 일과가 끝났을 때 맥밀런 씨의 차량만 클럽 외부에 주차되어 있었고 맥밀런 씨 본인은 어디에서도 보이지 않았다.
+        </p>
+
+        <div class="pull-quote">
+          “일과가 끝났을 때 맥밀런 씨의 차량만 클럽 외부에 주차되어 있었고<br>
+          맥밀런 씨 본인은 어디에서도 보이지 않았다.”
+        </div>
+
+        <p>
+          구내 수색 후 네언 씨는 던디 경찰서와 맥밀런 부인에게 직접 전화를 걸었다. 48시간 동안 시슬다운 클럽에서 정밀 조사를 벌인 경찰은 맥밀런 씨를 공식 실종 처리했다.
+        </p>
+
+        <p>
+          윌리엄 블랙, 마이클 맥앤드루 형사 반장은 현재 애버나이트, 파울리스 및 인근 마을의 농민, 소작인, 주민들에게 60대 초반의 미국인 남성을 목격한 경우 제보해 줄 것을 당부하고 있다. 해당 남성은 보통 키에 보통 체격이며, 숱이 적은 흰머리에 감청색 트위드 정장을 입고 은색 숫양 머리 손잡이가 달린 지팡이를 짚고 있다. 맥밀런 부인은 맥밀런 씨의 무사 귀환으로 이어지는 정보에 대해 상당한 보상금을 내걸었다.
+        </p>
+      </div>
+
+      <div class="side-column">
+        <figure class="press-photo-frame">
+          <div class="photo-viewport">
+            <!-- 1928년 흑백 세피아 보도사진 삽화: 안개 낀 시슬다운 골프 클럽하우스와 외부에 남겨진 차량 -->
+            <svg viewBox="0 0 400 305" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="안개 낀 스코틀랜드 언덕 위 시슬다운 골프 클럽하우스와 외부에 주차된 맥밀런 씨의 차량">
+              <defs>
+                <linearGradient id="scotSky" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stop-color="#b9ae98"/>
+                  <stop offset="52%" stop-color="#d6ccb8"/>
+                  <stop offset="100%" stop-color="#a89e8a"/>
+                </linearGradient>
+                <linearGradient id="mistHill" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stop-color="#7c7366"/>
+                  <stop offset="100%" stop-color="#4d463c"/>
+                </linearGradient>
+                <linearGradient id="stoneWall" x1="0" y1="0" x2="1" y2="1">
+                  <stop offset="0%" stop-color="#c3b8a3"/>
+                  <stop offset="55%" stop-color="#9b917f"/>
+                  <stop offset="100%" stop-color="#70685a"/>
+                </linearGradient>
+                <radialGradient id="photoVig" cx="50%" cy="48%" r="72%">
+                  <stop offset="52%" stop-color="transparent"/>
+                  <stop offset="100%" stop-color="rgba(16, 13, 9, 0.65)"/>
+                </radialGradient>
+              </defs>
+
+              <!-- 흐린 스코틀랜드 하늘 -->
+              <rect width="400" height="165" fill="url(#scotSky)"/>
+              <ellipse cx="110" cy="48" rx="95" ry="20" fill="rgba(235, 228, 214, 0.35)"/>
+              <ellipse cx="305" cy="62" rx="110" ry="24" fill="rgba(110, 102, 88, 0.22)"/>
+
+              <!-- 원경의 시드로 언덕 -->
+              <path d="M0,138 Q85,98 180,118 Q280,92 400,126 L400,190 L0,190 Z" fill="url(#mistHill)"/>
+              <path d="M0,156 Q120,136 250,148 Q330,134 400,152 L400,210 L0,210 Z" fill="#5b5448"/>
+
+              <!-- 골프장 잔디 & 진입로 -->
+              <path d="M0,188 Q160,176 400,194 L400,305 L0,305 Z" fill="#474137"/>
+              <path d="M95,212 Q185,222 250,305 L38,305 Q65,244 95,212 Z" fill="#776e5f"/>
+              <path d="M108,214 Q175,224 225,305 L62,305 Q84,248 108,214 Z" fill="#887e6d" opacity="0.65"/>
+
+              <!-- 시슬다운 클럽하우스 석조 건물 -->
+              <g stroke="#28221b" stroke-width="1.2">
+                <!-- 좌측 및 우측 수목 -->
+                <circle cx="82" cy="170" r="24" fill="#322c24" stroke="none"/>
+                <circle cx="62" cy="182" r="20" fill="#26211b" stroke="none"/>
+                <circle cx="338" cy="176" r="26" fill="#2d2720" stroke="none"/>
+                <circle cx="362" cy="186" r="22" fill="#211d17" stroke="none"/>
+
+                <!-- 본관 지붕 & 굴뚝 -->
+                <rect x="132" y="96" width="12" height="30" fill="#5e564a"/>
+                <rect x="278" y="94" width="12" height="32" fill="#5e564a"/>
+                <polygon points="104,132 130,104 298,104 324,132" fill="#3d372f"/>
+                <polygon points="178,132 214,96 250,132" fill="#463f36"/>
+
+                <!-- 본관 석조 외벽 -->
+                <rect x="112" y="132" width="204" height="74" fill="url(#stoneWall)"/>
+                <!-- 2층 창문들 -->
+                <g fill="#25201a" stroke="#453d33" stroke-width="1">
+                  <rect x="128" y="142" width="14" height="22"/>
+                  <rect x="154" y="142" width="14" height="22"/>
+                  <rect x="192" y="140" width="16" height="24"/>
+                  <rect x="220" y="140" width="16" height="24"/>
+                  <rect x="260" y="142" width="14" height="22"/>
+                  <rect x="286" y="142" width="14" height="22"/>
+                </g>
+                <!-- 1층 창문 & 현관 포치 -->
+                <g fill="#221e18" stroke="#453d33" stroke-width="1">
+                  <rect x="128" y="176" width="14" height="20"/>
+                  <rect x="154" y="176" width="14" height="20"/>
+                  <rect x="260" y="176" width="14" height="20"/>
+                  <rect x="286" y="176" width="14" height="20"/>
+                </g>
+                <rect x="196" y="172" width="36" height="34" fill="#6b6254"/>
+                <rect x="206" y="179" width="16" height="27" fill="#1e1a15"/>
+                <!-- 공사 중 비계 -->
+                <line x1="274" y1="130" x2="274" y2="206" stroke="#2c261f" stroke-width="1.3"/>
+                <line x1="312" y1="130" x2="312" y2="206" stroke="#2c261f" stroke-width="1.3"/>
+                <line x1="270" y1="158" x2="316" y2="158" stroke="#2c261f" stroke-width="1.2"/>
+                <line x1="270" y1="184" x2="316" y2="184" stroke="#2c261f" stroke-width="1.2"/>
+              </g>
+
+              <!-- 진입로에 홀로 남겨진 1920년대 세단 차량 -->
+              <g transform="translate(112, 224)">
+                <ellipse cx="44" cy="30" rx="52" ry="7" fill="rgba(16, 13, 10, 0.55)"/>
+                <path d="M12,18 L18,4 L58,4 L68,16 L84,18 L86,26 L8,26 Z" fill="#25211c" stroke="#15120f" stroke-width="1.2"/>
+                <rect x="22" y="7" width="14" height="9" fill="#887f70"/>
+                <rect x="40" y="7" width="15" height="9" fill="#7d7466"/>
+                <circle cx="22" cy="27" r="7.5" fill="#181512" stroke="#9e9585" stroke-width="1.5"/>
+                <circle cx="70" cy="27" r="7.5" fill="#181512" stroke="#9e9585" stroke-width="1.5"/>
+                <circle cx="85" cy="20" r="2.2" fill="#d5cbb8"/>
+              </g>
+
+              <!-- 안개 띠 & 인화지 스크래치 -->
+              <rect y="184" width="400" height="28" fill="rgba(218, 210, 195, 0.2)"/>
+              <g stroke="rgba(240, 232, 216, 0.2)" stroke-width="0.7">
+                <line x1="74" y1="0" x2="72" y2="305"/>
+                <line x1="322" y1="0" x2="325" y2="305"/>
+              </g>
+              <rect width="400" height="305" fill="url(#photoVig)"/>
+            </svg>
+            <div class="halftone-overlay"></div>
+          </div>
+
+          <figcaption class="photo-caption">
+            <strong>▲ 개보수 공사가 중단된 시슬다운 골프 클럽하우스</strong> — 9월 14일 아서 맥밀런 씨가 실종된 이후, 클럽 외부에 남겨졌던 차량 주변과 부지 일대에 대해 던디 경찰이 48시간 동안 수색을 벌였다.
+          </figcaption>
+        </figure>
+
+        <aside class="police-notice">
+          <div class="police-notice-title">■ 던디 경찰서 실종자 인상착의 및 제보 안내</div>
+          <ul class="notice-list">
+            <li><strong>성명:</strong> 아서 맥밀런 (64세, 미국인)</li>
+            <li><strong>거주지:</strong> 애버나이트 북쪽 크로우 우드 홀</li>
+            <li><strong>최종 목격:</strong> 9월 14일 시슬다운 골프 클럽</li>
+            <li><strong>인상착의:</strong> 보통 키·체격, 숱이 적은 흰머리, 감청색 트위드 정장, 은색 숫양 머리 손잡이 지팡이</li>
+            <li><strong>담당 형사:</strong> 윌리엄 블랙 · 마이클 맥앤드루 형사 반장 (던디 경찰서)</li>
+            <li><strong>보상금:</strong> 무사 귀환으로 이어지는 제보에 맥밀런 부인이 상당한 보상금 지급</li>
+          </ul>
+        </aside>
+      </div>
+    </div>
+
+    <footer class="page-footer">
+      <span>THE SCOTSMAN · EDINBURGH &amp; DUNDEE EDITION</span>
+      <span>1928년 9월 17일 제7면 발췌</span>
+    </footer>
+  </article>
+
+</body>
+</html>

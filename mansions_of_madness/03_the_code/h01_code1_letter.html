@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>케네스 코놀리 박사의 편지</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&family=Gowun+Batang:wght@400;700&family=Great+Vibes&family=IM+Fell+English:ital@0;1&family=Nanum+Myeongjo:wght@400;700;800&display=swap');
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: #161412;
+      background-image:
+        radial-gradient(circle at 50% 32%, #29241e 0%, #161310 72%, #0c0a08 100%);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 46px 18px;
+      color: #24211d;
+      word-break: keep-all;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* 반송 주소 없는 개인 편지지 */
+    .letter-sheet {
+      position: relative;
+      width: 100%;
+      max-width: 680px;
+      min-height: 840px;
+      background-color: #f4ecdc;
+      background-image:
+        radial-gradient(ellipse at 35% 28%, #f9f3e6 0%, #ede1c9 72%, #e4d4b7 100%);
+      border: 1px solid #cabaa0;
+      box-shadow:
+        0 24px 54px rgba(0, 0, 0, 0.75),
+        inset 0 0 85px rgba(120, 92, 54, 0.22);
+      padding: 58px 66px 56px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      overflow: hidden;
+    }
+
+    /* 미세한 면지 질감 */
+    .paper-grain {
+      position: absolute;
+      inset: 0;
+      opacity: 0.045;
+      pointer-events: none;
+      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='3' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+    }
+
+    /* 우편 3단 접힘선 */
+    .fold-creases {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background:
+        linear-gradient(
+          to bottom,
+          transparent 33.1%,
+          rgba(55, 42, 26, 0.11) 33.35%,
+          rgba(255, 250, 240, 0.5) 33.65%,
+          transparent 34.0%
+        ),
+        linear-gradient(
+          to bottom,
+          transparent 66.3%,
+          rgba(55, 42, 26, 0.11) 66.55%,
+          rgba(255, 250, 240, 0.5) 66.85%,
+          transparent 67.2%
+        );
+    }
+
+    /* 오래된 가장자리 미세 얼룩 */
+    .age-stain {
+      position: absolute;
+      bottom: -30px;
+      right: -25px;
+      width: 240px;
+      height: 200px;
+      background: radial-gradient(ellipse, rgba(135, 98, 52, 0.12) 0%, rgba(135, 98, 52, 0.04) 55%, transparent 72%);
+      border-radius: 52% 48% 45% 55%;
+      pointer-events: none;
+    }
+
+    /* 편지지 상단 미세 테두리 장식 (반송 주소 없음) */
+    .letter-inner {
+      position: relative;
+      z-index: 2;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .letter-date-row {
+      display: flex;
+      justify-content: flex-end;
+      align-items: baseline;
+      gap: 10px;
+      margin-bottom: 34px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid rgba(58, 46, 36, 0.2);
+    }
+
+    .date-kr {
+      font-family: 'Gowun Batang', 'Nanum Myeongjo', serif;
+      font-size: 15.5px;
+      font-weight: 700;
+      color: #1f2937;
+      letter-spacing: 0.6px;
+    }
+
+    .date-en {
+      font-family: 'IM Fell English', serif;
+      font-style: italic;
+      font-size: 13px;
+      color: #5b5145;
+    }
+
+    /* 만년필 잉크 본문 */
+    .letter-body {
+      font-family: 'Gowun Batang', 'Nanum Myeongjo', serif;
+      font-size: 16.5px;
+      line-height: 2.02;
+      color: #1d2633;
+      letter-spacing: 0.2px;
+      text-shadow: 0 0 0.4px rgba(29, 38, 51, 0.18);
+    }
+
+    .salutation {
+      font-size: 17.5px;
+      font-weight: 700;
+      margin-bottom: 24px;
+      color: #18202b;
+    }
+
+    .letter-body p {
+      margin-bottom: 20px;
+      text-indent: 14px;
+      text-align: justify;
+    }
+
+    /* 핵심 암호 코드 블록 */
+    .code-highlight-wrap {
+      margin: 26px 0 28px;
+      text-align: center;
+    }
+
+    .code-box {
+      display: inline-block;
+      padding: 12px 30px 10px;
+      border: 1.5px solid rgba(29, 38, 51, 0.65);
+      border-radius: 2px;
+      background: rgba(29, 38, 51, 0.035);
+      font-family: 'Courier Prime', monospace;
+      font-size: 26px;
+      font-weight: 700;
+      letter-spacing: 3.5px;
+      color: #141c27;
+      box-shadow:
+        inset 0 0 0 3px #f4ecdc,
+        inset 0 0 0 4px rgba(29, 38, 51, 0.25);
+      transform: rotate(-0.4deg);
+    }
+
+    /* 맺음말 및 서명 */
+    .closing-block {
+      margin-top: 30px;
+      padding-left: 48%;
+      font-family: 'Gowun Batang', 'Nanum Myeongjo', serif;
+      color: #1d2633;
+    }
+
+    .closing-phrase {
+      font-size: 16px;
+      margin-bottom: 8px;
+    }
+
+    .signature-en {
+      font-family: 'Great Vibes', cursive;
+      font-size: 38px;
+      line-height: 1.05;
+      color: #16202e;
+      margin: 4px 0 2px -6px;
+      transform: rotate(-1.5deg);
+    }
+
+    .signature-kr {
+      font-size: 16px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      color: #1c2533;
+    }
+
+    /* 추신 */
+    .postscript {
+      position: relative;
+      z-index: 2;
+      margin-top: 42px;
+      padding-top: 16px;
+      border-top: 1px dashed rgba(68, 54, 40, 0.32);
+      font-family: 'Gowun Batang', 'Nanum Myeongjo', serif;
+      font-size: 15.5px;
+      font-weight: 700;
+      line-height: 1.75;
+      color: #2c1e1a;
+      letter-spacing: 0.25px;
+    }
+
+    .ps-underline {
+      border-bottom: 1.5px solid rgba(110, 38, 28, 0.55);
+      padding-bottom: 1px;
+    }
+
+    @media (max-width: 640px) {
+      .letter-sheet {
+        padding: 38px 26px 38px;
+        min-height: auto;
+      }
+      .letter-body {
+        font-size: 15.5px;
+        line-height: 1.92;
+      }
+      .code-box {
+        font-size: 20px;
+        letter-spacing: 2px;
+        padding: 10px 18px 8px;
+      }
+      .closing-block {
+        padding-left: 22%;
+      }
+      .signature-en {
+        font-size: 32px;
+      }
+    }
+
+    @media print {
+      body {
+        background: none;
+        padding: 0;
+      }
+      .letter-sheet {
+        box-shadow: none;
+        border: none;
+        max-width: 100%;
+        min-height: auto;
+        padding: 28px 36px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <main class="letter-sheet">
+    <div class="paper-grain"></div>
+    <div class="fold-creases"></div>
+    <div class="age-stain"></div>
+
+    <div class="letter-inner">
+      <div class="letter-date-row">
+        <span class="date-kr">1925년 3월 14일</span>
+        <span class="date-en">March 14, 1925</span>
+      </div>
+
+      <article class="letter-body">
+        <div class="salutation">친애하는 친구에게,</div>
+
+        <p>편지가 자네에게 무탈히 닿기를 바라네. 오랫동안 대화를 나누지 못했지만, 내 연구가 나를 아주 기이한 발견들로 이끌었다네.</p>
+
+        <p>안전을 위한 예방 조치로 이 편지를 보내네. 이 편지가 언제, 아니 애초에 자네에게 도착이나 할 수 있을지 확신할 수 없지만, 자네에게 아주 기괴한 부탁을 하나 해야만 하네. 자네가 이 코드를 반드시 외워주었으면 하네.</p>
+
+        <div class="code-highlight-wrap">
+          <div class="code-box">AF194-91-5071</div>
+        </div>
+
+        <p>코드를 외운 즉시 이 편지를 불태워 없애게. 이것이 잘못된 자들의 손에 들어가는 것만은 결코 용납할 수 없네. 자네가 이 암호를 알고 있다는 사실을 그 누구에게도 발설하지 말게. 더 자세히 설명해 주지 못해 미안하지만, 자네가 모를수록 안전하다네.</p>
+
+        <p>제발 이 코드를 잊지 말게나. 자칫 생사가 걸린 문제가 될 수도 있으니. 부디 자네가 이 코드를 쓸 일이 영영 없기를 바라며.</p>
+
+        <div class="closing-block">
+          <div class="closing-phrase">자네의 벗,</div>
+          <div class="signature-en">Kenneth Connolly</div>
+          <div class="signature-kr">케네스 코놀리 박사</div>
+        </div>
+      </article>
+    </div>
+
+    <aside class="postscript">
+      <span class="ps-underline">추신: 엘리자베스와 그녀의 남동생을 절대 믿지 말게.</span>
+    </aside>
+  </main>
+
+</body>
+</html>

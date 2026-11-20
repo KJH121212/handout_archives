@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>지역 신문 기사 - 린 앤 마이어스 코빗 부고 및 간호사 입원</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=IM+Fell+English:ital@0;1&family=Nanum+Myeongjo:wght@400;700;800&family=Noto+Sans+KR:wght@400;500;700&display=swap');
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: #181512;
+      background-image:
+        radial-gradient(circle at 50% 30%, #2a241d 0%, #15120e 72%, #0c0a08 100%);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 44px 18px;
+      font-family: 'Nanum Myeongjo', serif;
+      color: #1f1913;
+      word-break: keep-all;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* 12년 전 지역 신문 지면 발췌 (부고란 + 사회면 단신) */
+    .clipping-wrap {
+      position: relative;
+      width: 100%;
+      max-width: 720px;
+      transform: rotate(0.35deg);
+      filter: drop-shadow(0 22px 44px rgba(0, 0, 0, 0.76));
+    }
+
+    .newspaper-sheet {
+      position: relative;
+      background-color: #ebe0ca;
+      background-image:
+        radial-gradient(ellipse at 40% 25%, #f2e9d6 0%, #e1d2b4 68%, #d4c19e 100%),
+        repeating-linear-gradient(
+          rgba(38, 28, 16, 0.014) 0px,
+          rgba(38, 28, 16, 0.014) 1px,
+          transparent 1px,
+          transparent 2px
+        );
+      padding: 36px 42px 36px;
+      border-top: 1px solid #bfb090;
+      border-left: 1px solid #bab096;
+      border-right: 1px solid #b0a080;
+      box-shadow: inset 0 0 60px rgba(92, 68, 36, 0.22);
+      overflow: hidden;
+    }
+
+    .paper-grain {
+      position: absolute;
+      inset: 0;
+      opacity: 0.05;
+      pointer-events: none;
+      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.88' numOctaves='3' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+    }
+
+    .crease-line {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background:
+        linear-gradient(
+          to bottom,
+          transparent 44.6%,
+          rgba(70, 52, 28, 0.13) 45.2%,
+          rgba(255, 250, 238, 0.22) 45.7%,
+          transparent 46.4%
+        );
+    }
+
+    /* 제호 */
+    .masthead {
+      position: relative;
+      z-index: 2;
+      text-align: center;
+      border-bottom: 3px double #241c14;
+      padding-bottom: 10px;
+      margin-bottom: 22px;
+    }
+
+    .masthead .en-name {
+      font-family: 'Cinzel', serif;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 5px;
+      color: #594735;
+      margin-bottom: 3px;
+    }
+
+    .masthead h1 {
+      font-size: 34px;
+      font-weight: 800;
+      letter-spacing: 6px;
+      line-height: 1.15;
+      color: #19130d;
+    }
+
+    .masthead .sub-bar {
+      display: flex;
+      justify-content: space-between;
+      border-top: 1px solid #35291d;
+      margin-top: 9px;
+      padding-top: 5px;
+      font-family: 'Noto Sans KR', sans-serif;
+      font-size: 11px;
+      font-weight: 500;
+      color: #4d3d2d;
+    }
+
+    /* 2열 지면 구성: 좌측 검은 테두리 부고란 + 우측 간호사 입원 기사 */
+    .broadsheet-grid {
+      position: relative;
+      z-index: 2;
+      display: grid;
+      grid-template-columns: 0.92fr 1.35fr;
+      gap: 26px;
+      align-items: start;
+    }
+
+    /* 부고란 (전통적인 검은 애도 테두리 박스) */
+    .obituary-box {
+      border: 3px solid #211a13;
+      padding: 4px;
+      background: rgba(34, 24, 14, 0.03);
+    }
+
+    .obituary-inner {
+      border: 1px solid #211a13;
+      padding: 18px 18px 20px;
+    }
+
+    .obituary-header {
+      text-align: center;
+      border-bottom: 1px solid rgba(33, 26, 19, 0.45);
+      padding-bottom: 10px;
+      margin-bottom: 14px;
+    }
+
+    .obituary-ornament {
+      font-size: 14px;
+      color: #362a1e;
+      letter-spacing: 6px;
+      margin-bottom: 4px;
+    }
+
+    .obituary-header h2 {
+      font-size: 22px;
+      font-weight: 800;
+      letter-spacing: 6px;
+      color: #16110b;
+    }
+
+    .obituary-header .en-sub {
+      font-family: 'Cinzel', serif;
+      font-size: 9.5px;
+      letter-spacing: 3px;
+      color: #5c4b39;
+      margin-top: 3px;
+    }
+
+    .obituary-body {
+      font-size: 14.3px;
+      line-height: 1.85;
+      text-align: justify;
+      color: #211912;
+    }
+
+    .obituary-body p {
+      margin-bottom: 12px;
+    }
+
+    .obituary-body p:last-child {
+      margin-bottom: 0;
+    }
+
+    .deceased-name {
+      font-weight: 800;
+      color: #120d08;
+    }
+
+    /* 우측 기사: 간호사 입원 */
+    .news-column {
+      border-left: 1px solid rgba(44, 34, 22, 0.32);
+      padding-left: 24px;
+    }
+
+    .column-tag {
+      display: inline-block;
+      background: #282018;
+      color: #efe6d4;
+      font-family: 'Noto Sans KR', sans-serif;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 1.4px;
+      padding: 2px 8px;
+      margin-bottom: 10px;
+    }
+
+    .news-headline {
+      border-top: 2px solid #221a12;
+      border-bottom: 1px solid #221a12;
+      padding: 10px 0;
+      margin-bottom: 14px;
+    }
+
+    .news-headline h2 {
+      font-size: 22.5px;
+      font-weight: 800;
+      line-height: 1.32;
+      letter-spacing: -0.4px;
+      color: #16110b;
+    }
+
+    .news-body {
+      font-size: 14.6px;
+      line-height: 1.86;
+      text-align: justify;
+      color: #211912;
+    }
+
+    .news-body p {
+      margin-bottom: 13px;
+      text-indent: 14px;
+    }
+
+    .news-body p:first-child {
+      text-indent: 0;
+    }
+
+    .news-body p:last-child {
+      margin-bottom: 0;
+    }
+
+    /* 말미 장식 */
+    .end-rule {
+      position: relative;
+      z-index: 2;
+      margin-top: 24px;
+      padding-top: 10px;
+      border-top: 1px solid rgba(44, 34, 22, 0.35);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-family: 'Noto Sans KR', sans-serif;
+      font-size: 11px;
+      color: #5b4936;
+    }
+
+    .end-mark {
+      letter-spacing: 3px;
+      font-weight: 700;
+      color: #36291c;
+    }
+
+    .torn-bottom {
+      display: block;
+      width: 100%;
+      height: 15px;
+      margin-top: -1px;
+    }
+
+    @media (max-width: 660px) {
+      .newspaper-sheet {
+        padding: 26px 20px 26px;
+      }
+      .masthead h1 {
+        font-size: 26px;
+        letter-spacing: 3px;
+      }
+      .broadsheet-grid {
+        grid-template-columns: 1fr;
+        gap: 22px;
+      }
+      .news-column {
+        border-left: none;
+        border-top: 1px solid rgba(44, 34, 22, 0.32);
+        padding-left: 0;
+        padding-top: 18px;
+      }
+    }
+
+    @media print {
+      body { background: none; padding: 0; }
+      .clipping-wrap { transform: none; filter: none; max-width: 100%; }
+      .newspaper-sheet { box-shadow: none; border: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="clipping-wrap">
+    <article class="newspaper-sheet">
+      <div class="paper-grain"></div>
+      <div class="crease-line"></div>
+
+      <header class="masthead">
+        <div class="en-name">LOCAL DAILY CHRONICLE · ARCHIVE EDITION</div>
+        <h1>지역 일간지</h1>
+        <div class="sub-bar">
+          <span>부고 및 지역 사회면</span>
+          <span>12년 전 일자 발행본 (2건)</span>
+          <span>정가 2센트</span>
+        </div>
+      </header>
+
+      <div class="broadsheet-grid">
+        <!-- 좌측: 부고 -->
+        <section class="obituary-box">
+          <div class="obituary-inner">
+            <div class="obituary-header">
+              <div class="obituary-ornament">✝</div>
+              <h2>부고</h2>
+              <div class="en-sub">OBITUARY NOTICES</div>
+            </div>
+            <div class="obituary-body">
+              <p>
+                <strong class="deceased-name">코빗, 린 앤 마이어스(Lynn Anne Meyers)</strong>, 향년 22세. 자택에서 출산 도중 사망. 피어포인트 학교를 졸업한 코빗 부인은 2년 전 지역 사업가인 버나드 코빗과 혼인했다. 모자와 아이의 장례식은 토요일 오후에 거행될 예정이다.
+              </p>
+              <p>
+                유족으로는 부모인 에드워드와 셜리 마이어스, 그리고 남편이자 '아메리카 코빗 수입 상사'의 대표인 버나드 코빗이 있다.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <!-- 우측: 간호사 입원 기사 -->
+        <section class="news-column">
+          <div class="column-tag">지역 사회면 · LOCAL NEWS</div>
+          <div class="news-headline">
+            <h2>환자의 자택에서 발생한 사고로 간호사 입원</h2>
+          </div>
+          <div class="news-body">
+            <p>
+              전문 간호사인 모나 던랩 양이 환자의 자택에서 발생한 사고 이후 어제 중앙 요양원(Central Sanitarium)에 입원했다. 그녀의 상태는 위중한 것으로 진단되었다.
+            </p>
+            <p>
+              코빗 부인의 산후 조리를 돕기 위해 버나드 코빗 씨 부부에게 고용된 던랩 양은, 다른 이의 도움 없이 홀로 코빗 부인의 출산을 돕던 중 뇌졸중을 일으킨 것으로 보인다. 코빗 씨는 수요일 오후 사무실에서 귀가했다가 의식을 잃은 던랩 간호사와 출산 합병증으로 사망한 아내 및 갓난아들을 발견했다. 요양원 의사들은 환자가 아직 의식을 되찾지 못하고 있으며 부상의 전모가 밝혀지기까지는 다소 시간이 걸릴 것이라고 전했다.
+            </p>
+          </div>
+        </section>
+      </div>
+
+      <div class="end-rule">
+        <span>지역 도서관 신문 보관철 발췌 · 두 기사 모두 12년 전 일자</span>
+        <span class="end-mark">— 30 —</span>
+      </div>
+    </article>
+
+    <svg class="torn-bottom" viewBox="0 0 720 15" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <path d="M0,0 L720,0 L720,7 L695,12 L666,5 L638,11 L608,4 L580,13 L552,6 L520,12 L492,5 L462,13 L432,6 L402,11 L370,5 L340,13 L310,6 L280,12 L248,5 L218,13 L188,6 L158,11 L126,4 L96,12 L66,6 L34,11 L0,6 Z" fill="#d8c5a3" stroke="#b0a080" stroke-width="0.8"/>
+    </svg>
+  </div>
+
+</body>
+</html>

@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>갬웰 가제트 - 갬웰의 백만장자 행방불명 (1925년 1월 17일)</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=IM+Fell+English:ital@0;1&family=Nanum+Myeongjo:wght@400;700;800&family=Noto+Sans+KR:wght@400;500;700&display=swap');
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: #24201c;
+      background-image:
+        radial-gradient(circle at 50% 25%, #342d26 0%, #1c1814 75%, #110e0c 100%);
+      padding: 42px 18px;
+      display: flex;
+      justify-content: center;
+      font-family: 'Nanum Myeongjo', serif;
+      color: #191511;
+      word-break: keep-all;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* 서신에 동봉된 오려낸 신문 스크랩 */
+    .clipping-wrapper {
+      position: relative;
+      width: 100%;
+      max-width: 820px;
+      background-color: #efe5d3;
+      background-image:
+        radial-gradient(ellipse at 45% 35%, #f4ecdd 0%, #e4d5bc 100%),
+        repeating-linear-gradient(
+          rgba(0, 0, 0, 0.012) 0px,
+          rgba(0, 0, 0, 0.012) 1px,
+          transparent 1px,
+          transparent 2px
+        );
+      padding: 36px 44px 40px;
+      border: 1px dashed #a8987f;
+      box-shadow:
+        0 20px 46px rgba(0, 0, 0, 0.68),
+        inset 0 0 65px rgba(108, 82, 48, 0.16);
+      overflow: hidden;
+    }
+
+    /* 종이 질감 */
+    .paper-noise {
+      position: absolute;
+      inset: 0;
+      opacity: 0.05;
+      pointer-events: none;
+      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+    }
+
+    /* 가위질한 상단/하단 톱니 느낌 미세 장식 */
+    .clip-edge-top,
+    .clip-edge-bottom {
+      position: absolute;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: repeating-linear-gradient(
+        135deg,
+        rgba(36, 32, 28, 0.22) 0px,
+        rgba(36, 32, 28, 0.22) 4px,
+        transparent 4px,
+        transparent 9px
+      );
+      opacity: 0.35;
+      pointer-events: none;
+    }
+    .clip-edge-top { top: 0; }
+    .clip-edge-bottom { bottom: 0; }
+
+    /* 신문 제호 */
+    .masthead {
+      position: relative;
+      z-index: 2;
+      text-align: center;
+      border-bottom: 4px double #1a1511;
+      padding-bottom: 10px;
+      margin-bottom: 20px;
+    }
+
+    .masthead .en-title {
+      font-family: 'Cinzel', serif;
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 6px;
+      color: #463a2e;
+      margin-bottom: 3px;
+    }
+
+    .masthead h1 {
+      font-size: 46px;
+      font-weight: 800;
+      letter-spacing: 9px;
+      line-height: 1.12;
+      color: #14100d;
+    }
+
+    .masthead .sub-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-top: 1px solid #1a1511;
+      border-bottom: 1px solid #1a1511;
+      margin-top: 10px;
+      padding: 5px 10px;
+      font-family: 'Noto Sans KR', sans-serif;
+      font-size: 12px;
+      font-weight: 500;
+      color: #2b221a;
+    }
+
+    /* 표제 */
+    .headline-block {
+      position: relative;
+      z-index: 2;
+      text-align: center;
+      padding-bottom: 14px;
+      margin-bottom: 20px;
+      border-bottom: 2px solid #1a1511;
+    }
+
+    .section-tag {
+      display: inline-block;
+      font-family: 'Noto Sans KR', sans-serif;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      color: #3d3126;
+      border: 1px solid #3d3126;
+      padding: 2px 10px;
+      margin-bottom: 10px;
+    }
+
+    .headline-block h2 {
+      font-size: 35px;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+      line-height: 1.25;
+      color: #14100c;
+      margin-bottom: 8px;
+    }
+
+    .headline-block .pub-date {
+      font-family: 'Nanum Myeongjo', serif;
+      font-style: italic;
+      font-size: 14px;
+      font-weight: 700;
+      color: #45382c;
+    }
+
+    /* 기사 2단 레이아웃 */
+    .article-grid {
+      position: relative;
+      z-index: 2;
+      display: grid;
+      grid-template-columns: 1.25fr 0.85fr;
+      gap: 26px;
+      align-items: start;
+    }
+
+    .article-body {
+      font-size: 15.2px;
+      line-height: 1.88;
+      text-align: justify;
+      padding-right: 18px;
+      border-right: 1px solid rgba(40, 32, 24, 0.32);
+    }
+
+    .article-body p {
+      margin-bottom: 16px;
+      text-indent: 15px;
+    }
+
+    .article-body p:first-child {
+      text-indent: 0;
+    }
+
+    .article-body p:first-child::first-letter {
+      float: left;
+      font-size: 46px;
+      line-height: 0.92;
+      font-weight: 800;
+      padding: 4px 8px 2px 0;
+      color: #16110d;
+    }
+
+    .article-body p:last-child {
+      margin-bottom: 0;
+    }
+
+    /* 우측 삽화 및 단신 컬럼 */
+    .side-column {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .photo-box {
+      background: #dfd2bc;
+      border: 1.5px solid #2b231b;
+      padding: 7px;
+      box-shadow: inset 0 0 16px rgba(0, 0, 0, 0.14);
+    }
+
+    .photo-frame {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 4 / 3.1;
+      background: #2b251f;
+      border: 1px solid #483d31;
+      overflow: hidden;
+    }
+
+    .halftone {
+      position: absolute;
+      inset: 0;
+      background-image: radial-gradient(rgba(16, 12, 8, 0.3) 1px, transparent 1px);
+      background-size: 3.5px 3.5px;
+      mix-blend-mode: multiply;
+      pointer-events: none;
+    }
+
+    .photo-caption {
+      margin-top: 7px;
+      padding-top: 6px;
+      border-top: 1px solid rgba(43, 35, 27, 0.32);
+      font-family: 'Noto Sans KR', sans-serif;
+      font-size: 11.5px;
+      line-height: 1.48;
+      color: #31281f;
+    }
+
+    .community-box {
+      border-top: 2px solid #241d16;
+      border-bottom: 2px solid #241d16;
+      background: rgba(25, 18, 12, 0.035);
+      padding: 11px 13px;
+      font-size: 12.8px;
+      line-height: 1.65;
+      color: #2f261e;
+    }
+
+    .community-box .box-head {
+      font-family: 'Noto Sans KR', sans-serif;
+      font-size: 11.5px;
+      font-weight: 700;
+      text-align: center;
+      margin-bottom: 6px;
+      letter-spacing: 0.8px;
+      color: #1d1610;
+    }
+
+    /* 동봉 스크랩 하단 여백 표시 */
+    .clipping-footer {
+      position: relative;
+      z-index: 2;
+      margin-top: 22px;
+      padding-top: 8px;
+      border-top: 1px solid rgba(40, 32, 24, 0.35);
+      display: flex;
+      justify-content: space-between;
+      font-family: 'Noto Sans KR', sans-serif;
+      font-size: 11px;
+      color: #5b4d3f;
+    }
+
+    @media (max-width: 720px) {
+      .clipping-wrapper {
+        padding: 26px 20px 30px;
+      }
+      .masthead h1 {
+        font-size: 34px;
+        letter-spacing: 5px;
+      }
+      .headline-block h2 {
+        font-size: 26px;
+      }
+      .article-grid {
+        grid-template-columns: 1fr;
+      }
+      .article-body {
+        padding-right: 0;
+        border-right: none;
+        padding-bottom: 16px;
+        border-bottom: 1px solid rgba(40, 32, 24, 0.32);
+      }
+      .masthead .sub-bar {
+        flex-direction: column;
+        gap: 3px;
+      }
+    }
+
+    @media print {
+      body { background: none; padding: 0; }
+      .clipping-wrapper { box-shadow: none; border: 1px solid #999; max-width: 100%; padding: 20px; }
+    }
+  </style>
+</head>
+<body>
+
+  <article class="clipping-wrapper">
+    <div class="paper-noise"></div>
+    <div class="clip-edge-top"></div>
+    <div class="clip-edge-bottom"></div>
+
+    <header class="masthead">
+      <div class="en-title">THE GAMWELL GAZETTE</div>
+      <h1>갬웰 가제트</h1>
+      <div class="sub-bar">
+        <span>1847년 창간 · 주간 지역지</span>
+        <span>매사추세츠주 갬웰 · 1925년 1월 17일 토요일</span>
+        <span>정가 3센트</span>
+      </div>
+    </header>
+
+    <div class="headline-block">
+      <div class="section-tag">지역 인물 소식</div>
+      <h2>갬웰의 백만장자 행방불명</h2>
+      <div class="pub-date">1925년 1월 17일 자</div>
+    </div>
+
+    <div class="article-grid">
+      <div class="article-body">
+        <p>
+          갬웰에서 가장 번창한 인물인 아서 콘스웨이트 씨가 향후 몇 주간 주일 예배에 참석하지 못할 것으로 보인다. 콘스웨이트 씨는 휴가 혹은 학술 연구 차 잠시 지역을 떠난 것으로 알려졌다.
+        </p>
+        <p>
+          사전 예고 없는 부재로 다소 의문이 제기되기도 했으나, 휫포드 카운티 보안관이 저택과 부지를 조사한 결과 특이 동향이나 위험 요소는 발견되지 않았다. 콘스웨이트 씨와 마지막으로 대화를 나눈 인물은 담당 변호사인 월터 닷지 씨로, 지난 1월 7일의 일이었다. 당시 그는 여행 계획에 대해 구체적인 언급을 남기지 않았으나, 닷지 씨에 따르면 여행 일정 구상 때문인지 몹시 골몰해 있는 기색이었다고 한다. 잘 알려진 바와 같이, 콘스웨이트 씨는 대지주일 뿐 아니라 백만장자이자 학자, 자선가이며 저명한 탐험가이다. 그는 차기 원정의 토대를 마련 중이거나 뉴욕에서 휴식을 취하고 있을 가능성이 높다. 갬웰 주민들은 콘스웨이트 씨가 지역 자선 단체와 마을 도서관에 아낌없이 베풀었던 온정을 기억하며, 그의 안전하고 유익한 여정을 한마음으로 기원하고 있다.
+        </p>
+      </div>
+
+      <aside class="side-column">
+        <figure class="photo-box">
+          <div class="photo-frame">
+            <!-- 1925년 신문 망점 보도사진 삽화: 겨울 나무들 너머로 보이는 피츠제럴드 저택 -->
+            <svg viewBox="0 0 360 280" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="갬웰 외곽에 자리한 아서 콘스웨이트의 거처 피츠제럴드 저택 전경">
+              <defs>
+                <linearGradient id="winterSky" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stop-color="#c4b9a6"/>
+                  <stop offset="65%" stop-color="#ded5c5"/>
+                  <stop offset="100%" stop-color="#b4a995"/>
+                </linearGradient>
+                <radialGradient id="vig" cx="50%" cy="50%" r="72%">
+                  <stop offset="55%" stop-color="transparent"/>
+                  <stop offset="100%" stop-color="rgba(16,12,8,0.58)"/>
+                </radialGradient>
+              </defs>
+
+              <!-- 흐린 겨울 하늘 -->
+              <rect width="360" height="280" fill="url(#winterSky)"/>
+
+              <!-- 원경 수목 실루엣 -->
+              <path d="M0,185 Q40,120 90,158 Q135,115 190,155 Q250,118 310,152 Q340,130 360,160 L360,280 L0,280 Z" fill="#686055"/>
+
+              <!-- 피츠제럴드 저택 실루엣 (살짝 기운 듯한 2층 석조/목조 대저택) -->
+              <g transform="translate(180, 152) rotate(-0.8)">
+                <!-- 본관 -->
+                <rect x="-86" y="-34" width="172" height="84" fill="#443d34" stroke="#221e19" stroke-width="1.5"/>
+                <!-- 박공 지붕 -->
+                <polygon points="-96,-34 0,-74 96,-34" fill="#2d2822" stroke="#181511" stroke-width="1.5"/>
+                <!-- 중앙 페디먼트 -->
+                <polygon points="-34,-34 0,-56 34,-34" fill="#3a332b" stroke="#181511" stroke-width="1.2"/>
+                <!-- 굴뚝 두 개 -->
+                <rect x="-66" y="-76" width="14" height="34" fill="#2a251f"/>
+                <rect x="52" y="-74" width="14" height="32" fill="#2a251f"/>
+                <!-- 덧문이 닫힌 2층 창문들 -->
+                <g fill="#221e19" stroke="#6c6255" stroke-width="1">
+                  <rect x="-72" y="-22" width="18" height="24"/>
+                  <rect x="-42" y="-22" width="18" height="24"/>
+                  <rect x="-9" y="-22" width="18" height="24"/>
+                  <rect x="24" y="-22" width="18" height="24"/>
+                  <rect x="54" y="-22" width="18" height="24"/>
+                </g>
+                <!-- 1층 창문 및 현관 -->
+                <g fill="#221e19" stroke="#6c6255" stroke-width="1">
+                  <rect x="-72" y="14" width="18" height="24"/>
+                  <rect x="-42" y="14" width="18" height="24"/>
+                  <rect x="24" y="14" width="18" height="24"/>
+                  <rect x="54" y="14" width="18" height="24"/>
+                </g>
+                <!-- 현관 포치와 돌계단 -->
+                <rect x="-18" y="8" width="36" height="42" fill="#2e2923" stroke="#1a1612" stroke-width="1.2"/>
+                <rect x="-11" y="16" width="22" height="34" fill="#1d1915"/>
+                <polygon points="-22,50 22,50 28,60 -28,60" fill="#7c7366"/>
+              </g>
+
+              <!-- 전경 앙상한 나무와 쇠창살 돌담 -->
+              <path d="M0,218 Q180,206 360,222 L360,280 L0,280 Z" fill="#4f483e"/>
+              <path d="M135,280 L166,214 L196,214 L232,280 Z" fill="#8b8172" opacity="0.65"/>
+
+              <!-- 좌우 앙상한 겨울 나뭇가지 -->
+              <g stroke="#24201b" fill="none" stroke-linecap="round">
+                <path d="M26,280 L34,120 M34,165 L68,132 M32,142 L8,112 M34,120 L58,92" stroke-width="3.2"/>
+                <path d="M332,280 L324,115 M324,160 L290,126 M326,138 L352,106 M324,115 L298,86" stroke-width="3"/>
+              </g>
+
+              <!-- 돌담과 철문 윤곽 -->
+              <rect x="0" y="232" width="132" height="22" fill="#3a342c" stroke="#1e1a16" stroke-width="1"/>
+              <rect x="228" y="232" width="132" height="22" fill="#3a342c" stroke="#1e1a16" stroke-width="1"/>
+              <g stroke="#1b1713" stroke-width="1.4">
+                <line x1="136" y1="214" x2="136" y2="256"/>
+                <line x1="148" y1="214" x2="148" y2="256"/>
+                <line x1="160" y1="214" x2="160" y2="256"/>
+                <line x1="172" y1="214" x2="172" y2="256"/>
+                <line x1="184" y1="214" x2="184" y2="256"/>
+                <line x1="196" y1="214" x2="196" y2="256"/>
+                <line x1="208" y1="214" x2="208" y2="256"/>
+                <line x1="220" y1="214" x2="220" y2="256"/>
+                <line x1="132" y1="224" x2="228" y2="224" stroke-width="2"/>
+                <line x1="132" y1="246" x2="228" y2="246" stroke-width="2"/>
+              </g>
+
+              <rect width="360" height="280" fill="url(#vig)"/>
+            </svg>
+            <div class="halftone"></div>
+          </div>
+          <figcaption class="photo-caption">
+            <strong>▲ 콘스웨이트 씨의 자택</strong> — 갬웰 외곽 북부에 자리한 피츠제럴드 저택. 현재 모든 덧문이 닫힌 채 조용한 상태를 유지하고 있다.
+          </figcaption>
+        </figure>
+
+        <div class="community-box">
+          <div class="box-head">■ 편집실 단신</div>
+          갬웰 마을 도서관과 지역 자선 위원회는 아서 콘스웨이트 씨의 무사 귀환을 기원하며, 그의 근황을 접한 주민은 닷지 형제 법률 사무소로 소식을 전해 주기를 바란다고 밝혔다.
+        </div>
+      </aside>
+    </div>
+
+    <footer class="clipping-footer">
+      <span>갬웰 가제트 (The Gamwell Gazette) 제78권 제3호</span>
+      <span>매사추세츠주 갬웰 발행</span>
+    </footer>
+  </article>
+
+</body>
+</html>

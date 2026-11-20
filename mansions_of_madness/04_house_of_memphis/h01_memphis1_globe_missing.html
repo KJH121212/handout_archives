@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>보스턴 글로브 - 위대한 멤피스 실종되다</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Nanum+Myeongjo:wght@400;700;800&family=Noto+Sans+KR:wght@400;500;700&family=UnifrakturMaguntia&display=swap');
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: #211d19;
+      background-image:
+        radial-gradient(circle at 50% 24%, #332c25 0%, #1b1713 72%, #100d0b 100%);
+      padding: 42px 18px;
+      display: flex;
+      justify-content: center;
+      font-family: 'Nanum Myeongjo', serif;
+      color: #1b1713;
+      word-break: keep-all;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .newspaper-page {
+      position: relative;
+      width: 100%;
+      max-width: 900px;
+      background-color: #efe4cf;
+      background-image:
+        radial-gradient(ellipse at 45% 35%, #f4ebd8 0%, #e3d3b6 100%),
+        repeating-linear-gradient(
+          rgba(0, 0, 0, 0.013) 0px,
+          rgba(0, 0, 0, 0.013) 1px,
+          transparent 1px,
+          transparent 2px
+        );
+      padding: 40px 46px 46px;
+      border: 1px solid #bfb094;
+      box-shadow:
+        0 20px 48px rgba(0, 0, 0, 0.68),
+        inset 0 0 75px rgba(105, 76, 38, 0.22);
+      overflow: hidden;
+    }
+
+    .paper-noise {
+      position: absolute;
+      inset: 0;
+      opacity: 0.05;
+      pointer-events: none;
+      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.88' numOctaves='3' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+    }
+
+    .fold-crease {
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 52%;
+      height: 2px;
+      background: linear-gradient(
+        to bottom,
+        rgba(30, 22, 14, 0.09),
+        rgba(255, 250, 238, 0.22),
+        rgba(30, 22, 14, 0.06)
+      );
+      pointer-events: none;
+      z-index: 4;
+    }
+
+    .archive-stamp {
+      position: absolute;
+      top: 42px;
+      right: 44px;
+      border: 2px solid rgba(126, 36, 22, 0.78);
+      color: rgba(126, 36, 22, 0.82);
+      padding: 5px 11px;
+      font-family: 'Noto Sans KR', sans-serif;
+      font-size: 10.5px;
+      font-weight: 700;
+      transform: rotate(5.5deg);
+      letter-spacing: 0.8px;
+      text-align: center;
+      line-height: 1.35;
+      pointer-events: none;
+      z-index: 3;
+    }
+
+    .archive-slug {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      justify-content: space-between;
+      border-bottom: 1.5px solid #2e251d;
+      padding-bottom: 6px;
+      margin-bottom: 14px;
+      font-family: 'Noto Sans KR', sans-serif;
+      font-size: 11.5px;
+      color: #544638;
+    }
+
+    .masthead {
+      position: relative;
+      z-index: 2;
+      text-align: center;
+      border-bottom: 4px double #1b1713;
+      padding-bottom: 12px;
+      margin-bottom: 20px;
+    }
+
+    .masthead .en-title {
+      font-family: 'UnifrakturMaguntia', 'Cinzel', serif;
+      font-size: 20px;
+      letter-spacing: 2px;
+      color: #362c22;
+      margin-bottom: 2px;
+    }
+
+    .masthead h1 {
+      font-family: 'Nanum Myeongjo', serif;
+      font-size: 50px;
+      font-weight: 800;
+      letter-spacing: 9px;
+      line-height: 1.12;
+      color: #15110d;
+    }
+
+    .masthead .sub-bar {
+      display: flex;
+      justify-content: space-between;
+      border-top: 1px solid #1b1713;
+      border-bottom: 1px solid #1b1713;
+      margin-top: 11px;
+      padding: 5px 10px;
+      font-family: 'Noto Sans KR', sans-serif;
+      font-size: 12px;
+      font-weight: 500;
+      color: #29211a;
+    }
+
+    .headline-block {
+      position: relative;
+      z-index: 2;
+      text-align: center;
+      margin-bottom: 20px;
+      padding-bottom: 14px;
+      border-bottom: 2px solid #1b1713;
+    }
+
+    .kicker {
+      display: inline-block;
+      font-family: 'Noto Sans KR', sans-serif;
+      font-size: 11.5px;
+      font-weight: 700;
+      letter-spacing: 2.5px;
+      color: #efe4cf;
+      background-color: #231c16;
+      padding: 3px 12px;
+      margin-bottom: 10px;
+    }
+
+    .headline-block h2 {
+      font-size: 38px;
+      font-weight: 800;
+      line-height: 1.25;
+      letter-spacing: -0.4px;
+      margin-bottom: 8px;
+      color: #14100c;
+    }
+
+    .headline-block .deck {
+      font-size: 15px;
+      font-weight: 700;
+      color: #3b3025;
+      line-height: 1.45;
+    }
+
+    .article-layout {
+      position: relative;
+      z-index: 2;
+      display: grid;
+      grid-template-columns: 1.12fr 0.96fr;
+      gap: 28px;
+      align-items: start;
+    }
+
+    .article-text {
+      font-size: 15.4px;
+      line-height: 1.9;
+      text-align: justify;
+      padding-right: 20px;
+      border-right: 1px solid rgba(45, 36, 28, 0.34);
+    }
+
+    .article-text p {
+      margin-bottom: 16px;
+      text-indent: 14px;
+    }
+
+    .article-text p:first-child {
+      text-indent: 0;
+    }
+
+    .article-text p:last-child {
+      margin-bottom: 0;
+    }
+
+    .drop-cap {
+      float: left;
+      font-size: 46px;
+      line-height: 0.88;
+      font-weight: 800;
+      padding: 4px 8px 2px 0;
+      color: #16110d;
+    }
+
+    .dateline {
+      font-family: 'Noto Sans KR', sans-serif;
+      font-weight: 700;
+      font-size: 13px;
+      letter-spacing: 0.4px;
+      color: #2b221a;
+      margin-right: 4px;
+    }
+
+    .cable-box {
+      margin-top: 20px;
+      padding: 12px 15px;
+      border-top: 2px solid #2b221a;
+      border-bottom: 1px solid #2b221a;
+      background: rgba(30, 22, 14, 0.045);
+      font-family: 'Noto Sans KR', sans-serif;
+      font-size: 12.2px;
+      line-height: 1.65;
+      color: #352b21;
+    }
+
+    .cable-box strong {
+      display: block;
+      margin-bottom: 4px;
+      font-size: 12px;
+      letter-spacing: 1px;
+      color: #1b140e;
+    }
+
+    .photo-column {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .press-photo-frame {
+      background: #ded1b9;
+      border: 1.5px solid #2c241c;
+      padding: 8px;
+      box-shadow: inset 0 0 18px rgba(0, 0, 0, 0.14);
+    }
+
+    .photo-viewport {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 4 / 3.2;
+      background: #28221c;
+      overflow: hidden;
+      border: 1px solid #4a3f33;
+    }
+
+    .halftone-overlay {
+      position: absolute;
+      inset: 0;
+      background-image:
+        radial-gradient(rgba(18, 14, 10, 0.34) 1px, transparent 1px);
+      background-size: 3.5px 3.5px;
+      mix-blend-mode: multiply;
+      pointer-events: none;
+    }
+
+    .photo-caption {
+      margin-top: 8px;
+      padding-top: 7px;
+      border-top: 1px solid rgba(44, 36, 28, 0.35);
+      font-family: 'Noto Sans KR', sans-serif;
+      font-size: 11.8px;
+      line-height: 1.5;
+      color: #312820;
+    }
+
+    .photo-caption strong {
+      font-weight: 700;
+      color: #18130e;
+    }
+
+    .map-note {
+      border: 1px solid #3c3127;
+      background: rgba(0, 0, 0, 0.035);
+      padding: 11px 14px;
+      font-size: 12.6px;
+      line-height: 1.6;
+      color: #2f261e;
+    }
+
+    .map-note-title {
+      font-family: 'Noto Sans KR', sans-serif;
+      font-size: 11.5px;
+      font-weight: 700;
+      text-align: center;
+      border-bottom: 1px solid #3c3127;
+      padding-bottom: 4px;
+      margin-bottom: 7px;
+      letter-spacing: 0.8px;
+    }
+
+    @media (max-width: 760px) {
+      .newspaper-page {
+        padding: 28px 22px 32px;
+      }
+      .masthead h1 {
+        font-size: 34px;
+        letter-spacing: 5px;
+      }
+      .headline-block h2 {
+        font-size: 27px;
+      }
+      .article-layout {
+        grid-template-columns: 1fr;
+      }
+      .article-text {
+        padding-right: 0;
+        border-right: none;
+        padding-bottom: 18px;
+        border-bottom: 1px solid rgba(45, 36, 28, 0.34);
+      }
+      .archive-stamp {
+        position: static;
+        display: inline-block;
+        margin-bottom: 10px;
+        transform: none;
+      }
+      .masthead .sub-bar {
+        flex-direction: column;
+        gap: 3px;
+      }
+    }
+
+    @media print {
+      body { background: none; padding: 0; }
+      .newspaper-page { box-shadow: none; border: none; max-width: 100%; padding: 20px; }
+    }
+  </style>
+</head>
+<body>
+
+  <article class="newspaper-page">
+    <div class="paper-noise"></div>
+    <div class="fold-crease"></div>
+
+    <div class="archive-stamp">보스턴 공공도서관<br>신문보관실 · 1919년 철</div>
+
+    <div class="archive-slug">
+      <span>분류: 외신 · 인물 동정</span>
+      <span>보관 번호: BG-1919-0512</span>
+    </div>
+
+    <header class="masthead">
+      <div class="en-title">The Boston Globe</div>
+      <h1>보스턴 글로브</h1>
+      <div class="sub-bar">
+        <span>제95권 제132호</span>
+        <span>매사추세츠주 보스턴 · 1919년 5월 12일 자</span>
+        <span>정가 2센트</span>
+      </div>
+    </header>
+
+    <div class="headline-block">
+      <div class="kicker">해외 특전 · 히말라야 속보</div>
+      <h2>위대한 멤피스 실종되다</h2>
+      <p class="deck">부탄 왕국 순회 중 히말라야 탐사 나섰다가 연락 두절 — 우겐 왕축 국왕 어전 공연도 불참</p>
+    </div>
+
+    <div class="article-layout">
+      <div class="article-text">
+        <p>
+          <span class="drop-cap">정</span>교한 무대 일루전으로 명성을 떨친 보스턴의 마술사 '위대한 멤피스'가 이번에는 진짜로 자취를 감추었다. 부탄 왕국을 방문 중이던 그는 히말라야 산맥으로 탐사를 떠났으나 끝내 돌아오지 못했다. 그의 일행은 예정일보다 닷새나 연착되었으며, 우겐 왕축(Ugyen Wangchuk) 국왕을 위한 어전 공연에도 불참했다.
+        </p>
+
+        <p>
+          부탄은 인도와 중국 국경 사이에 위치한 왕국이다. 왕축 국왕은 1882~1885년의 내전과 반란을 진압하고 나라를 통일했으며, 1904년 영-티베트 조약을 이끌어내는 데 핵심적인 역할을 한 인물이다.
+        </p>
+
+        <div class="cable-box">
+          <strong>■ 외신 전보 요약 (캘커타 경유)</strong>
+          현지 왕실 관계자들은 마술사 일행의 행방을 찾기 위해 히말라야 산악 지대에 수색대를 파견한 것으로 전해졌다. 보스턴 극장가와 지인들은 그의 무사 생환을 애타게 기다리고 있다.
+        </div>
+      </div>
+
+      <div class="photo-column">
+        <figure class="press-photo-frame">
+          <div class="photo-viewport">
+            <svg viewBox="0 0 400 320" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="히말라야 산맥 설경과 위대한 멤피스의 무대 초상 삽화">
+              <defs>
+                <linearGradient id="hSky" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stop-color="#c6baa4"/>
+                  <stop offset="55%" stop-color="#ded4c0"/>
+                  <stop offset="100%" stop-color="#afa28c"/>
+                </linearGradient>
+                <linearGradient id="mtnDark" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stop-color="#5d5448"/>
+                  <stop offset="100%" stop-color="#2c261f"/>
+                </linearGradient>
+                <radialGradient id="vig" cx="50%" cy="50%" r="70%">
+                  <stop offset="55%" stop-color="transparent"/>
+                  <stop offset="100%" stop-color="rgba(16,12,8,0.68)"/>
+                </radialGradient>
+              </defs>
+
+              <!-- 하늘 -->
+              <rect width="400" height="175" fill="url(#hSky)"/>
+              <!-- 구름 띠 -->
+              <path d="M0,120 Q80,104 165,116 Q255,98 400,115 L400,150 L0,150 Z" fill="rgba(235,227,210,0.45)"/>
+
+              <!-- 원경 히말라야 설봉 -->
+              <polygon points="0,195 58,92 118,162 178,68 242,148 312,84 400,168 400,240 0,240" fill="#776d5f"/>
+              <!-- 설봉 빛받는 면 -->
+              <polygon points="58,92 84,132 62,135 42,144" fill="#d8ceb8" opacity="0.82"/>
+              <polygon points="178,68 208,118 184,122 162,136" fill="#dfd5c0" opacity="0.88"/>
+              <polygon points="312,84 342,126 318,128 296,138" fill="#d4cab5" opacity="0.8"/>
+
+              <!-- 근경 산릉과 험준한 산길 -->
+              <path d="M0,196 Q75,168 155,192 Q245,172 330,196 L400,185 L400,320 L0,320 Z" fill="url(#mtnDark)"/>
+              <path d="M0,254 Q110,232 225,256 Q315,244 400,262 L400,320 L0,320 Z" fill="#1e1914"/>
+              <!-- 희미한 산길 윤곽 -->
+              <path d="M120,320 Q155,274 140,242 Q128,218 164,196" fill="none" stroke="#9e927d" stroke-width="2" stroke-dasharray="5 4" opacity="0.65"/>
+
+              <!-- 우측 하단 타원형 초상 인셋: 위대한 멤피스 -->
+              <g transform="translate(302, 214)">
+                <ellipse cx="0" cy="0" rx="68" ry="82" fill="#e6dcc8" stroke="#1c1610" stroke-width="2.4"/>
+                <ellipse cx="0" cy="0" rx="62" ry="76" fill="#3a3228" stroke="#6f6250" stroke-width="1"/>
+                <clipPath id="portraitClip">
+                  <ellipse cx="0" cy="0" rx="61" ry="75"/>
+                </clipPath>
+                <g clip-path="url(#portraitClip)">
+                  <!-- 스튜디오 배경 -->
+                  <rect x="-65" y="-80" width="130" height="160" fill="#463e34"/>
+                  <!-- 망토와 연미복 어깨 -->
+                  <path d="M-58,80 Q-48,36 -18,28 L18,28 Q48,36 58,80 Z" fill="#1a1612"/>
+                  <!-- 흰 셔츠 깃과 나비넥타이 -->
+                  <polygon points="-11,26 0,48 11,26" fill="#d8ceba"/>
+                  <path d="M-9,33 L9,33 L0,38 Z" fill="#181410"/>
+                  <!-- 얼굴 윤곽 -->
+                  <ellipse cx="0" cy="0" rx="22" ry="28" fill="#bfb49e"/>
+                  <!-- 짙은 눈썹과 콧수염 -->
+                  <path d="M-12,-4 Q-6,-7 -2,-4" fill="none" stroke="#221c16" stroke-width="2"/>
+                  <path d="M2,-4 Q6,-7 12,-4" fill="none" stroke="#221c16" stroke-width="2"/>
+                  <circle cx="-7" cy="0" r="1.8" fill="#1b1611"/>
+                  <circle cx="7" cy="0" r="1.8" fill="#1b1611"/>
+                  <path d="M-11,13 Q-5,10 0,13 Q5,10 11,13" fill="none" stroke="#221c16" stroke-width="2.2"/>
+                  <path d="M-4,21 L0,27 L4,21" fill="#2b241d"/>
+                  <!-- 이집트풍 무대 터번과 보석 장식 -->
+                  <path d="M-26,-10 Q-30,-42 0,-48 Q30,-42 26,-10 Q14,-18 0,-18 Q-14,-18 -26,-10 Z" fill="#231d17"/>
+                  <path d="M-24,-18 Q0,-30 24,-18" fill="none" stroke="#8f836e" stroke-width="1.3"/>
+                  <path d="M-20,-28 Q0,-38 20,-28" fill="none" stroke="#8f836e" stroke-width="1.1"/>
+                  <ellipse cx="0" cy="-29" rx="4.5" ry="6.5" fill="#d5cab4" stroke="#181410" stroke-width="1"/>
+                </g>
+              </g>
+
+              <!-- 신문 판화 스크래치 -->
+              <g stroke="rgba(240,232,215,0.2)" stroke-width="0.7">
+                <line x1="78" y1="0" x2="77" y2="320"/>
+                <line x1="210" y1="0" x2="211" y2="320"/>
+              </g>
+              <rect width="400" height="320" fill="url(#vig)"/>
+            </svg>
+            <div class="halftone-overlay"></div>
+          </div>
+          <figcaption class="photo-caption">
+            <strong>▲ 행방이 묘연해진 '위대한 멤피스'와 히말라야 산악 지대</strong> — 보스턴 출신의 유명 일루셔니스트(우측)는 부탄 국왕 앞 어전 공연을 앞두고 산맥 탐사에 나섰으나 예정일보다 닷새 넘게 소식이 끊겼다.
+          </figcaption>
+        </figure>
+
+        <aside class="map-note">
+          <div class="map-note-title">■ 지리 참고 · 부탄 왕국</div>
+          인도와 중국(티베트) 사이 동부 히말라야 산맥에 자리한 은둔의 산악 왕국. 해발 수천 미터의 험준한 고봉과 깊은 계곡으로 외부인의 접근이 극히 제한되어 있다.
+        </aside>
+      </div>
+    </div>
+  </article>
+
+</body>
+</html>

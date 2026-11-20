@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>지역 신문 기사 - 동물 연쇄 살해 사건으로 지역 남성 체포</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Nanum+Myeongjo:wght@400;700;800&family=Noto+Sans+KR:wght@400;500;700&display=swap');
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: #1b1c1e;
+      background-image:
+        radial-gradient(circle at 50% 35%, #2a2c30 0%, #151618 75%, #0d0e10 100%);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 44px 18px;
+      font-family: 'Nanum Myeongjo', serif;
+      color: #161616;
+      word-break: keep-all;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* 3개월 전 발행된 비교적 최근 신문 오려낸 기사 (덜 바랜 선명한 지면) */
+    .clipping-wrap {
+      position: relative;
+      width: 100%;
+      max-width: 650px;
+      filter: drop-shadow(0 20px 38px rgba(0, 0, 0, 0.72));
+    }
+
+    .newspaper-clipping {
+      position: relative;
+      background-color: #f2efe7;
+      background-image:
+        radial-gradient(ellipse at 50% 30%, #f6f3ec 0%, #e8e3d6 100%),
+        repeating-linear-gradient(
+          rgba(0, 0, 0, 0.01) 0px,
+          rgba(0, 0, 0, 0.01) 1px,
+          transparent 1px,
+          transparent 2px
+        );
+      padding: 36px 42px 34px;
+      border-top: 1px solid #cbc5b7;
+      border-left: 1px solid #cbc5b7;
+      border-right: 1px solid #c2bcb0;
+      box-shadow: inset 0 0 42px rgba(70, 64, 52, 0.12);
+      overflow: hidden;
+    }
+
+    .paper-grain {
+      position: absolute;
+      inset: 0;
+      opacity: 0.04;
+      pointer-events: none;
+      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.95' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+    }
+
+    /* 제호 */
+    .masthead {
+      position: relative;
+      z-index: 2;
+      text-align: center;
+      border-bottom: 3px double #181818;
+      padding-bottom: 10px;
+      margin-bottom: 18px;
+    }
+
+    .masthead .en-name {
+      font-family: 'Cinzel', serif;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 5px;
+      color: #464440;
+      margin-bottom: 3px;
+    }
+
+    .masthead h1 {
+      font-size: 36px;
+      font-weight: 800;
+      letter-spacing: 7px;
+      line-height: 1.15;
+      color: #111111;
+    }
+
+    .masthead .sub-bar {
+      display: flex;
+      justify-content: space-between;
+      border-top: 1px solid #222222;
+      margin-top: 9px;
+      padding-top: 5px;
+      font-family: 'Noto Sans KR', sans-serif;
+      font-size: 11.5px;
+      font-weight: 500;
+      color: #363532;
+    }
+
+    /* 사건·사회면 레이블 */
+    .section-tag {
+      position: relative;
+      z-index: 2;
+      display: inline-block;
+      background: #1b1b1b;
+      color: #f4f1ea;
+      font-family: 'Noto Sans KR', sans-serif;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      padding: 3px 10px;
+      margin-bottom: 12px;
+    }
+
+    /* 기사 헤드라인 */
+    .headline {
+      position: relative;
+      z-index: 2;
+      border-top: 2px solid #161616;
+      border-bottom: 1px solid #161616;
+      padding: 12px 0;
+      margin-bottom: 18px;
+      text-align: center;
+    }
+
+    .headline h2 {
+      font-size: 27px;
+      font-weight: 800;
+      line-height: 1.3;
+      letter-spacing: -0.5px;
+      color: #111111;
+    }
+
+    /* 2단 신문 본문 */
+    .article-columns {
+      position: relative;
+      z-index: 2;
+      column-count: 2;
+      column-gap: 26px;
+      column-rule: 1px solid rgba(30, 30, 30, 0.28);
+      font-size: 14.8px;
+      line-height: 1.86;
+      text-align: justify;
+    }
+
+    .article-columns p {
+      margin-bottom: 12px;
+      text-indent: 14px;
+    }
+
+    .article-columns p:first-child {
+      text-indent: 0;
+    }
+
+    .article-columns p:last-child {
+      margin-bottom: 0;
+    }
+
+    /* 신문 말미 장식선 */
+    .end-rule {
+      position: relative;
+      z-index: 2;
+      margin-top: 22px;
+      padding-top: 10px;
+      border-top: 1px solid rgba(28, 28, 28, 0.35);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-family: 'Noto Sans KR', sans-serif;
+      font-size: 11px;
+      color: #55524c;
+    }
+
+    .end-mark {
+      letter-spacing: 3px;
+      font-weight: 700;
+      color: #262523;
+    }
+
+    /* 하단 찢어진 신문지 테두리 */
+    .torn-bottom {
+      display: block;
+      width: 100%;
+      height: 15px;
+      margin-top: -1px;
+    }
+
+    @media (max-width: 600px) {
+      .newspaper-clipping {
+        padding: 26px 22px 24px;
+      }
+      .masthead h1 {
+        font-size: 27px;
+        letter-spacing: 4px;
+      }
+      .headline h2 {
+        font-size: 22px;
+      }
+      .article-columns {
+        column-count: 1;
+      }
+    }
+
+    @media print {
+      body { background: none; padding: 0; }
+      .clipping-wrap { filter: none; max-width: 100%; }
+      .newspaper-clipping { box-shadow: none; border: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="clipping-wrap">
+    <article class="newspaper-clipping">
+      <div class="paper-grain"></div>
+
+      <header class="masthead">
+        <div class="en-name">LOCAL DAILY CHRONICLE · CITY EDITION</div>
+        <h1>지역 일간지</h1>
+        <div class="sub-bar">
+          <span>시경 출입기자 보도</span>
+          <span>3개월 전 일자 발행본</span>
+          <span>정가 2센트</span>
+        </div>
+      </header>
+
+      <div class="section-tag">사건 · 치안 단신 · POLICE BEAT</div>
+
+      <div class="headline">
+        <h2>동물 연쇄 살해 사건으로 지역 남성 체포</h2>
+      </div>
+
+      <div class="article-columns">
+        <p>
+          경찰은 오늘 시 남서부 일대에서 잇따라 발생한 반려동물 유괴 사건과 관련하여 용의자 한 명을 체포했다고 발표했다.
+        </p>
+        <p>
+          비록 이후 증거 불충분으로 석방되었으나, 랜돌프 토마셰프스키는 중앙 병원(Central Hospital) 인근 주택가 마당과 집에서 개와 고양이 10여 마리가 사라진 최근 실종 사건의 유력 용의자로 지목되고 있다.
+        </p>
+        <p>
+          토마셰프스키는 해당 병원에서 잡부로 근무하고 있다.
+        </p>
+        <p>
+          실종된 반려동물 중 상당수가 이후 공원에서 훼손되거나 일부를 파먹힌 상태로 발견되었던 점이 상기된다. 이 잔혹 행위에 대한 대중의 분노가 거세게 일고 있으며, 경찰은 이번 단서를 바탕으로 마침내 사건을 종결지을 수 있기를 기대하고 있다.
+        </p>
+      </div>
+
+      <div class="end-rule">
+        <span>지역 일간지 사회부 보도</span>
+        <span class="end-mark">— 30 —</span>
+      </div>
+    </article>
+
+    <!-- 손으로 뜯어낸 하단 신문 가장자리 -->
+    <svg class="torn-bottom" viewBox="0 0 650 15" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <path d="M0,0 L650,0 L650,7 L626,12 L600,5 L574,11 L546,4 L520,13 L492,6 L464,11 L436,5 L408,12 L380,6 L350,13 L322,5 L294,11 L266,4 L238,12 L208,6 L180,13 L152,5 L124,11 L96,4 L68,12 L42,6 L18,11 L0,6 Z" fill="#e8e3d6" stroke="#c2bcb0" stroke-width="0.8"/>
+    </svg>
+  </div>
+
+</body>
+</html>

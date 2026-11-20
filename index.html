@@ -5,19 +5,193 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>TRPG 핸드아웃 허브</title>
   <style>
-    body { background: #121314; color: #f0f2f5; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; padding: 1.5rem; margin: 0; }
-    .container { max-width: 960px; margin: 0 auto; display: none; }
-    header { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #33373b; padding-bottom: 1rem; margin-bottom: 1.5rem; }
-    h1 { margin: 0; font-size: 1.5rem; }
-    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1rem; }
-    .card { background: #1c1e20; border: 1px solid #33373b; border-radius: 8px; overflow: hidden; }
-    .card-title { background: #26292c; padding: 0.75rem 1rem; font-weight: bold; font-size: 0.95rem; border-bottom: 1px solid #33373b; }
-    .count { font-size: 0.8rem; color: #8b949e; }
-    .link-list { list-style: none; margin: 0; padding: 0.5rem; display: flex; flex-direction: column; gap: 0.4rem; }
-    .link-list li a { display: flex; justify-content: space-between; align-items: center; background: rgba(255, 255, 255, 0.03); padding: 0.5rem 0.75rem; border-radius: 4px; color: #f0f2f5; text-decoration: none; font-size: 0.9rem; }
-    .link-list li a:hover { background: rgba(88, 166, 255, 0.15); color: #58a6ff; }
+    * { box-sizing: border-box; }
+    body {
+      background: #121314;
+      color: #f0f2f5;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      padding: 1.25rem;
+      margin: 0;
+    }
+    .container { max-width: 820px; margin: 0 auto; display: none; }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      border-bottom: 1px solid #33373b;
+      padding-bottom: 0.75rem;
+      margin-bottom: 0.85rem;
+    }
+    h1 { margin: 0; font-size: 1.3rem; }
+    .total-badge { color: #8b949e; font-size: 0.82rem; }
+
+    /* 상단 검색 + 전체 접기/펼치기 바 */
+    .toolbar {
+      display: flex;
+      gap: 0.5rem;
+      align-items: center;
+      margin-bottom: 0.9rem;
+      flex-wrap: wrap;
+    }
+    .search-input {
+      flex: 1;
+      min-width: 180px;
+      padding: 0.45rem 0.7rem;
+      border-radius: 6px;
+      border: 1px solid #33373b;
+      background: #0d1117;
+      color: #f0f2f5;
+      font-size: 0.86rem;
+      outline: none;
+    }
+    .search-input:focus { border-color: #58a6ff; }
+    .toolbar-btn {
+      padding: 0.45rem 0.75rem;
+      border-radius: 6px;
+      border: 1px solid #33373b;
+      background: #1c1e20;
+      color: #c9d1d9;
+      font-size: 0.8rem;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+    .toolbar-btn:hover { background: #26292c; color: #fff; border-color: #58a6ff; }
+
+    /* 컴팩트 아코디언 목록 */
+    .accordion-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.45rem;
+    }
+
+    details.group {
+      background: #1c1e20;
+      border: 1px solid #30343a;
+      border-radius: 7px;
+      overflow: hidden;
+    }
+    details.group[open] { border-color: #444a52; }
+
+    summary {
+      list-style: none;
+      cursor: pointer;
+      user-select: none;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    summary::-webkit-details-marker { display: none; }
+
+    .group-title {
+      padding: 0.6rem 0.9rem;
+      font-weight: 600;
+      font-size: 0.92rem;
+      background: #222529;
+      transition: background 0.15s;
+    }
+    .group-title:hover { background: #2a2e33; }
+
+    .title-left {
+      display: flex;
+      align-items: center;
+      gap: 0.45rem;
+      min-width: 0;
+      word-break: break-all;
+    }
+    .chevron {
+      display: inline-block;
+      font-size: 0.8rem;
+      color: #8b949e;
+      transition: transform 0.15s ease;
+      width: 0.9rem;
+      text-align: center;
+      flex-shrink: 0;
+    }
+    details[open] > summary .chevron {
+      transform: rotate(90deg);
+      color: #58a6ff;
+    }
+
+    .count {
+      font-size: 0.75rem;
+      color: #8b949e;
+      background: rgba(255, 255, 255, 0.05);
+      padding: 2px 7px;
+      border-radius: 999px;
+      flex-shrink: 0;
+      font-weight: 500;
+    }
+
+    .group-body {
+      padding: 0.4rem 0.55rem 0.55rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+      border-top: 1px solid #2c3035;
+    }
+
+    /* 중첩 시나리오 아코디언 */
+    details.subgroup {
+      background: #16181a;
+      border: 1px solid #2b2f35;
+      border-radius: 5px;
+      overflow: hidden;
+    }
+    .subgroup-title {
+      padding: 0.45rem 0.75rem;
+      font-size: 0.86rem;
+      font-weight: 600;
+      color: #d8dee4;
+      background: #1b1e22;
+    }
+    .subgroup-title:hover { background: #24282e; }
+
+    .link-list {
+      list-style: none;
+      margin: 0;
+      padding: 0.3rem 0.4rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.22rem;
+    }
+    .link-list li a {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.36rem 0.6rem;
+      border-radius: 4px;
+      color: #dbe1e8;
+      text-decoration: none;
+      font-size: 0.84rem;
+      background: rgba(255, 255, 255, 0.02);
+      transition: background 0.12s, color 0.12s;
+    }
+    .link-list li a:hover {
+      background: rgba(88, 166, 255, 0.14);
+      color: #58a6ff;
+    }
     .file-name { word-break: break-all; }
-    .btn { font-size: 0.75rem; background: #238636; color: #fff; padding: 2px 6px; border-radius: 4px; margin-left: 0.5rem; flex-shrink: 0; }
+    .btn {
+      font-size: 0.72rem;
+      background: #238636;
+      color: #fff;
+      padding: 1px 6px;
+      border-radius: 4px;
+      margin-left: 0.5rem;
+      flex-shrink: 0;
+    }
+
+    .empty-msg {
+      display: none;
+      text-align: center;
+      color: #8b949e;
+      font-size: 0.88rem;
+      padding: 2rem 1rem;
+    }
 
     /* 잠금 화면 스타일 */
     #auth-overlay {
@@ -31,7 +205,7 @@
     }
     .auth-box h2 { margin: 0 0 1rem; font-size: 1.1rem; color: #f0f2f5; }
     .auth-box input {
-      width: 100%; box-sizing: border-box; padding: 0.6rem; border-radius: 4px;
+      width: 100%; padding: 0.6rem; border-radius: 4px;
       border: 1px solid #33373b; background: #0d1117; color: #fff; text-align: center;
       margin-bottom: 0.8rem; font-size: 1rem; outline: none;
     }
@@ -58,774 +232,937 @@
   <!-- 메인 허브 컨텐츠 -->
   <div class="container" id="hub-container">
     <header>
-      <h1>🎲 TRPG 인터랙티브 허브</h1>
-      <span style="color: #8b949e; font-size: 0.85rem;">총 91개 파일</span>
+      <h1>🎲 TRPG 핸드아웃 허브</h1>
+      <span class="total-badge">총 114개 파일</span>
     </header>
-    <div class="grid">
 
-    <div class="card">
-      <div class="card-title">📁 blackwater_creek <span class="count">(7)</span></div>
-      <ul class="link-list">
-
-        <li>
-          <a href="./blackwater_creek/character.html" target="_blank">
-            <span class="file-name">character.html</span>
-            <span class="btn">열기 ↗</span>
-          </a>
-        </li>
-
-        <li>
-          <a href="./blackwater_creek/handout_1_roades_letter.html" target="_blank">
-            <span class="file-name">handout_1_roades_letter.html</span>
-            <span class="btn">열기 ↗</span>
-          </a>
-        </li>
-
-        <li>
-          <a href="./blackwater_creek/handout_2_crumped_letter.html" target="_blank">
-            <span class="file-name">handout_2_crumped_letter.html</span>
-            <span class="btn">열기 ↗</span>
-          </a>
-        </li>
-
-        <li>
-          <a href="./blackwater_creek/handout_3_chapman_book.html" target="_blank">
-            <span class="file-name">handout_3_chapman_book.html</span>
-            <span class="btn">열기 ↗</span>
-          </a>
-        </li>
-
-        <li>
-          <a href="./blackwater_creek/handout_4_stansfield_book.html" target="_blank">
-            <span class="file-name">handout_4_stansfield_book.html</span>
-            <span class="btn">열기 ↗</span>
-          </a>
-        </li>
-
-        <li>
-          <a href="./blackwater_creek/handout_5_roades_notebook.html" target="_blank">
-            <span class="file-name">handout_5_roades_notebook.html</span>
-            <span class="btn">열기 ↗</span>
-          </a>
-        </li>
-
-        <li>
-          <a href="./blackwater_creek/handout_6_cades_rest_history.html" target="_blank">
-            <span class="file-name">handout_6_cades_rest_history.html</span>
-            <span class="btn">열기 ↗</span>
-          </a>
-        </li>
-
-      </ul>
+    <div class="toolbar">
+      <input type="search" id="search-input" class="search-input" placeholder="🔍 시나리오 또는 파일명 검색...">
+      <button type="button" class="toolbar-btn" onclick="toggleAll(true)">모두 펼치기</button>
+      <button type="button" class="toolbar-btn" onclick="toggleAll(false)">모두 접기</button>
     </div>
 
-    <div class="card">
-      <div class="card-title">📁 door_to_darkness/01_the_darkness_beneath_the_hill <span class="count">(2)</span></div>
-      <ul class="link-list">
-
-        <li>
-          <a href="./door_to_darkness/01_the_darkness_beneath_the_hill/h01_darkness1_bishop_letter.html" target="_blank">
-            <span class="file-name">h01_darkness1_bishop_letter.html</span>
-            <span class="btn">열기 ↗</span>
-          </a>
-        </li>
-
-        <li>
-          <a href="./door_to_darkness/01_the_darkness_beneath_the_hill/h02_darkness2_harper_inscription.html" target="_blank">
-            <span class="file-name">h02_darkness2_harper_inscription.html</span>
-            <span class="btn">열기 ↗</span>
-          </a>
-        </li>
-
-      </ul>
+    <div class="accordion-list" id="accordion-list">
+      <details class="group" data-search-group="blackwater_creek">
+        <summary class="group-title">
+          <span class="title-left"><span class="chevron">▸</span> 📁 blackwater_creek</span>
+          <span class="count">7개</span>
+        </summary>
+        <div class="group-body">
+        <ul class="link-list">
+          <li data-search="blackwater_creek character.html">
+            <a href="./blackwater_creek/character.html" target="_blank">
+              <span class="file-name">📄 character.html</span>
+              <span class="btn">열기 ↗</span>
+            </a>
+          </li>
+          <li data-search="blackwater_creek handout_1_roades_letter.html">
+            <a href="./blackwater_creek/handout_1_roades_letter.html" target="_blank">
+              <span class="file-name">📄 handout_1_roades_letter.html</span>
+              <span class="btn">열기 ↗</span>
+            </a>
+          </li>
+          <li data-search="blackwater_creek handout_2_crumped_letter.html">
+            <a href="./blackwater_creek/handout_2_crumped_letter.html" target="_blank">
+              <span class="file-name">📄 handout_2_crumped_letter.html</span>
+              <span class="btn">열기 ↗</span>
+            </a>
+          </li>
+          <li data-search="blackwater_creek handout_3_chapman_book.html">
+            <a href="./blackwater_creek/handout_3_chapman_book.html" target="_blank">
+              <span class="file-name">📄 handout_3_chapman_book.html</span>
+              <span class="btn">열기 ↗</span>
+            </a>
+          </li>
+          <li data-search="blackwater_creek handout_4_stansfield_book.html">
+            <a href="./blackwater_creek/handout_4_stansfield_book.html" target="_blank">
+              <span class="file-name">📄 handout_4_stansfield_book.html</span>
+              <span class="btn">열기 ↗</span>
+            </a>
+          </li>
+          <li data-search="blackwater_creek handout_5_roades_notebook.html">
+            <a href="./blackwater_creek/handout_5_roades_notebook.html" target="_blank">
+              <span class="file-name">📄 handout_5_roades_notebook.html</span>
+              <span class="btn">열기 ↗</span>
+            </a>
+          </li>
+          <li data-search="blackwater_creek handout_6_cades_rest_history.html">
+            <a href="./blackwater_creek/handout_6_cades_rest_history.html" target="_blank">
+              <span class="file-name">📄 handout_6_cades_rest_history.html</span>
+              <span class="btn">열기 ↗</span>
+            </a>
+          </li>
+        </ul>
+        </div>
+      </details>
+      <details class="group" data-search-group="door_to_darkness">
+        <summary class="group-title">
+          <span class="title-left"><span class="chevron">▸</span> 📁 door_to_darkness</span>
+          <span class="count">5개 시나리오 · 19개</span>
+        </summary>
+        <div class="group-body">
+          <details class="subgroup" data-search-group="door_to_darkness 01_the_darkness_beneath_the_hill">
+            <summary class="subgroup-title">
+              <span class="title-left"><span class="chevron">▸</span> 📂 01_the_darkness_beneath_the_hill</span>
+              <span class="count">2</span>
+            </summary>
+            <ul class="link-list">
+              <li data-search="door_to_darkness 01_the_darkness_beneath_the_hill h01_darkness1_bishop_letter.html">
+                <a href="./door_to_darkness/01_the_darkness_beneath_the_hill/h01_darkness1_bishop_letter.html" target="_blank">
+                  <span class="file-name">📄 h01_darkness1_bishop_letter.html</span>
+                  <span class="btn">열기 ↗</span>
+                </a>
+              </li>
+              <li data-search="door_to_darkness 01_the_darkness_beneath_the_hill h02_darkness2_harper_inscription.html">
+                <a href="./door_to_darkness/01_the_darkness_beneath_the_hill/h02_darkness2_harper_inscription.html" target="_blank">
+                  <span class="file-name">📄 h02_darkness2_harper_inscription.html</span>
+                  <span class="btn">열기 ↗</span>
+                </a>
+              </li>
+            </ul>
+          </details>
+          <details class="subgroup" data-search-group="door_to_darkness 02_genius_loci">
+            <summary class="subgroup-title">
+              <span class="title-left"><span class="chevron">▸</span> 📂 02_genius_loci</span>
+              <span class="count">6</span>
+            </summary>
+            <ul class="link-list">
+              <li data-search="door_to_darkness 02_genius_loci h01_genius1_croswell_letter.html">
+                <a href="./door_to_darkness/02_genius_loci/h01_genius1_croswell_letter.html" target="_blank">
+                  <span class="file-name">📄 h01_genius1_croswell_letter.html</span>
+                  <span class="btn">열기 ↗</span>
+                </a>
+              </li>
+              <li data-search="door_to_darkness 02_genius_loci h02_genius2_hospital_letter.html">
+                <a href="./door_to_darkness/02_genius_loci/h02_genius2_hospital_letter.html" target="_blank">
+                  <span class="file-name">📄 h02_genius2_hospital_letter.html</span>
+                  <span class="btn">열기 ↗</span>
+                </a>
+              </li>
+              <li data-search="door_to_darkness 02_genius_loci h03_genius3_salem_news_amphitheater.html">
+                <a href="./door_to_darkness/02_genius_loci/h03_genius3_salem_news_amphitheater.html" target="_blank">
+                  <span class="file-name">📄 h03_genius3_salem_news_amphitheater.html</span>
+                  <span class="btn">열기 ↗</span>
+                </a>
+              </li>
+              <li data-search="door_to_darkness 02_genius_loci h04_genius4_salem_news_shine_retires.html">
+                <a href="./door_to_darkness/02_genius_loci/h04_genius4_salem_news_shine_retires.html" target="_blank">
+                  <span class="file-name">📄 h04_genius4_salem_news_shine_retires.html</span>
+                  <span class="btn">열기 ↗</span>
+                </a>
+              </li>
+              <li data-search="door_to_darkness 02_genius_loci h05_genius5_shine_papers.html">
+                <a href="./door_to_darkness/02_genius_loci/h05_genius5_shine_papers.html" target="_blank">
+                  <span class="file-name">📄 h05_genius5_shine_papers.html</span>
+                  <span class="btn">열기 ↗</span>
+                </a>
+              </li>
+              <li data-search="door_to_darkness 02_genius_loci h06_genius6_danvers_herald_macbride.html">
+                <a href="./door_to_darkness/02_genius_loci/h06_genius6_danvers_herald_macbride.html" target="_blank">
+                  <span class="file-name">📄 h06_genius6_danvers_herald_macbride.html</span>
+                  <span class="btn">열기 ↗</span>
+                </a>
+              </li>
+            </ul>
+          </details>
+          <details class="subgroup" data-search-group="door_to_darkness 03_servants_of_the_lake">
+            <summary class="subgroup-title">
+              <span class="title-left"><span class="chevron">▸</span> 📂 03_servants_of_the_lake</span>
+              <span class="count">3</span>
+            </summary>
+            <ul class="link-list">
+              <li data-search="door_to_darkness 03_servants_of_the_lake h01_servants1_native_history.html">
+                <a href="./door_to_darkness/03_servants_of_the_lake/h01_servants1_native_history.html" target="_blank">
+                  <span class="file-name">📄 h01_servants1_native_history.html</span>
+                  <span class="btn">열기 ↗</span>
+                </a>
+              </li>
+              <li data-search="door_to_darkness 03_servants_of_the_lake h02_servants2_frazer_notebook.html">
+                <a href="./door_to_darkness/03_servants_of_the_lake/h02_servants2_frazer_notebook.html" target="_blank">
+                  <span class="file-name">📄 h02_servants2_frazer_notebook.html</span>
+                  <span class="btn">열기 ↗</span>
+                </a>
+              </li>
+              <li data-search="door_to_darkness 03_servants_of_the_lake h03_servants3_motel_guestbook.html">
+                <a href="./door_to_darkness/03_servants_of_the_lake/h03_servants3_motel_guestbook.html" target="_blank">
+                  <span class="file-name">📄 h03_servants3_motel_guestbook.html</span>
+                  <span class="btn">열기 ↗</span>
+                </a>
+              </li>
+            </ul>
+          </details>
+          <details class="subgroup" data-search-group="door_to_darkness 04_ties_that_bind">
+            <summary class="subgroup-title">
+              <span class="title-left"><span class="chevron">▸</span> 📂 04_ties_that_bind</span>
+              <span class="count">6</span>
+            </summary>
+            <ul class="link-list">
+              <li data-search="door_to_darkness 04_ties_that_bind h01_ties1_hackett_letter.html">
+                <a href="./door_to_darkness/04_ties_that_bind/h01_ties1_hackett_letter.html" target="_blank">
+                  <span class="file-name">📄 h01_ties1_hackett_letter.html</span>
+                  <span class="btn">열기 ↗</span>
+                </a>
+              </li>
+              <li data-search="door_to_darkness 04_ties_that_bind h02_ties2_hackett_urgent_note.html">
+                <a href="./door_to_darkness/04_ties_that_bind/h02_ties2_hackett_urgent_note.html" target="_blank">
+                  <span class="file-name">📄 h02_ties2_hackett_urgent_note.html</span>
+                  <span class="btn">열기 ↗</span>
+                </a>
+              </li>
+              <li data-search="door_to_darkness 04_ties_that_bind h03_ties3_briden_notes.html">
+                <a href="./door_to_darkness/04_ties_that_bind/h03_ties3_briden_notes.html" target="_blank">
+                  <span class="file-name">📄 h03_ties3_briden_notes.html</span>
+                  <span class="btn">열기 ↗</span>
+                </a>
+              </li>
+              <li data-search="door_to_darkness 04_ties_that_bind h04_ties4_essex_folklore.html">
+                <a href="./door_to_darkness/04_ties_that_bind/h04_ties4_essex_folklore.html" target="_blank">
+                  <span class="file-name">📄 h04_ties4_essex_folklore.html</span>
+                  <span class="btn">열기 ↗</span>
+                </a>
+              </li>
+              <li data-search="door_to_darkness 04_ties_that_bind h05_ties5_summon_bind_parchment.html">
+                <a href="./door_to_darkness/04_ties_that_bind/h05_ties5_summon_bind_parchment.html" target="_blank">
+                  <span class="file-name">📄 h05_ties5_summon_bind_parchment.html</span>
+                  <span class="btn">열기 ↗</span>
+                </a>
+              </li>
+              <li data-search="door_to_darkness 04_ties_that_bind h06_ties6_notebook_dismissal.html">
+                <a href="./door_to_darkness/04_ties_that_bind/h06_ties6_notebook_dismissal.html" target="_blank">
+                  <span class="file-name">📄 h06_ties6_notebook_dismissal.html</span>
+                  <span class="btn">열기 ↗</span>
+                </a>
+              </li>
+            </ul>
+          </details>
+          <details class="subgroup" data-search-group="door_to_darkness 05_none_more_black">
+            <summary class="subgroup-title">
+              <span class="title-left"><span class="chevron">▸</span> 📂 05_none_more_black</span>
+              <span class="count">2</span>
+            </summary>
+            <ul class="link-list">
+              <li data-search="door_to_darkness 05_none_more_black h01_black1_slaughterhouse_scrap.html">
+                <a href="./door_to_darkness/05_none_more_black/h01_black1_slaughterhouse_scrap.html" target="_blank">
+                  <span class="file-name">📄 h01_black1_slaughterhouse_scrap.html</span>
+                  <span class="btn">열기 ↗</span>
+                </a>
+              </li>
+              <li data-search="door_to_darkness 05_none_more_black h02_black2_jonathan_dover_journal.html">
+                <a href="./door_to_darkness/05_none_more_black/h02_black2_jonathan_dover_journal.html" target="_blank">
+                  <span class="file-name">📄 h02_black2_jonathan_dover_journal.html</span>
+                  <span class="btn">열기 ↗</span>
+                </a>
+              </li>
+            </ul>
+          </details>
+        </div>
+      </details>
+      <details class="group" data-search-group="fvtt">
+        <summary class="group-title">
+          <span class="title-left"><span class="chevron">▸</span> 📁 fvtt</span>
+          <span class="count">2개</span>
+        </summary>
+        <div class="group-body">
+        <ul class="link-list">
+          <li data-search="fvtt coc_actor_generate.html">
+            <a href="./fvtt/coc_actor_generate.html" target="_blank">
+              <span class="file-name">📄 coc_actor_generate.html</span>
+              <span class="btn">열기 ↗</span>
+            </a>
+          </li>
+          <li data-search="fvtt coc_fvtt_guide.html">
+            <a href="./fvtt/coc_fvtt_guide.html" target="_blank">
+              <span class="file-name">📄 coc_fvtt_guide.html</span>
+              <span class="btn">열기 ↗</span>
+            </a>
+          </li>
+        </ul>
+        </div>
+      </details>
+      <details class="group" data-search-group="hojil">
+        <summary class="group-title">
+          <span class="title-left"><span class="chevron">▸</span> 📁 hojil</span>
+          <span class="count">7개</span>
+        </summary>
+        <div class="group-body">
+        <ul class="link-list">
+          <li data-search="hojil h01_samsik.html">
+            <a href="./hojil/h01_samsik.html" target="_blank">
+              <span class="file-name">📄 h01_samsik.html</span>
+              <span class="btn">열기 ↗</span>
+            </a>
+          </li>
+          <li data-search="hojil h02_hanja.html">
+            <a href="./hojil/h02_hanja.html" target="_blank">
+              <span class="file-name">📄 h02_hanja.html</span>
+              <span class="btn">열기 ↗</span>
+            </a>
+          </li>
+          <li data-search="hojil h03_odysseus.html">
+            <a href="./hojil/h03_odysseus.html" target="_blank">
+              <span class="file-name">📄 h03_odysseus.html</span>
+              <span class="btn">열기 ↗</span>
+            </a>
+          </li>
+          <li data-search="hojil h04_talisman.html">
+            <a href="./hojil/h04_talisman.html" target="_blank">
+              <span class="file-name">📄 h04_talisman.html</span>
+              <span class="btn">열기 ↗</span>
+            </a>
+          </li>
+          <li data-search="hojil h05_well_wall.html">
+            <a href="./hojil/h05_well_wall.html" target="_blank">
+              <span class="file-name">📄 h05_well_wall.html</span>
+              <span class="btn">열기 ↗</span>
+            </a>
+          </li>
+          <li data-search="hojil h06_torn_shanhaijing.html">
+            <a href="./hojil/h06_torn_shanhaijing.html" target="_blank">
+              <span class="file-name">📄 h06_torn_shanhaijing.html</span>
+              <span class="btn">열기 ↗</span>
+            </a>
+          </li>
+          <li data-search="hojil h07_son_diary.html">
+            <a href="./hojil/h07_son_diary.html" target="_blank">
+              <span class="file-name">📄 h07_son_diary.html</span>
+              <span class="btn">열기 ↗</span>
+            </a>
+          </li>
+        </ul>
+        </div>
+      </details>
+      <details class="group" data-search-group="madness_mountain">
+        <summary class="group-title">
+          <span class="title-left"><span class="chevron">▸</span> 📁 madness_mountain</span>
+          <span class="count">4개</span>
+        </summary>
+        <div class="group-body">
+        <ul class="link-list">
+          <li data-search="madness_mountain briefing_1st_expedition.html">
+            <a href="./madness_mountain/briefing_1st_expedition.html" target="_blank">
+              <span class="file-name">📄 briefing_1st_expedition.html</span>
+              <span class="btn">열기 ↗</span>
+            </a>
+          </li>
+          <li data-search="madness_mountain briefing_mountain_miskatonic.html">
+            <a href="./madness_mountain/briefing_mountain_miskatonic.html" target="_blank">
+              <span class="file-name">📄 briefing_mountain_miskatonic.html</span>
+              <span class="btn">열기 ↗</span>
+            </a>
+          </li>
+          <li data-search="madness_mountain briefing_mountain_news.html">
+            <a href="./madness_mountain/briefing_mountain_news.html" target="_blank">
+              <span class="file-name">📄 briefing_mountain_news.html</span>
+              <span class="btn">열기 ↗</span>
+            </a>
+          </li>
+          <li data-search="madness_mountain handout_9000m_climber_diary.html">
+            <a href="./madness_mountain/handout_9000m_climber_diary.html" target="_blank">
+              <span class="file-name">📄 handout_9000m_climber_diary.html</span>
+              <span class="btn">열기 ↗</span>
+            </a>
+          </li>
+        </ul>
+        </div>
+      </details>
+      <details class="group" data-search-group="mansions_of_madness">
+        <summary class="group-title">
+          <span class="title-left"><span class="chevron">▸</span> 📁 mansions_of_madness</span>
+          <span class="count">5개 시나리오 · 23개</span>
+        </summary>
+        <div class="group-body">
+          <details class="subgroup" data-search-group="mansions_of_madness 01_mister_corbitt">
+            <summary class="subgroup-title">
+              <span class="title-left"><span class="chevron">▸</span> 📂 01_mister_corbitt</span>
+              <span class="count">4</span>
+            </summary>
+            <ul class="link-list">
+              <li data-search="mansions_of_madness 01_mister_corbitt h01_corbitt1_news_theodore.html">
+                <a href="./mansions_of_madness/01_mister_corbitt/h01_corbitt1_news_theodore.html" target="_blank">
+                  <span class="file-name">📄 h01_corbitt1_news_theodore.html</span>
+                  <span class="btn">열기 ↗</span>
+                </a>
+              </li>
+              <li data-search="mansions_of_madness 01_mister_corbitt h02_corbitt2_news_lynn_dunlap.html">
+                <a href="./mansions_of_madness/01_mister_corbitt/h02_corbitt2_news_lynn_dunlap.html" target="_blank">
+                  <span class="file-name">📄 h02_corbitt2_news_lynn_dunlap.html</span>
+                  <span class="btn">열기 ↗</span>
+                </a>
+              </li>
+              <li data-search="mansions_of_madness 01_mister_corbitt h03_corbitt3_news_tomaszewski.html">
+                <a href="./mansions_of_madness/01_mister_corbitt/h03_corbitt3_news_tomaszewski.html" target="_blank">
+                  <span class="file-name">📄 h03_corbitt3_news_tomaszewski.html</span>
+                  <span class="btn">열기 ↗</span>
+                </a>
+              </li>
+              <li data-search="mansions_of_madness 01_mister_corbitt h04_corbitt4_journals.html">
+                <a href="./mansions_of_madness/01_mister_corbitt/h04_corbitt4_journals.html" target="_blank">
+                  <span class="file-name">📄 h04_corbitt4_journals.html</span>
+                  <span class="btn">열기 ↗</span>
+                </a>
+              </li>
+            </ul>
+          </details>
+          <details class="subgroup" data-search-group="mansions_of_madness 02_the_crackd_and_crookd_manse">
+            <summary class="subgroup-title">
+              <span class="title-left"><span class="chevron">▸</span> 📂 02_the_crackd_and_crookd_manse</span>
+              <span class="count">6</span>
+            </summary>
+            <ul class="link-list">
+              <li data-search="mansions_of_madness 02_the_crackd_and_crookd_manse h01_crackd1_dodge_letter.html">
+                <a href="./mansions_of_madness/02_the_crackd_and_crookd_manse/h01_crackd1_dodge_letter.html" target="_blank">
+                  <span class="file-name">📄 h01_crackd1_dodge_letter.html</span>
+                  <span class="btn">열기 ↗</span>
+                </a>
+              </li>
+              <li data-search="mansions_of_madness 02_the_crackd_and_crookd_manse h02_crackd2_gazette_1925.html">
+                <a href="./mansions_of_madness/02_the_crackd_and_crookd_manse/h02_crackd2_gazette_1925.html" target="_blank">
+                  <span class="file-name">📄 h02_crackd2_gazette_1925.html</span>
+                  <span class="btn">열기 ↗</span>
+                </a>
+              </li>
+              <li data-search="mansions_of_madness 02_the_crackd_and_crookd_manse h03_crackd3_gazette_1895.html">
+                <a href="./mansions_of_madness/02_the_crackd_and_crookd_manse/h03_crackd3_gazette_1895.html" target="_blank">
+                  <span class="file-name">📄 h03_crackd3_gazette_1895.html</span>
+                  <span class="btn">열기 ↗</span>
+                </a>
+              </li>
+              <li data-search="mansions_of_madness 02_the_crackd_and_crookd_manse h04_crackd4_gazette_1865.html">
+                <a href="./mansions_of_madness/02_the_crackd_and_crookd_manse/h04_crackd4_gazette_1865.html" target="_blank">
+                  <span class="file-name">📄 h04_crackd4_gazette_1865.html</span>
+                  <span class="btn">열기 ↗</span>
+                </a>
+              </li>
+              <li data-search="mansions_of_madness 02_the_crackd_and_crookd_manse h05_crackd5_missing_people_book.html">
+                <a href="./mansions_of_madness/02_the_crackd_and_crookd_manse/h05_crackd5_missing_people_book.html" target="_blank">
+                  <span class="file-name">📄 h05_crackd5_missing_people_book.html</span>
+                  <span class="btn">열기 ↗</span>
+                </a>
+              </li>
+              <li data-search="mansions_of_madness 02_the_crackd_and_crookd_manse h06_crackd6_cornthwaite_note.html">
+                <a href="./mansions_of_madness/02_the_crackd_and_crookd_manse/h06_crackd6_cornthwaite_note.html" target="_blank">
+                  <span class="file-name">📄 h06_crackd6_cornthwaite_note.html</span>
+                  <span class="btn">열기 ↗</span>
+                </a>
+              </li>
+            </ul>
+          </details>
+          <details class="subgroup" data-search-group="mansions_of_madness 03_the_code">
+            <summary class="subgroup-title">
+              <span class="title-left"><span class="chevron">▸</span> 📂 03_the_code</span>
+              <span class="count">5</span>
+            </summary>
+            <ul class="link-list">
+              <li data-search="mansions_of_madness 03_the_code h01_code1_letter.html">
+                <a href="./mansions_of_madness/03_the_code/h01_code1_letter.html" target="_blank">
+                  <span class="file-name">📄 h01_code1_letter.html</span>
+                  <span class="btn">열기 ↗</span>
+                </a>
+              </li>
+              <li data-search="mansions_of_madness 03_the_code h02_code2_telegram.html">
+                <a href="./mansions_of_madness/03_the_code/h02_code2_telegram.html" target="_blank">
+                  <span class="file-name">📄 h02_code2_telegram.html</span>
+                  <span class="btn">열기 ↗</span>
+                </a>
+              </li>
+              <li data-search="mansions_of_madness 03_the_code h03_code3_journal_1.html">
+                <a href="./mansions_of_madness/03_the_code/h03_code3_journal_1.html" target="_blank">
+                  <span class="file-name">📄 h03_code3_journal_1.html</span>
+                  <span class="btn">열기 ↗</span>
+                </a>
+              </li>
+              <li data-search="mansions_of_madness 03_the_code h04_code4_journal_2.html">
+                <a href="./mansions_of_madness/03_the_code/h04_code4_journal_2.html" target="_blank">
+                  <span class="file-name">📄 h04_code4_journal_2.html</span>
+                  <span class="btn">열기 ↗</span>
+                </a>
+              </li>
+              <li data-search="mansions_of_madness 03_the_code h05_code5_journal_3.html">
+                <a href="./mansions_of_madness/03_the_code/h05_code5_journal_3.html" target="_blank">
+                  <span class="file-name">📄 h05_code5_journal_3.html</span>
+                  <span class="btn">열기 ↗</span>
+                </a>
+              </li>
+            </ul>
+          </details>
+          <details class="subgroup" data-search-group="mansions_of_madness 04_house_of_memphis">
+            <summary class="subgroup-title">
+              <span class="title-left"><span class="chevron">▸</span> 📂 04_house_of_memphis</span>
+              <span class="count">5</span>
+            </summary>
+            <ul class="link-list">
+              <li data-search="mansions_of_madness 04_house_of_memphis h01_memphis1_globe_missing.html">
+                <a href="./mansions_of_madness/04_house_of_memphis/h01_memphis1_globe_missing.html" target="_blank">
+                  <span class="file-name">📄 h01_memphis1_globe_missing.html</span>
+                  <span class="btn">열기 ↗</span>
+                </a>
+              </li>
+              <li data-search="mansions_of_madness 04_house_of_memphis h02_memphis2_globe_found.html">
+                <a href="./mansions_of_madness/04_house_of_memphis/h02_memphis2_globe_found.html" target="_blank">
+                  <span class="file-name">📄 h02_memphis2_globe_found.html</span>
+                  <span class="btn">열기 ↗</span>
+                </a>
+              </li>
+              <li data-search="mansions_of_madness 04_house_of_memphis h03_memphis3_advertiser_duo.html">
+                <a href="./mansions_of_madness/04_house_of_memphis/h03_memphis3_advertiser_duo.html" target="_blank">
+                  <span class="file-name">📄 h03_memphis3_advertiser_duo.html</span>
+                  <span class="btn">열기 ↗</span>
+                </a>
+              </li>
+              <li data-search="mansions_of_madness 04_house_of_memphis h04_memphis4_travel_journal_bhutan.html">
+                <a href="./mansions_of_madness/04_house_of_memphis/h04_memphis4_travel_journal_bhutan.html" target="_blank">
+                  <span class="file-name">📄 h04_memphis4_travel_journal_bhutan.html</span>
+                  <span class="btn">열기 ↗</span>
+                </a>
+              </li>
+              <li data-search="mansions_of_madness 04_house_of_memphis h05_memphis5_journal_final_entry.html">
+                <a href="./mansions_of_madness/04_house_of_memphis/h05_memphis5_journal_final_entry.html" target="_blank">
+                  <span class="file-name">📄 h05_memphis5_journal_final_entry.html</span>
+                  <span class="btn">열기 ↗</span>
+                </a>
+              </li>
+            </ul>
+          </details>
+          <details class="subgroup" data-search-group="mansions_of_madness 05_the_nineteenth_hole">
+            <summary class="subgroup-title">
+              <span class="title-left"><span class="chevron">▸</span> 📂 05_the_nineteenth_hole</span>
+              <span class="count">3</span>
+            </summary>
+            <ul class="link-list">
+              <li data-search="mansions_of_madness 05_the_nineteenth_hole h01_nineteenth1_scotsman_article.html">
+                <a href="./mansions_of_madness/05_the_nineteenth_hole/h01_nineteenth1_scotsman_article.html" target="_blank">
+                  <span class="file-name">📄 h01_nineteenth1_scotsman_article.html</span>
+                  <span class="btn">열기 ↗</span>
+                </a>
+              </li>
+              <li data-search="mansions_of_madness 05_the_nineteenth_hole h02_nineteenth2_clubhouse_plan_1928.html">
+                <a href="./mansions_of_madness/05_the_nineteenth_hole/h02_nineteenth2_clubhouse_plan_1928.html" target="_blank">
+                  <span class="file-name">📄 h02_nineteenth2_clubhouse_plan_1928.html</span>
+                  <span class="btn">열기 ↗</span>
+                </a>
+              </li>
+              <li data-search="mansions_of_madness 05_the_nineteenth_hole h03_nineteenth3_clubhouse_plan_1903.html">
+                <a href="./mansions_of_madness/05_the_nineteenth_hole/h03_nineteenth3_clubhouse_plan_1903.html" target="_blank">
+                  <span class="file-name">📄 h03_nineteenth3_clubhouse_plan_1903.html</span>
+                  <span class="btn">열기 ↗</span>
+                </a>
+              </li>
+            </ul>
+          </details>
+        </div>
+      </details>
+      <details class="group" data-search-group="missed_dues">
+        <summary class="group-title">
+          <span class="title-left"><span class="chevron">▸</span> 📁 missed_dues</span>
+          <span class="count">5개</span>
+        </summary>
+        <div class="group-body">
+        <ul class="link-list">
+          <li data-search="missed_dues h1_ missed_i_arkham_advertiser_article.html">
+            <a href="./missed_dues/h1_%20missed_I_arkham_advertiser_article.html" target="_blank">
+              <span class="file-name">📄 h1_ missed_I_arkham_advertiser_article.html</span>
+              <span class="btn">열기 ↗</span>
+            </a>
+          </li>
+          <li data-search="missed_dues h2_arkham_gazette_article_1.html">
+            <a href="./missed_dues/h2_arkham_gazette_article_1.html" target="_blank">
+              <span class="file-name">📄 h2_arkham_gazette_article_1.html</span>
+              <span class="btn">열기 ↗</span>
+            </a>
+          </li>
+          <li data-search="missed_dues h3_arkham_gazette_article_2.html">
+            <a href="./missed_dues/h3_arkham_gazette_article_2.html" target="_blank">
+              <span class="file-name">📄 h3_arkham_gazette_article_2.html</span>
+              <span class="btn">열기 ↗</span>
+            </a>
+          </li>
+          <li data-search="missed_dues h5_smiths_note.html">
+            <a href="./missed_dues/h5_smiths_note.html" target="_blank">
+              <span class="file-name">📄 h5_smiths_note.html</span>
+              <span class="btn">열기 ↗</span>
+            </a>
+          </li>
+          <li data-search="missed_dues h6_the_power_of_the_universe.html">
+            <a href="./missed_dues/h6_the_power_of_the_universe.html" target="_blank">
+              <span class="file-name">📄 h6_the_power_of_the_universe.html</span>
+              <span class="btn">열기 ↗</span>
+            </a>
+          </li>
+        </ul>
+        </div>
+      </details>
+      <details class="group" data-search-group="nameless_horror">
+        <summary class="group-title">
+          <span class="title-left"><span class="chevron">▸</span> 📁 nameless_horror</span>
+          <span class="count">5개 시나리오 · 28개</span>
+        </summary>
+        <div class="group-body">
+          <details class="subgroup" data-search-group="nameless_horror 01_an_amaranthine_desire">
+            <summary class="subgroup-title">
+              <span class="title-left"><span class="chevron">▸</span> 📂 01_an_amaranthine_desire</span>
+              <span class="count">1</span>
+            </summary>
+            <ul class="link-list">
+              <li data-search="nameless_horror 01_an_amaranthine_desire handout_1_setting_the_scene.html">
+                <a href="./nameless_horror/01_an_amaranthine_desire/handout_1_setting_the_scene.html" target="_blank">
+                  <span class="file-name">📄 handout_1_setting_the_scene.html</span>
+                  <span class="btn">열기 ↗</span>
+                </a>
+              </li>
+            </ul>
+          </details>
+          <details class="subgroup" data-search-group="nameless_horror 02_a_message_of_art">
+            <summary class="subgroup-title">
+              <span class="title-left"><span class="chevron">▸</span> 📂 02_a_message_of_art</span>
+              <span class="count">7</span>
+            </summary>
+            <ul class="link-list">
+              <li data-search="nameless_horror 02_a_message_of_art 01_handout_setting_scene.html">
+                <a href="./nameless_horror/02_a_message_of_art/01_handout_setting_scene.html" target="_blank">
+                  <span class="file-name">📄 01_handout_setting_scene.html</span>
+                  <span class="btn">열기 ↗</span>
+                </a>
+              </li>
+              <li data-search="nameless_horror 02_a_message_of_art 02_handout_invitation_card.html">
+                <a href="./nameless_horror/02_a_message_of_art/02_handout_invitation_card.html" target="_blank">
+                  <span class="file-name">📄 02_handout_invitation_card.html</span>
+                  <span class="btn">열기 ↗</span>
+                </a>
+              </li>
+              <li data-search="nameless_horror 02_a_message_of_art 03_handout_relationship_map.html">
+                <a href="./nameless_horror/02_a_message_of_art/03_handout_relationship_map.html" target="_blank">
+                  <span class="file-name">📄 03_handout_relationship_map.html</span>
+                  <span class="btn">열기 ↗</span>
+                </a>
+              </li>
+              <li data-search="nameless_horror 02_a_message_of_art 04_handout_pinot_card.html">
+                <a href="./nameless_horror/02_a_message_of_art/04_handout_pinot_card.html" target="_blank">
+                  <span class="file-name">📄 04_handout_pinot_card.html</span>
+                  <span class="btn">열기 ↗</span>
+                </a>
+              </li>
+              <li data-search="nameless_horror 02_a_message_of_art 05_handout_inner_god_tome.html">
+                <a href="./nameless_horror/02_a_message_of_art/05_handout_inner_god_tome.html" target="_blank">
+                  <span class="file-name">📄 05_handout_inner_god_tome.html</span>
+                  <span class="btn">열기 ↗</span>
+                </a>
+              </li>
+              <li data-search="nameless_horror 02_a_message_of_art 06_handout_illuminatos_cosmiques.html">
+                <a href="./nameless_horror/02_a_message_of_art/06_handout_illuminatos_cosmiques.html" target="_blank">
+                  <span class="file-name">📄 06_handout_illuminatos_cosmiques.html</span>
+                  <span class="btn">열기 ↗</span>
+                </a>
+              </li>
+              <li data-search="nameless_horror 02_a_message_of_art 07_handout_larush_letter.html">
+                <a href="./nameless_horror/02_a_message_of_art/07_handout_larush_letter.html" target="_blank">
+                  <span class="file-name">📄 07_handout_larush_letter.html</span>
+                  <span class="btn">열기 ↗</span>
+                </a>
+              </li>
+            </ul>
+          </details>
+          <details class="subgroup" data-search-group="nameless_horror 03_and_some_fell_on_stony_ground">
+            <summary class="subgroup-title">
+              <span class="title-left"><span class="chevron">▸</span> 📂 03_and_some_fell_on_stony_ground</span>
+              <span class="count">5</span>
+            </summary>
+            <ul class="link-list">
+              <li data-search="nameless_horror 03_and_some_fell_on_stony_ground handout_01_church_flyer.html">
+                <a href="./nameless_horror/03_and_some_fell_on_stony_ground/handout_01_church_flyer.html" target="_blank">
+                  <span class="file-name">📄 handout_01_church_flyer.html</span>
+                  <span class="btn">열기 ↗</span>
+                </a>
+              </li>
+              <li data-search="nameless_horror 03_and_some_fell_on_stony_ground handout_02_eviction_notice.html">
+                <a href="./nameless_horror/03_and_some_fell_on_stony_ground/handout_02_eviction_notice.html" target="_blank">
+                  <span class="file-name">📄 handout_02_eviction_notice.html</span>
+                  <span class="btn">열기 ↗</span>
+                </a>
+              </li>
+              <li data-search="nameless_horror 03_and_some_fell_on_stony_ground handout_03_hart_journal.html">
+                <a href="./nameless_horror/03_and_some_fell_on_stony_ground/handout_03_hart_journal.html" target="_blank">
+                  <span class="file-name">📄 handout_03_hart_journal.html</span>
+                  <span class="btn">열기 ↗</span>
+                </a>
+              </li>
+              <li data-search="nameless_horror 03_and_some_fell_on_stony_ground handout_04_twin_anatomy.html">
+                <a href="./nameless_horror/03_and_some_fell_on_stony_ground/handout_04_twin_anatomy.html" target="_blank">
+                  <span class="file-name">📄 handout_04_twin_anatomy.html</span>
+                  <span class="btn">열기 ↗</span>
+                </a>
+              </li>
+              <li data-search="nameless_horror 03_and_some_fell_on_stony_ground handout_05_mcdermott_table.html">
+                <a href="./nameless_horror/03_and_some_fell_on_stony_ground/handout_05_mcdermott_table.html" target="_blank">
+                  <span class="file-name">📄 handout_05_mcdermott_table.html</span>
+                  <span class="btn">열기 ↗</span>
+                </a>
+              </li>
+            </ul>
+          </details>
+          <details class="subgroup" data-search-group="nameless_horror 04_bleak_prospect">
+            <summary class="subgroup-title">
+              <span class="title-left"><span class="chevron">▸</span> 📂 04_bleak_prospect</span>
+              <span class="count">4</span>
+            </summary>
+            <ul class="link-list">
+              <li data-search="nameless_horror 04_bleak_prospect h01_newspaper_midas_circle.html">
+                <a href="./nameless_horror/04_bleak_prospect/h01_newspaper_midas_circle.html" target="_blank">
+                  <span class="file-name">📄 h01_newspaper_midas_circle.html</span>
+                  <span class="btn">열기 ↗</span>
+                </a>
+              </li>
+              <li data-search="nameless_horror 04_bleak_prospect h02_newspaper_hawkes_disappearance.html">
+                <a href="./nameless_horror/04_bleak_prospect/h02_newspaper_hawkes_disappearance.html" target="_blank">
+                  <span class="file-name">📄 h02_newspaper_hawkes_disappearance.html</span>
+                  <span class="btn">열기 ↗</span>
+                </a>
+              </li>
+              <li data-search="nameless_horror 04_bleak_prospect h03_dr_coombes_medical_diary.html">
+                <a href="./nameless_horror/04_bleak_prospect/h03_dr_coombes_medical_diary.html" target="_blank">
+                  <span class="file-name">📄 h03_dr_coombes_medical_diary.html</span>
+                  <span class="btn">열기 ↗</span>
+                </a>
+              </li>
+              <li data-search="nameless_horror 04_bleak_prospect h04_hawkes_workshop_notes.html">
+                <a href="./nameless_horror/04_bleak_prospect/h04_hawkes_workshop_notes.html" target="_blank">
+                  <span class="file-name">📄 h04_hawkes_workshop_notes.html</span>
+                  <span class="btn">열기 ↗</span>
+                </a>
+              </li>
+            </ul>
+          </details>
+          <details class="subgroup" data-search-group="nameless_horror 06_the_space_between">
+            <summary class="subgroup-title">
+              <span class="title-left"><span class="chevron">▸</span> 📂 06_the_space_between</span>
+              <span class="count">11</span>
+            </summary>
+            <ul class="link-list">
+              <li data-search="nameless_horror 06_the_space_between h01_script_overview.html">
+                <a href="./nameless_horror/06_the_space_between/h01_script_overview.html" target="_blank">
+                  <span class="file-name">📄 h01_script_overview.html</span>
+                  <span class="btn">열기 ↗</span>
+                </a>
+              </li>
+              <li data-search="nameless_horror 06_the_space_between h02_church_jargon.html">
+                <a href="./nameless_horror/06_the_space_between/h02_church_jargon.html" target="_blank">
+                  <span class="file-name">📄 h02_church_jargon.html</span>
+                  <span class="btn">열기 ↗</span>
+                </a>
+              </li>
+              <li data-search="nameless_horror 06_the_space_between h03_cast_and_crew.html">
+                <a href="./nameless_horror/06_the_space_between/h03_cast_and_crew.html" target="_blank">
+                  <span class="file-name">📄 h03_cast_and_crew.html</span>
+                  <span class="btn">열기 ↗</span>
+                </a>
+              </li>
+              <li data-search="nameless_horror 06_the_space_between h04_truth_behind_film.html">
+                <a href="./nameless_horror/06_the_space_between/h04_truth_behind_film.html" target="_blank">
+                  <span class="file-name">📄 h04_truth_behind_film.html</span>
+                  <span class="btn">열기 ↗</span>
+                </a>
+              </li>
+              <li data-search="nameless_horror 06_the_space_between h05_status_emptied.html">
+                <a href="./nameless_horror/06_the_space_between/h05_status_emptied.html" target="_blank">
+                  <span class="file-name">📄 h05_status_emptied.html</span>
+                  <span class="btn">열기 ↗</span>
+                </a>
+              </li>
+              <li data-search="nameless_horror 06_the_space_between h06_status_truly_empty.html">
+                <a href="./nameless_horror/06_the_space_between/h06_status_truly_empty.html" target="_blank">
+                  <span class="file-name">📄 h06_status_truly_empty.html</span>
+                  <span class="btn">열기 ↗</span>
+                </a>
+              </li>
+              <li data-search="nameless_horror 06_the_space_between h07_police_report_neumeier.html">
+                <a href="./nameless_horror/06_the_space_between/h07_police_report_neumeier.html" target="_blank">
+                  <span class="file-name">📄 h07_police_report_neumeier.html</span>
+                  <span class="btn">열기 ↗</span>
+                </a>
+              </li>
+              <li data-search="nameless_horror 06_the_space_between h08_screening_invitation.html">
+                <a href="./nameless_horror/06_the_space_between/h08_screening_invitation.html" target="_blank">
+                  <span class="file-name">📄 h08_screening_invitation.html</span>
+                  <span class="btn">열기 ↗</span>
+                </a>
+              </li>
+              <li data-search="nameless_horror 06_the_space_between h09_steele_confidential_dossier.html">
+                <a href="./nameless_horror/06_the_space_between/h09_steele_confidential_dossier.html" target="_blank">
+                  <span class="file-name">📄 h09_steele_confidential_dossier.html</span>
+                  <span class="btn">열기 ↗</span>
+                </a>
+              </li>
+              <li data-search="nameless_horror 06_the_space_between h10_chandler_exegesis_fragment.html">
+                <a href="./nameless_horror/06_the_space_between/h10_chandler_exegesis_fragment.html" target="_blank">
+                  <span class="file-name">📄 h10_chandler_exegesis_fragment.html</span>
+                  <span class="btn">열기 ↗</span>
+                </a>
+              </li>
+              <li data-search="nameless_horror 06_the_space_between h11_soundstage_set_memo.html">
+                <a href="./nameless_horror/06_the_space_between/h11_soundstage_set_memo.html" target="_blank">
+                  <span class="file-name">📄 h11_soundstage_set_memo.html</span>
+                  <span class="btn">열기 ↗</span>
+                </a>
+              </li>
+            </ul>
+          </details>
+        </div>
+      </details>
+      <details class="group" data-search-group="petersens_abominations">
+        <summary class="group-title">
+          <span class="title-left"><span class="chevron">▸</span> 📁 petersens_abominations</span>
+          <span class="count">2개 시나리오 · 15개</span>
+        </summary>
+        <div class="group-body">
+          <details class="subgroup" data-search-group="petersens_abominations panacea">
+            <summary class="subgroup-title">
+              <span class="title-left"><span class="chevron">▸</span> 📂 Panacea</span>
+              <span class="count">4</span>
+            </summary>
+            <ul class="link-list">
+              <li data-search="petersens_abominations panacea character.html">
+                <a href="./petersens_abominations/Panacea/character.html" target="_blank">
+                  <span class="file-name">📄 character.html</span>
+                  <span class="btn">열기 ↗</span>
+                </a>
+              </li>
+              <li data-search="petersens_abominations panacea zymedbio_dna_analyzer.html">
+                <a href="./petersens_abominations/Panacea/zymedbio_dna_analyzer.html" target="_blank">
+                  <span class="file-name">📄 zymedbio_dna_analyzer.html</span>
+                  <span class="btn">열기 ↗</span>
+                </a>
+              </li>
+              <li data-search="petersens_abominations panacea zymedbio_inside.html">
+                <a href="./petersens_abominations/Panacea/zymedbio_inside.html" target="_blank">
+                  <span class="file-name">📄 zymedbio_inside.html</span>
+                  <span class="btn">열기 ↗</span>
+                </a>
+              </li>
+              <li data-search="petersens_abominations panacea zymedbio_website.html">
+                <a href="./petersens_abominations/Panacea/zymedbio_website.html" target="_blank">
+                  <span class="file-name">📄 zymedbio_website.html</span>
+                  <span class="btn">열기 ↗</span>
+                </a>
+              </li>
+            </ul>
+          </details>
+          <details class="subgroup" data-search-group="petersens_abominations mohole">
+            <summary class="subgroup-title">
+              <span class="title-left"><span class="chevron">▸</span> 📂 mohole</span>
+              <span class="count">11</span>
+            </summary>
+            <ul class="link-list">
+              <li data-search="petersens_abominations mohole devils_hole_org_chart.html">
+                <a href="./petersens_abominations/mohole/Devils_Hole_Org_Chart.html" target="_blank">
+                  <span class="file-name">📄 Devils_Hole_Org_Chart.html</span>
+                  <span class="btn">열기 ↗</span>
+                </a>
+              </li>
+              <li data-search="petersens_abominations mohole dr_kents_hidden_notes.html">
+                <a href="./petersens_abominations/mohole/Dr_Kents_Hidden_Notes.html" target="_blank">
+                  <span class="file-name">📄 Dr_Kents_Hidden_Notes.html</span>
+                  <span class="btn">열기 ↗</span>
+                </a>
+              </li>
+              <li data-search="petersens_abominations mohole investigator_briefing.html">
+                <a href="./petersens_abominations/mohole/Investigator_Briefing.html" target="_blank">
+                  <span class="file-name">📄 Investigator_Briefing.html</span>
+                  <span class="btn">열기 ↗</span>
+                </a>
+              </li>
+              <li data-search="petersens_abominations mohole sickbay_medical_report.html">
+                <a href="./petersens_abominations/mohole/Sickbay_Medical_Report.html" target="_blank">
+                  <span class="file-name">📄 Sickbay_Medical_Report.html</span>
+                  <span class="btn">열기 ↗</span>
+                </a>
+              </li>
+              <li data-search="petersens_abominations mohole stahls_security_protocol.html">
+                <a href="./petersens_abominations/mohole/Stahls_Security_Protocol.html" target="_blank">
+                  <span class="file-name">📄 Stahls_Security_Protocol.html</span>
+                  <span class="btn">열기 ↗</span>
+                </a>
+              </li>
+              <li data-search="petersens_abominations mohole character.html">
+                <a href="./petersens_abominations/mohole/character.html" target="_blank">
+                  <span class="file-name">📄 character.html</span>
+                  <span class="btn">열기 ↗</span>
+                </a>
+              </li>
+              <li data-search="petersens_abominations mohole cotrol_room_monitor.html">
+                <a href="./petersens_abominations/mohole/cotrol_room_monitor.html" target="_blank">
+                  <span class="file-name">📄 cotrol_room_monitor.html</span>
+                  <span class="btn">열기 ↗</span>
+                </a>
+              </li>
+              <li data-search="petersens_abominations mohole green_slime_report.html">
+                <a href="./petersens_abominations/mohole/green_slime_report.html" target="_blank">
+                  <span class="file-name">📄 green_slime_report.html</span>
+                  <span class="btn">열기 ↗</span>
+                </a>
+              </li>
+              <li data-search="petersens_abominations mohole mohole_report.html">
+                <a href="./petersens_abominations/mohole/mohole_report.html" target="_blank">
+                  <span class="file-name">📄 mohole_report.html</span>
+                  <span class="btn">열기 ↗</span>
+                </a>
+              </li>
+              <li data-search="petersens_abominations mohole nergal_project_report.html">
+                <a href="./petersens_abominations/mohole/nergal_project_report.html" target="_blank">
+                  <span class="file-name">📄 nergal_project_report.html</span>
+                  <span class="btn">열기 ↗</span>
+                </a>
+              </li>
+              <li data-search="petersens_abominations mohole reactore_control_system.html">
+                <a href="./petersens_abominations/mohole/reactore_control_system.html" target="_blank">
+                  <span class="file-name">📄 reactore_control_system.html</span>
+                  <span class="btn">열기 ↗</span>
+                </a>
+              </li>
+            </ul>
+          </details>
+        </div>
+      </details>
+      <details class="group" data-search-group="the_myth_control_agency">
+        <summary class="group-title">
+          <span class="title-left"><span class="chevron">▸</span> 📁 the_myth_control_agency</span>
+          <span class="count">1개 시나리오 · 4개</span>
+        </summary>
+        <div class="group-body">
+          <details class="subgroup" data-search-group="the_myth_control_agency 01_subway">
+            <summary class="subgroup-title">
+              <span class="title-left"><span class="chevron">▸</span> 📂 01_subway</span>
+              <span class="count">4</span>
+            </summary>
+            <ul class="link-list">
+              <li data-search="the_myth_control_agency 01_subway 01_subway_rules.html">
+                <a href="./the_myth_control_agency/01_subway/01_subway_rules.html" target="_blank">
+                  <span class="file-name">📄 01_subway_rules.html</span>
+                  <span class="btn">열기 ↗</span>
+                </a>
+              </li>
+              <li data-search="the_myth_control_agency 01_subway 02_subway_route_map.html">
+                <a href="./the_myth_control_agency/01_subway/02_subway_route_map.html" target="_blank">
+                  <span class="file-name">📄 02_subway_route_map.html</span>
+                  <span class="btn">열기 ↗</span>
+                </a>
+              </li>
+              <li data-search="the_myth_control_agency 01_subway 03_subway_route_map_true.html">
+                <a href="./the_myth_control_agency/01_subway/03_subway_route_map_true.html" target="_blank">
+                  <span class="file-name">📄 03_subway_route_map_true.html</span>
+                  <span class="btn">열기 ↗</span>
+                </a>
+              </li>
+              <li data-search="the_myth_control_agency 01_subway 04_phone_booth.html">
+                <a href="./the_myth_control_agency/01_subway/04_phone_booth.html" target="_blank">
+                  <span class="file-name">📄 04_phone_booth.html</span>
+                  <span class="btn">열기 ↗</span>
+                </a>
+              </li>
+            </ul>
+          </details>
+        </div>
+      </details>
     </div>
-
-    <div class="card">
-      <div class="card-title">📁 door_to_darkness/02_genius_loci <span class="count">(6)</span></div>
-      <ul class="link-list">
-
-        <li>
-          <a href="./door_to_darkness/02_genius_loci/h01_genius1_croswell_letter.html" target="_blank">
-            <span class="file-name">h01_genius1_croswell_letter.html</span>
-            <span class="btn">열기 ↗</span>
-          </a>
-        </li>
-
-        <li>
-          <a href="./door_to_darkness/02_genius_loci/h02_genius2_hospital_letter.html" target="_blank">
-            <span class="file-name">h02_genius2_hospital_letter.html</span>
-            <span class="btn">열기 ↗</span>
-          </a>
-        </li>
-
-        <li>
-          <a href="./door_to_darkness/02_genius_loci/h03_genius3_salem_news_amphitheater.html" target="_blank">
-            <span class="file-name">h03_genius3_salem_news_amphitheater.html</span>
-            <span class="btn">열기 ↗</span>
-          </a>
-        </li>
-
-        <li>
-          <a href="./door_to_darkness/02_genius_loci/h04_genius4_salem_news_shine_retires.html" target="_blank">
-            <span class="file-name">h04_genius4_salem_news_shine_retires.html</span>
-            <span class="btn">열기 ↗</span>
-          </a>
-        </li>
-
-        <li>
-          <a href="./door_to_darkness/02_genius_loci/h05_genius5_shine_papers.html" target="_blank">
-            <span class="file-name">h05_genius5_shine_papers.html</span>
-            <span class="btn">열기 ↗</span>
-          </a>
-        </li>
-
-        <li>
-          <a href="./door_to_darkness/02_genius_loci/h06_genius6_danvers_herald_macbride.html" target="_blank">
-            <span class="file-name">h06_genius6_danvers_herald_macbride.html</span>
-            <span class="btn">열기 ↗</span>
-          </a>
-        </li>
-
-      </ul>
-    </div>
-
-    <div class="card">
-      <div class="card-title">📁 door_to_darkness/03_servants_of_the_lake <span class="count">(3)</span></div>
-      <ul class="link-list">
-
-        <li>
-          <a href="./door_to_darkness/03_servants_of_the_lake/h01_servants1_native_history.html" target="_blank">
-            <span class="file-name">h01_servants1_native_history.html</span>
-            <span class="btn">열기 ↗</span>
-          </a>
-        </li>
-
-        <li>
-          <a href="./door_to_darkness/03_servants_of_the_lake/h02_servants2_frazer_notebook.html" target="_blank">
-            <span class="file-name">h02_servants2_frazer_notebook.html</span>
-            <span class="btn">열기 ↗</span>
-          </a>
-        </li>
-
-        <li>
-          <a href="./door_to_darkness/03_servants_of_the_lake/h03_servants3_motel_guestbook.html" target="_blank">
-            <span class="file-name">h03_servants3_motel_guestbook.html</span>
-            <span class="btn">열기 ↗</span>
-          </a>
-        </li>
-
-      </ul>
-    </div>
-
-    <div class="card">
-      <div class="card-title">📁 door_to_darkness/04_ties_that_bind <span class="count">(6)</span></div>
-      <ul class="link-list">
-
-        <li>
-          <a href="./door_to_darkness/04_ties_that_bind/h01_ties1_hackett_letter.html" target="_blank">
-            <span class="file-name">h01_ties1_hackett_letter.html</span>
-            <span class="btn">열기 ↗</span>
-          </a>
-        </li>
-
-        <li>
-          <a href="./door_to_darkness/04_ties_that_bind/h02_ties2_hackett_urgent_note.html" target="_blank">
-            <span class="file-name">h02_ties2_hackett_urgent_note.html</span>
-            <span class="btn">열기 ↗</span>
-          </a>
-        </li>
-
-        <li>
-          <a href="./door_to_darkness/04_ties_that_bind/h03_ties3_briden_notes.html" target="_blank">
-            <span class="file-name">h03_ties3_briden_notes.html</span>
-            <span class="btn">열기 ↗</span>
-          </a>
-        </li>
-
-        <li>
-          <a href="./door_to_darkness/04_ties_that_bind/h04_ties4_essex_folklore.html" target="_blank">
-            <span class="file-name">h04_ties4_essex_folklore.html</span>
-            <span class="btn">열기 ↗</span>
-          </a>
-        </li>
-
-        <li>
-          <a href="./door_to_darkness/04_ties_that_bind/h05_ties5_summon_bind_parchment.html" target="_blank">
-            <span class="file-name">h05_ties5_summon_bind_parchment.html</span>
-            <span class="btn">열기 ↗</span>
-          </a>
-        </li>
-
-        <li>
-          <a href="./door_to_darkness/04_ties_that_bind/h06_ties6_notebook_dismissal.html" target="_blank">
-            <span class="file-name">h06_ties6_notebook_dismissal.html</span>
-            <span class="btn">열기 ↗</span>
-          </a>
-        </li>
-
-      </ul>
-    </div>
-
-    <div class="card">
-      <div class="card-title">📁 door_to_darkness/05_none_more_black <span class="count">(2)</span></div>
-      <ul class="link-list">
-
-        <li>
-          <a href="./door_to_darkness/05_none_more_black/h01_black1_slaughterhouse_scrap.html" target="_blank">
-            <span class="file-name">h01_black1_slaughterhouse_scrap.html</span>
-            <span class="btn">열기 ↗</span>
-          </a>
-        </li>
-
-        <li>
-          <a href="./door_to_darkness/05_none_more_black/h02_black2_jonathan_dover_journal.html" target="_blank">
-            <span class="file-name">h02_black2_jonathan_dover_journal.html</span>
-            <span class="btn">열기 ↗</span>
-          </a>
-        </li>
-
-      </ul>
-    </div>
-
-    <div class="card">
-      <div class="card-title">📁 fvtt <span class="count">(2)</span></div>
-      <ul class="link-list">
-
-        <li>
-          <a href="./fvtt/coc_actor_generate.html" target="_blank">
-            <span class="file-name">coc_actor_generate.html</span>
-            <span class="btn">열기 ↗</span>
-          </a>
-        </li>
-
-        <li>
-          <a href="./fvtt/coc_fvtt_guide.html" target="_blank">
-            <span class="file-name">coc_fvtt_guide.html</span>
-            <span class="btn">열기 ↗</span>
-          </a>
-        </li>
-
-      </ul>
-    </div>
-
-    <div class="card">
-      <div class="card-title">📁 hojil <span class="count">(7)</span></div>
-      <ul class="link-list">
-
-        <li>
-          <a href="./hojil/h01_samsik.html" target="_blank">
-            <span class="file-name">h01_samsik.html</span>
-            <span class="btn">열기 ↗</span>
-          </a>
-        </li>
-
-        <li>
-          <a href="./hojil/h02_hanja.html" target="_blank">
-            <span class="file-name">h02_hanja.html</span>
-            <span class="btn">열기 ↗</span>
-          </a>
-        </li>
-
-        <li>
-          <a href="./hojil/h03_odysseus.html" target="_blank">
-            <span class="file-name">h03_odysseus.html</span>
-            <span class="btn">열기 ↗</span>
-          </a>
-        </li>
-
-        <li>
-          <a href="./hojil/h04_talisman.html" target="_blank">
-            <span class="file-name">h04_talisman.html</span>
-            <span class="btn">열기 ↗</span>
-          </a>
-        </li>
-
-        <li>
-          <a href="./hojil/h05_well_wall.html" target="_blank">
-            <span class="file-name">h05_well_wall.html</span>
-            <span class="btn">열기 ↗</span>
-          </a>
-        </li>
-
-        <li>
-          <a href="./hojil/h06_torn_shanhaijing.html" target="_blank">
-            <span class="file-name">h06_torn_shanhaijing.html</span>
-            <span class="btn">열기 ↗</span>
-          </a>
-        </li>
-
-        <li>
-          <a href="./hojil/h07_son_diary.html" target="_blank">
-            <span class="file-name">h07_son_diary.html</span>
-            <span class="btn">열기 ↗</span>
-          </a>
-        </li>
-
-      </ul>
-    </div>
-
-    <div class="card">
-      <div class="card-title">📁 madness_mountain <span class="count">(4)</span></div>
-      <ul class="link-list">
-
-        <li>
-          <a href="./madness_mountain/briefing_1st_expedition.html" target="_blank">
-            <span class="file-name">briefing_1st_expedition.html</span>
-            <span class="btn">열기 ↗</span>
-          </a>
-        </li>
-
-        <li>
-          <a href="./madness_mountain/briefing_mountain_miskatonic.html" target="_blank">
-            <span class="file-name">briefing_mountain_miskatonic.html</span>
-            <span class="btn">열기 ↗</span>
-          </a>
-        </li>
-
-        <li>
-          <a href="./madness_mountain/briefing_mountain_news.html" target="_blank">
-            <span class="file-name">briefing_mountain_news.html</span>
-            <span class="btn">열기 ↗</span>
-          </a>
-        </li>
-
-        <li>
-          <a href="./madness_mountain/handout_9000m_climber_diary.html" target="_blank">
-            <span class="file-name">handout_9000m_climber_diary.html</span>
-            <span class="btn">열기 ↗</span>
-          </a>
-        </li>
-
-      </ul>
-    </div>
-
-    <div class="card">
-      <div class="card-title">📁 missed_dues <span class="count">(5)</span></div>
-      <ul class="link-list">
-
-        <li>
-          <a href="./missed_dues/h1_%20missed_I_arkham_advertiser_article.html" target="_blank">
-            <span class="file-name">h1_ missed_I_arkham_advertiser_article.html</span>
-            <span class="btn">열기 ↗</span>
-          </a>
-        </li>
-
-        <li>
-          <a href="./missed_dues/h2_arkham_gazette_article_1.html" target="_blank">
-            <span class="file-name">h2_arkham_gazette_article_1.html</span>
-            <span class="btn">열기 ↗</span>
-          </a>
-        </li>
-
-        <li>
-          <a href="./missed_dues/h3_arkham_gazette_article_2.html" target="_blank">
-            <span class="file-name">h3_arkham_gazette_article_2.html</span>
-            <span class="btn">열기 ↗</span>
-          </a>
-        </li>
-
-        <li>
-          <a href="./missed_dues/h5_smiths_note.html" target="_blank">
-            <span class="file-name">h5_smiths_note.html</span>
-            <span class="btn">열기 ↗</span>
-          </a>
-        </li>
-
-        <li>
-          <a href="./missed_dues/h6_the_power_of_the_universe.html" target="_blank">
-            <span class="file-name">h6_the_power_of_the_universe.html</span>
-            <span class="btn">열기 ↗</span>
-          </a>
-        </li>
-
-      </ul>
-    </div>
-
-    <div class="card">
-      <div class="card-title">📁 nameless_horror/01_an_amaranthine_desire <span class="count">(1)</span></div>
-      <ul class="link-list">
-
-        <li>
-          <a href="./nameless_horror/01_an_amaranthine_desire/handout_1_setting_the_scene.html" target="_blank">
-            <span class="file-name">handout_1_setting_the_scene.html</span>
-            <span class="btn">열기 ↗</span>
-          </a>
-        </li>
-
-      </ul>
-    </div>
-
-    <div class="card">
-      <div class="card-title">📁 nameless_horror/02_a_message_of_art <span class="count">(7)</span></div>
-      <ul class="link-list">
-
-        <li>
-          <a href="./nameless_horror/02_a_message_of_art/01_handout_setting_scene.html" target="_blank">
-            <span class="file-name">01_handout_setting_scene.html</span>
-            <span class="btn">열기 ↗</span>
-          </a>
-        </li>
-
-        <li>
-          <a href="./nameless_horror/02_a_message_of_art/02_handout_invitation_card.html" target="_blank">
-            <span class="file-name">02_handout_invitation_card.html</span>
-            <span class="btn">열기 ↗</span>
-          </a>
-        </li>
-
-        <li>
-          <a href="./nameless_horror/02_a_message_of_art/03_handout_relationship_map.html" target="_blank">
-            <span class="file-name">03_handout_relationship_map.html</span>
-            <span class="btn">열기 ↗</span>
-          </a>
-        </li>
-
-        <li>
-          <a href="./nameless_horror/02_a_message_of_art/04_handout_pinot_card.html" target="_blank">
-            <span class="file-name">04_handout_pinot_card.html</span>
-            <span class="btn">열기 ↗</span>
-          </a>
-        </li>
-
-        <li>
-          <a href="./nameless_horror/02_a_message_of_art/05_handout_inner_god_tome.html" target="_blank">
-            <span class="file-name">05_handout_inner_god_tome.html</span>
-            <span class="btn">열기 ↗</span>
-          </a>
-        </li>
-
-        <li>
-          <a href="./nameless_horror/02_a_message_of_art/06_handout_illuminatos_cosmiques.html" target="_blank">
-            <span class="file-name">06_handout_illuminatos_cosmiques.html</span>
-            <span class="btn">열기 ↗</span>
-          </a>
-        </li>
-
-        <li>
-          <a href="./nameless_horror/02_a_message_of_art/07_handout_larush_letter.html" target="_blank">
-            <span class="file-name">07_handout_larush_letter.html</span>
-            <span class="btn">열기 ↗</span>
-          </a>
-        </li>
-
-      </ul>
-    </div>
-
-    <div class="card">
-      <div class="card-title">📁 nameless_horror/03_and_some_fell_on_stony_ground <span class="count">(5)</span></div>
-      <ul class="link-list">
-
-        <li>
-          <a href="./nameless_horror/03_and_some_fell_on_stony_ground/handout_01_church_flyer.html" target="_blank">
-            <span class="file-name">handout_01_church_flyer.html</span>
-            <span class="btn">열기 ↗</span>
-          </a>
-        </li>
-
-        <li>
-          <a href="./nameless_horror/03_and_some_fell_on_stony_ground/handout_02_eviction_notice.html" target="_blank">
-            <span class="file-name">handout_02_eviction_notice.html</span>
-            <span class="btn">열기 ↗</span>
-          </a>
-        </li>
-
-        <li>
-          <a href="./nameless_horror/03_and_some_fell_on_stony_ground/handout_03_hart_journal.html" target="_blank">
-            <span class="file-name">handout_03_hart_journal.html</span>
-            <span class="btn">열기 ↗</span>
-          </a>
-        </li>
-
-        <li>
-          <a href="./nameless_horror/03_and_some_fell_on_stony_ground/handout_04_twin_anatomy.html" target="_blank">
-            <span class="file-name">handout_04_twin_anatomy.html</span>
-            <span class="btn">열기 ↗</span>
-          </a>
-        </li>
-
-        <li>
-          <a href="./nameless_horror/03_and_some_fell_on_stony_ground/handout_05_mcdermott_table.html" target="_blank">
-            <span class="file-name">handout_05_mcdermott_table.html</span>
-            <span class="btn">열기 ↗</span>
-          </a>
-        </li>
-
-      </ul>
-    </div>
-
-    <div class="card">
-      <div class="card-title">📁 nameless_horror/04_bleak_prospect <span class="count">(4)</span></div>
-      <ul class="link-list">
-
-        <li>
-          <a href="./nameless_horror/04_bleak_prospect/h01_newspaper_midas_circle.html" target="_blank">
-            <span class="file-name">h01_newspaper_midas_circle.html</span>
-            <span class="btn">열기 ↗</span>
-          </a>
-        </li>
-
-        <li>
-          <a href="./nameless_horror/04_bleak_prospect/h02_newspaper_hawkes_disappearance.html" target="_blank">
-            <span class="file-name">h02_newspaper_hawkes_disappearance.html</span>
-            <span class="btn">열기 ↗</span>
-          </a>
-        </li>
-
-        <li>
-          <a href="./nameless_horror/04_bleak_prospect/h03_dr_coombes_medical_diary.html" target="_blank">
-            <span class="file-name">h03_dr_coombes_medical_diary.html</span>
-            <span class="btn">열기 ↗</span>
-          </a>
-        </li>
-
-        <li>
-          <a href="./nameless_horror/04_bleak_prospect/h04_hawkes_workshop_notes.html" target="_blank">
-            <span class="file-name">h04_hawkes_workshop_notes.html</span>
-            <span class="btn">열기 ↗</span>
-          </a>
-        </li>
-
-      </ul>
-    </div>
-
-    <div class="card">
-      <div class="card-title">📁 nameless_horror/06_the_space_between <span class="count">(11)</span></div>
-      <ul class="link-list">
-
-        <li>
-          <a href="./nameless_horror/06_the_space_between/h01_script_overview.html" target="_blank">
-            <span class="file-name">h01_script_overview.html</span>
-            <span class="btn">열기 ↗</span>
-          </a>
-        </li>
-
-        <li>
-          <a href="./nameless_horror/06_the_space_between/h02_church_jargon.html" target="_blank">
-            <span class="file-name">h02_church_jargon.html</span>
-            <span class="btn">열기 ↗</span>
-          </a>
-        </li>
-
-        <li>
-          <a href="./nameless_horror/06_the_space_between/h03_cast_and_crew.html" target="_blank">
-            <span class="file-name">h03_cast_and_crew.html</span>
-            <span class="btn">열기 ↗</span>
-          </a>
-        </li>
-
-        <li>
-          <a href="./nameless_horror/06_the_space_between/h04_truth_behind_film.html" target="_blank">
-            <span class="file-name">h04_truth_behind_film.html</span>
-            <span class="btn">열기 ↗</span>
-          </a>
-        </li>
-
-        <li>
-          <a href="./nameless_horror/06_the_space_between/h05_status_emptied.html" target="_blank">
-            <span class="file-name">h05_status_emptied.html</span>
-            <span class="btn">열기 ↗</span>
-          </a>
-        </li>
-
-        <li>
-          <a href="./nameless_horror/06_the_space_between/h06_status_truly_empty.html" target="_blank">
-            <span class="file-name">h06_status_truly_empty.html</span>
-            <span class="btn">열기 ↗</span>
-          </a>
-        </li>
-
-        <li>
-          <a href="./nameless_horror/06_the_space_between/h07_police_report_neumeier.html" target="_blank">
-            <span class="file-name">h07_police_report_neumeier.html</span>
-            <span class="btn">열기 ↗</span>
-          </a>
-        </li>
-
-        <li>
-          <a href="./nameless_horror/06_the_space_between/h08_screening_invitation.html" target="_blank">
-            <span class="file-name">h08_screening_invitation.html</span>
-            <span class="btn">열기 ↗</span>
-          </a>
-        </li>
-
-        <li>
-          <a href="./nameless_horror/06_the_space_between/h09_steele_confidential_dossier.html" target="_blank">
-            <span class="file-name">h09_steele_confidential_dossier.html</span>
-            <span class="btn">열기 ↗</span>
-          </a>
-        </li>
-
-        <li>
-          <a href="./nameless_horror/06_the_space_between/h10_chandler_exegesis_fragment.html" target="_blank">
-            <span class="file-name">h10_chandler_exegesis_fragment.html</span>
-            <span class="btn">열기 ↗</span>
-          </a>
-        </li>
-
-        <li>
-          <a href="./nameless_horror/06_the_space_between/h11_soundstage_set_memo.html" target="_blank">
-            <span class="file-name">h11_soundstage_set_memo.html</span>
-            <span class="btn">열기 ↗</span>
-          </a>
-        </li>
-
-      </ul>
-    </div>
-
-    <div class="card">
-      <div class="card-title">📁 petersens_abominations/Panacea <span class="count">(4)</span></div>
-      <ul class="link-list">
-
-        <li>
-          <a href="./petersens_abominations/Panacea/character.html" target="_blank">
-            <span class="file-name">character.html</span>
-            <span class="btn">열기 ↗</span>
-          </a>
-        </li>
-
-        <li>
-          <a href="./petersens_abominations/Panacea/zymedbio_dna_analyzer.html" target="_blank">
-            <span class="file-name">zymedbio_dna_analyzer.html</span>
-            <span class="btn">열기 ↗</span>
-          </a>
-        </li>
-
-        <li>
-          <a href="./petersens_abominations/Panacea/zymedbio_inside.html" target="_blank">
-            <span class="file-name">zymedbio_inside.html</span>
-            <span class="btn">열기 ↗</span>
-          </a>
-        </li>
-
-        <li>
-          <a href="./petersens_abominations/Panacea/zymedbio_website.html" target="_blank">
-            <span class="file-name">zymedbio_website.html</span>
-            <span class="btn">열기 ↗</span>
-          </a>
-        </li>
-
-      </ul>
-    </div>
-
-    <div class="card">
-      <div class="card-title">📁 petersens_abominations/mohole <span class="count">(11)</span></div>
-      <ul class="link-list">
-
-        <li>
-          <a href="./petersens_abominations/mohole/Devils_Hole_Org_Chart.html" target="_blank">
-            <span class="file-name">Devils_Hole_Org_Chart.html</span>
-            <span class="btn">열기 ↗</span>
-          </a>
-        </li>
-
-        <li>
-          <a href="./petersens_abominations/mohole/Dr_Kents_Hidden_Notes.html" target="_blank">
-            <span class="file-name">Dr_Kents_Hidden_Notes.html</span>
-            <span class="btn">열기 ↗</span>
-          </a>
-        </li>
-
-        <li>
-          <a href="./petersens_abominations/mohole/Investigator_Briefing.html" target="_blank">
-            <span class="file-name">Investigator_Briefing.html</span>
-            <span class="btn">열기 ↗</span>
-          </a>
-        </li>
-
-        <li>
-          <a href="./petersens_abominations/mohole/Sickbay_Medical_Report.html" target="_blank">
-            <span class="file-name">Sickbay_Medical_Report.html</span>
-            <span class="btn">열기 ↗</span>
-          </a>
-        </li>
-
-        <li>
-          <a href="./petersens_abominations/mohole/Stahls_Security_Protocol.html" target="_blank">
-            <span class="file-name">Stahls_Security_Protocol.html</span>
-            <span class="btn">열기 ↗</span>
-          </a>
-        </li>
-
-        <li>
-          <a href="./petersens_abominations/mohole/character.html" target="_blank">
-            <span class="file-name">character.html</span>
-            <span class="btn">열기 ↗</span>
-          </a>
-        </li>
-
-        <li>
-          <a href="./petersens_abominations/mohole/cotrol_room_monitor.html" target="_blank">
-            <span class="file-name">cotrol_room_monitor.html</span>
-            <span class="btn">열기 ↗</span>
-          </a>
-        </li>
-
-        <li>
-          <a href="./petersens_abominations/mohole/green_slime_report.html" target="_blank">
-            <span class="file-name">green_slime_report.html</span>
-            <span class="btn">열기 ↗</span>
-          </a>
-        </li>
-
-        <li>
-          <a href="./petersens_abominations/mohole/mohole_report.html" target="_blank">
-            <span class="file-name">mohole_report.html</span>
-            <span class="btn">열기 ↗</span>
-          </a>
-        </li>
-
-        <li>
-          <a href="./petersens_abominations/mohole/nergal_project_report.html" target="_blank">
-            <span class="file-name">nergal_project_report.html</span>
-            <span class="btn">열기 ↗</span>
-          </a>
-        </li>
-
-        <li>
-          <a href="./petersens_abominations/mohole/reactore_control_system.html" target="_blank">
-            <span class="file-name">reactore_control_system.html</span>
-            <span class="btn">열기 ↗</span>
-          </a>
-        </li>
-
-      </ul>
-    </div>
-
-    <div class="card">
-      <div class="card-title">📁 the_myth_control_agency/01_subway <span class="count">(4)</span></div>
-      <ul class="link-list">
-
-        <li>
-          <a href="./the_myth_control_agency/01_subway/01_subway_rules.html" target="_blank">
-            <span class="file-name">01_subway_rules.html</span>
-            <span class="btn">열기 ↗</span>
-          </a>
-        </li>
-
-        <li>
-          <a href="./the_myth_control_agency/01_subway/02_subway_route_map.html" target="_blank">
-            <span class="file-name">02_subway_route_map.html</span>
-            <span class="btn">열기 ↗</span>
-          </a>
-        </li>
-
-        <li>
-          <a href="./the_myth_control_agency/01_subway/03_subway_route_map_true.html" target="_blank">
-            <span class="file-name">03_subway_route_map_true.html</span>
-            <span class="btn">열기 ↗</span>
-          </a>
-        </li>
-
-        <li>
-          <a href="./the_myth_control_agency/01_subway/04_phone_booth.html" target="_blank">
-            <span class="file-name">04_phone_booth.html</span>
-            <span class="btn">열기 ↗</span>
-          </a>
-        </li>
-
-      </ul>
-    </div>
-    </div>
+    <div class="empty-msg" id="empty-msg">검색 결과가 없습니다.</div>
   </div>
 
   <script>
@@ -850,6 +1187,45 @@
 
     document.getElementById("pw-input").addEventListener("keydown", function(e) {
       if (e.key === "Enter") checkPassword();
+    });
+
+    function toggleAll(openState) {
+      document.querySelectorAll("#accordion-list details").forEach(function(d) {
+        if (d.style.display !== "none") d.open = openState;
+      });
+    }
+
+    document.getElementById("search-input").addEventListener("input", function(e) {
+      const q = e.target.value.trim().toLowerCase();
+      const groups = document.querySelectorAll("#accordion-list > details.group");
+      let anyVisible = false;
+
+      groups.forEach(function(group) {
+        const items = group.querySelectorAll("li[data-search]");
+        let groupMatch = 0;
+
+        items.forEach(function(li) {
+          const hit = !q || li.getAttribute("data-search").includes(q);
+          li.style.display = hit ? "" : "none";
+          if (hit) groupMatch++;
+        });
+
+        group.querySelectorAll("details.subgroup").forEach(function(sub) {
+          const subHits = Array.from(sub.querySelectorAll("li[data-search]")).some(
+            function(li) { return li.style.display !== "none"; }
+          );
+          sub.style.display = subHits ? "" : "none";
+          if (q && subHits) sub.open = true;
+          if (!q) sub.open = false;
+        });
+
+        group.style.display = groupMatch > 0 ? "" : "none";
+        if (q && groupMatch > 0) group.open = true;
+        if (!q) group.open = false;
+        if (groupMatch > 0) anyVisible = true;
+      });
+
+      document.getElementById("empty-msg").style.display = anyVisible ? "none" : "block";
     });
   </script>
 </body>

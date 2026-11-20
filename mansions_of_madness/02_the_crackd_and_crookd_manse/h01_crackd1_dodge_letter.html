@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>닷지 형제 법률 사무소 서신 - 1925년 1월 30일</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800&family=Great+Vibes&family=IM+Fell+English:ital@0;1&family=Nanum+Myeongjo:wght@400;700;800&family=Noto+Sans+KR:wght@400;500;700&display=swap');
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: #1b1713;
+      background-image:
+        radial-gradient(circle at 50% 25%, #2d251e 0%, #171310 72%, #0e0b09 100%);
+      padding: 44px 18px;
+      display: flex;
+      justify-content: center;
+      font-family: 'Nanum Myeongjo', serif;
+      color: #211a14;
+      word-break: keep-all;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* 고급 리넨 편지지 */
+    .letter-sheet {
+      position: relative;
+      width: 100%;
+      max-width: 780px;
+      background-color: #f6efe0;
+      background-image:
+        radial-gradient(ellipse at 50% 35%, #faf4e8 0%, #ede2ca 100%),
+        repeating-linear-gradient(
+          90deg,
+          rgba(120, 96, 66, 0.018) 0px,
+          rgba(120, 96, 66, 0.018) 1px,
+          transparent 1px,
+          transparent 4px
+        ),
+        repeating-linear-gradient(
+          0deg,
+          rgba(120, 96, 66, 0.015) 0px,
+          rgba(120, 96, 66, 0.015) 1px,
+          transparent 1px,
+          transparent 4px
+        );
+      padding: 52px 62px 54px;
+      border: 1px solid #cbb99a;
+      box-shadow:
+        0 24px 54px rgba(0, 0, 0, 0.72),
+        inset 0 0 80px rgba(132, 98, 56, 0.16);
+      overflow: hidden;
+    }
+
+    /* 종이 질감 노이즈 */
+    .paper-grain {
+      position: absolute;
+      inset: 0;
+      opacity: 0.04;
+      pointer-events: none;
+      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+    }
+
+    /* 3단 접힘 자국 */
+    .fold-line {
+      position: absolute;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: linear-gradient(
+        to right,
+        rgba(80, 58, 34, 0.08),
+        rgba(80, 58, 34, 0.18) 30%,
+        rgba(80, 58, 34, 0.14) 70%,
+        rgba(80, 58, 34, 0.06)
+      );
+      box-shadow: 0 1px 3px rgba(255, 250, 240, 0.55);
+      pointer-events: none;
+      z-index: 3;
+    }
+
+    .fold-1 { top: 34%; }
+    .fold-2 { top: 67%; }
+
+    /* 좌상단 클립 자국 */
+    .clip-mark {
+      position: absolute;
+      top: 18px;
+      left: 34px;
+      width: 24px;
+      height: 54px;
+      border: 2px solid rgba(112, 86, 56, 0.22);
+      border-radius: 12px;
+      transform: rotate(-8deg);
+      pointer-events: none;
+      z-index: 2;
+    }
+
+    .clip-mark::after {
+      content: "";
+      position: absolute;
+      top: 6px;
+      left: 4px;
+      right: 4px;
+      bottom: 8px;
+      border: 1.5px solid rgba(112, 86, 56, 0.16);
+      border-radius: 8px;
+    }
+
+    /* 외곽 미세 테두리 */
+    .letter-border {
+      position: absolute;
+      inset: 14px;
+      border: 1px solid rgba(124, 96, 62, 0.28);
+      pointer-events: none;
+    }
+
+    /* 법률 사무소 레터헤드 */
+    .letterhead {
+      position: relative;
+      z-index: 2;
+      text-align: center;
+      padding-bottom: 18px;
+      margin-bottom: 26px;
+      border-bottom: 2.5px double #3d2e20;
+    }
+
+    .emblem-wrap {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 8px;
+    }
+
+    .firm-en {
+      font-family: 'Cinzel', serif;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 4.5px;
+      color: #5c4632;
+      margin-bottom: 5px;
+    }
+
+    .firm-kr {
+      font-size: 29px;
+      font-weight: 800;
+      letter-spacing: 5px;
+      color: #1d150e;
+      margin-bottom: 7px;
+    }
+
+    .firm-partners {
+      font-family: 'Nanum Myeongjo', serif;
+      font-style: italic;
+      font-size: 14px;
+      font-weight: 700;
+      color: #4a3726;
+      margin-bottom: 8px;
+      letter-spacing: 0.5px;
+    }
+
+    .firm-address-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 10px;
+      padding-top: 8px;
+      border-top: 1px solid rgba(61, 46, 32, 0.32);
+      font-family: 'Noto Sans KR', sans-serif;
+      font-size: 11.5px;
+      color: #5c4a38;
+      letter-spacing: 0.4px;
+    }
+
+    .firm-address-bar .en-addr {
+      font-family: 'Cinzel', serif;
+      font-size: 10.5px;
+      letter-spacing: 1.5px;
+    }
+
+    /* 날짜 */
+    .letter-date-row {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      justify-content: flex-end;
+      margin-bottom: 24px;
+    }
+
+    .letter-date {
+      text-align: right;
+      font-size: 14.5px;
+      font-weight: 700;
+      color: #2f241a;
+      line-height: 1.55;
+    }
+
+    .letter-date .en-date {
+      display: block;
+      font-family: 'IM Fell English', serif;
+      font-style: italic;
+      font-size: 12.5px;
+      font-weight: 400;
+      color: #6b553f;
+    }
+
+    /* 수신인 호칭 */
+    .salutation {
+      position: relative;
+      z-index: 2;
+      font-size: 15.8px;
+      font-weight: 700;
+      margin-bottom: 18px;
+      color: #1f1710;
+    }
+
+    /* 본문 */
+    .letter-body {
+      position: relative;
+      z-index: 2;
+      font-size: 15.2px;
+      line-height: 1.96;
+      color: #261d15;
+      text-align: justify;
+    }
+
+    .letter-body p {
+      margin-bottom: 17px;
+      text-indent: 16px;
+    }
+
+    .letter-body p:last-child {
+      margin-bottom: 0;
+    }
+
+    /* 맺음말 및 서명 */
+    .closing-block {
+      position: relative;
+      z-index: 2;
+      margin-top: 30px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      gap: 20px;
+    }
+
+    .enclosure-note {
+      font-size: 13.5px;
+      font-style: italic;
+      color: #4d3b2a;
+      border-left: 2px solid #8a6d4b;
+      padding: 4px 0 4px 12px;
+      line-height: 1.55;
+    }
+
+    .enclosure-note .enc-en {
+      display: block;
+      font-family: 'IM Fell English', serif;
+      font-size: 11.5px;
+      color: #775f47;
+    }
+
+    .sign-area {
+      text-align: right;
+      min-width: 220px;
+    }
+
+    .complimentary-close {
+      font-size: 14.8px;
+      line-height: 1.75;
+      color: #2c2118;
+      margin-bottom: 6px;
+    }
+
+    .signature-script {
+      font-family: 'Great Vibes', cursive;
+      font-size: 40px;
+      color: #1e2838;
+      line-height: 1.05;
+      margin: 2px 0 4px;
+      transform: rotate(-2deg);
+      display: inline-block;
+    }
+
+    .signer-name {
+      font-size: 15.5px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      color: #1c150f;
+    }
+
+    .signer-title {
+      font-family: 'Cinzel', serif;
+      font-size: 10px;
+      letter-spacing: 1.8px;
+      color: #6b5540;
+      margin-top: 2px;
+    }
+
+    /* 법무사무소 워터마크 */
+    .watermark {
+      position: absolute;
+      top: 52%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      opacity: 0.035;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    @media (max-width: 680px) {
+      .letter-sheet {
+        padding: 36px 24px 38px;
+      }
+      .firm-kr {
+        font-size: 22px;
+        letter-spacing: 3px;
+      }
+      .firm-address-bar {
+        flex-direction: column;
+        gap: 4px;
+        text-align: center;
+      }
+      .closing-block {
+        flex-direction: column-reverse;
+        align-items: stretch;
+        gap: 24px;
+      }
+      .sign-area {
+        text-align: right;
+      }
+    }
+
+    @media print {
+      body { background: none; padding: 0; }
+      .letter-sheet { box-shadow: none; border: none; max-width: 100%; padding: 26px 32px; }
+      .fold-line { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <main class="letter-sheet">
+    <div class="paper-grain"></div>
+    <div class="letter-border"></div>
+    <div class="fold-line fold-1"></div>
+    <div class="fold-line fold-2"></div>
+    <div class="clip-mark" aria-hidden="true"></div>
+
+    <!-- 은은한 법률사무소 인장 워터마크 -->
+    <svg class="watermark" width="320" height="320" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <circle cx="100" cy="100" r="88" fill="none" stroke="#3d2e20" stroke-width="3"/>
+      <circle cx="100" cy="100" r="78" fill="none" stroke="#3d2e20" stroke-width="1" stroke-dasharray="4 3"/>
+      <text x="100" y="114" text-anchor="middle" font-family="Cinzel, serif" font-size="44" font-weight="700" fill="#3d2e20">D·D·D</text>
+      <text x="100" y="140" text-anchor="middle" font-family="Cinzel, serif" font-size="11" letter-spacing="3" fill="#3d2e20">ATTORNEYS AT LAW</text>
+    </svg>
+
+    <header class="letterhead">
+      <div class="emblem-wrap">
+        <!-- 정의의 저울 소형 문장 SVG -->
+        <svg width="46" height="34" viewBox="0 0 64 46" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="법률 사무소 문장">
+          <g fill="none" stroke="#4c3826" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="32" y1="6" x2="32" y2="38"/>
+            <line x1="22" y1="38" x2="42" y2="38"/>
+            <path d="M25,42 L39,42"/>
+            <path d="M12,13 Q32,8 52,13"/>
+            <circle cx="32" cy="5" r="2.2" fill="#4c3826"/>
+            <!-- 왼쪽 저울접시 -->
+            <line x1="14" y1="13" x2="9" y2="25"/>
+            <line x1="14" y1="13" x2="19" y2="25"/>
+            <path d="M8,25 Q14,31 20,25 Z" fill="rgba(76,56,38,0.14)"/>
+            <!-- 오른쪽 저울접시 -->
+            <line x1="50" y1="13" x2="45" y2="25"/>
+            <line x1="50" y1="13" x2="55" y2="25"/>
+            <path d="M44,25 Q50,31 56,25 Z" fill="rgba(76,56,38,0.14)"/>
+          </g>
+        </svg>
+      </div>
+
+      <div class="firm-en">DODGE, DODGE &amp; DODGE · ATTORNEYS AT LAW</div>
+      <h1 class="firm-kr">닷지 형제 법률 사무소</h1>
+      <div class="firm-partners">변호사 레지널드, 월터, 허버트 닷지</div>
+
+      <div class="firm-address-bar">
+        <span>갬웰 메인 스트리트 14번지</span>
+        <span class="en-addr">14 MAIN STREET, GAMWELL, MASS.</span>
+      </div>
+    </header>
+
+    <div class="letter-date-row">
+      <div class="letter-date">
+        1925년 1월 30일
+        <span class="en-date">January 30th, 1925</span>
+      </div>
+    </div>
+
+    <div class="salutation">친애하는 귀하께,</div>
+
+    <article class="letter-body">
+      <p>
+        지인의 소개로 귀하께 연락을 드립니다. 저의 의뢰인이자 현재 실종 상태인 아서 콘스웨이트 씨의 행방을 찾고 있던 중, 지인께서 귀하를 실종자 수색, 특히 콘스웨이트 씨와 같은 특수한 상황에 처한 인물을 추적하는 데 탁월한 능력을 갖춘 분으로 천거해 주셨습니다. 이에 결례를 무릅쓰고 서신을 보냅니다.
+      </p>
+      <p>
+        저는 갬웰에 소재한 유서 깊은 법률 사무소의 파트너 변호사입니다. 아서 콘스웨이트 씨는 당소의 소중한 의뢰인이며, 저희는 그분의 대리인으로서 신탁된 문서를 보관하고 있습니다. 그러나 콘스웨이트 씨는 행선지에 대한 아무런 언질도 없이 거처를 비운 것으로 보입니다.
+      </p>
+      <p>
+        이로 인해 당소는 본인의 위임 없이 그의 유산을 관리해야 하는 난처한 처지에 놓였습니다. 당소는 귀하께서 콘스웨이트 씨의 행방을 파악하여 본 사안에 대한 그의 뜻을 확인해 주시거나, 당소로 연락을 취하도록 조치해 주시기를 바랍니다. 만에 하나, 불행하게도 콘스웨이트 씨가 이미 유명을 달리하셨다면, 고인의 유언장에 명시된 절차를 밟기 위해 그에 상응하는 명확한 증거가 필요합니다. 부디 기우이기를 바라오나, 콘스웨이트 씨의 석연치 않은 잠적 정황을 고려할 때 배제할 수 없는 경우의 수입니다.
+      </p>
+      <p>
+        귀하께서 본 사안에 즉시 착수해 주실 수 있기를 바라며, 편하신 시간에 당소 사무실을 방문해 주시면 사건의 상세한 경위와 수임료에 대해 협의하고자 합니다.
+      </p>
+    </article>
+
+    <footer class="closing-block">
+      <div class="enclosure-note">
+        동봉: 갬웰 가제트 신문 기사 스크랩
+        <span class="enc-en">Encl.: Clipping from The Gamwell Gazette</span>
+      </div>
+
+      <div class="sign-area">
+        <div class="complimentary-close">
+          조속한 답신을 기대하며,<br>
+          경구를 담아,
+        </div>
+        <div class="signature-script">Walter Dodge</div>
+        <div class="signer-name">월터 닷지</div>
+        <div class="signer-title">WALTER DODGE, ESQ.</div>
+      </div>
+    </footer>
+  </main>
+
+</body>
+</html>

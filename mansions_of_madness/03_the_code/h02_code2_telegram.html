@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>대서양 횡단 전신 서비스 전보</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800&family=Courier+Prime:ital,wght@0,400;0,700;1,400&family=Gowun+Batang:wght@400;700&family=Noto+Sans+KR:wght@400;500;700;800&display=swap');
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: #171614;
+      background-image:
+        radial-gradient(circle at 50% 35%, #2a2620 0%, #161411 72%, #0c0b09 100%);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 44px 18px;
+      color: #1f1c17;
+      word-break: keep-all;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* 1920년대 황갈색 전보 용지 */
+    .telegram-form {
+      position: relative;
+      width: 100%;
+      max-width: 740px;
+      background-color: #eedb9c;
+      background-image:
+        radial-gradient(ellipse at 50% 30%, #f5e6b3 0%, #e7cf85 75%, #dec372 100%);
+      border: 1px solid #b59a56;
+      box-shadow:
+        0 24px 52px rgba(0, 0, 0, 0.74),
+        inset 0 0 70px rgba(128, 96, 36, 0.22);
+      padding: 26px 32px 24px;
+      overflow: hidden;
+    }
+
+    /* 종이 질감 노이즈 */
+    .paper-grain {
+      position: absolute;
+      inset: 0;
+      opacity: 0.055;
+      pointer-events: none;
+      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='t'><feTurbulence type='fractalNoise' baseFrequency='0.88' numOctaves='3' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23t)'/></svg>");
+    }
+
+    /* 중앙 수평 접힘선 */
+    .fold-line {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background:
+        linear-gradient(
+          to bottom,
+          transparent 49.5%,
+          rgba(60, 44, 18, 0.14) 49.9%,
+          rgba(255, 248, 220, 0.45) 50.25%,
+          transparent 50.7%
+        );
+    }
+
+    /* 외곽 인쇄 프레임 */
+    .form-frame {
+      position: relative;
+      z-index: 2;
+      border: 2px solid #2b261d;
+      padding: 18px 22px 16px;
+    }
+
+    .form-frame::before {
+      content: "";
+      position: absolute;
+      inset: 3px;
+      border: 1px solid rgba(43, 38, 29, 0.45);
+      pointer-events: none;
+    }
+
+    /* 최상단 양식 메타 행 */
+    .top-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-family: 'Courier Prime', 'Noto Sans KR', monospace;
+      font-size: 11.5px;
+      font-weight: 700;
+      color: #3a3224;
+      margin-bottom: 10px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid rgba(43, 38, 29, 0.35);
+    }
+
+    /* 전신사 헤더 */
+    .telegraph-header {
+      text-align: center;
+      padding: 6px 0 14px;
+      border-bottom: 2px solid #2b261d;
+      position: relative;
+    }
+
+    .emblem-row {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 6px;
+    }
+
+    .company-en {
+      font-family: 'Cinzel', serif;
+      font-size: 21px;
+      font-weight: 800;
+      letter-spacing: 2.5px;
+      color: #1f1b14;
+      line-height: 1.15;
+    }
+
+    .company-kr {
+      font-family: 'Noto Sans KR', sans-serif;
+      font-size: 19px;
+      font-weight: 800;
+      letter-spacing: 3px;
+      color: #1f1b14;
+      margin-top: 2px;
+    }
+
+    .company-tagline {
+      font-family: 'Noto Sans KR', sans-serif;
+      font-size: 11.5px;
+      font-weight: 500;
+      letter-spacing: 1.5px;
+      color: #463c2a;
+      margin-top: 5px;
+    }
+
+    /* 서비스 등급 / 사장 정보 바 */
+    .service-bar {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      border-bottom: 1.5px solid #2b261d;
+      font-family: 'Courier Prime', 'Noto Sans KR', monospace;
+      font-size: 12px;
+      color: #2b251b;
+    }
+
+    .service-cell {
+      padding: 8px 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .service-cell:first-child {
+      border-right: 1px solid rgba(43, 38, 29, 0.45);
+    }
+
+    .service-label {
+      font-weight: 700;
+      letter-spacing: 0.4px;
+    }
+
+    /* 수신 일자 및 전신국 스탬프 */
+    .date-strip {
+      position: relative;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 16px 8px 12px;
+      border-bottom: 1px dashed rgba(43, 38, 29, 0.4);
+    }
+
+    .date-value {
+      font-family: 'Courier Prime', 'Noto Sans KR', monospace;
+      font-size: 15.5px;
+      font-weight: 700;
+      letter-spacing: 1.2px;
+      color: #1d1a15;
+    }
+
+    .office-stamp {
+      border: 1.5px solid rgba(92, 42, 34, 0.62);
+      color: rgba(92, 42, 34, 0.7);
+      padding: 3px 9px;
+      font-family: 'Courier Prime', monospace;
+      font-size: 10.5px;
+      font-weight: 700;
+      letter-spacing: 1.2px;
+      transform: rotate(-3deg);
+      text-transform: uppercase;
+    }
+
+    /* 전보 타자 본문 영역 */
+    .telegram-body {
+      padding: 28px 14px 26px;
+      min-height: 220px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      background-image: repeating-linear-gradient(
+        to bottom,
+        transparent 0px,
+        transparent 37px,
+        rgba(43, 38, 29, 0.14) 37px,
+        rgba(43, 38, 29, 0.14) 38px
+      );
+    }
+
+    .message-text {
+      font-family: 'Courier Prime', 'Gowun Batang', monospace;
+      font-size: 18px;
+      font-weight: 700;
+      line-height: 2.12;
+      letter-spacing: 0.8px;
+      color: #1b1916;
+      text-shadow: 0.45px 0 0 rgba(27, 25, 22, 0.25);
+    }
+
+    .stop-token {
+      display: inline-block;
+      font-family: 'Noto Sans KR', sans-serif;
+      font-size: 13px;
+      font-weight: 800;
+      letter-spacing: 1px;
+      padding: 0 5px;
+      margin: 0 4px;
+      border: 1px solid rgba(31, 27, 20, 0.55);
+      background: rgba(31, 27, 20, 0.06);
+      line-height: 1.55;
+      vertical-align: 1px;
+    }
+
+    .sender-line {
+      margin-top: 32px;
+      text-align: right;
+      padding-right: 16px;
+      font-family: 'Courier Prime', 'Gowun Batang', monospace;
+      font-size: 18.5px;
+      font-weight: 700;
+      letter-spacing: 2.5px;
+      color: #1b1916;
+    }
+
+    /* 하단 약관 문구 */
+    .telegram-footer {
+      margin-top: 12px;
+      padding-top: 8px;
+      border-top: 1px solid rgba(43, 38, 29, 0.4);
+      display: flex;
+      justify-content: space-between;
+      font-family: 'Courier Prime', monospace;
+      font-size: 9.5px;
+      color: #544732;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+    }
+
+    @media (max-width: 640px) {
+      .telegram-form {
+        padding: 16px;
+      }
+      .form-frame {
+        padding: 14px 14px 12px;
+      }
+      .company-en {
+        font-size: 15.5px;
+        letter-spacing: 1.5px;
+      }
+      .company-kr {
+        font-size: 16px;
+        letter-spacing: 1.5px;
+      }
+      .service-bar {
+        grid-template-columns: 1fr;
+      }
+      .service-cell:first-child {
+        border-right: none;
+        border-bottom: 1px solid rgba(43, 38, 29, 0.35);
+      }
+      .message-text {
+        font-size: 16px;
+        line-height: 2.05;
+      }
+      .telegram-footer {
+        flex-direction: column;
+        gap: 4px;
+        text-align: center;
+      }
+    }
+
+    @media print {
+      body {
+        background: none;
+        padding: 0;
+      }
+      .telegram-form {
+        box-shadow: none;
+        max-width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <main class="telegram-form">
+    <div class="paper-grain"></div>
+    <div class="fold-line"></div>
+
+    <div class="form-frame">
+      <div class="top-meta">
+        <span>양식 번호 6B.</span>
+        <span>FORM NO. 6B · CABLE &amp; TELEGRAPH</span>
+      </div>
+
+      <header class="telegraph-header">
+        <div class="emblem-row">
+          <svg width="34" height="34" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <circle cx="24" cy="24" r="20" stroke="#2b261d" stroke-width="1.6"/>
+            <ellipse cx="24" cy="24" rx="9" ry="20" stroke="#2b261d" stroke-width="1.1"/>
+            <line x1="4" y1="24" x2="44" y2="24" stroke="#2b261d" stroke-width="1.1"/>
+            <line x1="7" y1="14" x2="41" y2="14" stroke="#2b261d" stroke-width="0.9"/>
+            <line x1="7" y1="34" x2="41" y2="34" stroke="#2b261d" stroke-width="0.9"/>
+            <path d="M13 10 L21 20 L18 22 L33 37" stroke="#2b261d" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <div>
+            <div class="company-kr">대서양 횡단 전신 서비스</div>
+            <div class="company-en">TRANSATLANTIC TELEGRAPH SERVICE</div>
+          </div>
+        </div>
+        <div class="company-tagline">—전 세계 전보 서비스 회사—</div>
+      </header>
+
+      <div class="service-bar">
+        <div class="service-cell">
+          <span class="service-label">서비스 등급: TTS</span>
+          <span>CLASS OF SERVICE</span>
+        </div>
+        <div class="service-cell">
+          <span class="service-label">D.W. 칼라일, 사장</span>
+          <span>D.W. CARLISLE, PRES.</span>
+        </div>
+      </div>
+
+      <div class="date-strip">
+        <div class="date-value">1925년 3월 30일</div>
+        <div class="office-stamp">RECEIVED · MAR 30 1925</div>
+      </div>
+
+      <section class="telegram-body">
+        <p class="message-text">
+          해냈습니다<span class="stop-token">전송</span>
+          역사상 가장 위대한 과학적 발견을 이루어 냈습니다<span class="stop-token">전송</span>
+          도움이 절실합니다<span class="stop-token">전송</span>
+          4월 3일 금요일 오후 5시까지 뉴욕주 햄프턴 웰링턴 매너 12852로 와주십시오<span class="stop-token">전송</span>
+          극도로 중요한 사안입니다<span class="stop-token">전송</span>
+        </p>
+
+        <div class="sender-line">케네스 코놀리</div>
+      </section>
+
+      <footer class="telegram-footer">
+        <span>ALL MESSAGES TAKEN BY THIS COMPANY ARE SUBJECT TO THE TERMS ON BACK</span>
+        <span>TTS · NEW YORK</span>
+      </footer>
+    </div>
+  </main>
+
+</body>
+</html>

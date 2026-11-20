@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>케네스 코놀리 박사의 일기장 (1924년 5월–6월)</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Gowun+Batang:wght@400;700&family=IM+Fell+English:ital@0;1&family=Nanum+Myeongjo:wght@400;700;800&display=swap');
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: #161310;
+      background-image:
+        radial-gradient(circle at 50% 20%, #2a231c 0%, #16120e 70%, #0b0907 100%);
+      min-height: 100vh;
+      padding: 46px 18px 60px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 38px;
+      color: #241d16;
+      word-break: keep-all;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* 개별 일기장 낱장 페이지 */
+    .journal-page {
+      position: relative;
+      width: 100%;
+      max-width: 720px;
+      min-height: 820px;
+      background-color: #f4ebd6;
+      background-image:
+        radial-gradient(ellipse at 35% 22%, #faf3e4 0%, #ece0c4 78%, #e2d2b0 100%),
+        repeating-linear-gradient(
+          to bottom,
+          transparent 0px,
+          transparent 31px,
+          rgba(98, 118, 142, 0.14) 31px,
+          rgba(98, 118, 142, 0.14) 32px
+        );
+      border: 1px solid #c2ae89;
+      box-shadow:
+        0 24px 52px rgba(0, 0, 0, 0.72),
+        inset 18px 0 28px -12px rgba(68, 48, 26, 0.32),
+        inset 0 0 70px rgba(124, 92, 50, 0.16);
+      padding: 46px 56px 46px 76px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      overflow: hidden;
+    }
+
+    /* 붉은 세로 여백선 (양장 노트북) */
+    .margin-rule {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 54px;
+      width: 1px;
+      background: rgba(162, 68, 62, 0.34);
+      pointer-events: none;
+    }
+
+    .margin-rule::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 3px;
+      width: 1px;
+      background: rgba(162, 68, 62, 0.16);
+    }
+
+    /* 종이 질감 */
+    .paper-grain {
+      position: absolute;
+      inset: 0;
+      opacity: 0.045;
+      pointer-events: none;
+      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='g'><feTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='3' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23g)'/></svg>");
+    }
+
+    /* 페이지 상단 헤더 */
+    .page-header {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      padding-bottom: 10px;
+      margin-bottom: 28px;
+      border-bottom: 1.5px solid rgba(72, 52, 34, 0.35);
+    }
+
+    .running-title {
+      font-family: 'Cinzel', 'Nanum Myeongjo', serif;
+      font-size: 11px;
+      letter-spacing: 2.2px;
+      color: #6d553d;
+      text-transform: uppercase;
+    }
+
+    .page-badge {
+      font-family: 'IM Fell English', serif;
+      font-style: italic;
+      font-size: 13px;
+      color: #6d553d;
+    }
+
+    /* 일기 항목 컨테이너 */
+    .entries {
+      position: relative;
+      z-index: 2;
+      flex: 1;
+    }
+
+    .entry {
+      margin-bottom: 30px;
+    }
+
+    .entry:last-child {
+      margin-bottom: 0;
+    }
+
+    .entry-date {
+      font-family: 'Gowun Batang', 'Nanum Myeongjo', serif;
+      font-size: 17px;
+      font-weight: 700;
+      color: #222c3c;
+      margin-bottom: 8px;
+      display: inline-block;
+      border-bottom: 1px solid rgba(34, 44, 60, 0.38);
+      padding-bottom: 2px;
+      letter-spacing: 0.4px;
+    }
+
+    .entry-text {
+      font-family: 'Gowun Batang', 'Nanum Myeongjo', serif;
+      font-size: 16px;
+      line-height: 2.0;
+      color: #212833;
+      text-align: justify;
+      text-indent: 14px;
+      text-shadow: 0 0 0.35px rgba(33, 40, 51, 0.16);
+    }
+
+    /* 5월 15일 '요그 소토스' 조우 기록의 미세한 떨림/강조 분위기 */
+    .entry-unsettled .entry-text {
+      color: #1c222d;
+    }
+
+    /* 페이지 하단 쪽번호 */
+    .page-footer {
+      position: relative;
+      z-index: 2;
+      margin-top: 32px;
+      padding-top: 10px;
+      border-top: 1px solid rgba(72, 52, 34, 0.22);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-family: 'IM Fell English', 'Nanum Myeongjo', serif;
+      font-size: 12px;
+      color: #745c44;
+    }
+
+    .page-num {
+      font-family: 'Cinzel', serif;
+      font-size: 12px;
+      letter-spacing: 2px;
+    }
+
+    @media (max-width: 640px) {
+      .journal-page {
+        padding: 32px 24px 32px 38px;
+        min-height: auto;
+      }
+      .margin-rule {
+        left: 24px;
+      }
+      .entry-text {
+        font-size: 15px;
+        line-height: 1.92;
+      }
+    }
+
+    @media print {
+      body {
+        background: none;
+        padding: 0;
+        gap: 0;
+      }
+      .journal-page {
+        box-shadow: none;
+        border: none;
+        max-width: 100%;
+        min-height: 92vh;
+        break-after: page;
+        page-break-after: always;
+      }
+      .journal-page:last-child {
+        break-after: auto;
+        page-break-after: auto;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- 1페이지 -->
+  <article class="journal-page">
+    <div class="margin-rule"></div>
+    <div class="paper-grain"></div>
+
+    <header class="page-header">
+      <span class="running-title">Dr. Kenneth Connolly · Journal</span>
+      <span class="page-badge">1924</span>
+    </header>
+
+    <div class="entries">
+      <section class="entry">
+        <h2 class="entry-date">1924년 5월 5일</h2>
+        <p class="entry-text">
+          엘리자베스와 함께 옛 저택으로 이사를 마쳤다. 아직 짐을 좀 풀어야 하지만 돌아오니 정말 좋다. 이곳에서 멋진 여름날들을 보냈었지. 엘리자베스와 함께 장치 제작을 시작할 생각에 가슴이 벅차오른다. 그녀는 참으로 눈부시게 총명하다. 그녀를 너무나도 사랑한다.
+        </p>
+      </section>
+
+      <section class="entry entry-unsettled">
+        <h2 class="entry-date">5월 15일</h2>
+        <p class="entry-text">
+          엘리자베스가 우리 연구에 놀라운 통찰을 제시했다. 그녀는 자신이 "명상"이라고 부르는 특별한 의식을 통해 통찰을 얻는다고 말했고, 나를 설득해 함께 의식을 치렀다. 그리고 무언가가 일어났다. 나는 보았다... 무언가를. 아니, 너무나도 많은 것들을 보았다. 엘리자베스의 오컬트 연구는 나에게 완전히 새로운 사고방식을 열어주었다. 어떻게 설명해야 할지 모르겠다. 태초의 시작. 나는 무언가에 닿았다. 의식인가? 개념인가? 이해할 수 없다. 그녀는 그것을 '요그 소토스'라고 불렀지만, 그것은 바라보는 한 가지 방식에 불과하다. 생각할 시간이 필요하다.
+        </p>
+      </section>
+    </div>
+
+    <footer class="page-footer">
+      <span>Wellington Manor, Hampton, N.Y.</span>
+      <span class="page-num">— 1 —</span>
+    </footer>
+  </article>
+
+  <!-- 2페이지 -->
+  <article class="journal-page">
+    <div class="margin-rule"></div>
+    <div class="paper-grain"></div>
+
+    <header class="page-header">
+      <span class="running-title">Dr. Kenneth Connolly · Journal</span>
+      <span class="page-badge">1924</span>
+    </header>
+
+    <div class="entries">
+      <section class="entry">
+        <h2 class="entry-date">5월 16일</h2>
+        <p class="entry-text">
+          하룻밤 푹 자고 나니 명확해졌다. 이제 이해가 된다. 우리는 완전히 잘못된 방식으로 접근하고 있었다. 손이 모자랄 정도로 연구에 박차를 가해야겠다.
+        </p>
+      </section>
+
+      <section class="entry">
+        <h2 class="entry-date">5월 30일</h2>
+        <p class="entry-text">
+          리지를 정말 깊이 사랑한다. 오늘 오후에는 둘이서 배를 잡고 한참을 웃었다. 그녀를 얻은 나는 정말 행운아다.
+        </p>
+      </section>
+
+      <section class="entry">
+        <h2 class="entry-date">6월 9일</h2>
+        <p class="entry-text">
+          우리의 초기 실험들이 눈부신 성공을 거두었다. 이 기쁨을 말로 다 표현할 수 없다. 해낼 수 있을 것 같다.
+        </p>
+      </section>
+
+      <section class="entry">
+        <h2 class="entry-date">6월 19일</h2>
+        <p class="entry-text">
+          리지가 다시 한번 명상을 하자고 조른다. 작업 속도를 높이는 데 도움이 될 거라면서. 하지만 난 할 수 없다. 도무지 기분이 내키지 않는다. 솔직히 두렵다. 난관들을 잘 헤쳐 나가고 있고 우리 힘으로 해결책을 찾아내고 있지 않은가. 굳이 그걸 다시 해야 할 필요성을 못 느끼겠다. 문득 궁금해진다. 그녀는 이 명상을 얼마나 자주 해온 걸까?
+        </p>
+      </section>
+    </div>
+
+    <footer class="page-footer">
+      <span>Wellington Manor, Hampton, N.Y.</span>
+      <span class="page-num">— 2 —</span>
+    </footer>
+  </article>
+
+</body>
+</html>
